@@ -1,0 +1,23 @@
+{
+  "source": {
+    "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+    "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+    "path": "modules/tbc-transaction-engine/rust/src/lib.rs",
+    "function": "build_merge_batch_json",
+    "sdkFunction": "Ft::merge_ft"
+  },
+  "maximumDirectInputs": 5,
+  "maximumSourceMergeInputs": 500,
+  "publicIntent": "tbc.ft.merge",
+  "publicTransactionRole": "primary",
+  "minimumPublicInputs": 2,
+  "maximumPublicInputs": 5,
+  "expectedMaintenanceRole": "maintenance",
+  "vector": {
+    "selectedInputCount": 6,
+    "maintenanceInputCount": 5,
+    "maintenanceFee": "476",
+    "primaryFee": "605",
+    "planHash": "95eaf80a78c47bb1ea6f15f73e50d5ffaba4431ca36a1b4cf46e784045be50af"
+  }
+}

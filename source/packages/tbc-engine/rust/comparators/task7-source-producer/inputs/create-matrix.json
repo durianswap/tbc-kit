@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "scenarios": [
+    {"name":"create-standard-plan-1","lpPlan":1,"serviceFeeRate":35},
+    {"name":"create-standard-plan-2","lpPlan":2,"serviceFeeRate":35},
+    {"name":"create-standard-plan-3","lpPlan":3,"serviceFeeRate":135},
+    {"name":"create-standard-plan-4","lpPlan":4,"serviceFeeRate":335},
+    {"name":"create-standard-plan-5","lpPlan":5,"serviceFeeRate":535},
+    {"name":"create-standard-plan-6","lpPlan":6,"serviceFeeRate":130},
+    {"name":"create-locked-plan-1","lpPlan":1,"serviceFeeRate":35,"locked":true}
+  ]
+}

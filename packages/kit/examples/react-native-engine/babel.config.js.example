@@ -1,0 +1,8 @@
+// Use babel.config.js: Expo 54's Metro loader does not discover babel.config.cjs.
+// For a new Expo app. Existing apps should merge this preset option and retain
+// their other plugins. Kit's shared JS exports contain a lazy WASM import.meta.
+module.exports = function (api) {
+  api.cache(true);
+  const preset = require.resolve('babel-preset-expo', { paths: [require.resolve('expo/package.json')] });
+  return { presets: [[preset, { unstable_transformImportMeta: true }]] };
+};

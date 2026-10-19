@@ -1,0 +1,14 @@
+{
+  "name": "tbc-kit",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "verify": "node scripts/verify-release.mjs",
+    "test": "node --test test/*.test.mjs",
+    "check:install": "node scripts/check-installed-package.mjs"
+  },
+  "devDependencies": {
+    "@tbc/kit": "file:packages/kit"
+  }
+}

@@ -1,0 +1,524 @@
+{
+  "source": {
+    "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+    "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+    "path": "modules/tbc-transaction-engine/rust/src/lib.rs",
+    "function": "build_tbc_transaction_json",
+    "sdkPath": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk"
+  },
+  "normalizeInput": {
+    "version": "1.0",
+    "request": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "clientRequestId": "canonical-transfer-1",
+      "intent": {
+        "type": "tbc.transfer",
+        "version": "1.0",
+        "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+        "amount": "1000"
+      },
+      "constraints": {
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "maxFee": "80",
+        "feePreference": "standard"
+      }
+    }
+  },
+  "normalizedRequest": {
+    "request": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "clientRequestId": "canonical-transfer-1",
+      "intent": {
+        "type": "tbc.transfer",
+        "version": "1.0",
+        "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+        "amount": "1000"
+      },
+      "constraints": {
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "maxFee": "80",
+        "feePreference": "standard"
+      }
+    },
+    "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f"
+  },
+  "planInput": {
+    "version": "1.0",
+    "request": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "clientRequestId": "canonical-transfer-1",
+      "intent": {
+        "type": "tbc.transfer",
+        "version": "1.0",
+        "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+        "amount": "1000"
+      },
+      "constraints": {
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "maxFee": "80",
+        "feePreference": "standard"
+      }
+    },
+    "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+    "snapshot": {
+      "payload": {
+        "version": "1.0",
+        "snapshotId": "snapshot-transfer-1",
+        "chainId": "tbc:mainnet",
+        "block": {
+          "height": "825000",
+          "hash": "000000006ec607045ad2c990de903d04a6edb408c1b2ebb1b2153ebf3b6b888b"
+        },
+        "capturedAt": "2026-08-31T12:00:00Z",
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "account": {
+          "address": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "chainId": "tbc:mainnet",
+          "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
+        },
+        "utxos": [
+          {
+            "txid": "f32f5392aa7ab9414bf93d497fde479dce609f6a74b708be7988cf9bb698e4d1",
+            "vout": 0,
+            "satoshis": "10000",
+            "scriptPubKey": "76a914751e76e8199196d454941c45d1b3a323f1433bd688ac",
+            "confirmations": "100",
+            "classification": "native"
+          }
+        ],
+        "parents": [
+          {
+            "txid": "f32f5392aa7ab9414bf93d497fde479dce609f6a74b708be7988cf9bb698e4d1",
+            "rawTransaction": "0a000000011111111111111111111111111111111111111111111111111111111111111111000000000151ffffffff0110270000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000"
+          }
+        ],
+        "contracts": []
+      },
+      "snapshotHash": "1df77b54bce912fa6ef8aeae1cf32968972de120f13a8d584202f0f953d7d619"
+    },
+    "policy": {
+      "payload": {
+        "version": "1.0",
+        "policyId": "canonical-policy-1",
+        "revision": "1",
+        "chainId": "tbc:mainnet",
+        "feeRateSatPerKb": "80",
+        "dustThreshold": "24",
+        "minConfirmations": "1",
+        "maxBundleTransactions": 32,
+        "sighashType": 65,
+        "contractPolicies": [],
+        "amountLimits": [
+          {
+            "scope": "native",
+            "maximum": "2100000000000000"
+          }
+        ],
+        "expiresAt": "2026-08-31T12:05:00Z"
+      },
+      "policyHash": "9903a29e963a4d097c94671b2a1796a3ecef2ea082b0b52786af701bae22aafe"
+    }
+  },
+  "plan": {
+    "plan": {
+      "payload": {
+        "version": "1.0",
+        "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+        "snapshotHash": "1df77b54bce912fa6ef8aeae1cf32968972de120f13a8d584202f0f953d7d619",
+        "policyHash": "9903a29e963a4d097c94671b2a1796a3ecef2ea082b0b52786af701bae22aafe",
+        "chainId": "tbc:mainnet",
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "transactions": [
+          {
+            "id": "tx-1",
+            "role": "primary",
+            "dependsOn": [],
+            "unsignedTransaction": "0a00000001d1e498b69bcf8879be08b7746a9f60ce9d47de7f493df94b41b97aaa92532ff30000000000ffffffff02e8030000000000001976a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88acd8220000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+            "templateHash": "0fa25e6e108f43e2f9119e7f985b84c22453d8da3a893d58ea448a40d703f658",
+            "fee": "80"
+          }
+        ],
+        "signingTasks": [
+          {
+            "taskId": "sign-tx-1-input-0",
+            "purpose": "transaction",
+            "algorithm": "secp256k1-ecdsa-sha256d",
+            "digest": "1e06ca3ec00947bc4a174c62fbe08777796b2b525915640c5a144c001c27bf25",
+            "signatureEncoding": "compact64",
+            "transactionTemplateId": "tx-1",
+            "inputIndex": 0,
+            "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+            "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+            "sighashType": 65
+          }
+        ],
+        "preview": {
+          "operationKind": "transaction",
+          "assetFlows": [
+            {
+              "kind": "native",
+              "direction": "send",
+              "amount": "1000",
+              "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+              "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP"
+            },
+            {
+              "kind": "native",
+              "direction": "fee",
+              "amount": "80",
+              "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+            }
+          ],
+          "totalFee": "80",
+          "transactionCount": 1,
+          "warnings": [],
+          "irreversible": true
+        }
+      },
+      "planHash": "23e5d5d128ba5672ac36fc7375307989ccc0e8adf12fe8638be6ed17bfdb5cd6"
+    }
+  },
+  "validateInput": {
+    "version": "1.0",
+    "phase": "plan",
+    "request": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "clientRequestId": "canonical-transfer-1",
+      "intent": {
+        "type": "tbc.transfer",
+        "version": "1.0",
+        "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+        "amount": "1000"
+      },
+      "constraints": {
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "maxFee": "80",
+        "feePreference": "standard"
+      }
+    },
+    "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+    "snapshot": {
+      "payload": {
+        "version": "1.0",
+        "snapshotId": "snapshot-transfer-1",
+        "chainId": "tbc:mainnet",
+        "block": {
+          "height": "825000",
+          "hash": "000000006ec607045ad2c990de903d04a6edb408c1b2ebb1b2153ebf3b6b888b"
+        },
+        "capturedAt": "2026-08-31T12:00:00Z",
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "account": {
+          "address": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "chainId": "tbc:mainnet",
+          "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
+        },
+        "utxos": [
+          {
+            "txid": "f32f5392aa7ab9414bf93d497fde479dce609f6a74b708be7988cf9bb698e4d1",
+            "vout": 0,
+            "satoshis": "10000",
+            "scriptPubKey": "76a914751e76e8199196d454941c45d1b3a323f1433bd688ac",
+            "confirmations": "100",
+            "classification": "native"
+          }
+        ],
+        "parents": [
+          {
+            "txid": "f32f5392aa7ab9414bf93d497fde479dce609f6a74b708be7988cf9bb698e4d1",
+            "rawTransaction": "0a000000011111111111111111111111111111111111111111111111111111111111111111000000000151ffffffff0110270000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000"
+          }
+        ],
+        "contracts": []
+      },
+      "snapshotHash": "1df77b54bce912fa6ef8aeae1cf32968972de120f13a8d584202f0f953d7d619"
+    },
+    "policy": {
+      "payload": {
+        "version": "1.0",
+        "policyId": "canonical-policy-1",
+        "revision": "1",
+        "chainId": "tbc:mainnet",
+        "feeRateSatPerKb": "80",
+        "dustThreshold": "24",
+        "minConfirmations": "1",
+        "maxBundleTransactions": 32,
+        "sighashType": 65,
+        "contractPolicies": [],
+        "amountLimits": [
+          {
+            "scope": "native",
+            "maximum": "2100000000000000"
+          }
+        ],
+        "expiresAt": "2026-08-31T12:05:00Z"
+      },
+      "policyHash": "9903a29e963a4d097c94671b2a1796a3ecef2ea082b0b52786af701bae22aafe"
+    },
+    "plan": {
+      "payload": {
+        "version": "1.0",
+        "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+        "snapshotHash": "1df77b54bce912fa6ef8aeae1cf32968972de120f13a8d584202f0f953d7d619",
+        "policyHash": "9903a29e963a4d097c94671b2a1796a3ecef2ea082b0b52786af701bae22aafe",
+        "chainId": "tbc:mainnet",
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "transactions": [
+          {
+            "id": "tx-1",
+            "role": "primary",
+            "dependsOn": [],
+            "unsignedTransaction": "0a00000001d1e498b69bcf8879be08b7746a9f60ce9d47de7f493df94b41b97aaa92532ff30000000000ffffffff02e8030000000000001976a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88acd8220000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+            "templateHash": "0fa25e6e108f43e2f9119e7f985b84c22453d8da3a893d58ea448a40d703f658",
+            "fee": "80"
+          }
+        ],
+        "signingTasks": [
+          {
+            "taskId": "sign-tx-1-input-0",
+            "purpose": "transaction",
+            "algorithm": "secp256k1-ecdsa-sha256d",
+            "digest": "1e06ca3ec00947bc4a174c62fbe08777796b2b525915640c5a144c001c27bf25",
+            "signatureEncoding": "compact64",
+            "transactionTemplateId": "tx-1",
+            "inputIndex": 0,
+            "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+            "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+            "sighashType": 65
+          }
+        ],
+        "preview": {
+          "operationKind": "transaction",
+          "assetFlows": [
+            {
+              "kind": "native",
+              "direction": "send",
+              "amount": "1000",
+              "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+              "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP"
+            },
+            {
+              "kind": "native",
+              "direction": "fee",
+              "amount": "80",
+              "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+            }
+          ],
+          "totalFee": "80",
+          "transactionCount": 1,
+          "warnings": [],
+          "irreversible": true
+        }
+      },
+      "planHash": "23e5d5d128ba5672ac36fc7375307989ccc0e8adf12fe8638be6ed17bfdb5cd6"
+    }
+  },
+  "validation": {
+    "valid": true,
+    "violations": []
+  },
+  "finalizeInput": {
+    "version": "1.0",
+    "request": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "clientRequestId": "canonical-transfer-1",
+      "intent": {
+        "type": "tbc.transfer",
+        "version": "1.0",
+        "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+        "amount": "1000"
+      },
+      "constraints": {
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "maxFee": "80",
+        "feePreference": "standard"
+      }
+    },
+    "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+    "snapshot": {
+      "payload": {
+        "version": "1.0",
+        "snapshotId": "snapshot-transfer-1",
+        "chainId": "tbc:mainnet",
+        "block": {
+          "height": "825000",
+          "hash": "000000006ec607045ad2c990de903d04a6edb408c1b2ebb1b2153ebf3b6b888b"
+        },
+        "capturedAt": "2026-08-31T12:00:00Z",
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "account": {
+          "address": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "chainId": "tbc:mainnet",
+          "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
+        },
+        "utxos": [
+          {
+            "txid": "f32f5392aa7ab9414bf93d497fde479dce609f6a74b708be7988cf9bb698e4d1",
+            "vout": 0,
+            "satoshis": "10000",
+            "scriptPubKey": "76a914751e76e8199196d454941c45d1b3a323f1433bd688ac",
+            "confirmations": "100",
+            "classification": "native"
+          }
+        ],
+        "parents": [
+          {
+            "txid": "f32f5392aa7ab9414bf93d497fde479dce609f6a74b708be7988cf9bb698e4d1",
+            "rawTransaction": "0a000000011111111111111111111111111111111111111111111111111111111111111111000000000151ffffffff0110270000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000"
+          }
+        ],
+        "contracts": []
+      },
+      "snapshotHash": "1df77b54bce912fa6ef8aeae1cf32968972de120f13a8d584202f0f953d7d619"
+    },
+    "policy": {
+      "payload": {
+        "version": "1.0",
+        "policyId": "canonical-policy-1",
+        "revision": "1",
+        "chainId": "tbc:mainnet",
+        "feeRateSatPerKb": "80",
+        "dustThreshold": "24",
+        "minConfirmations": "1",
+        "maxBundleTransactions": 32,
+        "sighashType": 65,
+        "contractPolicies": [],
+        "amountLimits": [
+          {
+            "scope": "native",
+            "maximum": "2100000000000000"
+          }
+        ],
+        "expiresAt": "2026-08-31T12:05:00Z"
+      },
+      "policyHash": "9903a29e963a4d097c94671b2a1796a3ecef2ea082b0b52786af701bae22aafe"
+    },
+    "plan": {
+      "payload": {
+        "version": "1.0",
+        "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+        "snapshotHash": "1df77b54bce912fa6ef8aeae1cf32968972de120f13a8d584202f0f953d7d619",
+        "policyHash": "9903a29e963a4d097c94671b2a1796a3ecef2ea082b0b52786af701bae22aafe",
+        "chainId": "tbc:mainnet",
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "transactions": [
+          {
+            "id": "tx-1",
+            "role": "primary",
+            "dependsOn": [],
+            "unsignedTransaction": "0a00000001d1e498b69bcf8879be08b7746a9f60ce9d47de7f493df94b41b97aaa92532ff30000000000ffffffff02e8030000000000001976a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88acd8220000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+            "templateHash": "0fa25e6e108f43e2f9119e7f985b84c22453d8da3a893d58ea448a40d703f658",
+            "fee": "80"
+          }
+        ],
+        "signingTasks": [
+          {
+            "taskId": "sign-tx-1-input-0",
+            "purpose": "transaction",
+            "algorithm": "secp256k1-ecdsa-sha256d",
+            "digest": "1e06ca3ec00947bc4a174c62fbe08777796b2b525915640c5a144c001c27bf25",
+            "signatureEncoding": "compact64",
+            "transactionTemplateId": "tx-1",
+            "inputIndex": 0,
+            "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+            "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+            "sighashType": 65
+          }
+        ],
+        "preview": {
+          "operationKind": "transaction",
+          "assetFlows": [
+            {
+              "kind": "native",
+              "direction": "send",
+              "amount": "1000",
+              "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+              "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP"
+            },
+            {
+              "kind": "native",
+              "direction": "fee",
+              "amount": "80",
+              "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+            }
+          ],
+          "totalFee": "80",
+          "transactionCount": 1,
+          "warnings": [],
+          "irreversible": true
+        }
+      },
+      "planHash": "23e5d5d128ba5672ac36fc7375307989ccc0e8adf12fe8638be6ed17bfdb5cd6"
+    },
+    "binding": {
+      "payload": {
+        "version": "1.0",
+        "method": "tbc_sendTransaction",
+        "operationKind": "transaction",
+        "contextHash": "761bc48d9bffdbb3f93c42896b61e6ba682b1ad661fb8c30c427ba07500d0ae6",
+        "origin": "https://example.test",
+        "sessionId": "session-transfer-1",
+        "chainId": "tbc:mainnet",
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+        "operationHash": "23e5d5d128ba5672ac36fc7375307989ccc0e8adf12fe8638be6ed17bfdb5cd6",
+        "expiresAt": "2026-08-31T12:02:00Z"
+      },
+      "bindingHash": "503fd3c474b799e9240745094a383159047de66f2bbfb59c8ed7aae4c9bc24d3"
+    },
+    "approval": {
+      "status": "approved",
+      "approvalId": "approval-transfer-1",
+      "approvalToken": "approval-token-transfer-1",
+      "bindingHash": "503fd3c474b799e9240745094a383159047de66f2bbfb59c8ed7aae4c9bc24d3",
+      "approvedAt": "2026-08-31T12:00:10Z",
+      "expiresAt": "2026-08-31T12:02:00Z"
+    },
+    "signatures": [
+      {
+        "taskId": "sign-tx-1-input-0",
+        "signatureEncoding": "compact64",
+        "signature": "5f8792e014eb953efc9c563e18c8024a750e7513ec575775b371102fde8ceb2256a6df64fe1e2d9e31c2e34f3581464cc682d70e72ec4b78cd44ce891500c60d"
+      }
+    ]
+  },
+  "finalized": {
+    "bundle": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+      "approvalId": "approval-transfer-1",
+      "transactions": [
+        {
+          "id": "tx-1",
+          "txid": "e715bbe7ea8e6e95ff339b24e1e2aaff8771e8e17af4682b775919fad953c907",
+          "rawTransaction": "0a00000001d1e498b69bcf8879be08b7746a9f60ce9d47de7f493df94b41b97aaa92532ff3000000006a47304402205f8792e014eb953efc9c563e18c8024a750e7513ec575775b371102fde8ceb22022056a6df64fe1e2d9e31c2e34f3581464cc682d70e72ec4b78cd44ce891500c60d41210279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798ffffffff02e8030000000000001976a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88acd8220000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+          "role": "primary",
+          "dependsOn": []
+        }
+      ],
+      "totalFee": "80"
+    },
+    "validation": {
+      "valid": true,
+      "violations": []
+    }
+  }
+}

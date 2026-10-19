@@ -1,0 +1,593 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://turingbitchain.io/tws/1.0/schemas/workflow.schema.json",
+  "title": "TWS sign workflow",
+  "$ref": "#/$defs/request",
+  "$defs": {
+    "bindingPlaceholder": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["$tbcBinding"],
+      "properties": {
+        "$tbcBinding": { "const": "unresolved" }
+      }
+    },
+    "bindingSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stepId", "output"],
+      "properties": {
+        "stepId": { "$ref": "common.schema.json#/$defs/localId" },
+        "output": {
+          "enum": [
+            "transactionIds",
+            "primaryTransactionId",
+            "artifacts.collectionId",
+            "artifacts.contractId",
+            "artifacts.poolContractId"
+          ]
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target", "source"],
+      "properties": {
+        "target": {
+          "type": "string",
+          "pattern": "^/message/[A-Za-z][A-Za-z0-9_]{0,63}$"
+        },
+        "source": { "$ref": "#/$defs/bindingSource" }
+      }
+    },
+    "messageBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target", "source"],
+      "properties": {
+        "target": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+        },
+        "source": { "$ref": "#/$defs/bindingSource" }
+      }
+    },
+    "deferredTargetType": {
+      "enum": ["bytes32", "bytes32[]", "json-string-array"]
+    },
+    "dependsOn": {
+      "type": "array",
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": { "$ref": "common.schema.json#/$defs/localId" }
+    },
+    "transactionStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "dependsOn", "intent"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "kind": { "const": "transaction" },
+        "dependsOn": { "$ref": "#/$defs/dependsOn" },
+        "signingRoles": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "transaction-request.schema.json#/$defs/signingRole" } },
+        "intent": { "$ref": "transaction-request.schema.json#/$defs/tbcIntent" },
+        "constraints": { "$ref": "transaction-request.schema.json#/$defs/constraints" }
+      },
+      "allOf": [{ "$ref": "transaction-request.schema.json#/$defs/signingRoleIntentScope" }]
+    },
+    "reviewedTransactionStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "dependsOn", "request"],
+      "properties": {
+        "signingRoles": { "$ref": "reviewed-transaction.schema.json#/$defs/signingRoles" },
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "kind": { "const": "reviewedTransaction" },
+        "dependsOn": { "$ref": "#/$defs/dependsOn" },
+        "request": { "$ref": "reviewed-transaction.schema.json#/$defs/request" }
+      }
+    },
+    "typedDataStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "dependsOn", "data", "bindings"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "kind": { "const": "typedData" },
+        "dependsOn": { "$ref": "#/$defs/dependsOn" },
+        "data": { "$ref": "signing.schema.json#/$defs/typedData" },
+        "bindings": {
+          "type": "array",
+          "maxItems": 1,
+          "items": { "$ref": "#/$defs/binding" }
+        }
+      }
+    },
+    "messageStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "dependsOn", "message"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "kind": { "const": "message" },
+        "dependsOn": { "$ref": "#/$defs/dependsOn" },
+        "message": { "$ref": "signing.schema.json#/$defs/encodedMessage" },
+        "bindings": {
+          "type": "array",
+          "maxItems": 1,
+          "items": { "$ref": "#/$defs/messageBinding" }
+        }
+      }
+    },
+    "encryptStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "dependsOn", "algorithm", "message"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "kind": { "const": "encrypt" },
+        "dependsOn": { "$ref": "#/$defs/dependsOn" },
+        "algorithm": { "$ref": "signing.schema.json#/$defs/messageCryptoAlgorithm" },
+        "message": { "$ref": "signing.schema.json#/$defs/encodedMessage" }
+      }
+    },
+    "decryptStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "dependsOn", "algorithm", "ciphertext"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "kind": { "const": "decrypt" },
+        "dependsOn": { "$ref": "#/$defs/dependsOn" },
+        "algorithm": { "$ref": "signing.schema.json#/$defs/messageCryptoAlgorithm" },
+        "ciphertext": { "$ref": "signing.schema.json#/$defs/encryptedMessage" }
+      }
+    },
+    "step": {
+      "oneOf": [
+        { "$ref": "#/$defs/transactionStep" },
+        { "$ref": "#/$defs/reviewedTransactionStep" },
+        { "$ref": "#/$defs/messageStep" },
+        { "$ref": "#/$defs/encryptStep" },
+        { "$ref": "#/$defs/decryptStep" },
+        { "$ref": "#/$defs/typedDataStep" }
+      ]
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "chainId", "from", "steps"],
+      "properties": {
+        "version": { "const": "1.0" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "from": { "$ref": "common.schema.json#/$defs/address" },
+        "clientRequestId": { "$ref": "common.schema.json#/$defs/clientRequestId" },
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "maxTotalFee": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "failureMode": { "enum": ["atomic", "continue-independent"] },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/step" }
+        }
+      }
+    },
+    "transactionStepPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stepId", "plan"],
+      "properties": {
+        "stepId": { "$ref": "common.schema.json#/$defs/localId" },
+        "plan": { "$ref": "integration.schema.json#/$defs/executionPlan" }
+      }
+    },
+    "immediateSigningTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stepId", "task"],
+      "properties": {
+        "stepId": { "$ref": "common.schema.json#/$defs/localId" },
+        "envelope": {
+          "oneOf": [
+            { "$ref": "signing.schema.json#/$defs/messageEnvelope" },
+            { "$ref": "signing.schema.json#/$defs/typedDataEnvelope" }
+          ]
+        },
+        "task": { "$ref": "integration.schema.json#/$defs/signingTask" }
+      }
+    },
+    "deferredSigningTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskId",
+        "source",
+        "targetStepId",
+        "target",
+        "targetType",
+        "purpose",
+        "publicKey",
+        "envelopeTemplate"
+      ],
+      "properties": {
+        "taskId": { "$ref": "common.schema.json#/$defs/localId" },
+        "source": { "$ref": "#/$defs/bindingSource" },
+        "targetStepId": { "$ref": "common.schema.json#/$defs/localId" },
+        "target": {
+          "type": "string",
+          "pattern": "^(?:/message/)?[A-Za-z][A-Za-z0-9_]{0,63}$"
+        },
+        "targetType": { "$ref": "#/$defs/deferredTargetType" },
+        "purpose": { "enum": ["message", "typedData"] },
+        "publicKey": { "$ref": "common.schema.json#/$defs/publicKey" },
+        "envelopeTemplate": {
+          "oneOf": [
+            { "$ref": "signing.schema.json#/$defs/messageEnvelope" },
+            { "$ref": "signing.schema.json#/$defs/typedDataEnvelope" }
+          ]
+        }
+      }
+    },
+    "workflowPreview": {
+      "$ref": "integration.schema.json#/$defs/workflowPreview"
+    },
+    "workflowPlanPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "requestHash",
+        "chainId",
+        "accountId",
+        "expiresAt",
+        "failureMode",
+        "stepOrder",
+        "transactionPlans",
+        "immediateSigningTasks",
+        "deferredSigningTasks",
+        "legacyBitcoinMessageStepIds",
+        "cryptoTasks",
+        "reviewedTransactionTasks",
+        "maxTotalFee",
+        "totalFee",
+        "preview"
+      ],
+      "properties": {
+        "version": { "const": "1.0" },
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "accountId": { "$ref": "common.schema.json#/$defs/accountId" },
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "failureMode": { "enum": ["atomic", "continue-independent"] },
+        "stepOrder": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/localId" }
+        },
+        "transactionPlans": {
+          "type": "array",
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/transactionStepPlan" }
+        },
+        "immediateSigningTasks": {
+          "type": "array",
+          "maxItems": 5120,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/immediateSigningTask" }
+        },
+        "deferredSigningTasks": {
+          "type": "array",
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/deferredSigningTask" }
+        },
+        "legacyBitcoinMessageStepIds": {
+          "type": "array",
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/localId" }
+        },
+        "cryptoTasks": {
+          "type": "array",
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": { "$ref": "integration.schema.json#/$defs/cryptoTask" }
+        },
+        "reviewedTransactionTasks": {
+          "type": "array",
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": { "$ref": "integration.schema.json#/$defs/reviewedTransactionTask" }
+        },
+        "maxTotalFee": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "totalFee": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "preview": { "$ref": "#/$defs/workflowPreview" }
+      }
+    },
+    "workflowPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload", "workflowPlanHash"],
+      "properties": {
+        "payload": { "$ref": "#/$defs/workflowPlanPayload" },
+        "workflowPlanHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "resolvedDeferredSigningTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "planTaskId",
+        "source",
+        "sourceValue",
+        "targetStepId",
+        "target",
+        "targetType",
+        "purpose",
+        "resolvedEnvelope",
+        "canonical",
+        "digest",
+        "concreteTask"
+      ],
+      "properties": {
+        "planTaskId": { "$ref": "common.schema.json#/$defs/localId" },
+        "source": { "$ref": "#/$defs/bindingSource" },
+        "sourceValue": {
+          "oneOf": [
+            { "$ref": "common.schema.json#/$defs/hash32" },
+            {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 32,
+              "uniqueItems": true,
+              "items": { "$ref": "common.schema.json#/$defs/hash32" }
+            }
+          ]
+        },
+        "targetStepId": { "$ref": "common.schema.json#/$defs/localId" },
+        "target": {
+          "type": "string",
+          "pattern": "^(?:/message/)?[A-Za-z][A-Za-z0-9_]{0,63}$"
+        },
+        "targetType": { "$ref": "#/$defs/deferredTargetType" },
+        "purpose": { "enum": ["message", "typedData"] },
+        "resolvedEnvelope": {
+          "oneOf": [
+            { "$ref": "signing.schema.json#/$defs/messageEnvelope" },
+            { "$ref": "signing.schema.json#/$defs/typedDataEnvelope" }
+          ]
+        },
+        "canonical": { "type": "string", "minLength": 1, "maxLength": 131072 },
+        "digest": { "$ref": "common.schema.json#/$defs/hash32" },
+        "concreteTask": {
+          "$ref": "integration.schema.json#/$defs/recoverableSigningTask"
+        }
+      }
+    },
+    "workflowStepStatus": {
+      "enum": ["pending", "signing", "finalized", "completed", "failed", "skipped"]
+    },
+    "workflowStepProgress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stepId", "status"],
+      "properties": {
+        "stepId": { "$ref": "common.schema.json#/$defs/localId" },
+        "status": { "$ref": "#/$defs/workflowStepStatus" },
+        "signingTasks": {
+          "type": "array",
+          "maxItems": 1024,
+          "items": { "$ref": "integration.schema.json#/$defs/secretTask" }
+        },
+        "signatures": {
+          "type": "array",
+          "maxItems": 1024,
+          "items": { "$ref": "integration.schema.json#/$defs/signerSignResult" }
+        },
+        "finalizationStages": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "integration.schema.json#/$defs/finalizationStageArtifact" }
+        },
+        "finalizedBundle": { "$ref": "transaction-request.schema.json#/$defs/signedTransactionBundle" },
+        "resolvedDeferredSigningTasks": {
+          "type": "array",
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/resolvedDeferredSigningTask" }
+        },
+        "cryptoResult": { "$ref": "integration.schema.json#/$defs/cryptoExecuteResult" }
+        ,"reviewedTransactionResult": { "$ref": "integration.schema.json#/$defs/reviewedTransactionExecuteResult" },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["code", "message"],
+          "properties": {
+            "code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{0,63}$" },
+            "message": { "type": "string", "minLength": 1, "maxLength": 1024 }
+          }
+        }
+      }
+    },
+    "workflowProgress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["steps", "completedStepIds"],
+      "properties": {
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/workflowStepProgress" }
+        },
+        "completedStepIds": {
+          "type": "array",
+          "maxItems": 5,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/localId" }
+        }
+      }
+    },
+    "workflowTerminalFailure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "state", "error"],
+      "properties": {
+        "version": { "const": "1.0" },
+        "state": { "enum": ["rejected", "failed", "cancelled"] },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["code", "message", "data"],
+          "properties": {
+            "code": { "$ref": "provider.schema.json#/$defs/standardErrorCode" },
+            "message": { "type": "string", "minLength": 1, "maxLength": 1024 },
+            "data": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["reason"],
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "pattern": "^[A-Z][A-Z0-9_]{0,63}$"
+                },
+                "stepId": { "$ref": "common.schema.json#/$defs/localId" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "transactionStepResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "result"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "kind": { "enum": ["transaction", "preparedTransaction"] },
+        "result": { "$ref": "transaction-request.schema.json#/$defs/signedTransactionBundle" }
+      }
+    },
+    "typedDataStepResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "result"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "kind": { "const": "typedData" },
+        "result": { "$ref": "signing.schema.json#/$defs/typedDataSignature" }
+      }
+    },
+    "messageStepResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "result"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "kind": { "const": "message" },
+        "result": { "$ref": "signing.schema.json#/$defs/messageSignature" }
+      }
+    },
+    "cryptoStepResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "result"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "kind": { "enum": ["encrypt", "decrypt"] },
+        "result": { "$ref": "integration.schema.json#/$defs/cryptoExecuteResult" }
+      }
+    },
+    "reviewedTransactionStepResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "result"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "kind": { "const": "reviewedTransaction" },
+        "result": { "$ref": "transaction-request.schema.json#/$defs/signedTransactionBundle" }
+      }
+    },
+    "stepResult": {
+      "oneOf": [
+        { "$ref": "#/$defs/transactionStepResult" },
+        { "$ref": "#/$defs/reviewedTransactionStepResult" },
+        { "$ref": "#/$defs/messageStepResult" },
+        { "$ref": "#/$defs/cryptoStepResult" },
+        { "$ref": "#/$defs/typedDataStepResult" },
+        { "$ref": "#/$defs/failedStepResult" }
+      ]
+    },
+    "failedStepResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "status", "error"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "kind": { "enum": ["transaction", "preparedTransaction", "reviewedTransaction", "message", "typedData", "encrypt", "decrypt"] },
+        "status": { "enum": ["failed", "skipped"] },
+        "error": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["code", "message"],
+          "properties": {
+            "code": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]{0,63}$" },
+            "message": { "type": "string", "minLength": 1, "maxLength": 1024 }
+          }
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "chainId", "from", "requestHash", "workflowPlanHash", "approvalId", "failureMode", "steps", "totalFee"],
+      "properties": {
+        "version": { "const": "1.0" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "from": { "$ref": "common.schema.json#/$defs/address" },
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "workflowPlanHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "approvalId": { "$ref": "common.schema.json#/$defs/opaqueId" },
+        "failureMode": { "enum": ["atomic", "continue-independent"] },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/stepResult" }
+        },
+        "totalFee": { "$ref": "common.schema.json#/$defs/atomicAmount" }
+      }
+    },
+    "batchItemResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["txid", "status"],
+      "properties": {
+        "txid": { "$ref": "common.schema.json#/$defs/transactionId" },
+        "status": { "enum": ["accepted", "known", "rejected", "unknown"] },
+        "reason": { "type": "string", "minLength": 1, "maxLength": 512 }
+      }
+    },
+    "sendResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "status", "workflow", "transactions"],
+      "properties": {
+        "version": { "const": "1.0" },
+        "status": { "enum": ["complete", "partial", "rejected", "unknown"] },
+        "workflow": { "$ref": "#/$defs/result" },
+        "transactions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/batchItemResult" }
+        }
+      }
+    }
+  }
+}

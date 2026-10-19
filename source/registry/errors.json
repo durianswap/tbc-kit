@@ -1,0 +1,35 @@
+{
+  "$schema": "../schemas/error-registry.schema.json",
+  "version": "1.0.0",
+  "providerErrors": [
+    { "code": 4001, "symbol": "USER_REJECTED_REQUEST", "category": "provider" },
+    { "code": 4100, "symbol": "UNAUTHORIZED", "category": "provider" },
+    { "code": 4200, "symbol": "UNSUPPORTED_METHOD", "category": "provider" },
+    { "code": 4900, "symbol": "DISCONNECTED", "category": "provider" },
+    { "code": 4901, "symbol": "CHAIN_DISCONNECTED", "category": "provider" },
+    { "code": -32700, "symbol": "PARSE_ERROR", "category": "json-rpc" },
+    { "code": -32600, "symbol": "INVALID_REQUEST", "category": "json-rpc" },
+    { "code": -32601, "symbol": "METHOD_NOT_FOUND", "category": "json-rpc" },
+    { "code": -32602, "symbol": "INVALID_PARAMS", "category": "json-rpc" },
+    { "code": -32603, "symbol": "INTERNAL_ERROR", "category": "json-rpc" },
+    { "code": -32000, "symbol": "TBC_EXECUTION_ERROR", "category": "tbc-execution" }
+  ],
+  "executionErrors": [
+    { "name": "REQUEST_EXPIRED", "stages": ["validation", "approval"] },
+    { "name": "WALLET_LOCKED", "stages": ["approval", "signing"] },
+    { "name": "INSUFFICIENT_FUNDS", "stages": ["planning"] },
+    { "name": "FEE_LIMIT_EXCEEDED", "stages": ["planning"] },
+    { "name": "PLANNING_FAILED", "stages": ["planning"] },
+    { "name": "SIMULATION_FAILED", "stages": ["simulation"] },
+    { "name": "SIGNING_FAILED", "stages": ["signing"] },
+    { "name": "BROADCAST_FAILED", "stages": ["broadcast", "reconciliation"] },
+    { "name": "CONFLICT", "stages": ["validation", "reconciliation"] },
+    { "name": "POLICY_VIOLATION", "stages": ["validation", "planning"] },
+    { "name": "UNSUPPORTED_ASSET", "stages": ["validation", "planning"] },
+    { "name": "WORKFLOW_FAILED", "stages": ["workflow"] },
+    { "name": "INVALID_PROPOSAL", "stages": ["validation"] },
+    { "name": "PROPOSAL_HASH_MISMATCH", "stages": ["validation"] },
+    { "name": "PROPOSAL_SEMANTIC_MISMATCH", "stages": ["validation", "simulation"] },
+    { "name": "PROPOSAL_STALE", "stages": ["validation", "planning"] }
+  ]
+}

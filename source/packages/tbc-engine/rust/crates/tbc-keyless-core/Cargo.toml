@@ -1,0 +1,18 @@
+[package]
+name = "tbc-keyless-core"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+hex = "0.4"
+serde.workspace = true
+serde_json.workspace = true
+tbc-sdk.workspace = true
+tbc-engine-core = { path = "../tbc-engine-core" }
+k256 = { version = "0.13", default-features = false, features = ["ecdsa"] }
+
+[dev-dependencies]
+secp256k1 = { version = "0.31", default-features = false, features = ["std"] }
+tbc-wallet-private-core = { path = "../tbc-wallet-private-core" }

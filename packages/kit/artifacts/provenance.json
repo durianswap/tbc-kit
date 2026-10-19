@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 3,
+  "package": "@tbc/kit@0.1.0-rc.1",
+  "protocolFingerprint": "eafc245bfd35132fc82a66a804f9f27448ff5679a1387c12c7e0d69b199c33a6",
+  "rustSourceSha256": "2b4baed263badd49541ec9f5da9bc8186a041daebeed03ee619ec31f1c483f16",
+  "upstream": {
+    "version": "1.7.3",
+    "commit": "2f3fe7873e05d8b6f1f53b8720f066776b847b03",
+    "npmSha256": "32c3d291e9f566a9ccfcca73d42fe54a25c592361004b2acf3946f04547f028e"
+  },
+  "artifacts": [
+    {
+      "role": "engine",
+      "path": "artifacts/wasm/tbc_engine_wasm.wasm",
+      "sha256": "23b50bced36656fd182d63dffcab5223b8111124bd9cbdcded2bfdecb366cd58",
+      "bytes": 4134935
+    },
+    {
+      "role": "keyless",
+      "path": "artifacts/wasm/tbc_keyless_wasm.wasm",
+      "sha256": "9505d78195dd65381b6f4c9d32decf3655c4cc576c02b9aae0a114ffb9bacf24",
+      "bytes": 2112098,
+      "rustSourceSha256": "dd7aa00133b23b45f07e54b2a3d8cd3d32cfc913adb5ad4e79fd38d4d6203980"
+    }
+  ],
+  "externalArtifacts": [
+    {
+      "path": "artifacts/keyless-native/aarch64-apple-darwin/libtbc_keyless_native.dylib",
+      "sha256": "18d657458fb80b2bc695508d7ff12b3de19ba4af9a0fd1d03ac9d2c04d614176",
+      "platform": "macos-arm64"
+    },
+    {
+      "path": "artifacts/keyless-native/aarch64-apple-darwin/module.modulemap",
+      "sha256": "c49a057d74e3d73dbf29bf0df22557cd94b4644dcdb2909546c4778870af08a9",
+      "platform": "macos-arm64"
+    },
+    {
+      "path": "artifacts/keyless-native/aarch64-apple-darwin/tbc_keyless.h",
+      "sha256": "fe6e4e9d09016deb7d23aff96b24a10e65772f7cdc930ee9266e754788a01b4c",
+      "platform": "macos-arm64"
+    },
+    {
+      "path": "artifacts/native/aarch64-apple-darwin/libtbc_engine_native.dylib",
+      "sha256": "f612407eb8d420afb8c154c94aeb4bcbf418c84823faad1ee1655a7106ba4c09",
+      "platform": "macos-arm64"
+    },
+    {
+      "path": "artifacts/native/android/jniLibs/arm64-v8a/libtbc_engine_native.so",
+      "sha256": "fab3268e2c0a926e859c7f0bc873c4430612395e8d2fb867b6ec0c5e7928cde3",
+      "platform": "android"
+    },
+    {
+      "path": "artifacts/native/android/jniLibs/arm64-v8a/libtbc_keyless_native.so",
+      "sha256": "8feda1ec3f609b3dfd9bad53d46783597600e7baf1ffdace831584cd00f75bff",
+      "platform": "android"
+    },
+    {
+      "path": "artifacts/native/android/jniLibs/armeabi-v7a/libtbc_engine_native.so",
+      "sha256": "bd05c09917505b3f3d8ee05d1311372ede401e21dc80ee3b96e36430ea0d77e9",
+      "platform": "android"
+    },
+    {
+      "path": "artifacts/native/android/jniLibs/armeabi-v7a/libtbc_keyless_native.so",
+      "sha256": "883da99c64e1db9e8eead2ee2d0e35209f1c9f207a7832dd060e3a97587e8bb2",
+      "platform": "android"
+    },
+    {
+      "path": "artifacts/native/android/jniLibs/x86_64/libtbc_engine_native.so",
+      "sha256": "4bc8f7bf9b36c4f1e7963ac23ed30da46020e1acec579871b1e1f83cc5d283be",
+      "platform": "android"
+    },
+    {
+      "path": "artifacts/native/android/jniLibs/x86_64/libtbc_keyless_native.so",
+      "sha256": "8ee3d057244354439c9a027d12e1e5b10ef19f431aeaeb35ed00c3b955c309ca",
+      "platform": "android"
+    },
+    {
+      "path": "artifacts/native/ios/TbcEngineNative.xcframework/Info.plist",
+      "sha256": "9a7a3843e141bf91da5590a98b1caf8f09d5ed69e42422039fc4112d654cf7da",
+      "platform": "ios"
+    },
+    {
+      "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/Headers/module.modulemap",
+      "sha256": "b96481a446ba0a7f27e2a8ed084287e118aa39999b32ed4fee82d75d34c33556",
+      "platform": "ios"
+    },
+    {
+      "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/Headers/tbc_engine.h",
+      "sha256": "d773d6a31b10fe5a5f7d780089aa89345b8d99df18e414ada58e4f716586c8bc",
+      "platform": "ios"
+    },
+    {
+      "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/libtbc_engine_native.a",
+      "sha256": "a4f62eb901545c65b2c9706793456a3c0300c93990c413f85ba0408940448061",
+      "platform": "ios"
+    },
+    {
+      "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/Headers/module.modulemap",
+      "sha256": "b96481a446ba0a7f27e2a8ed084287e118aa39999b32ed4fee82d75d34c33556",
+      "platform": "ios"
+    },
+    {
+      "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/Headers/tbc_engine.h",
+      "sha256": "d773d6a31b10fe5a5f7d780089aa89345b8d99df18e414ada58e4f716586c8bc",
+      "platform": "ios"
+    },
+    {
+      "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/libtbc_engine_native.a",
+      "sha256": "1e9a3ad6a772979066199ffc181845507a91bee601a9c5280b0843fc8e643b56",
+      "platform": "ios"
+    },
+    {
+      "path": "artifacts/native/ios/TbcKeylessNative.xcframework/Info.plist",
+      "sha256": "cc4fd77145b6da90f5e27ad552142df83f37dbb04487a4eae2accc1ae18ad38e",
+      "platform": "ios"
+    },
+    {
+      "path": "artifacts/native/ios/TbcKeylessNative.xcframework/ios-arm64/Headers/tbc_keyless.h",
+      "sha256": "fe6e4e9d09016deb7d23aff96b24a10e65772f7cdc930ee9266e754788a01b4c",
+      "platform": "ios"
+    },
+    {
+      "path": "artifacts/native/ios/TbcKeylessNative.xcframework/ios-arm64/Headers/TbcKeylessNative/module.modulemap",
+      "sha256": "724a835346769b0f8f9a5bfd76f0b1da665c705a890e658f335f00c31d50b361",
+      "platform": "ios"
+    },
+    {
+      "path": "artifacts/native/ios/TbcKeylessNative.xcframework/ios-arm64/libtbc_keyless_native.a",
+      "sha256": "142ca5b91a286c399b3fed2d89cd5145475a9eb7962a45beb81a962fc181774c",
+      "platform": "ios"
+    },
+    {
+      "path": "artifacts/native/ios/TbcKeylessNative.xcframework/ios-arm64-simulator/Headers/tbc_keyless.h",
+      "sha256": "fe6e4e9d09016deb7d23aff96b24a10e65772f7cdc930ee9266e754788a01b4c",
+      "platform": "ios"
+    },
+    {
+      "path": "artifacts/native/ios/TbcKeylessNative.xcframework/ios-arm64-simulator/Headers/TbcKeylessNative/module.modulemap",
+      "sha256": "724a835346769b0f8f9a5bfd76f0b1da665c705a890e658f335f00c31d50b361",
+      "platform": "ios"
+    },
+    {
+      "path": "artifacts/native/ios/TbcKeylessNative.xcframework/ios-arm64-simulator/libtbc_keyless_native.a",
+      "sha256": "69516fa139ccd2b3209697f193cacd0c4ff1ff0b81c9bb18d660c0b50d6ef5b9",
+      "platform": "ios"
+    }
+  ],
+  "platformResources": {
+    "path": "artifacts/platform-resources.json",
+    "sha256": "7bd33a55aab7ed106446325b9b43d45556ec90d35a6d3b0217c61c2f475365e4"
+  },
+  "parser": {
+    "esm": {
+      "upstream": "tbc-contract@1.7.3",
+      "pool2Lp6": {
+        "totalFeeBps": 330,
+        "lpFeeBps": 200,
+        "providerFeeBps": 130,
+        "historical130Compatibility": false
+      },
+      "changes": {
+        "protocols/pool-nft/fees.js": {
+          "beforeSha256": "6e5062c319b5624c5aecc07832d8faa4a7be68b8e7d2f1da1b3a1163209c2461",
+          "afterSha256": "6e5062c319b5624c5aecc07832d8faa4a7be68b8e7d2f1da1b3a1163209c2461",
+          "alreadyApplied": true
+        },
+        "script-parser/op-return.js": {
+          "beforeSha256": "c9596bc2e7f3a6f36828743967ed7b892c95d4a1fc6835c932e8920daca08bb9",
+          "afterSha256": "c9596bc2e7f3a6f36828743967ed7b892c95d4a1fc6835c932e8920daca08bb9",
+          "alreadyApplied": true
+        }
+      }
+    },
+    "cjs": {
+      "upstream": "tbc-contract@1.7.3",
+      "pool2Lp6": {
+        "totalFeeBps": 330,
+        "lpFeeBps": 200,
+        "providerFeeBps": 130,
+        "historical130Compatibility": false
+      },
+      "changes": {
+        "protocols/pool-nft/fees.js": {
+          "beforeSha256": "6e5062c319b5624c5aecc07832d8faa4a7be68b8e7d2f1da1b3a1163209c2461",
+          "afterSha256": "6e5062c319b5624c5aecc07832d8faa4a7be68b8e7d2f1da1b3a1163209c2461",
+          "alreadyApplied": true
+        },
+        "script-parser/op-return.js": {
+          "beforeSha256": "c9596bc2e7f3a6f36828743967ed7b892c95d4a1fc6835c932e8920daca08bb9",
+          "afterSha256": "c9596bc2e7f3a6f36828743967ed7b892c95d4a1fc6835c932e8920daca08bb9",
+          "alreadyApplied": true
+        }
+      }
+    }
+  },
+  "published": false,
+  "nativeBridge": {
+    "iosMinimumVersion": "15.1",
+    "androidMinimumApi": 24
+  }
+}

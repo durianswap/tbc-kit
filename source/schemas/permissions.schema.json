@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://turingbitchain.io/tws/1.0/schemas/permissions.schema.json",
+  "title": "TWS permissions",
+  "$defs": {
+    "permissionName": {
+      "enum": [
+        "tbc_accounts",
+        "tbc_accountMetadata",
+        "tbc_switchChain",
+        "tbc_signMessage",
+        "tbc_signTypedData",
+        "tbc_crypto",
+        "tbc_signTransaction",
+        "tbc_sendTransaction",
+        "tbc_signWorkflow"
+      ]
+    },
+    "restrictChains": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "value"],
+      "properties": {
+        "type": { "const": "restrictChains" },
+        "value": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/chainId" }
+        }
+      }
+    },
+    "restrictAccounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "value"],
+      "properties": {
+        "type": { "const": "restrictAccounts" },
+        "value": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/accountId" }
+        }
+      }
+    },
+    "restrictMethods": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "value"],
+      "properties": {
+        "type": { "const": "restrictMethods" },
+        "value": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/permissionName" }
+        }
+      }
+    },
+    "expiresAt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "value"],
+      "properties": {
+        "type": { "const": "expiresAt" },
+        "value": { "$ref": "common.schema.json#/$defs/rfc3339" }
+      }
+    },
+    "caveat": {
+      "oneOf": [
+        { "$ref": "#/$defs/restrictChains" },
+        { "$ref": "#/$defs/restrictAccounts" },
+        { "$ref": "#/$defs/restrictMethods" },
+        { "$ref": "#/$defs/expiresAt" }
+      ]
+    },
+    "permission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "parentCapability", "invoker", "date", "caveats"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/opaqueId" },
+        "parentCapability": { "$ref": "#/$defs/permissionName" },
+        "invoker": { "type": "string", "format": "uri", "maxLength": 2048 },
+        "date": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "caveats": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 4,
+          "uniqueItems": true,
+          "allOf": [
+            {
+              "contains": {
+                "type": "object",
+                "properties": { "type": { "const": "restrictChains" } },
+                "required": ["type"]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": { "type": { "const": "restrictAccounts" } },
+                "required": ["type"]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": { "type": { "const": "restrictMethods" } },
+                "required": ["type"]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": { "type": { "const": "expiresAt" } },
+                "required": ["type"]
+              },
+              "minContains": 0,
+              "maxContains": 1
+            }
+          ],
+          "items": { "$ref": "#/$defs/caveat" }
+        }
+      }
+    },
+    "accountsRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chains"],
+      "properties": {
+        "chains": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/chainId" }
+        },
+        "maxAccounts": { "type": "integer", "minimum": 1, "maximum": 16 }
+      }
+    },
+    "methodRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chains"],
+      "properties": {
+        "chains": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/chainId" }
+        }
+      }
+    },
+    "requestedPermissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "tbc_accounts": { "$ref": "#/$defs/accountsRequest" },
+        "tbc_accountMetadata": { "$ref": "#/$defs/methodRequest" },
+        "tbc_switchChain": { "$ref": "#/$defs/methodRequest" },
+        "tbc_signMessage": { "$ref": "#/$defs/methodRequest" },
+        "tbc_signTypedData": { "$ref": "#/$defs/methodRequest" },
+        "tbc_crypto": { "$ref": "#/$defs/methodRequest" },
+        "tbc_signTransaction": { "$ref": "#/$defs/methodRequest" },
+        "tbc_sendTransaction": { "$ref": "#/$defs/methodRequest" },
+        "tbc_signWorkflow": { "$ref": "#/$defs/methodRequest" }
+      }
+    },
+    "requestPermissionsParams": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "prefixItems": [
+        { "$ref": "#/$defs/requestedPermissions" }
+      ],
+      "items": false
+    },
+    "permissionArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/permission" }
+    },
+    "nonEmptyPermissionArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/permission" }
+    }
+  }
+}

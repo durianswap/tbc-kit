@@ -1,0 +1,13 @@
+{
+  "kind": "legacy-window-turing-provenance",
+  "version": "1.0.5",
+  "evidencePolicy": "The local specification and executable vectors define the supported TBC Legacy surface.",
+  "sources": [
+    {
+      "role": "legacy-specification",
+      "repository": ".",
+      "file": "standards/TWS-008-legacy-compatibility.md",
+      "sha256": "5d50c99307a21fa0bbbf10d8d9322d88881267f95a291dae476de8db876bbfc9"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {readFile,writeFile,readdir} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {join,resolve,relative} from 'node:path';
+const base=resolve(import.meta.dirname,'..'),dart=process.argv[2];assert(dart,'Dart SDK executable required');
+const sha=b=>createHash('sha256').update(b).digest('hex');
+const analysis=execFileSync(dart,['analyze','lib','test','tool/check_extracted_material.dart'],{cwd:base,encoding:'utf8'});
+const log=execFileSync(dart,['test','--reporter=json'],{cwd:base,encoding:'utf8'});
+const events=log.trim().split('\n').map(s=>JSON.parse(s));
+assert.equal(events.findLast(e=>e.type==='done')?.success,true);
+const passed=events.filter(e=>e.type==='testDone'&&e.hidden!==true&&e.skipped===false&&e.result==='success').length;assert.equal(passed,4);
+const parityPath=join(base,'evidence/f1-material-parity.json'),parity=JSON.parse(await readFile(parityPath));
+assert.equal(parity.status,'F1_EXTRACTED_TBC20_MATERIAL_PARITY_PASS');
+const protection=JSON.parse(execFileSync(process.execPath,['tool/check_protected.mjs'],{cwd:base,encoding:'utf8'}));
+const hashes={};async function walk(p){for(const e of await readdir(p,{withFileTypes:true})){const q=join(p,e.name);if(e.isDirectory())await walk(q);else if(e.isFile())hashes[relative(base,q)]=sha(await readFile(q));}}
+await walk(join(base,'lib'));await walk(join(base,'test'));
+const result={status:'F1_NETWORK_AND_EXTRACTED_MATERIAL_SOURCE_PASS',recordedAt:new Date().toISOString(),tests:passed,analysis:analysis.trim(),paritySha256:sha(await readFile(parityPath)),protection,sourceHashes:hashes,newDeviceAcceptance:false,networkHttp:0,broadcasts:0,published:false};
+await writeFile(join(base,'evidence/f1-source-check.json'),JSON.stringify(result,null,2)+'\n',{flag:'wx'});
+console.log(JSON.stringify({status:result.status,tests:passed,protectedFiles:protection.protectedFiles,newDeviceAcceptance:false}));

@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://turingbitchain.io/tws/1.0/schemas/reviewed-transaction.schema.json",
+  "title": "TWS reviewed raw and associated transaction request",
+  "$ref": "#/$defs/request",
+  "$defs": {
+    "signingRoles": {
+      "type": "array", "minItems": 1, "maxItems": 1,
+      "items": { "type": "object", "additionalProperties": false, "required": ["role", "accountId"],
+        "properties": { "role": { "const": "coin-admin" }, "accountId": { "$ref": "common.schema.json#/$defs/accountId" } } }
+    },
+    "inputMaterial": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["satoshis", "scriptPubKey"],
+      "properties": {
+        "satoshis": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "scriptPubKey": { "$ref": "common.schema.json#/$defs/rawTransaction" },
+        "signingRole": { "const": "coin-admin", "description": "Request a wallet-resolved Coin administrator. The actual Code and granted account must match; no caller public key override." }
+      }
+    },
+    "rawPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "transactions"],
+      "properties": {
+        "format": { "const": "raw" },
+        "transactions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["rawTransaction", "inputs"],
+            "properties": {
+              "rawTransaction": { "$ref": "common.schema.json#/$defs/rawTransaction" },
+              "inputs": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 1000,
+                "items": { "$ref": "#/$defs/inputMaterial" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "associatedSigningProfile": {
+      "enum": ["p2pkh", "ft", "ft-contract", "contract-template", "tbc-lop-match", "tbc20-standard", "tbc20-stablecoin"]
+    },
+    "associatedInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outputIndex", "signingProfile"],
+      "properties": {
+        "txid": { "$ref": "common.schema.json#/$defs/transactionId" },
+        "outputIndex": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+        "satoshis": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "scriptPubKey": { "$ref": "common.schema.json#/$defs/rawTransaction" },
+        "signingProfile": { "$ref": "#/$defs/associatedSigningProfile" },
+        "signingRole": { "const": "coin-admin", "description": "Role request only. Wallet resolves the authorized account; Engine authenticates it against actual Coin Code." },
+        "previousTransaction": { "$ref": "common.schema.json#/$defs/rawTransaction" },
+        "ancestorTransactions": {
+          "description": "Bounded direct proof ancestors for current Token/Coin profiles; never a recursive chain history. Implicit child parents are reconstructed from the finalized preceding transaction.",
+          "type": "array", "maxItems": 6, "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/rawTransaction", "type": "string", "maxLength": 2097152 }
+        },
+        "previousOutputContext": { "$ref": "common.schema.json#/$defs/rawTransaction" },
+        "contractTransaction": { "$ref": "common.schema.json#/$defs/rawTransaction" },
+        "contractVersion": { "type": "integer", "minimum": 1, "maximum": 3 },
+        "unlockingScriptTemplate": { "$ref": "common.schema.json#/$defs/rawTransaction" }
+      },
+      "allOf": [{
+        "if": { "properties": { "signingRole": true }, "required": ["signingRole"] },
+        "then": { "properties": { "signingProfile": { "const": "tbc20-stablecoin" } } }
+      }, {
+        "if": { "properties": { "signingProfile": { "enum": ["tbc20-standard", "tbc20-stablecoin"] } }, "required": ["signingProfile"] },
+        "then": {
+          "properties": {
+            "previousTransaction": { "type": "string", "maxLength": 2097152 },
+            "previousOutputContext": false, "contractTransaction": false,
+            "contractVersion": false, "unlockingScriptTemplate": false
+          },
+          "if": { "properties": { "txid": true }, "required": ["txid"] },
+          "then": {
+            "properties": { "satoshis": true, "scriptPubKey": true, "previousTransaction": true, "ancestorTransactions": true },
+            "required": ["satoshis", "scriptPubKey", "previousTransaction", "ancestorTransactions"]
+          },
+          "else": { "properties": { "previousTransaction": false } }
+        },
+        "else": { "properties": { "ancestorTransactions": false } }
+      }]
+    },
+    "associatedOutput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["satoshis", "scriptPubKey"],
+      "properties": {
+        "satoshis": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "scriptPubKey": { "$ref": "common.schema.json#/$defs/rawTransaction" }
+      }
+    },
+    "associatedChild": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["inputs", "outputs"],
+      "properties": {
+        "inputs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1000,
+          "items": { "$ref": "#/$defs/associatedInput" }
+        },
+        "outputs": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": { "$ref": "#/$defs/associatedOutput" }
+        }
+      }
+    },
+    "associatedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "sourceTransaction", "sourceInputs", "children"],
+      "properties": {
+        "format": { "const": "associated" },
+        "sourceTransaction": { "$ref": "common.schema.json#/$defs/rawTransaction" },
+        "sourceInputs": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": { "$ref": "#/$defs/associatedInput" }
+        },
+        "children": {
+          "type": "array",
+          "maxItems": 31,
+          "description": "The source transaction counts toward the shared maximum of 32 transactions; at most 31 dependent children are accepted.",
+          "items": { "$ref": "#/$defs/associatedChild" }
+        }
+      }
+    },
+    "payload": {
+      "oneOf": [
+        { "$ref": "#/$defs/rawPayload" },
+        { "$ref": "#/$defs/associatedPayload" }
+      ]
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload"],
+      "properties": {
+        "payload": { "$ref": "#/$defs/payload" }
+      }
+    }
+  }
+}

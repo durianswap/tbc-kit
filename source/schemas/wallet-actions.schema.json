@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://turingbitchain.io/tws/1.0/schemas/wallet-actions.schema.json",
+  "title": "Independent wallet reviewed signing and crypto methods",
+  "$defs": {
+    "signReviewedTransactionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "chainId",
+        "from",
+        "request"
+      ],
+      "properties": {
+        "signingRoles": { "$ref": "reviewed-transaction.schema.json#/$defs/signingRoles" },
+        "version": {
+          "const": "1.0"
+        },
+        "chainId": {
+          "$ref": "common.schema.json#/$defs/chainId"
+        },
+        "from": {
+          "$ref": "common.schema.json#/$defs/address"
+        },
+        "clientRequestId": {
+          "$ref": "common.schema.json#/$defs/clientRequestId"
+        },
+        "expiresAt": {
+          "$ref": "common.schema.json#/$defs/rfc3339"
+        },
+        "request": {
+          "$ref": "reviewed-transaction.schema.json#/$defs/request"
+        },
+        "maxFee": {
+          "$ref": "common.schema.json#/$defs/atomicAmount"
+        }
+      }
+    },
+    "encryptRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "chainId",
+        "from",
+        "algorithm",
+        "message"
+      ],
+      "properties": {
+        "version": {
+          "const": "1.0"
+        },
+        "chainId": {
+          "$ref": "common.schema.json#/$defs/chainId"
+        },
+        "from": {
+          "$ref": "common.schema.json#/$defs/address"
+        },
+        "clientRequestId": {
+          "$ref": "common.schema.json#/$defs/clientRequestId"
+        },
+        "expiresAt": {
+          "$ref": "common.schema.json#/$defs/rfc3339"
+        },
+        "algorithm": {
+          "$ref": "signing.schema.json#/$defs/messageCryptoAlgorithm"
+        },
+        "message": {
+          "$ref": "signing.schema.json#/$defs/encodedMessage"
+        }
+      }
+    },
+    "decryptRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "chainId",
+        "from",
+        "algorithm",
+        "ciphertext"
+      ],
+      "properties": {
+        "version": {
+          "const": "1.0"
+        },
+        "chainId": {
+          "$ref": "common.schema.json#/$defs/chainId"
+        },
+        "from": {
+          "$ref": "common.schema.json#/$defs/address"
+        },
+        "clientRequestId": {
+          "$ref": "common.schema.json#/$defs/clientRequestId"
+        },
+        "expiresAt": {
+          "$ref": "common.schema.json#/$defs/rfc3339"
+        },
+        "algorithm": {
+          "$ref": "signing.schema.json#/$defs/messageCryptoAlgorithm"
+        },
+        "ciphertext": {
+          "$ref": "signing.schema.json#/$defs/encryptedMessage"
+        }
+      }
+    },
+    "encryptResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "chainId",
+        "from",
+        "algorithm",
+        "ciphertext"
+      ],
+      "properties": {
+        "version": {
+          "const": "1.0"
+        },
+        "chainId": {
+          "$ref": "common.schema.json#/$defs/chainId"
+        },
+        "from": {
+          "$ref": "common.schema.json#/$defs/address"
+        },
+        "algorithm": {
+          "$ref": "signing.schema.json#/$defs/messageCryptoAlgorithm"
+        },
+        "ciphertext": {
+          "$ref": "signing.schema.json#/$defs/encryptedMessage"
+        }
+      }
+    },
+    "decryptResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "chainId",
+        "from",
+        "algorithm",
+        "message"
+      ],
+      "properties": {
+        "version": {
+          "const": "1.0"
+        },
+        "chainId": {
+          "$ref": "common.schema.json#/$defs/chainId"
+        },
+        "from": {
+          "$ref": "common.schema.json#/$defs/address"
+        },
+        "algorithm": {
+          "$ref": "signing.schema.json#/$defs/messageCryptoAlgorithm"
+        },
+        "message": {
+          "$ref": "signing.schema.json#/$defs/encodedMessage"
+        }
+      }
+    }
+  }
+}

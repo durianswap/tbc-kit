@@ -1,0 +1,15 @@
+{
+  "source": {
+    "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+    "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+    "path": "modules/tbc-transaction-engine/rust/src/nft.rs",
+    "function": "build_nft_transaction_json",
+    "sdkFunction": "Nft::transfer_nft"
+  },
+  "intent": {
+    "type": "tbc.nft.transfer",
+    "version": "1.0",
+    "contractId": "4444444444444444444444444444444444444444444444444444444444444444",
+    "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP"
+  }
+}

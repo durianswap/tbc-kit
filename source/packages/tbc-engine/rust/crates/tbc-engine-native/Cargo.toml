@@ -1,0 +1,13 @@
+[package]
+name = "tbc-engine-native"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib", "staticlib", "rlib"]
+
+[dependencies]
+tbc-engine-core = { path = "../tbc-engine-core" }
+tbc-wallet-private-core = { path = "../tbc-wallet-private-core" }

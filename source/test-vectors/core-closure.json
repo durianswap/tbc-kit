@@ -1,0 +1,537 @@
+{
+  "version": "1.0.0",
+  "expectedMethods": [
+    "tbc_chainId",
+    "tbc_accounts",
+    "tbc_requestAccounts",
+    "tbc_getAccount",
+    "tbc_getCapabilities",
+    "tbc_switchChain",
+    "tbc_signMessage",
+    "tbc_signTypedData",
+    "tbc_signTransaction",
+    "tbc_signPreparedTransaction",
+    "tbc_sendTransaction",
+    "tbc_sendPreparedTransaction",
+    "tbc_signReviewedTransaction",
+    "tbc_encrypt",
+    "tbc_decrypt",
+    "tbc_signWorkflow",
+    "tbc_signPreparedWorkflow",
+    "tbc_sendWorkflow",
+    "tbc_sendPreparedWorkflow",
+    "wallet_getPermissions",
+    "wallet_requestPermissions",
+    "tbc_disconnect"
+  ],
+  "expectedCategories": [
+    "session-read",
+    "permission-read",
+    "account-read",
+    "permission-request",
+    "switch-chain",
+    "message-signing",
+    "sign-transaction",
+    "send-transaction",
+    "sign-workflow",
+    "send-workflow",
+    "wallet-action",
+    "disconnect"
+  ],
+  "authorityBase": {
+    "context": {
+      "sessionId": "session-transfer-1",
+      "transport": "webview",
+      "origin": "https://example.test",
+      "topOrigin": "https://example.test",
+      "frame": "top",
+      "navigationId": "nav-1",
+      "createdAt": "2026-08-31T12:00:00Z"
+    },
+    "session": {
+      "version": "1.0",
+      "scope": {
+        "walletProfile": "turing-wallet",
+        "sessionId": "session-transfer-1"
+      },
+      "state": {
+        "version": "1.0",
+        "sessionId": "session-transfer-1",
+        "revision": "0",
+        "connected": true,
+        "activeChainId": "tbc:mainnet",
+        "activeAccountIds": [
+          "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+        ]
+      }
+    }
+  },
+  "authorityCases": [
+    {
+      "id": "unchanged",
+      "mutations": [],
+      "expected": null
+    },
+    {
+      "id": "session-revoked",
+      "mutations": [
+        {
+          "target": "context",
+          "path": "/sessionId",
+          "value": "session-other"
+        },
+        {
+          "target": "session",
+          "path": "/scope/sessionId",
+          "value": "session-other"
+        },
+        {
+          "target": "session",
+          "path": "/state/sessionId",
+          "value": "session-other"
+        }
+      ],
+      "expected": "SESSION_REVOKED"
+    },
+    {
+      "id": "origin-changed",
+      "mutations": [
+        {
+          "target": "context",
+          "path": "/origin",
+          "value": "https://other.example.test"
+        }
+      ],
+      "expected": "ORIGIN_CHANGED"
+    },
+    {
+      "id": "navigation-changed",
+      "mutations": [
+        {
+          "target": "context",
+          "path": "/navigationId",
+          "value": "nav-2"
+        }
+      ],
+      "expected": "NAVIGATION_CHANGED"
+    },
+    {
+      "id": "chain-changed",
+      "mutations": [
+        {
+          "target": "session",
+          "path": "/state/revision",
+          "value": "1"
+        },
+        {
+          "target": "session",
+          "path": "/state/activeChainId",
+          "value": "tbc:other"
+        },
+        {
+          "target": "session",
+          "path": "/state/activeAccountIds",
+          "value": [
+            "tbc:other:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+          ]
+        }
+      ],
+      "expected": "CHAIN_CHANGED"
+    },
+    {
+      "id": "account-changed",
+      "mutations": [
+        {
+          "target": "session",
+          "path": "/state/revision",
+          "value": "1"
+        },
+        {
+          "target": "session",
+          "path": "/state/activeAccountIds",
+          "value": []
+        }
+      ],
+      "expected": "ACCOUNT_CHANGED"
+    },
+    {
+      "id": "revision-changed",
+      "mutations": [
+        {
+          "target": "session",
+          "path": "/state/revision",
+          "value": "1"
+        }
+      ],
+      "expected": "SESSION_REVOKED"
+    },
+    {
+      "id": "disconnected",
+      "mutations": [
+        {
+          "target": "session",
+          "path": "/state/revision",
+          "value": "1"
+        },
+        {
+          "target": "session",
+          "path": "/state/connected",
+          "value": false
+        }
+      ],
+      "expected": "SESSION_REVOKED"
+    }
+  ],
+  "resumeModes": [
+    {
+      "id": "waiting-response",
+      "checkpointId": "initializing",
+      "response": "first",
+      "expected": "accept"
+    },
+    {
+      "id": "waiting-missing-response",
+      "checkpointId": "initializing",
+      "expected": "RESPONSE_REQUIRED"
+    },
+    {
+      "id": "continue-without-response",
+      "checkpointId": "validating",
+      "expected": "accept"
+    },
+    {
+      "id": "continue-unexpected-response",
+      "checkpointId": "validating",
+      "response": "first",
+      "expected": "UNEXPECTED_RESPONSE"
+    }
+  ],
+  "selfContainedCheckpoints": [
+    {
+      "id": "transaction-approval",
+      "checkpointId": "approval",
+      "requiredMemory": [
+        "normalizedTransaction",
+        "chainSnapshot",
+        "executionPolicy",
+        "executionPlan",
+        "approvalBinding"
+      ]
+    },
+    {
+      "id": "permission-commit",
+      "method": "wallet_requestPermissions",
+      "state": "committing",
+      "memory": {
+        "permissionLoads": [
+          {
+            "result": {
+              "revision": "3"
+            }
+          }
+        ],
+        "permissionProposal": {
+          "source": "permissions.json#/proposal"
+        },
+        "approvalBinding": {
+          "source": "approval.json#/bindings/1/binding"
+        },
+        "permissionCommit": {
+          "source": "permissions.json#/commit"
+        }
+      },
+      "requiredMemory": [
+        "permissionLoads",
+        "permissionProposal",
+        "approvalBinding",
+        "permissionCommit"
+      ]
+    },
+    {
+      "id": "message-signing",
+      "method": "tbc_signMessage",
+      "state": "signing",
+      "memory": {
+        "messageEnvelope": {
+          "source": "signing.json#/vectors/0/result/envelope"
+        },
+        "approvalBinding": {
+          "source": "approval.json#/bindings/3/binding"
+        },
+        "approvalReceipt": {
+          "source": "integration.json#/portData/signerParams/approval"
+        },
+        "signingTasks": [
+          {
+            "source": "integration.json#/portData/signerParams/task"
+          }
+        ]
+      },
+      "requiredMemory": [
+        "messageEnvelope",
+        "approvalBinding",
+        "approvalReceipt",
+        "signingTasks"
+      ]
+    },
+    {
+      "id": "workflow-finalizing",
+      "method": "tbc_signWorkflow",
+      "state": "finalizing",
+      "memory": {
+        "workflowPlan": {
+          "source": "workflow.json#/vectors/0/plan"
+        },
+        "workflowProgress": {
+          "source": "workflow.json#/progress"
+        },
+        "approvalBinding": {
+          "source": "approval.json#/bindings/7/binding"
+        },
+        "signatures": [
+          {
+            "source": "integration.json#/canonicalTransfer/signature"
+          }
+        ]
+      },
+      "requiredMemory": [
+        "workflowPlan",
+        "workflowProgress",
+        "approvalBinding",
+        "signatures"
+      ]
+    },
+    {
+      "id": "partial-broadcast",
+      "checkpointId": "reconciliation",
+      "requiredMemory": [
+        "finalizedBundle",
+        "broadcastProgress"
+      ]
+    }
+  ],
+  "pendingCheckpoint": {
+    "payload": {
+      "revision": "12",
+      "pendingCalls": [
+        {
+          "version": "1.0",
+          "callId": "1FYldPLoxmyjMXnuM59MMJevCqv3N88DcNZdSpTWbec",
+          "operation": "clock.now",
+          "params": {
+            "version": "1.0"
+          }
+        },
+        {
+          "version": "1.0",
+          "callId": "34_uZTP-qqE5-Wwf6MZpJhXVY9yVddBwPidxeuNPd0Y",
+          "operation": "entropy.randomBytes",
+          "params": {
+            "version": "1.0",
+            "length": 16
+          }
+        },
+        {
+          "version": "1.0",
+          "callId": "6jutTbi0r7ZLhrcMbiLnPna3qhGZ4KOmUHv3NOPP-w8",
+          "operation": "permissionStore.load",
+          "params": {
+            "version": "1.0",
+            "scope": {
+              "origin": "https://example.test",
+              "chainId": "tbc:mainnet"
+            }
+          }
+        }
+      ],
+      "memory": {}
+    }
+  },
+  "pendingResponses": {
+    "first": {
+      "version": "1.0",
+      "callId": "1FYldPLoxmyjMXnuM59MMJevCqv3N88DcNZdSpTWbec",
+      "result": {
+        "now": "2026-08-31T12:00:00Z"
+      }
+    },
+    "middle": {
+      "version": "1.0",
+      "callId": "34_uZTP-qqE5-Wwf6MZpJhXVY9yVddBwPidxeuNPd0Y",
+      "result": {
+        "bytes": "AAECAwQFBgcICQoLDA0ODw"
+      }
+    },
+    "last": {
+      "version": "1.0",
+      "callId": "6jutTbi0r7ZLhrcMbiLnPna3qhGZ4KOmUHv3NOPP-w8",
+      "result": {
+        "revision": "3",
+        "permissions": []
+      }
+    },
+    "unknown": {
+      "version": "1.0",
+      "callId": "9IsNscUGUYvs5jvGox_mr0tXfVJKhYrisroqP_KSqbk",
+      "result": null
+    }
+  },
+  "pendingResponseOrders": [
+    {
+      "id": "in-order",
+      "initial": [
+        "first",
+        "middle",
+        "last"
+      ],
+      "responses": [
+        "first",
+        "middle",
+        "last"
+      ],
+      "accepted": 3,
+      "ignored": 0,
+      "remaining": 0
+    },
+    {
+      "id": "reverse-order",
+      "initial": [
+        "first",
+        "middle",
+        "last"
+      ],
+      "responses": [
+        "last",
+        "middle",
+        "first"
+      ],
+      "accepted": 3,
+      "ignored": 0,
+      "remaining": 0
+    },
+    {
+      "id": "middle-first",
+      "initial": [
+        "first",
+        "middle",
+        "last"
+      ],
+      "responses": [
+        "middle"
+      ],
+      "accepted": 1,
+      "ignored": 0,
+      "remaining": 2
+    },
+    {
+      "id": "exact-replay",
+      "initial": [
+        "first",
+        "middle",
+        "last"
+      ],
+      "responses": [
+        "first",
+        "first"
+      ],
+      "accepted": 1,
+      "ignored": 1,
+      "remaining": 2
+    },
+    {
+      "id": "late-duplicate",
+      "initial": [
+        "middle",
+        "last"
+      ],
+      "responses": [
+        "first"
+      ],
+      "accepted": 0,
+      "ignored": 1,
+      "remaining": 2
+    },
+    {
+      "id": "unknown-call-id",
+      "initial": [
+        "first",
+        "middle",
+        "last"
+      ],
+      "responses": [
+        "unknown"
+      ],
+      "accepted": 0,
+      "ignored": 1,
+      "remaining": 3
+    }
+  ],
+  "memoryMutations": [
+    {
+      "id": "delete-plan",
+      "previousId": "approval",
+      "nextId": "signing",
+      "operation": "delete",
+      "path": "/payload/memory/executionPlan",
+      "expected": "MEMORY_FIELD_REMOVED:executionPlan"
+    },
+    {
+      "id": "replace-approval",
+      "previousId": "approval",
+      "nextId": "signing",
+      "operation": "set",
+      "path": "/payload/memory/approvalBinding/bindingHash",
+      "value": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "expected": "MEMORY_IMMUTABLE_CHANGED:approvalBinding"
+    },
+    {
+      "id": "delete-permission-revision",
+      "previousId": "authorizing",
+      "nextId": "resolving",
+      "operation": "delete",
+      "path": "/payload/memory/permissionLoads/0/result/revision",
+      "expected": "MEMORY_APPEND_ONLY_VIOLATION:permissionLoads"
+    },
+    {
+      "id": "signature-reorder",
+      "previousId": "finalizing",
+      "nextId": "broadcasting",
+      "operation": "signature-reorder",
+      "expected": "MEMORY_APPEND_ONLY_VIOLATION:signatures"
+    },
+    {
+      "id": "broadcast-progress-rollback",
+      "previousId": "broadcasting",
+      "nextId": "reconciliation",
+      "operation": "set",
+      "path": "/payload/memory/broadcastProgress/submittedTransactionIds",
+      "value": [],
+      "expected": "BROADCAST_PROGRESS_ROLLBACK"
+    },
+    {
+      "id": "workflow-progress-rollback",
+      "previousId": "finalizing",
+      "nextId": "broadcasting",
+      "operation": "workflow-rollback",
+      "expected": "WORKFLOW_PROGRESS_ROLLBACK"
+    },
+    {
+      "id": "expires-at-extension",
+      "previousId": "approval",
+      "nextId": "signing",
+      "operation": "set",
+      "path": "/payload/expiresAt",
+      "value": "2026-08-31T12:03:00Z",
+      "expected": "EXPIRY_EXTENSION_FORBIDDEN"
+    },
+    {
+      "id": "session-replacement",
+      "previousId": "approval",
+      "nextId": "signing",
+      "operation": "set",
+      "path": "/payload/session/state/revision",
+      "value": "1",
+      "expected": "CHECKPOINT_SESSION_REPLACED"
+    }
+  ]
+}

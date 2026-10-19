@@ -1,0 +1,1 @@
+framework module TbcFlutterSigner { umbrella header "tbc_signer_kernel.h" export * module * { export * } }

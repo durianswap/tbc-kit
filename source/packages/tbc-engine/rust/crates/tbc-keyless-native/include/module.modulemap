@@ -1,0 +1,4 @@
+module TbcKeylessNative {
+  header "tbc_keyless.h"
+  export *
+}

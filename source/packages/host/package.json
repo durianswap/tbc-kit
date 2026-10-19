@@ -1,0 +1,45 @@
+{
+  "name": "@tbc-wallet/host",
+  "version": "1.0.0-draft.6.16",
+  "description": "Portable durable Host driver for TBC Wallet Standard 1.0",
+  "private": false,
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "react-native": "./dist/esm/index.js",
+      "browser": "./dist/esm/index.js",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.js"
+    },
+    "./indexeddb": {
+      "types": "./dist/types/indexeddb.d.ts",
+      "browser": "./dist/esm/indexeddb.js",
+      "import": "./dist/esm/indexeddb.js",
+      "require": "./dist/cjs/indexeddb.cjs",
+      "default": "./dist/esm/indexeddb.js"
+    },
+    "./sqlite": {
+      "types": "./dist/types/sqlite.d.ts",
+      "react-native": "./dist/esm/sqlite.js",
+      "browser": "./dist/esm/sqlite.js",
+      "import": "./dist/esm/sqlite.js",
+      "require": "./dist/cjs/sqlite.cjs",
+      "default": "./dist/esm/sqlite.js"
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "CC0-1.0",
+  "dependencies": {
+    "@tbc-wallet/core": "1.0.0-draft.6.10"
+  }
+}

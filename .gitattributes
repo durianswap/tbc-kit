@@ -1,0 +1,10 @@
+# Frozen deliveries and audited source retain exact bytes on every platform.
+artifacts/** -text -diff -merge
+packages/** -text linguist-generated=true
+source/** -text
+release/** -text
+source/packages/**/dist/** linguist-generated=true
+*.tgz -text -diff -merge
+*.wasm -text -diff -merge
+*.so -text -diff -merge
+*.a -text -diff -merge

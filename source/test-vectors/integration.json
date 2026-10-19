@@ -1,0 +1,1560 @@
+{
+  "version": "1.0.0",
+  "profile": "canonical-transfer-v1",
+  "description": "Complete TWS-011 tbc.transfer plan, approval, signing, finalization and broadcast fixture.",
+  "hashFixtures": {
+    "messageRequest": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "message": {
+        "encoding": "utf8",
+        "data": "TWS Draft.2 hash fixture"
+      }
+    },
+    "typedDataRequest": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "data": {
+        "domain": {
+          "name": "TWS Hash Fixture",
+          "version": "1",
+          "chainId": "tbc:mainnet"
+        },
+        "types": {
+          "Order": [
+            {
+              "name": "amount",
+              "type": "uint64"
+            }
+          ]
+        },
+        "primaryType": "Order",
+        "message": {
+          "amount": "1"
+        }
+      }
+    },
+    "switchChainRequest": {
+      "chainId": "tbc:other"
+    },
+    "chainSwitchProposalPayload": {
+      "version": "1.0",
+      "fromChainId": "tbc:mainnet",
+      "toChainId": "tbc:other",
+      "expectedSessionRevision": "0",
+      "expiresAt": "2026-08-31T12:02:00Z"
+    },
+    "chainSwitchProposal": {
+      "payload": {
+        "version": "1.0",
+        "fromChainId": "tbc:mainnet",
+        "toChainId": "tbc:other",
+        "expectedSessionRevision": "0",
+        "expiresAt": "2026-08-31T12:02:00Z"
+      },
+      "chainSwitchProposalHash": "03cd2dcb2f752c0d54406105efa39f32fc109b30d27fca2cad6178dc97609ce7"
+    }
+  },
+  "hashKnownAnswers": [
+    {
+      "name": "contextHash",
+      "source": {
+        "file": "provider.json",
+        "pointer": "/trustedContexts/0/context"
+      },
+      "expected": "761bc48d9bffdbb3f93c42896b61e6ba682b1ad661fb8c30c427ba07500d0ae6"
+    },
+    {
+      "name": "requestHash.transaction",
+      "source": {
+        "file": "integration.json",
+        "pointer": "/canonicalTransfer/request"
+      },
+      "expected": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f"
+    },
+    {
+      "name": "requestHash.message",
+      "source": {
+        "file": "integration.json",
+        "pointer": "/hashFixtures/messageRequest"
+      },
+      "expected": "5b10179e703328b6c08fb1c490f20d6bad108770ea91c65fd11dda6fc45ef37f"
+    },
+    {
+      "name": "requestHash.typedData",
+      "source": {
+        "file": "integration.json",
+        "pointer": "/hashFixtures/typedDataRequest"
+      },
+      "expected": "b8c557162aef127d5aa941a09771452cfa0736d8cf26898d3780f5c1e773ac14"
+    },
+    {
+      "name": "requestHash.permission",
+      "source": {
+        "file": "permissions.json",
+        "pointer": "/request"
+      },
+      "expected": "3eeb755aa0c1e13f465eef5fbe7b0a80a8af2e1695f5d5fe1a92956b02b99c9b"
+    },
+    {
+      "name": "requestHash.switchChain",
+      "source": {
+        "file": "integration.json",
+        "pointer": "/hashFixtures/switchChainRequest"
+      },
+      "expected": "a24c9a1e08e9a7a92603f9e31d88dd8ca60415d8d8ea59904191fa4b9c0f22ff"
+    },
+    {
+      "name": "requestHash.workflow",
+      "source": {
+        "file": "workflow.json",
+        "pointer": "/vectors/0/request"
+      },
+      "expected": "9b0c4ede6733bb8f0822e381a852b50fa5a8800a93466ef80470ec5fbaf50f4d"
+    },
+    {
+      "name": "snapshotHash",
+      "source": {
+        "file": "integration.json",
+        "pointer": "/canonicalTransfer/snapshot/payload"
+      },
+      "expected": "1df77b54bce912fa6ef8aeae1cf32968972de120f13a8d584202f0f953d7d619"
+    },
+    {
+      "name": "policyHash",
+      "source": {
+        "file": "integration.json",
+        "pointer": "/canonicalTransfer/policy/payload"
+      },
+      "expected": "9903a29e963a4d097c94671b2a1796a3ecef2ea082b0b52786af701bae22aafe"
+    },
+    {
+      "name": "templateHash",
+      "source": {
+        "file": "integration.json",
+        "pointer": "/canonicalTransfer/plan/payload/transactions/0/unsignedTransaction"
+      },
+      "expected": "0fa25e6e108f43e2f9119e7f985b84c22453d8da3a893d58ea448a40d703f658"
+    },
+    {
+      "name": "planHash",
+      "source": {
+        "file": "integration.json",
+        "pointer": "/canonicalTransfer/plan/payload"
+      },
+      "expected": "23e5d5d128ba5672ac36fc7375307989ccc0e8adf12fe8638be6ed17bfdb5cd6"
+    },
+    {
+      "name": "permissionProposalHash",
+      "source": {
+        "file": "permissions.json",
+        "pointer": "/proposal/payload"
+      },
+      "expected": "9e5963cef064360b4df9176730000d6cc98b007f4ddd80a9af0b0c81e38b95ef"
+    },
+    {
+      "name": "chainSwitchProposalHash",
+      "source": {
+        "file": "integration.json",
+        "pointer": "/hashFixtures/chainSwitchProposalPayload"
+      },
+      "expected": "03cd2dcb2f752c0d54406105efa39f32fc109b30d27fca2cad6178dc97609ce7"
+    },
+    {
+      "name": "workflowPlanHash",
+      "source": {
+        "file": "workflow.json",
+        "pointer": "/vectors/0/plan/payload"
+      },
+      "expected": "310a55e35c088769556813a770313eab3323364b2dcb62b602d026abd6057540"
+    },
+    {
+      "name": "operationHash",
+      "source": {
+        "file": "integration.json",
+        "pointer": "/canonicalTransfer/plan/planHash"
+      },
+      "expected": "23e5d5d128ba5672ac36fc7375307989ccc0e8adf12fe8638be6ed17bfdb5cd6"
+    },
+    {
+      "name": "bindingHash",
+      "source": {
+        "file": "integration.json",
+        "pointer": "/canonicalTransfer/binding/payload"
+      },
+      "expected": "503fd3c474b799e9240745094a383159047de66f2bbfb59c8ed7aae4c9bc24d3"
+    },
+    {
+      "name": "releaseFingerprint",
+      "source": {
+        "file": "checkpoints.json",
+        "pointer": "/fixture/basePayload/release"
+      },
+      "expected": "05e4d66fdbc6683af9eea6416536a1a65c00101510182e4def427ec50f29c0d2"
+    },
+    {
+      "name": "checkpointHash",
+      "source": {
+        "file": "checkpoints.json",
+        "checkpointId": "initializing"
+      },
+      "expected": "d7f61b8ed83f61c11ec653a09446e8b2f7fdf301a50cf983e4b7479d0dfa0c50"
+    }
+  ],
+  "restrictedDataPolicy": {
+    "fields": [
+      {
+        "name": "approvalToken",
+        "allowedSchemas": [
+          "integration.schema.json#/$defs/approvalReceipt"
+        ]
+      },
+      {
+        "name": "rawTransaction",
+        "allowedSchemas": [
+          "transaction-request.schema.json#/$defs/signedTransaction"
+        ]
+      },
+      {
+        "name": "signature",
+        "allowedSchemas": [
+          "integration.schema.json#/$defs/signerSignResult",
+          "signing.schema.json#/$defs/messageSignature",
+          "signing.schema.json#/$defs/typedDataSignature"
+        ]
+      },
+      {
+        "name": "checkpoint",
+        "allowedSchemas": [
+          "integration.schema.json#/$defs/waitingTransition",
+          "integration.schema.json#/$defs/commitTransition",
+          "integration.schema.json#/$defs/completeTransition",
+          "integration.schema.json#/$defs/commitAckInput",
+          "integration.schema.json#/$defs/cancelInput"
+        ]
+      },
+      {
+        "name": "envelope",
+        "allowedSchemas": [
+          "signing.schema.json#/$defs/messageSignature",
+          "signing.schema.json#/$defs/typedDataSignature"
+        ]
+      }
+    ],
+    "ordinaryFixtures": [
+      {
+        "kind": "log",
+        "value": {
+          "protocolVersion": "1.0.0-draft.2",
+          "method": "tbc_sendTransaction",
+          "outcome": "failed",
+          "errorName": "CONFLICT"
+        }
+      },
+      {
+        "kind": "telemetry",
+        "value": {
+          "profile": "core",
+          "transport": "webview",
+          "latencyBucket": "100-250ms",
+          "bundleSize": 1
+        }
+      },
+      {
+        "kind": "port-error",
+        "value": {
+          "name": "CONFLICT",
+          "message": "State changed before commit",
+          "retryable": true
+        }
+      }
+    ]
+  },
+  "coreLibraryManifest": {
+    "implementation": {
+      "kind": "core-library",
+      "name": "TWS Reference Core Fixture",
+      "version": "1.0.0",
+      "platforms": [
+        "other"
+      ],
+      "releaseArtifact": "https://example.test/tws-core/1.0.0"
+    },
+    "twsVersion": "1.0.0",
+    "featureVersion": "1.0.0",
+    "profiles": [
+      "core",
+      "integration"
+    ],
+    "chainIds": [
+      "tbc:mainnet"
+    ],
+    "intents": {
+      "tbc.transfer": [
+        "1.0"
+      ]
+    },
+    "suite": {
+      "version": "1.0.0",
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    "executedAt": "2026-08-31T12:00:00Z",
+    "result": "pass"
+  },
+  "fixture": {
+    "network": "mainnet",
+    "chainState": "Synthetic conformance snapshot under mainnet consensus rules; the fixture UTXO is not a claim about live mainnet state.",
+    "signingFixture": "secp256k1 scalar 1; test use only; never passed through an Integration Port",
+    "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+    "sourceAddress": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+    "recipientAddress": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+    "sourceScriptPubKey": "76a914751e76e8199196d454941c45d1b3a323f1433bd688ac",
+    "recipientScriptPubKey": "76a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88ac",
+    "parentTransaction": "0a000000011111111111111111111111111111111111111111111111111111111111111111000000000151ffffffff0110270000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+    "parentTxid": "f32f5392aa7ab9414bf93d497fde479dce609f6a74b708be7988cf9bb698e4d1",
+    "sighashPreimage": "0a000000976ea4d20217834f6664856491677ac7793800a974b9f931b8e3c384e03b5d7d3bb13029ce7b1f559ef5e747fcac439f1455a2ec7c5f09b72290795e70665044d1e498b69bcf8879be08b7746a9f60ce9d47de7f493df94b41b97aaa92532ff3000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac1027000000000000ffffffff9932faf8ceda5180ecb6fa7729f6ab78b241f686c103420d079bbe648395c83f0000000041000000",
+    "sighashDigest": "1e06ca3ec00947bc4a174c62fbe08777796b2b525915640c5a144c001c27bf25",
+    "signatureCompact64": "5f8792e014eb953efc9c563e18c8024a750e7513ec575775b371102fde8ceb2256a6df64fe1e2d9e31c2e34f3581464cc682d70e72ec4b78cd44ce891500c60d",
+    "signatureDerWithSighash": "304402205f8792e014eb953efc9c563e18c8024a750e7513ec575775b371102fde8ceb22022056a6df64fe1e2d9e31c2e34f3581464cc682d70e72ec4b78cd44ce891500c60d41",
+    "txidAlgorithm": "TBC version-10 transaction header SHA256d"
+  },
+  "canonicalTransfer": {
+    "context": {
+      "sessionId": "session-transfer-1",
+      "transport": "webview",
+      "origin": "https://example.test",
+      "topOrigin": "https://example.test",
+      "frame": "top",
+      "navigationId": "nav-1",
+      "createdAt": "2026-08-31T12:00:00Z"
+    },
+    "contextHash": "761bc48d9bffdbb3f93c42896b61e6ba682b1ad661fb8c30c427ba07500d0ae6",
+    "request": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "clientRequestId": "canonical-transfer-1",
+      "intent": {
+        "type": "tbc.transfer",
+        "version": "1.0",
+        "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+        "amount": "1000"
+      },
+      "constraints": {
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "maxFee": "80",
+        "feePreference": "standard"
+      }
+    },
+    "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+    "account": {
+      "address": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "chainId": "tbc:mainnet",
+      "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
+    },
+    "snapshot": {
+      "payload": {
+        "version": "1.0",
+        "snapshotId": "snapshot-transfer-1",
+        "chainId": "tbc:mainnet",
+        "block": {
+          "height": "825000",
+          "hash": "000000006ec607045ad2c990de903d04a6edb408c1b2ebb1b2153ebf3b6b888b"
+        },
+        "capturedAt": "2026-08-31T12:00:00Z",
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "account": {
+          "address": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "chainId": "tbc:mainnet",
+          "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
+        },
+        "utxos": [
+          {
+            "txid": "f32f5392aa7ab9414bf93d497fde479dce609f6a74b708be7988cf9bb698e4d1",
+            "vout": 0,
+            "satoshis": "10000",
+            "scriptPubKey": "76a914751e76e8199196d454941c45d1b3a323f1433bd688ac",
+            "confirmations": "100",
+            "classification": "native"
+          }
+        ],
+        "parents": [
+          {
+            "txid": "f32f5392aa7ab9414bf93d497fde479dce609f6a74b708be7988cf9bb698e4d1",
+            "rawTransaction": "0a000000011111111111111111111111111111111111111111111111111111111111111111000000000151ffffffff0110270000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000"
+          }
+        ],
+        "contracts": []
+      },
+      "snapshotHash": "1df77b54bce912fa6ef8aeae1cf32968972de120f13a8d584202f0f953d7d619"
+    },
+    "policy": {
+      "payload": {
+        "version": "1.0",
+        "policyId": "canonical-policy-1",
+        "revision": "1",
+        "chainId": "tbc:mainnet",
+        "feeRateSatPerKb": "80",
+        "dustThreshold": "24",
+        "minConfirmations": "1",
+        "maxBundleTransactions": 32,
+        "sighashType": 65,
+        "contractPolicies": [],
+        "amountLimits": [
+          {
+            "scope": "native",
+            "maximum": "2100000000000000"
+          }
+        ],
+        "expiresAt": "2026-08-31T12:05:00Z"
+      },
+      "policyHash": "9903a29e963a4d097c94671b2a1796a3ecef2ea082b0b52786af701bae22aafe"
+    },
+    "plan": {
+      "payload": {
+        "version": "1.0",
+        "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+        "snapshotHash": "1df77b54bce912fa6ef8aeae1cf32968972de120f13a8d584202f0f953d7d619",
+        "policyHash": "9903a29e963a4d097c94671b2a1796a3ecef2ea082b0b52786af701bae22aafe",
+        "chainId": "tbc:mainnet",
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "transactions": [
+          {
+            "id": "tx-1",
+            "role": "primary",
+            "dependsOn": [],
+            "unsignedTransaction": "0a00000001d1e498b69bcf8879be08b7746a9f60ce9d47de7f493df94b41b97aaa92532ff30000000000ffffffff02e8030000000000001976a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88acd8220000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+            "templateHash": "0fa25e6e108f43e2f9119e7f985b84c22453d8da3a893d58ea448a40d703f658",
+            "fee": "80"
+          }
+        ],
+        "signingTasks": [
+          {
+            "taskId": "sign-tx-1-input-0",
+            "purpose": "transaction",
+            "algorithm": "secp256k1-ecdsa-sha256d",
+            "digest": "1e06ca3ec00947bc4a174c62fbe08777796b2b525915640c5a144c001c27bf25",
+            "signatureEncoding": "compact64",
+            "transactionTemplateId": "tx-1",
+            "inputIndex": 0,
+            "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+            "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+            "sighashType": 65
+          }
+        ],
+        "preview": {
+          "operationKind": "transaction",
+          "assetFlows": [
+            {
+              "kind": "native",
+              "direction": "send",
+              "amount": "1000",
+              "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+              "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP"
+            },
+            {
+              "kind": "native",
+              "direction": "fee",
+              "amount": "80",
+              "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+            }
+          ],
+          "totalFee": "80",
+          "transactionCount": 1,
+          "warnings": [],
+          "irreversible": true
+        }
+      },
+      "planHash": "23e5d5d128ba5672ac36fc7375307989ccc0e8adf12fe8638be6ed17bfdb5cd6"
+    },
+    "binding": {
+      "payload": {
+        "version": "1.0",
+        "method": "tbc_sendTransaction",
+        "operationKind": "transaction",
+        "contextHash": "761bc48d9bffdbb3f93c42896b61e6ba682b1ad661fb8c30c427ba07500d0ae6",
+        "origin": "https://example.test",
+        "sessionId": "session-transfer-1",
+        "chainId": "tbc:mainnet",
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+        "operationHash": "23e5d5d128ba5672ac36fc7375307989ccc0e8adf12fe8638be6ed17bfdb5cd6",
+        "expiresAt": "2026-08-31T12:02:00Z"
+      },
+      "bindingHash": "503fd3c474b799e9240745094a383159047de66f2bbfb59c8ed7aae4c9bc24d3"
+    },
+    "approval": {
+      "status": "approved",
+      "approvalId": "approval-transfer-1",
+      "approvalToken": "approval-token-transfer-1",
+      "bindingHash": "503fd3c474b799e9240745094a383159047de66f2bbfb59c8ed7aae4c9bc24d3",
+      "approvedAt": "2026-08-31T12:00:10Z",
+      "expiresAt": "2026-08-31T12:02:00Z"
+    },
+    "signature": {
+      "taskId": "sign-tx-1-input-0",
+      "signatureEncoding": "compact64",
+      "signature": "5f8792e014eb953efc9c563e18c8024a750e7513ec575775b371102fde8ceb2256a6df64fe1e2d9e31c2e34f3581464cc682d70e72ec4b78cd44ce891500c60d"
+    },
+    "bundle": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+      "approvalId": "approval-transfer-1",
+      "transactions": [
+        {
+          "id": "tx-1",
+          "txid": "e715bbe7ea8e6e95ff339b24e1e2aaff8771e8e17af4682b775919fad953c907",
+          "rawTransaction": "0a00000001d1e498b69bcf8879be08b7746a9f60ce9d47de7f493df94b41b97aaa92532ff3000000006a47304402205f8792e014eb953efc9c563e18c8024a750e7513ec575775b371102fde8ceb22022056a6df64fe1e2d9e31c2e34f3581464cc682d70e72ec4b78cd44ce891500c60d41210279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798ffffffff02e8030000000000001976a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88acd8220000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+          "role": "primary",
+          "dependsOn": []
+        }
+      ],
+      "totalFee": "80"
+    },
+    "validations": {
+      "plan": {
+        "valid": true,
+        "violations": []
+      },
+      "pre-sign": {
+        "valid": true,
+        "violations": []
+      },
+      "finalized": {
+        "valid": true,
+        "violations": []
+      },
+      "pre-broadcast": {
+        "valid": true,
+        "violations": []
+      }
+    }
+  },
+  "portData": {
+    "accountsParams": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "mode": "by-id",
+      "accountIds": [
+        "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+      ]
+    },
+    "accountsResult": {
+      "accounts": [
+        {
+          "address": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "chainId": "tbc:mainnet",
+          "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
+        }
+      ]
+    },
+    "chainDataParams": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "requirement": {
+        "intentType": "tbc.transfer",
+        "includeAncestry": false,
+        "nativeAmount": "1000",
+        "assets": [
+          {
+            "kind": "native",
+            "minimumAmount": "1000"
+          }
+        ]
+      }
+    },
+    "policyParams": {
+      "version": "1.0",
+      "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "clientRequestId": "canonical-transfer-1",
+        "intent": {
+          "type": "tbc.transfer",
+          "version": "1.0",
+          "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+          "amount": "1000"
+        },
+        "constraints": {
+          "expiresAt": "2026-08-31T12:02:00Z",
+          "maxFee": "80",
+          "feePreference": "standard"
+        }
+      },
+      "snapshotHash": "1df77b54bce912fa6ef8aeae1cf32968972de120f13a8d584202f0f953d7d619"
+    },
+    "permissionLoadParams": {
+      "version": "1.0",
+      "scope": {
+        "origin": "https://example.test",
+        "chainId": "tbc:mainnet"
+      }
+    },
+    "permissionLoadResult": {
+      "revision": "0",
+      "permissions": []
+    },
+    "permissionCommitParams": {
+      "version": "1.0",
+      "changes": [
+        {
+          "scope": {
+            "origin": "https://example.test",
+            "chainId": "tbc:mainnet"
+          },
+          "expectedRevision": "0",
+          "permissions": []
+        },
+        {
+          "scope": {
+            "origin": "https://example.test",
+            "chainId": "tbc:other"
+          },
+          "expectedRevision": "0",
+          "permissions": []
+        }
+      ]
+    },
+    "permissionCommitResult": {
+      "revisions": [
+        {
+          "scope": {
+            "origin": "https://example.test",
+            "chainId": "tbc:mainnet"
+          },
+          "revision": "1"
+        },
+        {
+          "scope": {
+            "origin": "https://example.test",
+            "chainId": "tbc:other"
+          },
+          "revision": "1"
+        }
+      ]
+    },
+    "approvalParams": {
+      "version": "1.0",
+      "binding": {
+        "payload": {
+          "version": "1.0",
+          "method": "tbc_sendTransaction",
+          "operationKind": "transaction",
+          "contextHash": "761bc48d9bffdbb3f93c42896b61e6ba682b1ad661fb8c30c427ba07500d0ae6",
+          "origin": "https://example.test",
+          "sessionId": "session-transfer-1",
+          "chainId": "tbc:mainnet",
+          "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+          "operationHash": "23e5d5d128ba5672ac36fc7375307989ccc0e8adf12fe8638be6ed17bfdb5cd6",
+          "expiresAt": "2026-08-31T12:02:00Z"
+        },
+        "bindingHash": "503fd3c474b799e9240745094a383159047de66f2bbfb59c8ed7aae4c9bc24d3"
+      },
+      "requester": {
+        "transport": "webview",
+        "origin": "https://example.test",
+        "topOrigin": "https://example.test",
+        "frame": "top"
+      },
+      "preview": {
+        "operationKind": "transaction",
+        "assetFlows": [
+          {
+            "kind": "native",
+            "direction": "send",
+            "amount": "1000",
+            "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+            "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP"
+          },
+          {
+            "kind": "native",
+            "direction": "fee",
+            "amount": "80",
+            "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+          }
+        ],
+        "totalFee": "80",
+        "transactionCount": 1,
+        "warnings": [],
+        "irreversible": true
+      }
+    },
+    "approvalRejectedResult": {
+      "status": "rejected",
+      "bindingHash": "503fd3c474b799e9240745094a383159047de66f2bbfb59c8ed7aae4c9bc24d3",
+      "rejectedAt": "2026-08-31T12:00:10Z"
+    },
+    "signerParams": {
+      "version": "1.0",
+      "approval": {
+        "status": "approved",
+        "approvalId": "approval-transfer-1",
+        "approvalToken": "approval-token-transfer-1",
+        "bindingHash": "503fd3c474b799e9240745094a383159047de66f2bbfb59c8ed7aae4c9bc24d3",
+        "approvedAt": "2026-08-31T12:00:10Z",
+        "expiresAt": "2026-08-31T12:02:00Z"
+      },
+      "task": {
+        "taskId": "sign-tx-1-input-0",
+        "purpose": "transaction",
+        "algorithm": "secp256k1-ecdsa-sha256d",
+        "digest": "1e06ca3ec00947bc4a174c62fbe08777796b2b525915640c5a144c001c27bf25",
+        "signatureEncoding": "compact64",
+        "transactionTemplateId": "tx-1",
+        "inputIndex": 0,
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+        "sighashType": 65
+      }
+    },
+    "broadcastSubmitParams": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "transaction": {
+        "id": "tx-1",
+        "txid": "e715bbe7ea8e6e95ff339b24e1e2aaff8771e8e17af4682b775919fad953c907",
+        "rawTransaction": "0a00000001d1e498b69bcf8879be08b7746a9f60ce9d47de7f493df94b41b97aaa92532ff3000000006a47304402205f8792e014eb953efc9c563e18c8024a750e7513ec575775b371102fde8ceb22022056a6df64fe1e2d9e31c2e34f3581464cc682d70e72ec4b78cd44ce891500c60d41210279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798ffffffff02e8030000000000001976a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88acd8220000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+        "role": "primary",
+        "dependsOn": []
+      },
+      "idempotencyKey": "51YiJt1D8c2szl1fWP4lSQCPuttoE_1gm077-2XxEv8"
+    },
+    "broadcastSubmitResult": {
+      "txid": "e715bbe7ea8e6e95ff339b24e1e2aaff8771e8e17af4682b775919fad953c907",
+      "status": "accepted"
+    },
+    "broadcastSubmitBatchParams": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "transactions": [
+        {
+          "id": "tx-1",
+          "txid": "e715bbe7ea8e6e95ff339b24e1e2aaff8771e8e17af4682b775919fad953c907",
+          "rawTransaction": "0a00000001d1e498b69bcf8879be08b7746a9f60ce9d47de7f493df94b41b97aaa92532ff3000000006a47304402205f8792e014eb953efc9c563e18c8024a750e7513ec575775b371102fde8ceb22022056a6df64fe1e2d9e31c2e34f3581464cc682d70e72ec4b78cd44ce891500c60d41210279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798ffffffff02e8030000000000001976a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88acd8220000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+          "role": "primary",
+          "dependsOn": []
+        }
+      ],
+      "idempotencyKey": "batch-51YiJt1D8c2szl1fWP4lSQCPuttoE_1gm077-2XxEv8"
+    },
+    "broadcastSubmitBatchResult": {
+      "transactions": [
+        {
+          "txid": "e715bbe7ea8e6e95ff339b24e1e2aaff8771e8e17af4682b775919fad953c907",
+          "status": "accepted"
+        }
+      ]
+    },
+    "broadcastReconcileParams": {
+      "version": "1.0",
+      "chainId": "tbc:mainnet",
+      "txids": [
+        "e715bbe7ea8e6e95ff339b24e1e2aaff8771e8e17af4682b775919fad953c907"
+      ]
+    },
+    "broadcastReconcileResult": {
+      "transactions": [
+        {
+          "txid": "e715bbe7ea8e6e95ff339b24e1e2aaff8771e8e17af4682b775919fad953c907",
+          "status": "mempool",
+          "confirmations": "0"
+        }
+      ]
+    },
+    "cryptoExecuteParams": {
+      "version": "1.0",
+      "approval": {
+        "status": "approved",
+        "approvalId": "approval-crypto-1",
+        "approvalToken": "approval-token-crypto-1",
+        "bindingHash": "1111111111111111111111111111111111111111111111111111111111111111",
+        "approvedAt": "2026-08-31T12:00:10Z",
+        "expiresAt": "2026-08-31T12:02:00Z"
+      },
+      "task": {
+        "taskId": "crypto-example",
+        "purpose": "encrypt",
+        "algorithm": "tbc-bie1-secp256k1-aes128-cbc-hmac-sha256-v1",
+        "origin": "https://example.test",
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+        "message": {
+          "encoding": "utf8",
+          "data": "example"
+        }
+      }
+    },
+    "cryptoExecuteResult": {
+      "taskId": "crypto-example",
+      "algorithm": "tbc-bie1-secp256k1-aes128-cbc-hmac-sha256-v1",
+      "ciphertext": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "reviewedTransactionReviewParams": {
+      "version": "1.0",
+      "taskId": "review-example",
+      "contextHash": "2222222222222222222222222222222222222222222222222222222222222222",
+      "origin": "https://example.test",
+      "sessionId": "session-example",
+      "chainId": "tbc:mainnet",
+      "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+      "requestHash": "3333333333333333333333333333333333333333333333333333333333333333",
+      "request": {
+        "payload": {
+          "format": "raw",
+          "transactions": [
+            {
+              "rawTransaction": "00",
+              "inputs": [
+                {
+                  "satoshis": "1",
+                  "scriptPubKey": "00"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "reviewedTransactionReviewResult": {
+      "payload": {
+        "policyMaterial": { "resolvedOutputs": [] },
+        "preview": {
+          "operationKind": "transaction",
+          "assetFlows": [],
+          "totalFee": "0",
+          "transactionCount": 1,
+          "warnings": [],
+          "irreversible": true
+        },
+        "totalFee": "0",
+        "expiresAt": "2026-08-31T12:02:00Z"
+      },
+      "reviewHash": "4444444444444444444444444444444444444444444444444444444444444444"
+    },
+    "reviewedTransactionExecuteParams": {
+      "version": "1.0",
+      "approval": {
+        "status": "approved",
+        "approvalId": "approval-reviewed-1",
+        "approvalToken": "approval-token-reviewed-1",
+        "bindingHash": "5555555555555555555555555555555555555555555555555555555555555555",
+        "approvedAt": "2026-08-31T12:00:10Z",
+        "expiresAt": "2026-08-31T12:02:00Z"
+      },
+      "task": {
+        "taskId": "review-example",
+        "purpose": "reviewedTransaction",
+        "contextHash": "2222222222222222222222222222222222222222222222222222222222222222",
+        "requestHash": "3333333333333333333333333333333333333333333333333333333333333333",
+        "reviewHash": "4444444444444444444444444444444444444444444444444444444444444444",
+        "chainId": "tbc:mainnet",
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+        "request": {
+          "payload": {
+            "format": "raw",
+            "transactions": [
+              {
+                "rawTransaction": "00",
+                "inputs": [
+                  {
+                    "satoshis": "1",
+                    "scriptPubKey": "00"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    "reviewedTransactionExecuteResult": {
+      "taskId": "review-example",
+      "reviewHash": "4444444444444444444444444444444444444444444444444444444444444444",
+      "bundle": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "requestHash": "3333333333333333333333333333333333333333333333333333333333333333",
+        "approvalId": "approval-reviewed-1",
+        "transactions": [
+          {
+            "id": "reviewed-tx",
+            "txid": "6666666666666666666666666666666666666666666666666666666666666666",
+            "rawTransaction": "00",
+            "role": "primary",
+            "dependsOn": []
+          }
+        ],
+        "totalFee": "0"
+      }
+    },
+    "clockParams": {
+      "version": "1.0"
+    },
+    "clockResult": {
+      "now": "2026-08-31T12:00:00Z"
+    },
+    "entropyParams": {
+      "version": "1.0",
+      "length": 16
+    },
+    "entropyResult": {
+      "bytes": "AAECAwQFBgcICQoLDA0ODw"
+    }
+  },
+  "portExamples": [
+    {
+      "operation": "accounts.resolve",
+      "paramsSchema": "integration.schema.json#/$defs/accountsResolveParams",
+      "paramsPointer": "/portData/accountsParams",
+      "resultSchema": "integration.schema.json#/$defs/accountsResolveResult",
+      "resultPointer": "/portData/accountsResult"
+    },
+    {
+      "operation": "chainData.resolve",
+      "paramsSchema": "integration.schema.json#/$defs/chainDataResolveParams",
+      "paramsPointer": "/portData/chainDataParams",
+      "resultSchema": "integration.schema.json#/$defs/chainDataResolveResult",
+      "resultPointer": "/canonicalTransfer/snapshot"
+    },
+    {
+      "operation": "policy.resolve",
+      "paramsSchema": "integration.schema.json#/$defs/policyResolveParams",
+      "paramsPointer": "/portData/policyParams",
+      "resultSchema": "integration.schema.json#/$defs/policyResolveResult",
+      "resultPointer": "/canonicalTransfer/policy"
+    },
+    {
+      "operation": "permissionStore.load",
+      "paramsSchema": "integration.schema.json#/$defs/permissionStoreLoadParams",
+      "paramsPointer": "/portData/permissionLoadParams",
+      "resultSchema": "integration.schema.json#/$defs/permissionStoreLoadResult",
+      "resultPointer": "/portData/permissionLoadResult"
+    },
+    {
+      "operation": "permissionStore.commit",
+      "paramsSchema": "integration.schema.json#/$defs/permissionStoreCommitParams",
+      "paramsPointer": "/portData/permissionCommitParams",
+      "resultSchema": "integration.schema.json#/$defs/permissionStoreCommitResult",
+      "resultPointer": "/portData/permissionCommitResult"
+    },
+    {
+      "operation": "approval.request",
+      "paramsSchema": "integration.schema.json#/$defs/approvalRequestParams",
+      "paramsPointer": "/portData/approvalParams",
+      "resultSchema": "integration.schema.json#/$defs/approvalRequestResult",
+      "resultPointer": "/canonicalTransfer/approval"
+    },
+    {
+      "operation": "signer.sign",
+      "paramsSchema": "integration.schema.json#/$defs/signerSignParams",
+      "paramsPointer": "/portData/signerParams",
+      "resultSchema": "integration.schema.json#/$defs/signerSignResult",
+      "resultPointer": "/canonicalTransfer/signature"
+    },
+    {
+      "operation": "crypto.execute",
+      "paramsSchema": "integration.schema.json#/$defs/cryptoExecuteParams",
+      "paramsPointer": "/portData/cryptoExecuteParams",
+      "resultSchema": "integration.schema.json#/$defs/cryptoExecuteResult",
+      "resultPointer": "/portData/cryptoExecuteResult"
+    },
+    {
+      "operation": "reviewedTransaction.review",
+      "paramsSchema": "integration.schema.json#/$defs/reviewedTransactionReviewParams",
+      "paramsPointer": "/portData/reviewedTransactionReviewParams",
+      "resultSchema": "integration.schema.json#/$defs/reviewedTransactionReviewResult",
+      "resultPointer": "/portData/reviewedTransactionReviewResult"
+    },
+    {
+      "operation": "reviewedTransaction.execute",
+      "paramsSchema": "integration.schema.json#/$defs/reviewedTransactionExecuteParams",
+      "paramsPointer": "/portData/reviewedTransactionExecuteParams",
+      "resultSchema": "integration.schema.json#/$defs/reviewedTransactionExecuteResult",
+      "resultPointer": "/portData/reviewedTransactionExecuteResult"
+    },
+    {
+      "operation": "broadcast.submit",
+      "paramsSchema": "integration.schema.json#/$defs/broadcastSubmitParams",
+      "paramsPointer": "/portData/broadcastSubmitParams",
+      "resultSchema": "integration.schema.json#/$defs/broadcastSubmitResult",
+      "resultPointer": "/portData/broadcastSubmitResult"
+    },
+    {
+      "operation": "broadcast.submitBatch",
+      "paramsSchema": "integration.schema.json#/$defs/broadcastSubmitBatchParams",
+      "paramsPointer": "/portData/broadcastSubmitBatchParams",
+      "resultSchema": "integration.schema.json#/$defs/broadcastSubmitBatchResult",
+      "resultPointer": "/portData/broadcastSubmitBatchResult"
+    },
+    {
+      "operation": "broadcast.reconcile",
+      "paramsSchema": "integration.schema.json#/$defs/broadcastReconcileParams",
+      "paramsPointer": "/portData/broadcastReconcileParams",
+      "resultSchema": "integration.schema.json#/$defs/broadcastReconcileResult",
+      "resultPointer": "/portData/broadcastReconcileResult"
+    },
+    {
+      "operation": "clock.now",
+      "paramsSchema": "integration.schema.json#/$defs/clockNowParams",
+      "paramsPointer": "/portData/clockParams",
+      "resultSchema": "integration.schema.json#/$defs/clockNowResult",
+      "resultPointer": "/portData/clockResult"
+    },
+    {
+      "operation": "entropy.randomBytes",
+      "paramsSchema": "integration.schema.json#/$defs/entropyRandomBytesParams",
+      "paramsPointer": "/portData/entropyParams",
+      "resultSchema": "integration.schema.json#/$defs/entropyRandomBytesResult",
+      "resultPointer": "/portData/entropyResult"
+    }
+  ],
+  "portEnvelopeExamples": {
+    "call": {
+      "version": "1.0",
+      "callId": "1FYldPLoxmyjMXnuM59MMJevCqv3N88DcNZdSpTWbec",
+      "operation": "clock.now",
+      "params": {
+        "version": "1.0"
+      }
+    },
+    "success": {
+      "version": "1.0",
+      "callId": "1FYldPLoxmyjMXnuM59MMJevCqv3N88DcNZdSpTWbec",
+      "result": {
+        "now": "2026-08-31T12:00:00Z"
+      }
+    }
+  },
+  "portFailureExamples": [
+    {
+      "operation": "accounts.resolve",
+      "response": {
+        "version": "1.0",
+        "callId": "Z0xtqy6SpAU9QLJTBWAmmRluIkQ0bpuMs9CZQwSqx1c",
+        "error": {
+          "name": "INVALID_INPUT",
+          "message": "Invalid account query",
+          "retryable": false
+        }
+      }
+    },
+    {
+      "operation": "chainData.resolve",
+      "response": {
+        "version": "1.0",
+        "callId": "pIVDTDdl2583iuMeIq-068NAY70tglSNUxVRnby3c_s",
+        "error": {
+          "name": "UNAVAILABLE",
+          "message": "Chain data is temporarily unavailable",
+          "retryable": true
+        }
+      }
+    },
+    {
+      "operation": "chainData.resolve",
+      "response": {
+        "version": "1.0",
+        "callId": "tFIeO8weZ6FjQXqwMb5OdAgg_H7H4IL6Lfctl_UuM6g",
+        "error": {
+          "name": "NOT_FOUND",
+          "message": "Required contract ancestry was not found",
+          "retryable": false
+        }
+      }
+    },
+    {
+      "operation": "permissionStore.commit",
+      "response": {
+        "version": "1.0",
+        "callId": "H994j87PQbZQVrGlL0k6nSfSILfH3tp0RlshZQ3b4jA",
+        "error": {
+          "name": "CONFLICT",
+          "message": "Permission revision changed",
+          "retryable": true
+        }
+      }
+    },
+    {
+      "operation": "signer.sign",
+      "response": {
+        "version": "1.0",
+        "callId": "wshzITO3NRKrVRWvDyeL4drk3mOE2x_kmYkGGmeAtKs",
+        "error": {
+          "name": "UNAUTHORIZED",
+          "message": "Approval binding is not authorized",
+          "retryable": false
+        }
+      }
+    },
+    {
+      "operation": "signer.sign",
+      "response": {
+        "version": "1.0",
+        "callId": "HfvndoI5zjurIej849PEM4V5siFvqW6_S-VGpxTBm4E",
+        "error": {
+          "name": "REJECTED",
+          "message": "Confirmation was rejected on the trusted device",
+          "retryable": false
+        }
+      }
+    },
+    {
+      "operation": "signer.sign",
+      "response": {
+        "version": "1.0",
+        "callId": "MadAMPjKoY0bg5X-TyWpAkL4YbcBDyDdp8JlhZxmu4c",
+        "error": {
+          "name": "SIGNATURE_FAILED",
+          "message": "The signing device failed",
+          "retryable": true
+        }
+      }
+    },
+    {
+      "operation": "broadcast.submit",
+      "response": {
+        "version": "1.0",
+        "callId": "H7ZGG6XF4_R8qExvlyJL6wRHbDdULmXFH3PraJPM7WY",
+        "error": {
+          "name": "BROADCAST_REJECTED",
+          "message": "The node rejected the transaction",
+          "retryable": false
+        }
+      }
+    },
+    {
+      "operation": "policy.resolve",
+      "response": {
+        "version": "1.0",
+        "callId": "eUht9peAKpIH8MkV0Du7wk4fmTjQJDQebhR_NIQ_tcQ",
+        "error": {
+          "name": "INTERNAL_ERROR",
+          "message": "The host could not resolve policy",
+          "retryable": false
+        }
+      }
+    }
+  ],
+  "coreExamples": [
+    {
+      "operation": "core.normalizeRequest",
+      "paramsSchema": "integration.schema.json#/$defs/normalizeRequestParams",
+      "paramsTemplate": {
+        "version": "1.0",
+        "request": {
+          "$refPointer": "/canonicalTransfer/request"
+        }
+      },
+      "resultSchema": "integration.schema.json#/$defs/normalizeRequestResult",
+      "resultTemplate": {
+        "request": {
+          "$refPointer": "/canonicalTransfer/request"
+        },
+        "requestHash": {
+          "$refPointer": "/canonicalTransfer/requestHash"
+        }
+      }
+    },
+    {
+      "operation": "core.plan",
+      "paramsSchema": "integration.schema.json#/$defs/planParams",
+      "paramsTemplate": {
+        "version": "1.0",
+        "request": {
+          "$refPointer": "/canonicalTransfer/request"
+        },
+        "requestHash": {
+          "$refPointer": "/canonicalTransfer/requestHash"
+        },
+        "snapshot": {
+          "$refPointer": "/canonicalTransfer/snapshot"
+        },
+        "policy": {
+          "$refPointer": "/canonicalTransfer/policy"
+        }
+      },
+      "resultSchema": "integration.schema.json#/$defs/planResult",
+      "resultTemplate": {
+        "plan": {
+          "$refPointer": "/canonicalTransfer/plan"
+        }
+      }
+    },
+    {
+      "operation": "core.validate.plan",
+      "paramsSchema": "integration.schema.json#/$defs/validateParams",
+      "paramsTemplate": {
+        "version": "1.0",
+        "phase": "plan",
+        "request": {
+          "$refPointer": "/canonicalTransfer/request"
+        },
+        "requestHash": {
+          "$refPointer": "/canonicalTransfer/requestHash"
+        },
+        "snapshot": {
+          "$refPointer": "/canonicalTransfer/snapshot"
+        },
+        "policy": {
+          "$refPointer": "/canonicalTransfer/policy"
+        },
+        "plan": {
+          "$refPointer": "/canonicalTransfer/plan"
+        }
+      },
+      "resultSchema": "integration.schema.json#/$defs/validationResult",
+      "resultTemplate": {
+        "$refPointer": "/canonicalTransfer/validations/plan"
+      }
+    },
+    {
+      "operation": "core.validate.pre-sign",
+      "paramsSchema": "integration.schema.json#/$defs/validateParams",
+      "paramsTemplate": {
+        "version": "1.0",
+        "phase": "pre-sign",
+        "request": {
+          "$refPointer": "/canonicalTransfer/request"
+        },
+        "requestHash": {
+          "$refPointer": "/canonicalTransfer/requestHash"
+        },
+        "snapshot": {
+          "$refPointer": "/canonicalTransfer/snapshot"
+        },
+        "policy": {
+          "$refPointer": "/canonicalTransfer/policy"
+        },
+        "plan": {
+          "$refPointer": "/canonicalTransfer/plan"
+        },
+        "binding": {
+          "$refPointer": "/canonicalTransfer/binding"
+        },
+        "approval": {
+          "$refPointer": "/canonicalTransfer/approval"
+        }
+      },
+      "resultSchema": "integration.schema.json#/$defs/validationResult",
+      "resultTemplate": {
+        "$refPointer": "/canonicalTransfer/validations/pre-sign"
+      }
+    },
+    {
+      "operation": "core.finalize",
+      "paramsSchema": "integration.schema.json#/$defs/finalizeParams",
+      "paramsTemplate": {
+        "version": "1.0",
+        "request": {
+          "$refPointer": "/canonicalTransfer/request"
+        },
+        "requestHash": {
+          "$refPointer": "/canonicalTransfer/requestHash"
+        },
+        "snapshot": {
+          "$refPointer": "/canonicalTransfer/snapshot"
+        },
+        "policy": {
+          "$refPointer": "/canonicalTransfer/policy"
+        },
+        "plan": {
+          "$refPointer": "/canonicalTransfer/plan"
+        },
+        "binding": {
+          "$refPointer": "/canonicalTransfer/binding"
+        },
+        "approval": {
+          "$refPointer": "/canonicalTransfer/approval"
+        },
+        "signatures": [
+          {
+            "$refPointer": "/canonicalTransfer/signature"
+          }
+        ]
+      },
+      "resultSchema": "integration.schema.json#/$defs/finalizeResult",
+      "resultTemplate": {
+        "bundle": {
+          "$refPointer": "/canonicalTransfer/bundle"
+        },
+        "validation": {
+          "$refPointer": "/canonicalTransfer/validations/finalized"
+        }
+      }
+    },
+    {
+      "operation": "core.validate.finalized",
+      "paramsSchema": "integration.schema.json#/$defs/validateParams",
+      "paramsTemplate": {
+        "version": "1.0",
+        "phase": "finalized",
+        "request": {
+          "$refPointer": "/canonicalTransfer/request"
+        },
+        "requestHash": {
+          "$refPointer": "/canonicalTransfer/requestHash"
+        },
+        "snapshot": {
+          "$refPointer": "/canonicalTransfer/snapshot"
+        },
+        "policy": {
+          "$refPointer": "/canonicalTransfer/policy"
+        },
+        "plan": {
+          "$refPointer": "/canonicalTransfer/plan"
+        },
+        "binding": {
+          "$refPointer": "/canonicalTransfer/binding"
+        },
+        "approval": {
+          "$refPointer": "/canonicalTransfer/approval"
+        },
+        "signatures": [
+          {
+            "$refPointer": "/canonicalTransfer/signature"
+          }
+        ],
+        "bundle": {
+          "$refPointer": "/canonicalTransfer/bundle"
+        }
+      },
+      "resultSchema": "integration.schema.json#/$defs/validationResult",
+      "resultTemplate": {
+        "$refPointer": "/canonicalTransfer/validations/finalized"
+      }
+    },
+    {
+      "operation": "core.validate.pre-broadcast",
+      "paramsSchema": "integration.schema.json#/$defs/validateParams",
+      "paramsTemplate": {
+        "version": "1.0",
+        "phase": "pre-broadcast",
+        "request": {
+          "$refPointer": "/canonicalTransfer/request"
+        },
+        "requestHash": {
+          "$refPointer": "/canonicalTransfer/requestHash"
+        },
+        "snapshot": {
+          "$refPointer": "/canonicalTransfer/snapshot"
+        },
+        "policy": {
+          "$refPointer": "/canonicalTransfer/policy"
+        },
+        "plan": {
+          "$refPointer": "/canonicalTransfer/plan"
+        },
+        "binding": {
+          "$refPointer": "/canonicalTransfer/binding"
+        },
+        "approval": {
+          "$refPointer": "/canonicalTransfer/approval"
+        },
+        "signatures": [
+          {
+            "$refPointer": "/canonicalTransfer/signature"
+          }
+        ],
+        "bundle": {
+          "$refPointer": "/canonicalTransfer/bundle"
+        }
+      },
+      "resultSchema": "integration.schema.json#/$defs/validationResult",
+      "resultTemplate": {
+        "$refPointer": "/canonicalTransfer/validations/pre-broadcast"
+      }
+    }
+  ],
+  "schemaAssertions": [
+    {
+      "schema": "conformance-manifest.schema.json",
+      "pointer": "/coreLibraryManifest"
+    },
+    {
+      "schema": "transaction-request.schema.json#/$defs/transactionRequest",
+      "pointer": "/canonicalTransfer/request"
+    },
+    {
+      "schema": "integration.schema.json#/$defs/trustedContext",
+      "pointer": "/canonicalTransfer/context"
+    },
+    {
+      "schema": "common.schema.json#/$defs/hash32",
+      "pointer": "/canonicalTransfer/contextHash"
+    },
+    {
+      "schema": "integration.schema.json#/$defs/accountIdentity",
+      "pointer": "/canonicalTransfer/account"
+    },
+    {
+      "schema": "integration.schema.json#/$defs/chainSnapshot",
+      "pointer": "/canonicalTransfer/snapshot"
+    },
+    {
+      "schema": "integration.schema.json#/$defs/executionPolicy",
+      "pointer": "/canonicalTransfer/policy"
+    },
+    {
+      "schema": "integration.schema.json#/$defs/executionPlan",
+      "pointer": "/canonicalTransfer/plan"
+    },
+    {
+      "schema": "integration.schema.json#/$defs/approvalBinding",
+      "pointer": "/canonicalTransfer/binding"
+    },
+    {
+      "schema": "integration.schema.json#/$defs/approvalReceipt",
+      "pointer": "/canonicalTransfer/approval"
+    },
+    {
+      "schema": "integration.schema.json#/$defs/approvalRequestResult",
+      "pointer": "/portData/approvalRejectedResult"
+    },
+    {
+      "schema": "integration.schema.json#/$defs/signerSignResult",
+      "pointer": "/canonicalTransfer/signature"
+    },
+    {
+      "schema": "transaction-request.schema.json#/$defs/signedTransactionBundle",
+      "pointer": "/canonicalTransfer/bundle"
+    }
+  ],
+  "semanticFailures": [
+    {
+      "id": "secret-wif-at-chain-data-boundary",
+      "phase": "plan",
+      "basePointer": "/portData/chainDataParams",
+      "mutation": {
+        "operation": "add",
+        "path": "/privateKeyWif",
+        "value": "test-only-not-a-real-key"
+      },
+      "schema": "integration.schema.json#/$defs/chainDataResolveParams",
+      "expectedKeyword": "additionalProperties",
+      "expectedViolation": "SECRET_FIELD_PRESENT"
+    },
+    {
+      "id": "rpc-endpoint-at-chain-data-boundary",
+      "phase": "plan",
+      "basePointer": "/portData/chainDataParams",
+      "mutation": {
+        "operation": "add",
+        "path": "/endpoint",
+        "value": "https://node.example.invalid"
+      },
+      "schema": "integration.schema.json#/$defs/chainDataResolveParams",
+      "expectedKeyword": "additionalProperties",
+      "expectedViolation": "SECRET_FIELD_PRESENT"
+    },
+    {
+      "id": "normalized-secret-alias-at-chain-data-boundary",
+      "phase": "plan",
+      "basePointer": "/portData/chainDataParams",
+      "mutation": {
+        "operation": "add",
+        "path": "/private_key_wif",
+        "value": "test-only-not-a-real-key"
+      },
+      "schema": "integration.schema.json#/$defs/chainDataResolveParams",
+      "expectedKeyword": "additionalProperties",
+      "expectedViolation": "SECRET_FIELD_PRESENT"
+    },
+    {
+      "id": "plan-hash-mismatch",
+      "phase": "pre-sign",
+      "basePointer": "/canonicalTransfer/plan",
+      "mutation": {
+        "operation": "replace",
+        "path": "/planHash",
+        "value": "193e8cc0e391540abbf2f814e05dfe57612164345c08bb9cda7ae85a497dc638"
+      },
+      "expectedViolation": "PLAN_HASH_MISMATCH"
+    },
+    {
+      "id": "snapshot-hash-mismatch",
+      "phase": "plan",
+      "basePointer": "/canonicalTransfer/snapshot",
+      "mutation": {
+        "operation": "replace",
+        "path": "/snapshotHash",
+        "value": "a40c1f95125e48e02e4580bcfa3913793499a6d711fa5db32a4d184cbf11f95d"
+      },
+      "expectedViolation": "SNAPSHOT_HASH_MISMATCH"
+    },
+    {
+      "id": "approval-operation-hash-mismatch",
+      "phase": "pre-sign",
+      "basePointer": "/canonicalTransfer/binding",
+      "mutation": {
+        "operation": "replace",
+        "path": "/payload/operationHash",
+        "value": "193e8cc0e391540abbf2f814e05dfe57612164345c08bb9cda7ae85a497dc638"
+      },
+      "expectedViolation": "APPROVAL_BINDING_MISMATCH"
+    },
+    {
+      "id": "native-amount-over-max-money",
+      "phase": "plan",
+      "basePointer": "/canonicalTransfer/request",
+      "mutation": {
+        "operation": "replace",
+        "path": "/intent/amount",
+        "value": "2100000000000001"
+      },
+      "expectedViolation": "AMOUNT_OUT_OF_RANGE"
+    },
+    {
+      "id": "transaction-task-wrong-sighash",
+      "phase": "pre-sign",
+      "basePointer": "/canonicalTransfer/plan/payload/signingTasks/0",
+      "mutation": {
+        "operation": "replace",
+        "path": "/sighashType",
+        "value": 1
+      },
+      "schema": "integration.schema.json#/$defs/transactionSigningTask",
+      "expectedKeyword": "const",
+      "expectedViolation": "SIGNING_TASK_MISMATCH"
+    },
+    {
+      "id": "recoverable-signature-invalid-header",
+      "phase": "pre-sign",
+      "instance": {
+        "taskId": "sign-message-1",
+        "signatureEncoding": "compact65-recoverable",
+        "signature": "1e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "schema": "integration.schema.json#/$defs/recoverableSignatureResult",
+      "expectedKeyword": "pattern",
+      "expectedViolation": "SIGNATURE_INVALID"
+    },
+    {
+      "id": "human-decimal-amount-crosses-core-boundary",
+      "phase": "plan",
+      "basePointer": "/canonicalTransfer/request",
+      "mutation": {
+        "operation": "replace",
+        "path": "/intent/amount",
+        "value": "0.01"
+      },
+      "schema": "transaction-request.schema.json#/$defs/transactionRequest",
+      "expectedKeyword": "pattern",
+      "expectedViolation": "AMOUNT_OUT_OF_RANGE"
+    }
+  ]
+}

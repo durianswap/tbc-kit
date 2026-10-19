@@ -1,0 +1,12 @@
+[package]
+name = "task7-source-producer"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+serde_json = "1"
+sha2 = "0.10"
+tbc-sdk = { path = "../../vendor/tbc-sdk" }
+
+[workspace]

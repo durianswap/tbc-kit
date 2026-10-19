@@ -1,0 +1,1319 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://turingbitchain.io/tws/1.0/schemas/transaction-request.schema.json",
+  "title": "TWS transaction request and bundle types",
+  "$ref": "#/$defs/transactionRequest",
+  "$defs": {
+    "signingRole": {
+      "type": "object", "additionalProperties": false,
+      "required": ["role", "accountId"],
+      "properties": {
+        "role": { "enum": ["pool-controller", "coin-admin"] },
+        "accountId": { "$ref": "common.schema.json#/$defs/accountId" }
+      },
+      "description": "Explicit keyless signing role selection, not a permission grant. Wallet execution requires trusted account resolution and approval for every participating account."
+    },
+    "signingRoleIntentScope": {
+      "if": { "type": "object", "required": ["signingRoles"], "properties": { "signingRoles": true } },
+      "then": {
+        "oneOf": [
+          {
+            "type": "object", "properties": {
+              "signingRoles": { "type": "array", "items": { "type": "object", "properties": { "role": { "const": "pool-controller" } } } },
+              "intent": { "type": "object", "properties": { "type": { "enum": ["tbc-amm-add-liquidity", "tbc-amm-remove-liquidity", "tbc-amm-swap", "amm.swap", "amm.addLiquidity", "amm.removeLiquidity"] } } }
+            }
+          },
+          {
+            "type": "object", "properties": {
+              "signingRoles": { "type": "array", "items": { "type": "object", "properties": { "role": { "const": "coin-admin" } } } },
+              "intent": { "type": "object", "properties": { "type": { "enum": ["tbc20-stablecoin-create", "tbc20-stablecoin-mint", "tbc20-stablecoin-freeze", "tbc20-stablecoin-unfreeze"] } } }
+            }
+          }
+        ]
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "maxFee": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "feePreference": { "enum": ["economy", "standard", "priority"] },
+        "inputOutpoints": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 128,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["txid", "vout"],
+            "properties": {
+              "txid": { "$ref": "common.schema.json#/$defs/hash32" },
+              "vout": { "type": "integer", "minimum": 0, "maximum": 4294967295 }
+            }
+          }
+        }
+      }
+    },
+    "uriMedia": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "uri"],
+      "properties": {
+        "kind": { "const": "uri" },
+        "uri": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "pattern": "^(https|ipfs|ar)://"
+        },
+        "sha256": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "base64Media": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "mediaType", "data", "sha256"],
+      "properties": {
+        "kind": { "const": "base64" },
+        "mediaType": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9!#$&^_.+-]{0,63}/[a-z0-9][a-z0-9!#$&^_.+-]{0,63}$"
+        },
+        "data": {
+          "type": "string",
+          "$ref": "common.schema.json#/$defs/base64",
+          "maxLength": 2796204
+        },
+        "sha256": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "media": {
+      "oneOf": [
+        { "$ref": "#/$defs/uriMedia" },
+        { "$ref": "#/$defs/base64Media" }
+      ]
+    },
+    "attribute": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["traitType", "value"],
+      "properties": {
+        "traitType": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "value": {
+          "oneOf": [
+            { "type": "string", "maxLength": 256 },
+            { "type": "boolean" },
+            { "$ref": "common.schema.json#/$defs/safeInteger" }
+          ]
+        }
+      }
+    },
+    "transferIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "to", "amount"],
+      "properties": {
+        "type": { "const": "tbc.transfer" },
+        "version": { "const": "1.0" },
+        "to": { "$ref": "common.schema.json#/$defs/address" },
+        "amount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" }
+      }
+    },
+    "tbcMergeIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version"],
+      "properties": {
+        "type": { "const": "tbc.maintenance.merge" },
+        "version": { "const": "1.0" }
+      }
+    },
+    "collectionCreateIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "name", "description", "supply", "media"],
+      "properties": {
+        "type": { "const": "tbc.collection.create" },
+        "version": { "const": "1.0" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "description": { "type": "string", "maxLength": 2048 },
+        "supply": {
+          "type": "string",
+          "pattern": "^(?:[1-9]|[1-9][0-9]{1,2}|1[0-9]{3}|2000)$"
+        },
+        "media": { "$ref": "#/$defs/media" }
+      }
+    },
+    "nftMintIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "collectionId", "name", "symbol", "description", "attributes"],
+      "properties": {
+        "type": { "const": "tbc.nft.mint" },
+        "version": { "const": "1.0" },
+        "collectionId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "symbol": { "type": "string", "pattern": "^[!-~]{1,16}$" },
+        "description": { "type": "string", "maxLength": 2048 },
+        "attributes": {
+          "type": "array",
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/attribute" }
+        },
+        "media": { "$ref": "#/$defs/media" }
+      }
+    },
+    "nftTransferIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "contractId", "to"],
+      "properties": {
+        "type": { "const": "tbc.nft.transfer" },
+        "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "to": { "$ref": "common.schema.json#/$defs/address" }
+      }
+    },
+    "tbc721StandardCollectionIntent": {
+      "$comment": "New NFT collection profile. Collection slot layout is shared with historical collections; this label is a requested profile, not proof of a distinct collection script. Engine verifies the complete collection and selected slots. Schema acceptance does not advertise a wallet runtime capability.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "name", "description", "supply", "media"],
+      "properties": {
+        "type": { "const": "tbc721-standard-create-collection" },
+        "version": { "const": "1.0" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "description": { "type": "string", "maxLength": 2048 },
+        "supply": { "type": "string", "pattern": "^(?:[1-9]|[1-9][0-9]{1,2}|1[0-9]{3}|2000)$" },
+        "media": { "$ref": "#/$defs/media" },
+        "to": { "$ref": "common.schema.json#/$defs/address" }
+      }
+    },
+    "tbc721StandardMintItem": {
+      "type": "object", "additionalProperties": false,
+      "required": ["slot", "name", "symbol", "description", "attributes"],
+      "properties": {
+        "slot": { "type": "integer", "minimum": 1, "maximum": 4294967295 },
+        "name": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "symbol": { "type": "string", "pattern": "^[!-~]{1,16}$" },
+        "description": { "type": "string", "maxLength": 2048 },
+        "attributes": { "type": "array", "maxItems": 64, "items": { "$ref": "#/$defs/attribute" } },
+        "media": { "$ref": "#/$defs/media" },
+        "to": { "$ref": "common.schema.json#/$defs/address" }
+      }
+    },
+    "tbc721StandardMintIntent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "collectionId", "slot", "name", "symbol", "description", "attributes"],
+      "properties": {
+        "type": { "const": "tbc721-standard-mint" },
+        "version": { "const": "1.0" },
+        "collectionId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "slot": { "type": "integer", "minimum": 1, "maximum": 4294967295 },
+        "name": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "symbol": { "type": "string", "pattern": "^[!-~]{1,16}$" },
+        "description": { "type": "string", "maxLength": 2048 },
+        "attributes": { "type": "array", "maxItems": 64, "items": { "$ref": "#/$defs/attribute" } },
+        "media": { "$ref": "#/$defs/media" },
+        "to": { "$ref": "common.schema.json#/$defs/address" }
+      }
+    },
+    "tbc721StandardBatchMintIntent": {
+      "$comment": "Ordered unique collection slots; Engine verifies slot uniqueness and availability. Signing continuation binds later fee inputs to the previous finalized transaction ID. Batch count does not override plan/material byte limits.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "collectionId", "items"],
+      "properties": {
+        "type": { "const": "tbc721-standard-batch-mint" },
+        "version": { "const": "1.0" },
+        "collectionId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "items": { "type": "array", "minItems": 1, "maxItems": 32, "items": { "$ref": "#/$defs/tbc721StandardMintItem" } }
+      }
+    },
+    "nativePayment": {
+      "type": "object", "additionalProperties": false, "required": ["to", "amount"],
+      "properties": {
+        "to": { "$ref": "common.schema.json#/$defs/address" },
+        "amount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" }
+      }
+    },
+    "tbc721StandardTransferIntent": {
+      "$comment": "Ordinary NFT Hold only. Optional TBC payment is atomic with the NFT transfer, in raw atomic units; Engine enforces 24 <= amount <= 9007199254740991 and native policy. This is not a CoinHold/stablecoin transfer.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "contractId", "to"],
+      "properties": {
+        "type": { "const": "tbc721-standard-transfer" },
+        "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "to": { "$ref": "common.schema.json#/$defs/address" },
+        "payment": { "$ref": "#/$defs/nativePayment" }
+      }
+    },
+    "unifiedNftTransferIntent": {
+      "$comment": "Shared current/historical NFT transfer. Actual bound Code/Hold/Tape selects the supported builder; historical templates do not support payment. This is not a Coin issuer or a request to mint.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "contractId", "to"],
+      "properties": {
+        "type": { "const": "tbc721.transfer" },
+        "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "to": { "$ref": "common.schema.json#/$defs/address" },
+        "payment": { "$ref": "#/$defs/nativePayment" }
+      }
+    },
+    "ftCreateIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "name", "symbol", "decimals", "initialSupply"],
+      "properties": {
+        "type": { "const": "tbc.ft.create" },
+        "version": { "const": "1.0" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 256, "$comment": "Preserve UTF-8 text and case. Engine additionally enforces a maximum of 256 UTF-8 bytes." },
+        "symbol": { "type": "string", "minLength": 1, "maxLength": 256, "$comment": "Preserve UTF-8 text and case. Engine additionally enforces a maximum of 256 UTF-8 bytes." },
+        "decimals": { "type": "integer", "minimum": 0, "maximum": 18 },
+        "initialSupply": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" }
+      }
+    },
+    "tbc20StandardCreateIntent": {
+      "$comment": "New TBC20 template only. Schema acceptance is not a runtime capability or authorization claim. Engine additionally validates NFC, UTF-8 metadata lengths and initialSupply <= 9223372036854775807; initialSupply is in raw smallest units, not a human decimal amount.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "name", "symbol", "decimals", "initialSupply"],
+      "properties": {
+        "type": { "const": "tbc20-standard-create" },
+        "version": { "const": "1.0" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 53 },
+        "symbol": { "type": "string", "pattern": "^[!-~]{1,53}$" },
+        "decimals": { "type": "integer", "minimum": 0, "maximum": 18 },
+        "initialSupply": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+        "to": { "$ref": "common.schema.json#/$defs/address" }
+      }
+    },
+    "tbc20StandardTransferIntent": {
+      "$comment": "Exactly one recipient form: to+amount, or ordered receivers. Every amount is a positive raw-unit u128 decimal string. Engine MUST validate each amount and their sum against 36*(2^63-1), plus the actual eight-output-group budget including Token/native change and amount-slot splitting. Eight receivers are not guaranteed to fit. Duplicate recipient addresses remain distinct ordered entries.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "contractId"],
+      "properties": {
+        "type": { "const": "tbc20-standard-transfer" },
+        "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "to": { "$ref": "common.schema.json#/$defs/address" },
+        "amount": { "type": "string", "pattern": "^[1-9][0-9]{0,38}$" },
+        "receivers": {
+          "type": "array", "minItems": 1, "maxItems": 8,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["to", "amount"],
+            "properties": {
+              "to": { "$ref": "common.schema.json#/$defs/address" },
+              "amount": { "type": "string", "pattern": "^[1-9][0-9]{0,38}$" }
+            }
+          }
+        }
+      },
+      "oneOf": [
+        { "type": "object", "required": ["to", "amount"], "properties": { "to": true, "amount": true, "receivers": false } },
+        { "type": "object", "required": ["receivers"], "properties": { "to": false, "amount": false, "receivers": true } }
+      ]
+    },
+    "tbc20StandardMergeIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "contractId"],
+      "properties": {
+        "type": { "const": "tbc20-standard-merge" },
+        "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" }
+      }
+    },
+    "unifiedFungibleTransferIntent": {
+      "$comment": "Template-neutral business request. Engine authenticates complete bound contract material, then validates the resolved template's recipient/payment limits; shape acceptance does not promise every template supports every combination. No caller-selected template version. Payment on historical templates must use the token recipient; current TBC20 rejects payment. Coin or payment permits at most seven receivers.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "contractId"],
+      "properties": {
+        "type": { "enum": ["tbc20.transfer", "tbc20Stablecoin.transfer"] },
+        "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "to": { "$ref": "common.schema.json#/$defs/address" },
+        "amount": { "type": "string", "pattern": "^[1-9][0-9]{0,38}$" },
+        "receivers": { "type": "array", "minItems": 1, "maxItems": 8, "items": {
+          "type": "object", "additionalProperties": false, "required": ["to", "amount"],
+          "properties": { "to": { "$ref": "common.schema.json#/$defs/address" }, "amount": { "type": "string", "pattern": "^[1-9][0-9]{0,38}$" } }
+        } },
+        "payment": { "$ref": "#/$defs/nativePayment" }
+      },
+      "oneOf": [
+        { "type": "object", "required": ["to", "amount"], "properties": { "to": true, "amount": true, "receivers": false } },
+        { "type": "object", "required": ["receivers"], "properties": { "to": false, "amount": false, "receivers": true } }
+      ],
+      "allOf": [{
+        "if": { "anyOf": [
+          { "properties": { "type": { "const": "tbc20Stablecoin.transfer" } }, "required": ["type"] },
+          { "properties": { "payment": true }, "required": ["payment"] }
+        ] },
+        "then": { "properties": { "receivers": { "type": "array", "maxItems": 7 } } }
+      }]
+    },
+    "unifiedFungibleMergeIntent": {
+      "$comment": "Template-neutral merge; Engine authenticates and routes from bound Code/Tape, never from an API label or a failed-builder fallback.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "contractId"],
+      "properties": {
+        "type": { "enum": ["tbc20.merge", "tbc20Stablecoin.merge"] },
+        "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" }
+      }
+    },
+    "coinCreateIntent": {
+      "$comment": "Latest Coin issuance. The primary account pays fees. An explicit coin-admin role selects an independently authorized administrator; otherwise the primary account administers. Administrator signatures use the selected account's x-only key. Supply is atomic. Engine validates NFC and the combined 61-byte metadata extension including pushes, and returns SOURCE then mint with one approval-bound continuation.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "name", "symbol", "decimals", "initialSupply"],
+      "properties": {
+        "type": { "const": "tbc20-stablecoin-create" }, "version": { "const": "1.0" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 61 },
+        "symbol": { "type": "string", "pattern": "^[!-~]{1,61}$" },
+        "decimals": { "type": "integer", "minimum": 0, "maximum": 18 },
+        "initialSupply": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+        "to": { "$ref": "common.schema.json#/$defs/address" }
+      }
+    },
+    "coinTargetOutpoint": {
+      "type": "object", "additionalProperties": false, "required": ["txid", "vout"],
+      "properties": {
+        "txid": { "$ref": "common.schema.json#/$defs/hash32" },
+        "vout": { "type": "integer", "minimum": 0, "maximum": 4294967295 }
+      }
+    },
+    "coinMintIntent": {
+      "$comment": "SOURCE asset ID, atomic additional supply. Kit resolves the current issuance certificate into the bound snapshot; an optional exact certificateOutpoint pins it without substituting stale inputs. Primary account pays fees; an explicit coin-admin role selects the authorized administrator, otherwise primary administers.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "contractId", "amount", "to"],
+      "properties": {
+        "type": { "const": "tbc20-stablecoin-mint" }, "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "certificateOutpoint": { "type": "object", "additionalProperties": false, "required": ["txid", "vout"], "properties": {
+          "txid": { "$ref": "common.schema.json#/$defs/hash32" }, "vout": { "const": 0 }
+        } },
+        "amount": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+        "to": { "$ref": "common.schema.json#/$defs/address" }
+      }
+    },
+    "coinFreezeIntent": {
+      "$comment": "Explicit Coin inputs only, no account-wide discovery. Positive uint32 absolute height/time semantics; Engine checks the bound administrator and preserves each controller and balance. No automatic expiry/unfreeze transaction.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "contractId", "targetOutpoints", "lockTime"],
+      "properties": {
+        "type": { "const": "tbc20-stablecoin-freeze" }, "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "targetOutpoints": { "type": "array", "minItems": 1, "maxItems": 5, "uniqueItems": true, "items": { "$ref": "#/$defs/coinTargetOutpoint" } },
+        "lockTime": { "type": "string", "pattern": "^[1-9][0-9]{0,9}$" }
+      }
+    },
+    "coinUnfreezeIntent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "contractId", "targetOutpoints"],
+      "properties": {
+        "type": { "const": "tbc20-stablecoin-unfreeze" }, "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "targetOutpoints": { "type": "array", "minItems": 1, "maxItems": 5, "uniqueItems": true, "items": { "$ref": "#/$defs/coinTargetOutpoint" } }
+      }
+    },
+    "coinTransferIntent": {
+      "$comment": "Latest Coin holder transfer. contractId is the official asset ID (issuer certificate SOURCE txid), not the SDK mutable mint txid. Atomic integer amounts; one recipient form only. Engine binds issuer/admin and locks. Payment is optional atomic TBC. Eight groups include token and mandatory native change; not all seven-recipient requests fit. This does not promise arbitrary multi-round or Schnorr support.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "contractId"],
+      "properties": {
+        "type": { "const": "tbc20-stablecoin-transfer" }, "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "to": { "$ref": "common.schema.json#/$defs/address" },
+        "amount": { "type": "string", "pattern": "^[1-9][0-9]{0,38}$" },
+        "receivers": { "type": "array", "minItems": 1, "maxItems": 7, "items": {
+          "type": "object", "additionalProperties": false, "required": ["to", "amount"],
+          "properties": { "to": { "$ref": "common.schema.json#/$defs/address" }, "amount": { "type": "string", "pattern": "^[1-9][0-9]{0,38}$" } }
+        } },
+        "payment": { "$ref": "#/$defs/nativePayment" }
+      },
+      "oneOf": [
+        { "type": "object", "required": ["to", "amount"], "properties": { "to": true, "amount": true, "receivers": false } },
+        { "type": "object", "required": ["receivers"], "properties": { "to": false, "amount": false, "receivers": true } }
+      ]
+    },
+    "coinMergeIntent": {
+      "type": "object", "additionalProperties": false, "required": ["type", "version", "contractId"],
+      "properties": {
+        "type": { "const": "tbc20-stablecoin-merge" }, "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" }
+      }
+    },
+    "ammStandardCreateIntent": {
+      "$comment": "Create the explicit-fee 1.7.3 AMM via external-signature Source then Genesis. ftContractId binds the existing TBC20 genesis. Controllers are canonical ascending distinct hash160 values (one-of-N), omitted for public Pool; this is not multisig. Fee policy, provider label and LP timelock are immutable. Initial liquidity is a subsequent explicit action, not an implicit spend.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "ftContractId", "feePolicy", "lpTimelock"],
+      "properties": {
+        "type": { "const": "tbc-amm-create" }, "version": { "const": "1.0" },
+        "ftContractId": { "$ref": "common.schema.json#/$defs/hash32" },
+        "feePolicy": { "$ref": "#/$defs/ammFeePolicy" },
+        "lpTimelock": { "type": "boolean" },
+        "controllers": { "type": "array", "minItems": 1, "maxItems": 5, "uniqueItems": true, "items": { "type": "string", "pattern": "^[0-9a-f]{40}$" } },
+        "serviceProviderTag": { "description": "Immutable UTF-8 label; omitted means NULL, empty is allowed. Not an authorization identity.", "type": "string", "maxLength": 256 }
+      }
+    },
+    "ammFeePolicy": {
+      "$comment": "tbc-contract 1.7.3 integer basis points. Engine also enforces the sum strictly below 10000 and canonical P2PKH. A valid zero-rate configuration does not guarantee a swap: the upstream requires a positive retained fee after integer rounding.",
+      "type": "object", "additionalProperties": false,
+      "required": ["lpFeeRate", "taxFeeRate", "serviceProviderFeeRate", "protocolFeeRate", "feeAddress"],
+      "properties": {
+        "lpFeeRate": { "type": "integer", "minimum": 0, "maximum": 9999 },
+        "taxFeeRate": { "type": "integer", "minimum": 0, "maximum": 9999 },
+        "serviceProviderFeeRate": { "type": "integer", "minimum": 0, "maximum": 9999 },
+        "protocolFeeRate": { "type": "integer", "minimum": 0, "maximum": 9999 },
+        "feeAddress": { "$ref": "common.schema.json#/$defs/address" }
+      }
+    },
+    "ammStandardAddIntent": {
+      "$comment": "Atomic budget with explicit slippage. FT-budget additions quote native funding from the bound Pool state. First liquidity requires initialFtAmount with a TBC budget. Lock rules and signed-63-bit limits are enforced by Engine.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "poolContractId", "budgetAsset", "amount", "minimumLpAmount"],
+      "properties": {
+        "type": { "const": "tbc-amm-add-liquidity" }, "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/hash32" },
+        "budgetAsset": { "enum": ["tbc", "ft"] },
+        "amount": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+        "initialFtAmount": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+        "minimumLpAmount": { "type": "string", "pattern": "^(0|[1-9][0-9]{0,18})$" },
+        "maximumTbcAmount": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+        "maximumFtAmount": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+        "lockTime": { "type": "string", "pattern": "^(0|[1-9][0-9]{0,9})$" },
+        "receiver": { "$ref": "common.schema.json#/$defs/address" },
+        "poolStateHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      },
+      "allOf": [{ "if": { "properties": { "initialFtAmount": true }, "required": ["initialFtAmount"] }, "then": { "properties": { "budgetAsset": { "const": "tbc" } } } }]
+    },
+    "ammStandardRemoveIntent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "poolContractId", "lpAmount", "minimumTbcAmount", "minimumFtAmount"],
+      "properties": {
+        "type": { "const": "tbc-amm-remove-liquidity" }, "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/hash32" },
+        "lpAmount": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+        "minimumTbcAmount": { "type": "string", "pattern": "^(0|[1-9][0-9]{0,18})$" },
+        "minimumFtAmount": { "type": "string", "pattern": "^(0|[1-9][0-9]{0,18})$" },
+        "receiver": { "$ref": "common.schema.json#/$defs/address" },
+        "poolStateHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "ammStandardSwapIntent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "poolContractId", "direction", "amount", "minimumOutput"],
+      "properties": {
+        "type": { "const": "tbc-amm-swap" }, "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/hash32" },
+        "direction": { "enum": ["tbc-to-ft", "ft-to-tbc"] },
+        "amount": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+        "minimumOutput": { "type": "string", "pattern": "^(0|[1-9][0-9]{0,18})$" },
+        "receiver": { "$ref": "common.schema.json#/$defs/address" },
+        "poolStateHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "unifiedAmmAddIntent": {
+      "$comment": "Unified current/historical Pool operation. Actual complete Code and bound material select the builder. Historical pools reject unsupported FT budgets, extra bounds, timestamp locks, state hashes and independent controllers; no silently discarded parameters. Engine enforces the selected template amount limits.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "version",
+        "poolContractId",
+        "budgetAsset",
+        "amount",
+        "minimumLpAmount"
+      ],
+      "properties": {
+        "type": {
+          "const": "amm.addLiquidity"
+        },
+        "version": {
+          "const": "1.0"
+        },
+        "poolContractId": {
+          "$ref": "common.schema.json#/$defs/hash32"
+        },
+        "budgetAsset": {
+          "enum": [
+            "tbc",
+            "ft"
+          ]
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "initialFtAmount": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "minimumLpAmount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "maximumTbcAmount": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "maximumFtAmount": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "lockTime": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,9})$"
+        },
+        "receiver": {
+          "$ref": "common.schema.json#/$defs/address"
+        },
+        "poolStateHash": {
+          "$ref": "common.schema.json#/$defs/hash32"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "initialFtAmount": true
+            },
+            "required": [
+              "initialFtAmount"
+            ]
+          },
+          "then": {
+            "properties": {
+              "budgetAsset": {
+                "const": "tbc"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "unifiedAmmRemoveIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "version",
+        "poolContractId",
+        "lpAmount",
+        "minimumTbcAmount",
+        "minimumFtAmount"
+      ],
+      "properties": {
+        "type": {
+          "const": "amm.removeLiquidity"
+        },
+        "version": {
+          "const": "1.0"
+        },
+        "poolContractId": {
+          "$ref": "common.schema.json#/$defs/hash32"
+        },
+        "lpAmount": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "minimumTbcAmount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "minimumFtAmount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "receiver": {
+          "$ref": "common.schema.json#/$defs/address"
+        },
+        "poolStateHash": {
+          "$ref": "common.schema.json#/$defs/hash32"
+        }
+      },
+      "$comment": "Unified current/historical Pool operation. Actual complete Code and bound material select the builder. Historical pools reject unsupported FT budgets, extra bounds, timestamp locks, state hashes and independent controllers; no silently discarded parameters. Engine enforces the selected template amount limits."
+    },
+    "unifiedAmmSwapIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "version",
+        "poolContractId",
+        "direction",
+        "amount",
+        "minimumOutput"
+      ],
+      "properties": {
+        "type": {
+          "const": "amm.swap"
+        },
+        "version": {
+          "const": "1.0"
+        },
+        "poolContractId": {
+          "$ref": "common.schema.json#/$defs/hash32"
+        },
+        "direction": {
+          "enum": [
+            "tbc-to-ft",
+            "ft-to-tbc"
+          ]
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]{0,19}$"
+        },
+        "minimumOutput": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,19})$"
+        },
+        "receiver": {
+          "$ref": "common.schema.json#/$defs/address"
+        },
+        "poolStateHash": {
+          "$ref": "common.schema.json#/$defs/hash32"
+        }
+      },
+      "$comment": "Unified current/historical Pool operation. Actual complete Code and bound material select the builder. Historical pools reject unsupported FT budgets, extra bounds, timestamp locks, state hashes and independent controllers; no silently discarded parameters. Engine enforces the selected template amount limits."
+    },
+    "lopAsset": {
+      "type": "object", "additionalProperties": false, "required": ["standard", "contractId"],
+      "properties": { "standard": { "enum": ["tbc20-standard", "tbc20-stablecoin"] }, "contractId": { "$ref": "common.schema.json#/$defs/hash32" } }
+    },
+    "lopCreateIntent": {
+      "$comment": "Latest keyless LOP order. Owner comes from the bound account, Code identities from issuance material. Native-token assetA is the Token and saleVolume is native atomic units; token-token assetA is base, assetB quote. unitPrice and feeRate use the pinned integer scale 1,000,000, NOT bps. Buy escrow is floor(saleVolume*unitPrice/1,000,000). No custody, broadcast or caller raw script.",
+      "type": "object", "additionalProperties": false, "required": ["type", "version", "order"],
+      "properties": {
+        "type": { "const": "tbc-lop-create" }, "version": { "const": "1.0" },
+        "order": {
+          "type": "object", "additionalProperties": false,
+          "required": ["side", "market", "assetA", "saleVolume", "unitPrice", "feeRate", "feeRecipient"],
+          "properties": {
+            "side": { "enum": ["buy", "sell"] }, "market": { "enum": ["native-token", "token-token"] },
+            "assetA": { "$ref": "#/$defs/lopAsset" }, "assetB": { "$ref": "#/$defs/lopAsset" },
+            "saleVolume": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+            "unitPrice": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+            "feeRate": { "type": "string", "pattern": "^(0|[1-9][0-9]{0,18})$" },
+            "feeRecipient": { "$ref": "common.schema.json#/$defs/address" }
+          },
+          "allOf": [{ "if": { "properties": { "market": { "const": "token-token" } } }, "then": { "properties": { "assetB": {} }, "required": ["assetB"] }, "else": { "properties": { "assetB": false } } }]
+        }
+      }
+    },
+    "lopCancelIntent": {
+      "$comment": "Cancel one exact latest LOP order to its owner. Engine authenticates the current order and adjacent escrow plus issuance anchor for the asset actually refunded. No redirect, arbitrary script or matcher authorization.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "targetOutpoints"],
+      "properties": {
+        "type": { "const": "tbc-lop-cancel" }, "version": { "const": "1.0" },
+        "targetOutpoints": { "type": "array", "minItems": 1, "maxItems": 1, "items": {
+          "type": "object", "additionalProperties": false, "required": ["txid", "vout"],
+          "properties": { "txid": { "$ref": "common.schema.json#/$defs/hash32" }, "vout": { "type": "integer", "minimum": 0, "maximum": 4294967295 } }
+        } }
+      }
+    },
+    "lopMatchIntent": {
+      "$comment": "Exactly two current orders in buy/sell order. Recipients, prices, fees and asset IDs come from authenticated order Code, not caller redirects. The matcher supplies its own fee input and external Token/fee signatures; order covenant witnesses are computed without an owner key.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "targetOutpoints"],
+      "properties": {
+        "type": { "const": "tbc-lop-match" }, "version": { "const": "1.0" },
+        "targetOutpoints": { "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {
+          "type": "object", "additionalProperties": false, "required": ["txid", "vout"],
+          "properties": { "txid": { "$ref": "common.schema.json#/$defs/hash32" }, "vout": { "type": "integer", "minimum": 0, "maximum": 4294967295 } }
+        } }
+      }
+    },
+    "htlcLockIntent": {
+      "$comment": "HTLC: omitted assetStandard/contractId means native TBC. New Token profiles require both fields explicitly. Atomic amount, SHA256 hashlock and future absolute height or timestamp (trusted MTP). Engine enforces signed-four-byte lock range and spendable Token slot bound. Claim remains possible after refund maturity.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "to", "amount", "hashlock", "lockTime"],
+      "dependentRequired": { "assetStandard": ["contractId"], "contractId": ["assetStandard"] },
+      "properties": {
+        "type": { "const": "tbc-htlc-lock" }, "version": { "const": "1.0" },
+        "to": { "$ref": "common.schema.json#/$defs/address" },
+        "amount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" },
+        "hashlock": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "lockTime": { "type": "string", "pattern": "^[1-9][0-9]{0,9}$" },
+        "assetStandard": { "enum": ["tbc20-standard", "tbc20-stablecoin"] },
+        "contractId": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "htlcClaimIntent": {
+      "$comment": "Claim native deposits via exact constraints.inputOutpoints, or an explicit new Token asset via one targetOutpoints Token Code at deployment vout 1 (escrow vout 0 is jointly validated/spent). Token fee funding can be automatic. Preimage is sensitive and revealed in signed raw; never log full request/plan. No automatic sweep.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "preimage"],
+      "dependentRequired": { "assetStandard": ["contractId", "targetOutpoints"], "contractId": ["assetStandard", "targetOutpoints"], "targetOutpoints": ["assetStandard", "contractId"] },
+      "properties": {
+        "type": { "const": "tbc-htlc-claim" }, "version": { "const": "1.0" },
+        "preimage": { "type": "string", "pattern": "^(?:[0-9a-f]{2})*$", "maxLength": 130848 },
+        "assetStandard": { "enum": ["tbc20-standard", "tbc20-stablecoin"] },
+        "contractId": { "$ref": "common.schema.json#/$defs/hash32" },
+        "targetOutpoints": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "#/$defs/htlcTokenTarget" } }
+      }
+    },
+    "htlcRefundIntent": {
+      "$comment": "Refund native deposits or an explicit new Token deployment as original sender, after trusted tip/MTP maturity. Token uses one targetOutpoints entry and may auto-select fee funding. No redirect or wall-clock substitution.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version"],
+      "dependentRequired": { "assetStandard": ["contractId", "targetOutpoints"], "contractId": ["assetStandard", "targetOutpoints"], "targetOutpoints": ["assetStandard", "contractId"] },
+      "properties": { "type": { "const": "tbc-htlc-refund" }, "version": { "const": "1.0" },
+        "assetStandard": { "enum": ["tbc20-standard", "tbc20-stablecoin"] },
+        "contractId": { "$ref": "common.schema.json#/$defs/hash32" },
+        "targetOutpoints": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "#/$defs/htlcTokenTarget" } }
+      }
+    },
+    "htlcTokenTarget": {
+      "type": "object", "additionalProperties": false, "required": ["txid", "vout"],
+      "properties": { "txid": { "$ref": "common.schema.json#/$defs/hash32" }, "vout": { "const": 1 } }
+    },
+    "timelockLockIntent": {
+      "$comment": "Pinned PiggyBank height profile. Atomic native amount, self-owned output, future chain height. Engine checks safe integer and current tip; no timestamp-domain promise.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "amount", "lockTime"],
+      "properties": {
+        "type": { "const": "tbc-timelock-lock" }, "version": { "const": "1.0" },
+        "amount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" },
+        "lockTime": { "type": "string", "pattern": "^([1-9][0-9]{0,7}|[1-4][0-9]{8})$" }
+      }
+    },
+    "timelockUnlockIntent": {
+      "$comment": "Unlock exact matured deposit outpoints to their owner. Request constraints.inputOutpoints is required by Engine; Prepared proposals bind exact inputs instead. No automatic sweep or ownership redirect.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version"],
+      "properties": { "type": { "const": "tbc-timelock-unlock" }, "version": { "const": "1.0" } }
+    },
+    "unifiedLpTransferIntent": {
+      "$comment": "Shared LP holder operation; actual support is template-specific and authenticated by Engine.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "poolContractId", "amount", "to"],
+      "properties": {
+        "type": { "const": "tbc20Lp.transfer" }, "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/hash32" },
+        "amount": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+        "to": { "$ref": "common.schema.json#/$defs/address" }
+      }
+    },
+    "unifiedLpLockIntent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "poolContractId", "amount", "lockTime"],
+      "properties": {
+        "type": { "const": "tbc20Lp.lock" }, "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/hash32" },
+        "amount": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+        "lockTime": { "type": "string", "pattern": "^[1-9][0-9]{0,9}$" }
+      }
+    },
+    "unifiedPoolMaintenanceIntent": {
+      "$comment": "Whole selected inputs only. A name does not imply support on every Pool template; unsupported combinations reject, never fall back.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "poolContractId"],
+      "properties": {
+        "type": { "enum": ["tbc20Lp.merge", "tbc20Lp.unlock", "tbc20Lp.burn", "amm.mergeToken"] },
+        "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "lpStandardTransferIntent": {
+      "$comment": "Pool genesis txid is the asset anchor, not the Pool Code hash. Amount is atomic LP units. Holder transfer preserves the script's lock profile; it does not consume current Pool reserves.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "poolContractId", "amount", "to"],
+      "properties": {
+        "type": { "const": "tbc20-lp-transfer" }, "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/hash32" },
+        "amount": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+        "to": { "$ref": "common.schema.json#/$defs/address" }
+      }
+    },
+    "lpStandardLockIntent": {
+      "$comment": "Lock an amount to the same holder on a timelocked LP template only; no ownership redirect or conversion from plain LP. Engine enforces uint32, same lock domain and no shortening.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "poolContractId", "amount", "lockTime"],
+      "properties": {
+        "type": { "const": "tbc20-lp-lock" }, "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/hash32" },
+        "amount": { "type": "string", "pattern": "^[1-9][0-9]{0,18}$" },
+        "lockTime": { "type": "string", "pattern": "^[1-9][0-9]{0,9}$" }
+      }
+    },
+    "lpStandardMaintenanceIntent": {
+      "$comment": "Merge or unlock selected holder LP to self. Unlock requires matured locks; it is not an administrative bypass. Native funding and exact-input constraints use the common request fields.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "poolContractId"],
+      "properties": {
+        "type": { "enum": ["tbc20-lp-merge", "tbc20-lp-unlock"] }, "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "fungibleTransferFields": {
+      "type": "object",
+      "required": ["type", "version", "contractId", "to", "amount"],
+      "properties": {
+        "type": { "enum": ["tbc.ft.transfer", "tbc.stablecoin.transfer"] },
+        "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "to": { "$ref": "common.schema.json#/$defs/address" },
+        "amount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" },
+        "attachedTbcAmount": { "$ref": "common.schema.json#/$defs/atomicAmount" }
+      }
+    },
+    "ftTransferIntent": {
+      "allOf": [
+        { "$ref": "#/$defs/fungibleTransferFields" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "tbc.ft.transfer" },
+            "version": true,
+            "contractId": true,
+            "to": true,
+            "amount": true,
+            "attachedTbcAmount": true
+          }
+        }
+      ]
+    },
+    "ftMergeIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "contractId"],
+      "properties": {
+        "type": { "const": "tbc.ft.merge" },
+        "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" }
+      }
+    },
+    "stablecoinTransferIntent": {
+      "allOf": [
+        { "$ref": "#/$defs/fungibleTransferFields" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": { "const": "tbc.stablecoin.transfer" },
+            "version": true,
+            "contractId": true,
+            "to": true,
+            "amount": true,
+            "attachedTbcAmount": true
+          }
+        }
+      ]
+    },
+    "stablecoinMergeIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "contractId"],
+      "properties": {
+        "type": { "const": "tbc.stablecoin.merge" },
+        "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" }
+      }
+    },
+    "poolLock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["publicKeys", "costRecipient", "costAmount"],
+      "properties": {
+        "publicKeys": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/publicKey" }
+        },
+        "costRecipient": { "$ref": "common.schema.json#/$defs/address" },
+        "costAmount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" },
+        "untilHeight": { "$ref": "common.schema.json#/$defs/uint32String" }
+      }
+    },
+    "poolInitialLiquidity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["receiver", "tbcAmount", "ftAmount"],
+      "properties": {
+        "receiver": { "$ref": "common.schema.json#/$defs/address" },
+        "tbcAmount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" },
+        "ftAmount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" }
+      }
+    },
+    "poolCreateIntent": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "version", "ftContractId", "lpPlan", "initialLiquidity"],
+          "properties": {
+            "type": { "const": "tbc.pool.create" },
+            "version": { "const": "1.0" },
+            "ftContractId": { "$ref": "common.schema.json#/$defs/contractId" },
+            "lpPlan": { "type": "integer", "minimum": 1, "maximum": 6 },
+            "serviceProviderTag": { "type": "string", "pattern": "^[ -~]{1,64}$" },
+            "initialLiquidity": { "$ref": "#/$defs/poolInitialLiquidity" },
+            "lock": { "$ref": "#/$defs/poolLock" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "version", "stage", "ftContractId", "lpPlan"],
+          "properties": {
+            "type": { "const": "tbc.pool.create" },
+            "version": { "const": "1.0" },
+            "stage": { "const": "mint" },
+            "ftContractId": { "$ref": "common.schema.json#/$defs/contractId" },
+            "lpPlan": { "type": "integer", "minimum": 1, "maximum": 6 },
+            "serviceProviderTag": { "type": "string", "pattern": "^[ -~]{1,64}$" },
+            "lock": { "$ref": "#/$defs/poolLock" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "version", "stage", "poolContractId", "initialLiquidity"],
+          "properties": {
+            "type": { "const": "tbc.pool.create" },
+            "version": { "const": "1.0" },
+            "stage": { "const": "initialize" },
+            "poolContractId": { "$ref": "common.schema.json#/$defs/contractId" },
+            "initialLiquidity": { "$ref": "#/$defs/poolInitialLiquidity" }
+          }
+        }
+      ]
+    },
+    "poolLiquidityAddIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "poolContractId", "receiver", "tbcAmount", "minimumLpAmount"],
+      "properties": {
+        "type": { "const": "tbc.pool.liquidity.add" },
+        "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "receiver": { "$ref": "common.schema.json#/$defs/address" },
+        "tbcAmount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" },
+        "minimumLpAmount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" },
+        "lockUntilHeight": { "$ref": "common.schema.json#/$defs/uint32String" }
+      }
+    },
+    "poolLiquidityRemoveIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "poolContractId", "receiver", "lpAmount", "minimumTbcAmount", "minimumFtAmount"],
+      "properties": {
+        "type": { "const": "tbc.pool.liquidity.remove" },
+        "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "receiver": { "$ref": "common.schema.json#/$defs/address" },
+        "lpAmount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" },
+        "minimumTbcAmount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" },
+        "minimumFtAmount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" }
+      }
+    },
+    "poolLiquidityCloseIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "poolContractId"],
+      "properties": {
+        "type": { "const": "tbc.pool.liquidity.close" },
+        "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/contractId" }
+      }
+    },
+    "poolFtMergeIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "poolContractId"],
+      "properties": {
+        "type": { "const": "tbc.pool.ft.merge" },
+        "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/contractId" }
+      }
+    },
+    "poolFtlpMergeIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "poolContractId"],
+      "properties": {
+        "type": { "const": "tbc.pool.ftlp.merge" },
+        "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/contractId" }
+      }
+    },
+    "poolFtlpBurnIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "poolContractId"],
+      "properties": {
+        "type": { "const": "tbc.pool.ftlp.burn" },
+        "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/contractId" }
+      }
+    },
+    "swapTbcForTokenIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "poolContractId", "receiver", "tbcAmount", "minimumFtAmount"],
+      "properties": {
+        "type": { "const": "tbc.pool.swap.exactTbcForToken" },
+        "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "receiver": { "$ref": "common.schema.json#/$defs/address" },
+        "tbcAmount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" },
+        "minimumFtAmount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" }
+      }
+    },
+    "swapTokenForTbcIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "version", "poolContractId", "receiver", "ftAmount", "minimumTbcAmount"],
+      "properties": {
+        "type": { "const": "tbc.pool.swap.exactTokenForTbc" },
+        "version": { "const": "1.0" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "receiver": { "$ref": "common.schema.json#/$defs/address" },
+        "ftAmount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" },
+        "minimumTbcAmount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" }
+      }
+    },
+    "tbcIntent": {
+      "oneOf": [
+        { "$ref": "#/$defs/transferIntent" },
+        { "$ref": "#/$defs/tbcMergeIntent" },
+        { "$ref": "#/$defs/collectionCreateIntent" },
+        { "$ref": "#/$defs/nftMintIntent" },
+        { "$ref": "#/$defs/nftTransferIntent" },
+        { "$ref": "#/$defs/tbc721StandardCollectionIntent" },
+        { "$ref": "#/$defs/tbc721StandardMintIntent" },
+        { "$ref": "#/$defs/tbc721StandardBatchMintIntent" },
+        { "$ref": "#/$defs/tbc721StandardTransferIntent" },
+        { "$ref": "#/$defs/unifiedNftTransferIntent" },
+        { "$ref": "#/$defs/unifiedAmmAddIntent" },
+        { "$ref": "#/$defs/unifiedAmmRemoveIntent" },
+        { "$ref": "#/$defs/unifiedAmmSwapIntent" },
+        { "$ref": "#/$defs/unifiedLpTransferIntent" },
+        { "$ref": "#/$defs/unifiedLpLockIntent" },
+        { "$ref": "#/$defs/unifiedPoolMaintenanceIntent" },
+        { "$ref": "#/$defs/ftCreateIntent" },
+        { "$ref": "#/$defs/ftTransferIntent" },
+        { "$ref": "#/$defs/ftMergeIntent" },
+        { "$ref": "#/$defs/tbc20StandardCreateIntent" },
+        { "$ref": "#/$defs/tbc20StandardTransferIntent" },
+        { "$ref": "#/$defs/tbc20StandardMergeIntent" },
+        { "$ref": "#/$defs/unifiedFungibleTransferIntent" },
+        { "$ref": "#/$defs/unifiedFungibleMergeIntent" },
+        { "$ref": "#/$defs/coinCreateIntent" },
+        { "$ref": "#/$defs/coinMintIntent" },
+        { "$ref": "#/$defs/coinFreezeIntent" },
+        { "$ref": "#/$defs/coinUnfreezeIntent" },
+        { "$ref": "#/$defs/coinTransferIntent" },
+        { "$ref": "#/$defs/coinMergeIntent" },
+        { "$ref": "#/$defs/lpStandardTransferIntent" },
+        { "$ref": "#/$defs/lpStandardLockIntent" },
+        { "$ref": "#/$defs/lpStandardMaintenanceIntent" },
+        { "$ref": "#/$defs/timelockLockIntent" },
+        { "$ref": "#/$defs/timelockUnlockIntent" },
+        { "$ref": "#/$defs/lopCreateIntent" },
+        { "$ref": "#/$defs/lopCancelIntent" },
+        { "$ref": "#/$defs/lopMatchIntent" },
+        { "$ref": "#/$defs/htlcLockIntent" },
+        { "$ref": "#/$defs/htlcClaimIntent" },
+        { "$ref": "#/$defs/htlcRefundIntent" },
+        { "$ref": "#/$defs/ammStandardCreateIntent" },
+        { "$ref": "#/$defs/ammStandardAddIntent" },
+        { "$ref": "#/$defs/ammStandardRemoveIntent" },
+        { "$ref": "#/$defs/ammStandardSwapIntent" },
+        { "$ref": "#/$defs/stablecoinTransferIntent" },
+        { "$ref": "#/$defs/stablecoinMergeIntent" },
+        { "$ref": "#/$defs/poolCreateIntent" },
+        { "$ref": "#/$defs/poolLiquidityAddIntent" },
+        { "$ref": "#/$defs/poolLiquidityRemoveIntent" },
+        { "$ref": "#/$defs/poolLiquidityCloseIntent" },
+        { "$ref": "#/$defs/poolFtMergeIntent" },
+        { "$ref": "#/$defs/poolFtlpMergeIntent" },
+        { "$ref": "#/$defs/poolFtlpBurnIntent" },
+        { "$ref": "#/$defs/swapTbcForTokenIntent" },
+        { "$ref": "#/$defs/swapTokenForTbcIntent" }
+      ]
+    },
+    "transactionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "chainId", "from", "intent"],
+      "properties": {
+        "version": { "const": "1.0" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "from": { "$ref": "common.schema.json#/$defs/address" },
+        "signingRoles": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "#/$defs/signingRole" } },
+        "clientRequestId": { "$ref": "common.schema.json#/$defs/clientRequestId" },
+        "intent": { "$ref": "#/$defs/tbcIntent" },
+        "constraints": { "$ref": "#/$defs/constraints" }
+      },
+      "allOf": [
+        { "$ref": "#/$defs/signingRoleIntentScope" },
+        {
+          "if": { "type": "object", "required": ["intent"], "properties": { "intent": { "type": "object", "required": ["type"], "not": { "type": "object", "required": ["assetStandard"], "properties": { "assetStandard": true } }, "properties": { "type": { "enum": ["tbc-timelock-unlock", "tbc-htlc-claim", "tbc-htlc-refund"] } } } } },
+          "then": { "type": "object", "required": ["constraints"], "properties": { "constraints": { "type": "object", "required": ["inputOutpoints"], "properties": { "inputOutpoints": true } } } }
+        },
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "intent": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "tbc.pool.swap.exactTbcForToken",
+                      "tbc.pool.swap.exactTokenForTbc"
+                    ]
+                  }
+                },
+                "required": ["type"]
+              }
+            }
+          },
+          "then": {
+            "type": "object",
+            "required": ["constraints"],
+            "properties": {
+              "constraints": {
+                "type": "object",
+                "required": ["expiresAt"],
+                "properties": {
+                  "expiresAt": true
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "signedTransaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "txid", "rawTransaction", "role", "dependsOn"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "txid": { "$ref": "common.schema.json#/$defs/transactionId" },
+        "rawTransaction": { "$ref": "common.schema.json#/$defs/rawTransaction" },
+        "role": { "enum": ["primary", "prerequisite", "maintenance"] },
+        "dependsOn": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/localId" }
+        }
+      }
+    },
+    "submittedTransaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "txid", "status", "role", "dependsOn"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "txid": { "$ref": "common.schema.json#/$defs/transactionId" },
+        "status": { "const": "submitted" },
+        "role": { "enum": ["primary", "prerequisite", "maintenance"] },
+        "dependsOn": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/localId" }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "collectionId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "poolContractId": { "$ref": "common.schema.json#/$defs/contractId" }
+      }
+    },
+    "detachedSignatures": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 1000,
+        "items": {
+          "type": "string",
+          "pattern": "^(?:[0-9a-fA-F]{2})+$",
+          "maxLength": 1024
+        }
+      }
+    },
+    "bundleBase": {
+      "type": "object",
+      "required": ["version", "chainId", "from", "requestHash", "approvalId", "transactions", "totalFee"],
+      "properties": {
+        "version": { "const": "1.0" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "from": { "$ref": "common.schema.json#/$defs/address" },
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "approvalId": { "$ref": "common.schema.json#/$defs/opaqueId" },
+        "transactions": { "type": "array" },
+        "totalFee": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "artifacts": { "$ref": "#/$defs/artifacts" },
+        "detachedSignatures": { "$ref": "#/$defs/detachedSignatures" }
+      }
+    },
+    "signedTransactionBundle": {
+      "allOf": [
+        { "$ref": "#/$defs/bundleBase" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": true,
+            "chainId": true,
+            "from": true,
+            "requestHash": true,
+            "approvalId": true,
+            "totalFee": true,
+            "artifacts": true,
+            "detachedSignatures": true,
+            "transactions": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 32,
+              "items": { "$ref": "#/$defs/signedTransaction" }
+            }
+          }
+        }
+      ]
+    },
+    "submittedTransactionBundle": {
+      "allOf": [
+        { "$ref": "#/$defs/bundleBase" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "version": true,
+            "chainId": true,
+            "from": true,
+            "requestHash": true,
+            "approvalId": true,
+            "totalFee": true,
+            "artifacts": true,
+            "transactions": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 32,
+              "items": { "$ref": "#/$defs/submittedTransaction" }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

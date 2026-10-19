@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1.0",
+  "profile": "tws-wallet-standard",
+  "package": "@tbc-wallet/wallet-standard",
+  "version": "1.0.0-draft.6.11",
+  "protocolVersion": "1.0.0-candidate.1",
+  "registryPackage": "@wallet-standard/core",
+  "registryVersion": "1.1.2",
+  "feature": "tbc:provider",
+  "featureVersion": "1.0.0",
+  "compatibleFeatureMajor": 1,
+  "autoSelect": false,
+  "persistentWalletIdentity": false,
+  "eip6963Role": "evm-only",
+  "scenarios": [
+    "zero-wallets",
+    "one-wallet",
+    "multiple-wallets",
+    "duplicate-registration",
+    "official-unregister",
+    "wallet-before-dapp",
+    "dapp-before-wallet",
+    "malformed-feature",
+    "incompatible-major",
+    "ssr-import"
+  ],
+  "portabilityTargets": [
+    "browser",
+    "ssr-esm",
+    "ssr-commonjs"
+  ],
+  "forbiddenBehaviors": [
+    "private-registry",
+    "automatic-selection",
+    "wallet-priority",
+    "persistent-wallet-id",
+    "window-turing-injection",
+    "eip6963-tbc-registration",
+    "provider-call-during-discovery"
+  ],
+  "commands": [
+    "npm run test:wallet-standard",
+    "npm run check:wallet-standard-portability",
+    "npm pack ./packages/wallet-standard --dry-run"
+  ]
+}

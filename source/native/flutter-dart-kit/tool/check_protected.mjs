@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {join,resolve} from 'node:path';
+const base=resolve(import.meta.dirname,'..'),sha=b=>createHash('sha256').update(b).digest('hex');
+const pin=JSON.parse(await readFile(join(base,'evidence/f0-baseline.json')));
+for(const [p,h] of Object.entries(pin.protectedFiles))assert.equal(sha(await readFile(p)),h,p);
+assert.equal(sha(await readFile(pin.frozenKit.path)),pin.frozenKit.sha256);
+const matrix=JSON.parse(await readFile(join(base,'scope-matrix.json')));
+assert.equal(matrix.provider.length,22);assert.equal(new Set(matrix.provider.map(r=>r.name)).size,22);
+assert(matrix.provider.every(r=>r.candidate!=='accepted'||r.evidence.length>0));
+assert(matrix.intents.filter(r=>!r.required).every(r=>r.candidate==='excluded'));
+console.log(JSON.stringify({status:'F0_PROTECTED_BASELINES_AND_SCOPE_PASS',protectedFiles:Object.keys(pin.protectedFiles).length,providerMethods:matrix.provider.length,requiredIntentRows:matrix.intents.filter(r=>r.required).length}));

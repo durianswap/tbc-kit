@@ -1,0 +1,32 @@
+{
+  "kind": "legacy-window-turing-manifest",
+  "version": "1.0.5",
+  "algorithm": "sha256(relativePath + NUL + sha256(rawFileBytes) + LF), sorted by relativePath",
+  "files": [
+    {
+      "path": "contract.json",
+      "sha256": "692ea24006c871fd1f0d470679d7b2ab1ca65735c15e1dc0dbb7aa8e74f2220a"
+    },
+    {
+      "path": "contract.schema.json",
+      "sha256": "724ba9eea03fa28c6ad143632dc38b79aede6db724b37b8f2630d9899c1762a0"
+    },
+    {
+      "path": "provenance.json",
+      "sha256": "d0b2ac12b55bf3c4553ca1d6341b79676bb76166f8607aaab9185a5995d6c3b5"
+    },
+    {
+      "path": "README.md",
+      "sha256": "3c5a396cfc77a56382fa9b45ff7c788cb3cac818f1d205dd26143e9b62c67532"
+    },
+    {
+      "path": "vectors/baseline-a.json",
+      "sha256": "95822928bbda5107cbe2e553f45cc724c24a5b241dafc61818c31ecbfaf9b05c"
+    },
+    {
+      "path": "vectors/baseline-b.json",
+      "sha256": "c282e9053df0a7a3d63993c2ef9874484f9a2c92bcee8a3066b149bdd001c26a"
+    }
+  ],
+  "bundleSha256": "7ba10f5a4cc4026344a22cf41e10b715f104d28595bd972a9b78199b16463411"
+}

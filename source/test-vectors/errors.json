@@ -1,0 +1,266 @@
+{
+  "version": "1.0.0",
+  "vectors": [
+    {
+      "id": "user-rejected",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "req-1",
+        "error": {
+          "code": 4001,
+          "message": "User rejected the request"
+        }
+      }
+    },
+    {
+      "id": "unauthorized",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "req-2",
+        "error": {
+          "code": 4100,
+          "message": "The requested method is not authorized"
+        }
+      }
+    },
+    {
+      "id": "unsupported-method",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "req-3",
+        "error": {
+          "code": 4200,
+          "message": "The requested capability is not supported"
+        }
+      }
+    },
+    {
+      "id": "provider-disconnected",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "req-4",
+        "error": {
+          "code": 4900,
+          "message": "The provider is disconnected from all TBC networks"
+        }
+      }
+    },
+    {
+      "id": "chain-disconnected",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "req-5",
+        "error": {
+          "code": 4901,
+          "message": "The requested TBC network is unavailable"
+        }
+      }
+    },
+    {
+      "id": "parse-error",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": null,
+        "error": {
+          "code": -32700,
+          "message": "Parse error"
+        }
+      }
+    },
+    {
+      "id": "invalid-request",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": null,
+        "error": {
+          "code": -32600,
+          "message": "Invalid request"
+        }
+      }
+    },
+    {
+      "id": "method-not-found",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 8,
+        "error": {
+          "code": -32601,
+          "message": "Method not found"
+        }
+      }
+    },
+    {
+      "id": "invalid-params",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 9,
+        "error": {
+          "code": -32602,
+          "message": "Invalid params"
+        }
+      }
+    },
+    {
+      "id": "internal-error",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": 10,
+        "error": {
+          "code": -32603,
+          "message": "Internal error"
+        }
+      }
+    },
+    {
+      "id": "insufficient-funds",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "req-11",
+        "error": {
+          "code": -32000,
+          "message": "Insufficient funds",
+          "data": {
+            "name": "INSUFFICIENT_FUNDS",
+            "stage": "planning",
+            "retryable": false,
+            "details": {
+              "asset": "tbc:native",
+              "required": "1200",
+              "available": "900"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "partial-broadcast-failure",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "req-12",
+        "error": {
+          "code": -32000,
+          "message": "Transaction bundle broadcast failed",
+          "data": {
+            "name": "BROADCAST_FAILED",
+            "stage": "broadcast",
+            "retryable": true,
+            "details": {
+              "requestHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+              "transactions": [
+                {
+                  "id": "tx-1",
+                  "txid": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                  "status": "submitted"
+                },
+                {
+                  "id": "tx-2",
+                  "txid": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+                  "status": "failed"
+                },
+                {
+                  "id": "tx-3",
+                  "txid": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+                  "status": "not-attempted"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "request-expired",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "req-13",
+        "error": {
+          "code": -32000,
+          "message": "Request expired",
+          "data": {
+            "name": "REQUEST_EXPIRED",
+            "stage": "validation",
+            "retryable": false
+          }
+        }
+      }
+    },
+    {
+      "id": "snapshot-invalidated",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "req-14",
+        "error": {
+          "code": -32000,
+          "message": "Authoritative snapshot changed",
+          "data": {
+            "name": "CONFLICT",
+            "stage": "validation",
+            "retryable": true
+          }
+        }
+      }
+    }
+  ],
+  "cancellationOutcomes": [
+    {
+      "reason": "USER_REJECTED",
+      "channelReachable": true,
+      "disposition": {
+        "reason": "USER_REJECTED",
+        "terminalState": "rejected",
+        "delivery": "respond",
+        "providerCode": 4001,
+        "executionErrorName": null,
+        "retryable": false
+      }
+    },
+    {
+      "reason": "REQUEST_ABORTED",
+      "channelReachable": true,
+      "disposition": {
+        "reason": "REQUEST_ABORTED",
+        "terminalState": "cancelled",
+        "delivery": "suppress",
+        "providerCode": null,
+        "executionErrorName": null,
+        "retryable": false
+      }
+    },
+    {
+      "reason": "REQUEST_EXPIRED",
+      "channelReachable": true,
+      "disposition": {
+        "reason": "REQUEST_EXPIRED",
+        "terminalState": "failed",
+        "delivery": "respond",
+        "providerCode": -32000,
+        "executionErrorName": "REQUEST_EXPIRED",
+        "retryable": false
+      }
+    },
+    {
+      "reason": "SNAPSHOT_INVALIDATED",
+      "channelReachable": true,
+      "disposition": {
+        "reason": "SNAPSHOT_INVALIDATED",
+        "terminalState": "failed",
+        "delivery": "respond",
+        "providerCode": -32000,
+        "executionErrorName": "CONFLICT",
+        "retryable": true
+      }
+    },
+    {
+      "reason": "PROTOCOL_RELEASE_CHANGED",
+      "channelReachable": false,
+      "disposition": {
+        "reason": "PROTOCOL_RELEASE_CHANGED",
+        "terminalState": "cancelled",
+        "delivery": "suppress",
+        "providerCode": null,
+        "executionErrorName": null,
+        "retryable": false
+      }
+    }
+  ]
+}

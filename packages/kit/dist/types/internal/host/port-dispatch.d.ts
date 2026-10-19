@@ -1,0 +1,22 @@
+import { type PortCall, type PortOperation, type PortResponse } from "../core/index.js";
+import type { TwsHostPortOutcome, TwsHostPorts } from "./types.js";
+export declare const TWS_HOST_OPERATION_PORTS: Readonly<{
+    readonly "accounts.resolve": "accounts";
+    readonly "chainData.resolve": "chainData";
+    readonly "policy.resolve": "policy";
+    readonly "permissionStore.load": "permissionStore";
+    readonly "permissionStore.commit": "permissionStore";
+    readonly "approval.request": "approval";
+    readonly "signer.sign": "signer";
+    readonly "crypto.execute": "crypto";
+    readonly "reviewedTransaction.review": "reviewedTransaction";
+    readonly "reviewedTransaction.execute": "reviewedTransaction";
+    readonly "broadcast.submit": "broadcast";
+    readonly "broadcast.submitBatch": "broadcast";
+    readonly "broadcast.reconcile": "broadcast";
+    readonly "clock.now": "clock";
+    readonly "entropy.randomBytes": "entropy";
+}>;
+export declare function assertHostPorts(value: TwsHostPorts): void;
+export declare function dispatchHostPort<K extends PortOperation>(ports: TwsHostPorts, call: PortCall<K>): Promise<PortResponse<K>>;
+export type { TwsHostPortOutcome };

@@ -1,0 +1,167 @@
+{
+  "version": "1.0.0",
+  "bindings": [
+    {
+      "name": "contextHash",
+      "inputSchema": "integration.schema.json#/$defs/trustedContext",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["ApprovalBinding", "OperationCheckpoint", "operationId"]
+    },
+    {
+      "name": "requestHash.transaction",
+      "inputSchema": "transaction-request.schema.json#/$defs/transactionRequest",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["ExecutionPlan", "ApprovalBinding"]
+    },
+    {
+      "name": "requestHash.message",
+      "inputSchema": "signing.schema.json#/$defs/messageRequest",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["ApprovalBinding"]
+    },
+    {
+      "name": "requestHash.typedData",
+      "inputSchema": "signing.schema.json#/$defs/typedDataRequest",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["ApprovalBinding"]
+    },
+    {
+      "name": "requestHash.permission",
+      "inputSchema": "permissions.schema.json#/$defs/requestPermissionsParams",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["PermissionProposal", "ApprovalBinding"]
+    },
+    {
+      "name": "requestHash.switchChain",
+      "inputSchema": "provider.schema.json#/$defs/switchChainParams",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["ChainSwitchProposal", "ApprovalBinding"]
+    },
+    {
+      "name": "requestHash.workflow",
+      "inputSchema": "workflow.schema.json#/$defs/request",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["WorkflowPlan", "ApprovalBinding"]
+    },
+    {
+      "name": "snapshotHash",
+      "inputSchema": "integration.schema.json#/$defs/chainSnapshotPayload",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["ChainSnapshot", "ExecutionPlan"]
+    },
+    {
+      "name": "policyHash",
+      "inputSchema": "integration.schema.json#/$defs/executionPolicyPayload",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["ExecutionPolicy", "ExecutionPlan"]
+    },
+    {
+      "name": "templateHash",
+      "inputSchema": "common.schema.json#/$defs/rawTransaction",
+      "canonicalization": "raw-bytes",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["TransactionTemplate", "Finalize"]
+    },
+    {
+      "name": "planHash",
+      "inputSchema": "integration.schema.json#/$defs/executionPlanPayload",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["ExecutionPlan", "ApprovalBinding"]
+    },
+    {
+      "name": "permissionProposalHash",
+      "inputSchema": "integration.schema.json#/$defs/permissionProposalPayload",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["PermissionProposal", "ApprovalBinding"]
+    },
+    {
+      "name": "chainSwitchProposalHash",
+      "inputSchema": "integration.schema.json#/$defs/chainSwitchProposalPayload",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["ChainSwitchProposal", "ApprovalBinding", "ProviderSessionMutation"]
+    },
+    {
+      "name": "workflowPlanHash",
+      "inputSchema": "workflow.schema.json#/$defs/workflowPlanPayload",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["WorkflowPlan", "ApprovalBinding"]
+    },
+    {
+      "name": "operationHash",
+      "inputSchema": "common.schema.json#/$defs/hash32",
+      "canonicalization": "identity-hash32",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["ApprovalBinding"]
+    },
+    {
+      "name": "bindingHash",
+      "inputSchema": "integration.schema.json#/$defs/approvalBindingPayload",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["ApprovalReceipt", "SignerPort", "Finalize"]
+    },
+    {
+      "name": "releaseFingerprint",
+      "inputSchema": "integration.schema.json#/$defs/protocolRelease",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["OperationCheckpoint", "operationId"]
+    },
+    {
+      "name": "checkpointHash",
+      "inputSchema": "integration.schema.json#/$defs/operationCheckpointPayload",
+      "canonicalization": "rfc8785-jcs-utf8",
+      "algorithm": "sha256",
+      "encoding": "lowercase-hex",
+      "domainSeparator": null,
+      "consumers": ["OperationCheckpoint", "Resume"]
+    }
+  ]
+}

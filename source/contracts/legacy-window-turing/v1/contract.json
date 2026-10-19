@@ -1,0 +1,283 @@
+{
+  "kind": "legacy-window-turing-contract",
+  "version": "1.0.5",
+  "surface": "window.Turing",
+  "permissionNamespace": "legacy-window-turing/v1",
+  "profiles": [
+    {
+      "id": "baseline-a",
+      "required": true,
+      "evidence": "Published provider surface plus the legacy mobile and extension bridges."
+    },
+    {
+      "id": "baseline-b",
+      "required": true,
+      "evidence": "Recorded DurianSwap buy, sell, LP, Pool create, FT create, message-signing, and dependent batch flows."
+    },
+    {
+      "id": "maintenance",
+      "required": false,
+      "evidence": "Wallet-specific merge documentation; exact-origin capability policy required."
+    }
+  ],
+  "fields": [
+    "isReady"
+  ],
+  "methods": [
+    {
+      "path": "connect",
+      "profile": "baseline-a",
+      "required": true,
+      "approval": "permission",
+      "target": "wallet_requestPermissions -> tbc_accounts"
+    },
+    {
+      "path": "disconnect",
+      "profile": "baseline-a",
+      "required": true,
+      "approval": "none",
+      "target": "tbc_disconnect"
+    },
+    {
+      "path": "isConnected",
+      "profile": "baseline-a",
+      "required": true,
+      "approval": "none",
+      "target": "legacy grant lookup"
+    },
+    {
+      "path": "getPubKey",
+      "profile": "baseline-a",
+      "required": true,
+      "approval": "none",
+      "target": "tbc_getAccount"
+    },
+    {
+      "path": "getAddress",
+      "profile": "baseline-a",
+      "required": true,
+      "approval": "none",
+      "target": "tbc_accounts"
+    },
+    {
+      "path": "getNetwork",
+      "profile": "baseline-a",
+      "required": true,
+      "approval": "none",
+      "target": "tbc_chainId"
+    },
+    {
+      "path": "getInfo",
+      "profile": "baseline-a",
+      "required": true,
+      "approval": "none",
+      "target": "wallet metadata"
+    },
+    {
+      "path": "on",
+      "profile": "baseline-a",
+      "required": true,
+      "approval": "none",
+      "target": "legacy event subscription"
+    },
+    {
+      "path": "removeListener",
+      "profile": "baseline-a",
+      "required": true,
+      "approval": "none",
+      "target": "legacy event subscription"
+    },
+    {
+      "path": "getBalance",
+      "profile": "maintenance",
+      "required": false,
+      "approval": "none",
+      "target": "restricted balance read"
+    },
+    {
+      "path": "sendTransaction",
+      "profile": "baseline-b",
+      "required": true,
+      "approval": "transaction",
+      "target": "canonical operation through Host"
+    },
+    {
+      "path": "signTransaction",
+      "profile": "maintenance",
+      "required": false,
+      "approval": "signature",
+      "target": "restricted raw-signing service"
+    },
+    {
+      "path": "signAssociatedTransaction",
+      "profile": "baseline-b",
+      "required": true,
+      "approval": "signature",
+      "target": "restricted associated-signing service through Host"
+    },
+    {
+      "path": "signMessage",
+      "profile": "baseline-b",
+      "required": true,
+      "approval": "signature",
+      "target": "restricted Bitcoin-magic signing service through Host"
+    },
+    {
+      "path": "encrypt",
+      "profile": "maintenance",
+      "required": false,
+      "approval": "crypto",
+      "target": "restricted legacy crypto service"
+    },
+    {
+      "path": "decrypt",
+      "profile": "maintenance",
+      "required": false,
+      "approval": "crypto",
+      "target": "restricted legacy crypto service"
+    },
+    {
+      "path": "sendBatchRequest",
+      "profile": "baseline-b",
+      "required": true,
+      "approval": "transaction",
+      "target": "restricted dependent batch service through Host"
+    },
+    {
+      "path": "mergeUtxos",
+      "profile": "maintenance",
+      "required": false,
+      "approval": "transaction",
+      "target": "restricted TBC maintenance service"
+    },
+    {
+      "path": "mergeFtUtxos",
+      "profile": "maintenance",
+      "required": false,
+      "approval": "transaction",
+      "target": "restricted FT maintenance service"
+    },
+    {
+      "path": "mergeStableCoinUtxos",
+      "profile": "maintenance",
+      "required": false,
+      "approval": "transaction",
+      "target": "restricted stablecoin maintenance service"
+    }
+  ],
+  "events": [
+    {
+      "name": "TuringReady",
+      "source": "document-ready"
+    },
+    {
+      "name": "TuringResponse",
+      "source": "durable-delivery"
+    },
+    {
+      "name": "TuringAccountChanged",
+      "source": "host-committed-state"
+    },
+    {
+      "name": "TuringNetworkChanged",
+      "source": "host-committed-state"
+    }
+  ],
+  "authority": {
+    "source": "native-verified-navigation",
+    "origin": "canonical-exact-origin",
+    "frame": "top-frame-only",
+    "pageMetadata": "display-only",
+    "opaqueOrigin": "reject",
+    "https": "required",
+    "loopback": "explicit-e2e-gate-only"
+  },
+  "permissions": {
+    "namespace": "legacy-window-turing/v1",
+    "shareWithTws": false,
+    "connect": {
+      "request": "wallet_requestPermissions",
+      "capabilities": [
+        "tbc_accounts",
+        "tbc_accountMetadata",
+        "tbc_signTransaction"
+      ],
+      "accountRead": "tbc_accounts",
+      "nativeApprovalCount": 1
+    },
+    "scope": [
+      "origin",
+      "chainId",
+      "accountId",
+      "method"
+    ],
+    "disconnect": "revoke-legacy-only",
+    "restart": "durable-grant-fresh-session"
+  },
+  "transport": {
+    "requestCorrelation": "internal-unique-id",
+    "pendingBy": "request-id",
+    "methodNameCorrelation": false,
+    "boundedPending": true,
+    "boundedTimeout": true,
+    "cancelOn": [
+      "navigation",
+      "origin-change",
+      "renderer-close",
+      "session-revoke"
+    ],
+    "staleDelivery": "suppress",
+    "delivery": "durable-outbox-before-page",
+    "acknowledgement": "same-host-recovery-path"
+  },
+  "errors": {
+    "businessFailureSettlement": "resolve",
+    "businessFailureShape": "{error:string}",
+    "transportFailureSettlement": "reject",
+    "transportFailureMessage": "Legacy wallet session closed",
+    "userRejection": {
+      "connect": "User rejected the request",
+      "sendTransaction": "User cancelled the transaction",
+      "signMessage": "User cancelled the sign message",
+      "signTransaction": "User cancelled the sign transaction",
+      "signAssociatedTransaction": "User cancelled the sign associated transaction",
+      "crypto": "User cancelled the crypto operation",
+      "batch": "User cancelled the batch request"
+    },
+    "invalidParams": "Missing required parameters",
+    "unauthorized": "User not connected",
+    "busy": "Another wallet request is already pending",
+    "unsupported": "Unsupported legacy operation"
+  },
+  "execution": {
+    "path": [
+      "normalize",
+      "plan",
+      "approval-binding",
+      "wallet-private-signer",
+      "finalize",
+      "optional-broadcast"
+    ],
+    "hostPorts": 9,
+    "hostRequired": true,
+    "adapterMayAccessVault": false,
+    "adapterMayHoldPrivateKey": false,
+    "adapterMayRetryBroadcast": false,
+    "legacyMayEnterEngine": false,
+    "publicPackagesMayDependOnLegacy": false
+  },
+  "deletion": {
+    "featureBoundary": "platform injection and registration only",
+    "remove": [
+      "legacy adapter",
+      "contract consumer",
+      "legacy tests"
+    ],
+    "unchanged": [
+      "Wallet Standard",
+      "five public packages",
+      "Host ports",
+      "Engine"
+    ]
+  }
+}

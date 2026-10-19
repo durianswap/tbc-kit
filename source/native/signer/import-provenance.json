@@ -1,0 +1,52 @@
+{
+  "sourceRepository": "/Users/alex/Documents/Codex/2026-09-03/mobile141-release",
+  "sourceCommit": "0924282c3d7442486dc538a492ba23b2e27fe0e2",
+  "sourceSubdirectory": "modules/tbc-transaction-engine/signer-kernel",
+  "importPolicy": "Verbatim crypto, ABI, vectors and WASM adapter; no old build script or wallet runtime dependency.",
+  "files": [
+    {
+      "path": "Cargo.toml",
+      "sha256": "fed511467685525428529547ab123f7117ccb99c0ca0c1767ff1d8b30f0ea131"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "2134a116e7cad9730cbd64bf4cd437754bec2c74b7dcdcf69bf6ef956dc97810"
+    },
+    {
+      "path": "src/lib.rs",
+      "sha256": "d4966437b3643597d948b4ce19aa6ec289913a3c57cee3bcf323106061cf70ee"
+    },
+    {
+      "path": "fixtures/common-vectors.json",
+      "sha256": "6d64e91701cd955228f5ae8ecf6d31cf46073bb4e264d741032a3e74f15108b4"
+    },
+    {
+      "path": "tests/compatibility.rs",
+      "sha256": "529483f0016355ae1e15dedcb0e71a7ae8b3dcf3b06f556f9336ea5625f25981"
+    },
+    {
+      "path": "include/module.modulemap",
+      "sha256": "657ca66ac833ac65be45074c9f7f1ddc469baf7670026b49e61c555d709309e4"
+    },
+    {
+      "path": "include/tbc_signer_kernel.h",
+      "sha256": "a65c546db6ddefc26cf5c486512005d48c77d2f56a2851b2c8e9edf35e4ad463"
+    },
+    {
+      "path": "wasm/adapter.mjs",
+      "sha256": "897a3e8da0ba5d0662349743236d4023d458324d1cb24bdeff732c0a5b31e75b"
+    },
+    {
+      "path": "wasm/adapter.d.mts",
+      "sha256": "1cdb30e92ab9e0bbe0c05d246cd60e62902c65a6d0be1864120a8bea26d2c972"
+    },
+    {
+      "path": "wasm/compat.h",
+      "sha256": "be50a8d39553e2e936bddb64b42c2438e2ab42f6f1dbf889da89ca8b7913a35b"
+    },
+    {
+      "path": "scripts/check.mjs",
+      "sha256": "790ec73018b5058a3cbc7bc0141d3ce9f9ea1683fdb1d663f0308fdfd0bfddc0"
+    }
+  ]
+}

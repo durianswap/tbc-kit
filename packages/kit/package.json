@@ -1,0 +1,110 @@
+{
+  "name": "@tbc/kit",
+  "version": "0.1.0-rc.1",
+  "description": "TBC SDK for applications, wallets and backends",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "artifacts/api-rpc-coverage.json",
+    "artifacts/provenance.json",
+    "artifacts/wasm",
+    "dist",
+    "docs",
+    "examples",
+    "README.md",
+    "SUPPORT.md",
+    "LICENSE",
+    "artifacts/platform-resources.json",
+    "artifacts/distribution.json"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "react-native": "./dist/esm/index.native.js",
+      "browser": "./dist/esm/index.js",
+      "node": {
+        "import": "./dist/esm/index.node.js",
+        "require": "./dist/cjs/index.cjs"
+      },
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.js"
+    },
+    "./wallet": {
+      "types": "./dist/types/wallet.d.ts",
+      "react-native": "./dist/esm/wallet.js",
+      "browser": "./dist/esm/wallet.js",
+      "node": {
+        "import": "./dist/esm/wallet.node.js",
+        "require": "./dist/cjs/wallet.cjs"
+      },
+      "import": "./dist/esm/wallet.js",
+      "require": "./dist/cjs/wallet.cjs",
+      "default": "./dist/esm/wallet.js"
+    },
+    "./engine": {
+      "types": "./dist/types/engine.d.ts",
+      "react-native": "./dist/esm/engine.js",
+      "browser": "./dist/esm/engine.js",
+      "node": {
+        "import": "./dist/esm/engine.node.js",
+        "require": "./dist/cjs/engine.cjs"
+      },
+      "import": "./dist/esm/engine.js",
+      "require": "./dist/cjs/engine.cjs",
+      "default": "./dist/esm/engine.js"
+    },
+    "./rpc": {
+      "types": "./dist/types/rpc.d.ts",
+      "browser": "./dist/esm/rpc.js",
+      "import": "./dist/esm/rpc.js",
+      "require": "./dist/cjs/rpc.cjs",
+      "default": "./dist/esm/rpc.js"
+    },
+    "./api": {
+      "types": "./dist/types/api.d.ts",
+      "browser": "./dist/esm/api.js",
+      "import": "./dist/esm/api.js",
+      "require": "./dist/cjs/api.cjs",
+      "default": "./dist/esm/api.js"
+    },
+    "./sqlite": {
+      "types": "./dist/types/sqlite.d.ts",
+      "react-native": "./dist/esm/sqlite.js",
+      "import": "./dist/esm/sqlite.js",
+      "require": "./dist/cjs/sqlite.cjs",
+      "default": "./dist/esm/sqlite.js"
+    },
+    "./testing": {
+      "types": "./dist/types/testing.d.ts",
+      "import": "./dist/esm/testing.js",
+      "require": "./dist/cjs/testing.cjs",
+      "default": "./dist/esm/testing.js"
+    },
+    "./multisig": {
+      "types": "./dist/types/multisig.d.ts",
+      "import": "./dist/esm/multisig.js",
+      "require": "./dist/cjs/multisig.cjs",
+      "default": "./dist/esm/multisig.js"
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "CC0-1.0",
+  "dependencies": {
+    "@noble/curves": "1.9.7",
+    "@noble/hashes": "1.8.0",
+    "@wallet-standard/core": "1.1.2",
+    "buffer": "6.0.3",
+    "bs58": "4.0.1",
+    "elliptic": "6.6.1",
+    "hash.js": "1.1.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/durianswap/tbc-kit.git"
+  },
+  "homepage": "https://github.com/durianswap/tbc-kit#readme"
+}

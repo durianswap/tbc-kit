@@ -1,0 +1,36 @@
+{
+  "name": "@tbc-wallet/core",
+  "version": "1.0.0-draft.6.10",
+  "description": "Portable resumable Core for TBC Wallet Standard 1.0",
+  "private": false,
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "react-native": "./dist/esm/index.js",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.js"
+    },
+    "./release": {
+      "types": "./dist/types/release.d.ts",
+      "react-native": "./dist/esm/release.js",
+      "import": "./dist/esm/release.js",
+      "require": "./dist/cjs/release.cjs",
+      "default": "./dist/esm/release.js"
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@noble/curves": "1.9.7",
+    "@noble/hashes": "1.8.0"
+  }
+}

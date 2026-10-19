@@ -1,0 +1,249 @@
+[
+  {
+    "path": "Cargo.toml",
+    "sha256": "50c09349f0ddc03fe960055d7ed2a74c0e2d3779af76b9a6489ba6aadad81c2c",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/Cargo.toml",
+      "sha256": "00ccf18bf3cab38c73b6cf0b3a69db4565587ae0ba6c35c201fbb677482b5954"
+    },
+    "reason": "Keep network, HD, mnemonic, and RNG capabilities optional behind network-api/internal-signing; select verify-only secp256k1 on native targets and pure-Rust k256 on wasm32 so the deterministic keyless core builds without a C cross-toolchain.",
+    "coveringTest": "crates/tbc-engine-core/tests/keyless_dependency_boundary.rs#no_feature_core_dependency_tree_excludes_network_hd_and_randomness_crates"
+  },
+  {
+    "path": "src/api.rs",
+    "sha256": "883a4ab7cf413311b9c23f7a932b182bee6269d7555bce9b99d9849d35aedaec",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/api.rs",
+      "sha256": "4ccceffd2a0716304771781205f30db2dc63af793bbe57872a2aef788af2323c"
+    },
+    "reason": "Publicly re-export the neutral UTXO DTOs from the network-api-only API module so established network-enabled downstream import paths remain compatible.",
+    "coveringTest": "crates/tbc-engine-core/tests/network_api_compat.rs#network_api_preserves_established_dto_import_paths"
+  },
+  {
+    "path": "src/contracts/pool_nft_v2/builder.rs",
+    "sha256": "7566b8fa33454897bf38b44547d6b7bf3dc274f424b3d14102a25e3c7d926203",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/contracts/pool_nft_v2/builder.rs",
+      "sha256": "cde898cc395ecc2d08fdf009d1a6c0e5924cb17d21be5a9afe8aacc2de4e6ab2"
+    },
+    "reason": "Compile the ApiClient-dependent pool constructor and its network-only helper only when network-api is enabled.",
+    "coveringTest": "crates/tbc-engine-core/tests/no_network_boundary.rs#no_network_consumers_cannot_compile_network_api_symbols"
+  },
+  {
+    "path": "src/contracts/pool_nft_v2/mod.rs",
+    "sha256": "d45af7399b6fe3cd8f80c42f316ee9a5c69f5d870162d2ef46ddfa35bb5d30dc",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/contracts/pool_nft_v2/mod.rs",
+      "sha256": "fcec056f185ffa73c599554a504b2a651d9e45d5b1d083702241e78a0e49658e"
+    },
+    "reason": "Feature-gate ApiClient-dependent pool methods and the legacy secret-taking Pool builder facade while exporting neutral Pool data, math, scripts, validated unlock templates, and the unsigned unlock-body constructor used for keyless maximum-size fee planning.",
+    "coveringTest": "crates/tbc-engine-core/tests/pool_signing_recipes.rs#standard_large_pool_is_unsigned_and_materializes_source_exactly"
+  },
+  {
+    "path": "src/contracts/pool_nft_v2/unlock.rs",
+    "sha256": "2bc9faddafc99a2d9c3da878bc721db5e15a53c539126997f1a132710a59d81e",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/contracts/pool_nft_v2/unlock.rs",
+      "sha256": "c7c4bfab94fcdc0874278bf33421731204f3013b9912bfc7282c3d63dc790374"
+    },
+    "reason": "Expose keyless Pool unlock validation and the exact unsigned unlock body so the core can materialize the maximum legal external-signature envelope without constructing or receiving a private key.",
+    "coveringTest": "crates/tbc-engine-core/tests/pool_signing_recipes.rs#locked_pool_swap_has_one_ordered_external_request_and_source_exact_bytes"
+  },
+  {
+    "path": "src/error.rs",
+    "sha256": "15769780dc9ae97172a50219c4022c0c634f14df26da191da6a6aca8229e5ed5",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/error.rs",
+      "sha256": "d69239490d58bc0e2686a9b6a3f7a75bedeccf37fedf0ec05a500f65598000e4"
+    },
+    "reason": "Compile reqwest and native secp256k1 error variants only on targets that provide them so the shared SDK error type remains offline and wasm32-compatible.",
+    "coveringTest": "crates/tbc-engine-core/tests/wire.rs#sdk_transaction_and_contract_types_link_without_network_features"
+  },
+  {
+    "path": "src/lib.rs",
+    "sha256": "4170593eb519d3261ffa673b87e4a1e21679ca1cadf09acca8387bea61d5bd6f",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/lib.rs",
+      "sha256": "44f26fee572fe465510539ac7d1811e54fcd3b679887dc7c773c4da392c67697"
+    },
+    "reason": "Keep neutral offline DTOs and contract data available while removing secret key, HD key, internal builder, signing-method, multisig, and orderbook exports from the no-default-feature core dependency surface.",
+    "coveringTest": "crates/tbc-engine-core/tests/keyless_dependency_boundary.rs#no_feature_sdk_hides_secret_taking_builders_and_signing_methods"
+  },
+  {
+    "path": "src/offline.rs",
+    "sha256": "ecaca649e6052493a705fa0d03330682cba124b55f91a43bf8113dc67c94833a",
+    "status": "added",
+    "reason": "Define only the neutral UtxoInfo and FtlpUtxo data types required by deterministic transaction and contract code without exposing network behavior.",
+    "coveringTest": "crates/tbc-engine-core/tests/wire.rs#sdk_transaction_and_contract_types_link_without_network_features"
+  },
+  {
+    "path": "src/validator.rs",
+    "sha256": "dd2ce1dd341add411252af92fb5a9864ae6682b09278199f8385055f1a49266e",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/validator.rs",
+      "sha256": "21e9f7b79c287bec20780e8e5b7aa6fd345ab448ed7fca4c998b9d3ad1cc2bfc"
+    },
+    "reason": "Compile the validator's API-preloading entry points and production network URL selection only when network-api is enabled while retaining the offline fetcher path.",
+    "coveringTest": "crates/tbc-engine-core/tests/no_network_boundary.rs#no_network_consumers_cannot_compile_network_api_symbols"
+  },
+  {
+    "path": "src/sighash.rs",
+    "sha256": "8050a7f210b72a21d1aaf9e283dc3a7028afe472cc740fd27d940f173e97ca81",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/sighash.rs",
+      "sha256": "70c80a0c576e561f162966b195855f628f5e14259bd7bc1007053292f5e28c41"
+    },
+    "reason": "Expose low-S ECDSA verification over the existing forkid digest, using secp256k1 natively and k256 on wasm32, so externally supplied signatures are verified without signing capability.",
+    "coveringTest": "crates/tbc-engine-core/tests/signing.rs#finalize_rejects_high_s_signature"
+  },
+  {
+    "path": "src/transaction.rs",
+    "sha256": "fe324c52e1160fd77eefa200c479ea3b670bdf4177a0faa0dce3a4fe0c64af26",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/transaction.rs",
+      "sha256": "1eb27780788021febb90c9be35448d542e15e041ac4ff764d2633e8aef506ac7"
+    },
+    "reason": "Retain verified external P2PKH insertion and feature-gated legacy signing while bounding compact-size transaction counts from remaining bytes and using checked allocation so hostile raw parents return an error instead of panicking.",
+    "coveringTest": "crates/tbc-engine-core/tests/signing.rs#hostile_compact_size_parent_counts_return_invalid_plan_without_panicking"
+  },
+  {
+    "path": "src/builder.rs",
+    "sha256": "a43a65a79e74fdbd1c67e670e928c80de986af6ae57d627b4c8d9a8827f8081e",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/builder.rs",
+      "sha256": "1b25cd647db26d862e6502d269ed6fa5928940616b77bd9a17ea88ac6fa5d779"
+    },
+    "reason": "Keep the neutral UTXO shape available without a secret field while compiling TransactionBuilder and fee/signing helpers only behind internal-signing.",
+    "coveringTest": "crates/tbc-engine-core/tests/keyless_dependency_boundary.rs#no_feature_sdk_hides_secret_taking_builders_and_signing_methods"
+  },
+  {
+    "path": "src/contracts/ft/mod.rs",
+    "sha256": "471175b5e6f62bb77a157f1353e3f131887e418f468efc9814c8f23f7fd3248d",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/contracts/ft/mod.rs",
+      "sha256": "f373ab1ca58559bdd5b997032ed10f9548e25c41beb6b1a59cfdd02652a733af"
+    },
+    "reason": "Remove the secret-taking FT builder module from no-default-feature consumers while retaining neutral FT data, scripts, and validation types.",
+    "coveringTest": "crates/tbc-engine-core/tests/keyless_dependency_boundary.rs#no_feature_sdk_hides_secret_taking_builders_and_signing_methods"
+  },
+  {
+    "path": "src/contracts/mod.rs",
+    "sha256": "c7f533c218d40d37c45d382e1feb92e2a2dfa4f22ef5bdc015aacd25d6dae2fd",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/contracts/mod.rs",
+      "sha256": "a9f9c9a70baefa185b0310179e10e72003a741db983742d31e0c549649ef4f9f"
+    },
+    "reason": "Exclude legacy multisig and orderbook modules that expose secret-taking builders from the keyless no-default-feature dependency surface.",
+    "coveringTest": "crates/tbc-engine-core/tests/keyless_dependency_boundary.rs#no_feature_sdk_hides_secret_taking_builders_and_signing_methods"
+  },
+  {
+    "path": "src/contracts/nft/mod.rs",
+    "sha256": "c0b41952556412f3a8076232b549f32618103d38f5a25540bf959e30270060d6",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/contracts/nft/mod.rs",
+      "sha256": "678eb760bb6966e57e44299bb62108c6d98880ffba44c67f279e84a60931e19a"
+    },
+    "reason": "Compile the secret-taking NFT builder implementation only behind internal-signing while preserving the neutral NFT model and scripts.",
+    "coveringTest": "crates/tbc-engine-core/tests/keyless_dependency_boundary.rs#no_feature_sdk_hides_secret_taking_builders_and_signing_methods"
+  },
+  {
+    "path": "src/contracts/pool_nft_v2/scripts.rs",
+    "sha256": "78c8021defed156559255f4a667a94de727522348ba9e8688b612067ae73f195",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/contracts/pool_nft_v2/scripts.rs",
+      "sha256": "bf4b2300526b58654553b72fb4f1f1e76311136fe969a89decc8d689bda44933"
+    },
+    "reason": "Compile the helper consumed only by the legacy secret-taking Pool builder behind internal-signing while retaining public neutral script constructors.",
+    "coveringTest": "crates/tbc-engine-core/tests/keyless_dependency_boundary.rs#no_feature_sdk_hides_secret_taking_builders_and_signing_methods"
+  },
+  {
+    "path": "src/contracts/stable_coin/mod.rs",
+    "sha256": "208275c20e9644d0b4df0331f6712e57e8936464c316c24b92dadfe7efbe98f2",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/contracts/stable_coin/mod.rs",
+      "sha256": "0c682656043271f05882ea8d6cf711a98baade276b2a477705d6e4a869894e48"
+    },
+    "reason": "Remove the secret-taking StableCoin builder module from the keyless no-default-feature surface while retaining neutral StableCoin data and scripts.",
+    "coveringTest": "crates/tbc-engine-core/tests/keyless_dependency_boundary.rs#no_feature_sdk_hides_secret_taking_builders_and_signing_methods"
+  },
+  {
+    "path": "src/contracts/tbc20/mod.rs",
+    "sha256": "736406e28e98c6aed80440867165741b8770ff75ced2ead0cafa5b8c2ed79289",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/contracts/tbc20/mod.rs",
+      "sha256": "8a666307973b25de31c3056ca4e835b0b8f92ca993e74d665bca85cb382c9cdc"
+    },
+    "reason": "Compile secret-taking TBC20 builder and unlock APIs only behind internal-signing while retaining the neutral TBC20 model, parsing, and script construction surface.",
+    "coveringTest": "crates/tbc-engine-core/tests/keyless_dependency_boundary.rs#no_feature_sdk_hides_secret_taking_builders_and_signing_methods"
+  },
+  {
+    "path": "src/keys.rs",
+    "sha256": "8a83d0a2b91af012ce2e947691e5709336df1741039c539e88516cece1893be8",
+    "status": "modified",
+    "sourceBaseline": {
+      "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+      "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+      "path": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk/src/keys.rs",
+      "sha256": "42d9dc0f0004ea64e3c42e5e3c3466d18aa37e49adb281e0d8f4a5599e8118cb"
+    },
+    "reason": "Compile secret key construction, derivation, and signing only behind internal-signing while retaining target-specific public-key parsing and signature verification for the keyless native and wasm32 core.",
+    "coveringTest": "crates/tbc-engine-core/tests/keyless_dependency_boundary.rs#no_feature_sdk_hides_secret_taking_builders_and_signing_methods"
+  },
+  {
+    "path": "README.md",
+    "sha256": "0e911f68b987c3e37f1b6fe14fab9076586d4425c3d632d752f395eb9514557a",
+    "status": "modified",
+    "reason": "Remove one migration-local broken documentation link whose target is absent from the immutable vendored SDK snapshot; retain the linked testnet evidence and all protocol text."
+  }
+]

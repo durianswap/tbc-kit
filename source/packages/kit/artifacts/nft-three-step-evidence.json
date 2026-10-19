@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "candidate": "@tbc/kit@0.1.0-candidate.81",
+  "baseline": {
+    "candidate": "@tbc/kit@0.1.0-candidate.80",
+    "tarSha256": "5d814bfb32e39bbabbfdba5905d8a35469c92dc244c5cd978c938c296c98390c"
+  },
+  "scope": [
+    "tbc.collection.create",
+    "tbc.nft.mint",
+    "tbc.nft.transfer"
+  ],
+  "controlledEvidence": {
+    "onePrimaryTransactionEach": true,
+    "transactionIds": ["collection-create-1", "nft-mint-1", "nft-transfer-1"],
+    "signingTaskCounts": [1, 2, 3],
+    "officialIndexReads": {
+      "collectionSlot": 1,
+      "nftCurrent": 1,
+      "holdStatus": 1
+    },
+    "zeroFloorConfirmationDecodeReads": 0,
+    "immutableSuccessorRawReads": 0,
+    "packageTests": "NFT focused 3 passed; official API focused 12 passed; portability and package gates 5 passed",
+    "rustFocusedTests": "3 passed, 0 failed",
+    "negativeChecks": [
+      "mismatched collection slot value",
+      "positive confirmation floor without observation",
+      "ambiguous legacy media bytes",
+      "legacy hidden field",
+      "invalid contract identity",
+      "invalid recipient"
+    ],
+    "realResponseCompatibility": [
+      "official UTXO height -1 normalizes to internal mempool height 0",
+      "deployed TXO status results array normalizes to canonical txos",
+      "missing collection script index performs one exact authenticated-outpoint status read",
+      "missing exact status is retryable unavailable and spent status is a conflict",
+      "deployed NFT UTXO aliases normalize once at the official API boundary",
+      "conflicting deployed and canonical NFT UTXO aliases fail closed"
+    ]
+  },
+  "identity": {
+    "protocolFingerprint": "3d20a69868e02a97df95729ada9d978cb33fbc41f02c31f317843195853ed3fe",
+    "schemaBundleSha256": "533ca4933e67ed6d956f535230bf46d6876124adc0cf901b3b8193390d423962",
+    "engineWasmSha256": "3cad0cc9fe5da234e41f577e928302210119438101040ef0b7c83affef312fac",
+    "keylessWasmSha256": "33438386352041d1b5e259d28b8076a3d0c93e611983d06662ee9732a51acb43",
+    "macosKeylessNativeSha256": "f14440fe7e976eb4f48e014a51a73f0be0ec9580e250db73534028a15ea391c4",
+    "mobileTransactionNative": {
+      "source": "unchanged frozen candidate75-native pairing used by candidate.78 Mobile",
+      "iosDeviceSha256": "72d74e82c56fcac09dfd235dcc8c90619ff31c4f34275292161bc2952a8f224d",
+      "iosSimulatorSha256": "20036599dd4502c4696e838a3faa5245696abfc4ad9f259cf28c38d47c321e26"
+    }
+  },
+  "sourceSha256": {
+    "schemas/integration.schema.json": "e1e7a5ce2916d8c893b54f01c8ce423c147add6f5f8d527a12e965329b0259fd",
+    "packages/kit/src/client.ts": "7de1fd020694802bf9068d13cd84d91350885beecc6297ad9d05cafdf1ca43d1",
+    "packages/kit/src/default-chain-data.ts": "63fee9fef20a01c20733182d9b8fb727824d8d7357e8e14c6416e9c6e2cd70aa",
+    "packages/kit/src/nft-material.ts": "3a07767e8460d8b5af473689cc4bc63db0832e51edb3c3708b9d0db343bff840",
+    "packages/kit/src/official-api.ts": "8dc29d814037c7e27e572f8098ce6a67d4afffe745f2518fc3d7e8b72ca485bc",
+    "packages/kit/src/legacy-nft-intent.ts": "2a7ca702ab02e7d847ec91d0fd4674b0e69a8053ffc7a2fa66b71ee416b2ebf8",
+    "packages/kit/test/nft-three-step.test.mjs": "e7f03436567fea8638bc58a55f9a40b7f9f76c67803f8d4cd4c421b2dc3e7300",
+    "packages/kit/test/official-api-rpc.test.ts": "93afde45b1f33ab9cc2f6792b4e279f680d83a0a8f8af41e1e71fac7dbf16b25",
+    "packages/kit/test/legacy-nft-intent.test.mjs": "53d6f2769a574199279e383194e4741d984ad579bcf6ec5112a92e5602520755"
+  },
+  "boundaries": {
+    "deviceAcceptance": "not run by Kit",
+    "realTestnetBroadcast": "owned by Mobile",
+    "performanceClaim": "none; controlled request counts only",
+    "androidClaim": "none"
+  }
+}

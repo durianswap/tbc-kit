@@ -1,0 +1,262 @@
+{
+  "version": "1.0.0",
+  "chainId": "tbc:mainnet",
+  "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+  "vectors": [
+    {
+      "id": "tbc-transfer",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "clientRequestId": "vector-transfer-1",
+        "intent": {
+          "type": "tbc.transfer",
+          "version": "1.0",
+          "to": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "amount": "100000000"
+        },
+        "constraints": {
+          "maxFee": "1000",
+          "feePreference": "standard"
+        }
+      }
+    },
+    {
+      "id": "collection-create",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.collection.create",
+          "version": "1.0",
+          "name": "TWS Collection",
+          "description": "TWS collection conformance vector",
+          "supply": "2000",
+          "media": {
+            "kind": "uri",
+            "uri": "ipfs://bafybeigdyrztwscollection"
+          }
+        }
+      }
+    },
+    {
+      "id": "nft-mint",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.nft.mint",
+          "version": "1.0",
+          "collectionId": "1111111111111111111111111111111111111111111111111111111111111111",
+          "name": "TWS NFT #1",
+          "symbol": "TWSNFT",
+          "description": "TWS NFT conformance vector",
+          "attributes": [
+            {
+              "traitType": "generation",
+              "value": 1
+            }
+          ],
+          "media": {
+            "kind": "uri",
+            "uri": "https://example.test/nft/1.png",
+            "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+          }
+        }
+      }
+    },
+    {
+      "id": "nft-transfer",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.nft.transfer",
+          "version": "1.0",
+          "contractId": "3333333333333333333333333333333333333333333333333333333333333333",
+          "to": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+        }
+      }
+    },
+    {
+      "id": "ft-create",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.ft.create",
+          "version": "1.0",
+          "name": "TWS Token",
+          "symbol": "TWS",
+          "decimals": 8,
+          "initialSupply": "2100000000000000"
+        }
+      }
+    },
+    {
+      "id": "ft-transfer",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.ft.transfer",
+          "version": "1.0",
+          "contractId": "4444444444444444444444444444444444444444444444444444444444444444",
+          "to": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "amount": "500000000",
+          "attachedTbcAmount": "0"
+        }
+      }
+    },
+    {
+      "id": "stablecoin-transfer",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.stablecoin.transfer",
+          "version": "1.0",
+          "contractId": "5555555555555555555555555555555555555555555555555555555555555555",
+          "to": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "amount": "2500000",
+          "attachedTbcAmount": "100"
+        }
+      }
+    },
+    {
+      "id": "pool-create",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.pool.create",
+          "version": "1.0",
+          "ftContractId": "6666666666666666666666666666666666666666666666666666666666666666",
+          "lpPlan": 2,
+          "serviceProviderTag": "durianswap",
+          "initialLiquidity": {
+            "receiver": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+            "tbcAmount": "10000000000",
+            "ftAmount": "50000000000"
+          },
+          "lock": {
+            "publicKeys": [
+              "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
+            ],
+            "costRecipient": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+            "costAmount": "1000",
+            "untilHeight": "900000"
+          }
+        }
+      }
+    },
+    {
+      "id": "pool-liquidity-add",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.pool.liquidity.add",
+          "version": "1.0",
+          "poolContractId": "7777777777777777777777777777777777777777777777777777777777777777",
+          "receiver": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "tbcAmount": "500000000",
+          "minimumLpAmount": "1000000",
+          "lockUntilHeight": "900000"
+        }
+      }
+    },
+    {
+      "id": "pool-liquidity-remove",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.pool.liquidity.remove",
+          "version": "1.0",
+          "poolContractId": "7777777777777777777777777777777777777777777777777777777777777777",
+          "receiver": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "lpAmount": "1000000",
+          "minimumTbcAmount": "490000000",
+          "minimumFtAmount": "2450000000"
+        }
+      }
+    },
+    {
+      "id": "pool-liquidity-close",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.pool.liquidity.close",
+          "version": "1.0",
+          "poolContractId": "7777777777777777777777777777777777777777777777777777777777777777"
+        }
+      }
+    },
+    {
+      "id": "pool-ftlp-burn",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.pool.ftlp.burn",
+          "version": "1.0",
+          "poolContractId": "7777777777777777777777777777777777777777777777777777777777777777"
+        }
+      }
+    },
+    {
+      "id": "pool-swap-exact-tbc-for-token",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.pool.swap.exactTbcForToken",
+          "version": "1.0",
+          "poolContractId": "7777777777777777777777777777777777777777777777777777777777777777",
+          "receiver": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "tbcAmount": "100000000",
+          "minimumFtAmount": "490000000"
+        },
+        "constraints": {
+          "expiresAt": "2026-08-31T12:05:00Z",
+          "maxFee": "5000"
+        }
+      }
+    },
+    {
+      "id": "pool-swap-exact-token-for-tbc",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.pool.swap.exactTokenForTbc",
+          "version": "1.0",
+          "poolContractId": "7777777777777777777777777777777777777777777777777777777777777777",
+          "receiver": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "ftAmount": "500000000",
+          "minimumTbcAmount": "98000000"
+        },
+        "constraints": {
+          "expiresAt": "2026-08-31T12:05:00Z",
+          "feePreference": "priority"
+        }
+      }
+    }
+  ]
+}

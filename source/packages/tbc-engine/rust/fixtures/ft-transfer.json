@@ -1,0 +1,48 @@
+{
+  "source": {
+    "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+    "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+    "path": "modules/tbc-transaction-engine/rust/src/lib.rs",
+    "function": "build_ft_transaction_json",
+    "sdkFunction": "Ft::transfer"
+  },
+  "direct": {
+    "balances": ["1000"],
+    "amount": "400",
+    "attachedTbcAmount": "24",
+    "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+    "expectedRoles": ["primary"],
+    "expected": {
+      "planHash": "7bb80e52ce15eeb148921fe8ca190808144330410eeef36ca61274390352b227",
+      "templateHashes": ["465a560f4e9202669548a5e23854060878558ca60cfad05762c05c013471e688"],
+      "stageZeroDigests": [
+        "db6395c884cc7c95bb9311da7fa979daf0d92e84566e9c70c6db28619929d49e",
+        "43f61165d5cc7ae6a9e88bda4873cb915b68a41daacd171142d48e5ce99ba8f1"
+      ],
+      "fees": ["440"]
+    }
+  },
+  "mergeRequired": {
+    "balances": ["100", "100", "100", "100", "100", "100"],
+    "amount": "550",
+    "attachedTbcAmount": "24",
+    "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+    "expectedRoles": ["maintenance", "primary"],
+    "expected": {
+      "planHash": "04d535157265cec2b1a8e17ec252a4c6cb6fe756d4ea7ca5acc75043f936f8bd",
+      "templateHashes": [
+        "1f779e0a19f09b941cf9be5349b65ae54917e6312eb304cf0a1f20f19658675b",
+        "772a33ed705b2f9cd9acb13a6146c962de0a2f59e4370e105c870961166e9bf7"
+      ],
+      "stageZeroDigests": [
+        "864e030c5586ff058607b164939ef835a9526f8aebc0a6302adcccc1e47432b8",
+        "533a9647db3b477fe590a7adde586b3f8a060affe544de6be8076452b7e438b8",
+        "fee261c7f87c11ee34dd0197068ac9552e060de5607295707dcec70e27ad67f8",
+        "72202b154bea7e6b753d320eb28488e9055cfbdbb19da427f5d6f8b0cddce075",
+        "e7bcff8f5baf5deceb74f1c50db4806a94958ed1ae3d9be82b29abbb68570027",
+        "6ed710522e073f6b5b70a7c6686a02f108257ee99849cca41b2a1d36cbf6e207"
+      ],
+      "fees": ["476", "605"]
+    }
+  }
+}

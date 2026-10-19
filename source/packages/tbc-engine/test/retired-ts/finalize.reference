@@ -1,0 +1,246 @@
+// Historical TS implementation test. Replaced by required Rust and artifact tests;
+// see ../README.md. Retained as migration evidence, not an executable test.
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import { after, before, test } from "node:test";
+import { secp256k1 } from "@noble/curves/secp256k1.js";
+import { createApprovalBinding, hashCanonical } from "@tbc-wallet/core";
+import { loadInternals } from "./build-internals.mjs";
+import { makeTransferFixture } from "./fixtures/arbitrary-transfers.mjs";
+
+const vectors = JSON.parse(
+  await readFile(new URL("../../../test-vectors/integration.json", import.meta.url), "utf8"),
+);
+const canonical = vectors.canonicalTransfer;
+const PRIVATE_KEY = "01".padStart(64, "0");
+const CURVE_N = secp256k1.CURVE.n;
+
+let internals;
+let cleanup;
+
+before(async () => {
+  ({ runtime: internals, cleanup } = await loadInternals([
+    "bytes",
+    "p2pkh",
+    "transaction",
+    "turing-txid",
+    "signature",
+    "finalize",
+    "engine",
+  ]));
+});
+
+after(() => cleanup?.());
+
+function canonicalFinalizeParams(changes = {}) {
+  return {
+    version: "1.0",
+    request: canonical.request,
+    requestHash: canonical.requestHash,
+    snapshot: canonical.snapshot,
+    policy: canonical.policy,
+    plan: canonical.plan,
+    binding: canonical.binding,
+    approval: canonical.approval,
+    signatures: [canonical.signature],
+    ...changes,
+  };
+}
+
+function approvalFor(plan, request, requestHash) {
+  const binding = createApprovalBinding({
+    version: "1.0",
+    method: "tbc_signTransaction",
+    operationKind: "transaction",
+    contextHash: "ab".repeat(32),
+    origin: "https://wallet.test",
+    sessionId: "session-arbitrary-1",
+    chainId: request.chainId,
+    accountId: plan.payload.accountId,
+    requestHash,
+    operationHash: plan.planHash,
+    expiresAt: plan.payload.expiresAt,
+  });
+  const approval = {
+    status: "approved",
+    approvalId: "approval-arbitrary-1",
+    approvalToken: "approval-token-arbitrary-1",
+    bindingHash: binding.bindingHash,
+    approvedAt: "2026-08-31T12:00:10Z",
+    expiresAt: plan.payload.expiresAt,
+  };
+  return { binding, approval };
+}
+
+function signaturesFor(plan) {
+  return plan.payload.signingTasks.map((task) => ({
+    taskId: task.taskId,
+    signatureEncoding: "compact64",
+    signature: secp256k1
+      .sign(task.digest, PRIVATE_KEY, { prehash: false, lowS: true })
+      .toCompactHex(),
+  }));
+}
+
+function expectSignatureError(action) {
+  assert.throws(
+    action,
+    (error) => error?.name === "TbcEngineError" && error.code === "SIGNATURE_INVALID",
+  );
+}
+
+test("encodes and parses the canonical strict low-S P2PKH scriptSig", () => {
+  const task = canonical.plan.payload.signingTasks[0];
+  const scriptSig = internals.compactSignatureToP2pkhScriptSig(
+    canonical.signature.signature,
+    task.digest,
+    task.publicKey,
+  );
+
+  assert.equal(
+    internals.bytesToHex(scriptSig),
+    canonical.bundle.transactions[0].rawTransaction.slice(84, 84 + 212),
+  );
+  assert.deepEqual(internals.parseCanonicalP2pkhScriptSig(scriptSig), {
+    compactSignature: canonical.signature.signature,
+    publicKey: task.publicKey,
+    sighashType: 65,
+  });
+});
+
+test("finalizes the canonical Draft 6 bundle byte-for-byte", () => {
+  const params = canonicalFinalizeParams();
+  const original = structuredClone(params);
+  const result = internals.createTbcTransferEngine().finalize(params);
+
+  assert.deepEqual(result, {
+    bundle: canonical.bundle,
+    validation: canonical.validations.finalized,
+  });
+  assert.deepEqual(params, original);
+  assert.equal(Object.isFrozen(result), true);
+  assert.equal(Object.isFrozen(result.bundle), true);
+  assert.equal(Object.isFrozen(result.bundle.transactions), true);
+});
+
+test("verifies signer output for a non-canonical deterministic multi-input transfer", () => {
+  const fixture = makeTransferFixture(internals, {
+    amount: 2_100n,
+    utxoAmounts: [900n, 1_400n, 800n],
+    dust: 0n,
+  });
+  const engine = internals.createTbcTransferEngine();
+  const plan = engine.plan(fixture.params).plan;
+  const { binding, approval } = approvalFor(plan, fixture.request, fixture.requestHash);
+  const result = engine.finalize({
+    ...fixture.params,
+    plan,
+    binding,
+    approval,
+    signatures: signaturesFor(plan),
+  });
+
+  assert.deepEqual(result.validation, { valid: true, violations: [] });
+  assert.equal(result.bundle.transactions.length, 1);
+  assert.equal(result.bundle.totalFee, fixture.policy.payload.feeRateSatPerKb);
+  const transaction = internals.parseTransaction(result.bundle.transactions[0].rawTransaction);
+  assert.equal(transaction.inputs.length, 2);
+  assert.equal(
+    internals.turingTxid(transaction),
+    result.bundle.transactions[0].txid,
+  );
+  for (const input of transaction.inputs) {
+    const parsed = internals.parseCanonicalP2pkhScriptSig(input.scriptSig);
+    assert.equal(parsed.publicKey, fixture.snapshot.payload.account.publicKey);
+  }
+});
+
+test("rejects high-S, zero, and out-of-range compact signatures", () => {
+  const signature = canonical.signature.signature;
+  const r = signature.slice(0, 64);
+  const lowS = BigInt(`0x${signature.slice(64)}`);
+  const highS = (CURVE_N - lowS).toString(16).padStart(64, "0");
+  const invalid = [
+    `${r}${highS}`,
+    `${"00".repeat(32)}${signature.slice(64)}`,
+    `${CURVE_N.toString(16).padStart(64, "0")}${signature.slice(64)}`,
+    `${r}${"00".repeat(32)}`,
+  ];
+
+  for (const compact of invalid) {
+    expectSignatureError(() =>
+      internals.createTbcTransferEngine().finalize(
+        canonicalFinalizeParams({
+          signatures: [{ ...canonical.signature, signature: compact }],
+        }),
+      ),
+    );
+  }
+});
+
+test("requires an exact one-to-one task/signature mapping", () => {
+  const wrong = { ...canonical.signature, taskId: "wrong-task" };
+  const extra = { ...canonical.signature, taskId: "extra-task" };
+  const cases = [
+    [wrong],
+    [canonical.signature, canonical.signature],
+    [canonical.signature, extra],
+  ];
+  for (const signatures of cases) {
+    expectSignatureError(() =>
+      internals.createTbcTransferEngine().finalize(
+        canonicalFinalizeParams({ signatures }),
+      ),
+    );
+  }
+});
+
+test("rejects task, binding, and approval mutations before serialization", () => {
+  const mutatedPlan = structuredClone(canonical.plan);
+  mutatedPlan.payload.signingTasks[0].digest = "00".repeat(32);
+  mutatedPlan.planHash = hashCanonical(mutatedPlan.payload);
+  const mutatedPublicKeyPlan = structuredClone(canonical.plan);
+  mutatedPublicKeyPlan.payload.signingTasks[0].publicKey =
+    "02c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5";
+  mutatedPublicKeyPlan.planHash = hashCanonical(mutatedPublicKeyPlan.payload);
+  const badBinding = structuredClone(canonical.binding);
+  badBinding.payload.operationHash = "00".repeat(32);
+  badBinding.bindingHash = hashCanonical(badBinding.payload);
+  const badApproval = { ...canonical.approval, bindingHash: "00".repeat(32) };
+
+  for (const changes of [
+    { plan: mutatedPlan },
+    { plan: mutatedPublicKeyPlan },
+    { binding: badBinding, approval: { ...canonical.approval, bindingHash: badBinding.bindingHash } },
+    { approval: badApproval },
+  ]) {
+    expectSignatureError(() =>
+      internals.createTbcTransferEngine().finalize(canonicalFinalizeParams(changes)),
+    );
+  }
+});
+
+test("rejects malformed DER scripts and secret-named fields recursively", () => {
+  const valid = internals.compactSignatureToP2pkhScriptSig(
+    canonical.signature.signature,
+    canonical.plan.payload.signingTasks[0].digest,
+    canonical.plan.payload.signingTasks[0].publicKey,
+  );
+  const malformed = [
+    valid.slice(0, -1),
+    Uint8Array.of(...valid.slice(0, 2), 0x31, ...valid.slice(3)),
+    Uint8Array.of(...valid.slice(0, 4), 0x00, ...valid.slice(5)),
+    Uint8Array.of(0x4c, ...valid.slice(1)),
+  ];
+  for (const script of malformed) {
+    assert.throws(() => internals.parseCanonicalP2pkhScriptSig(script));
+  }
+
+  assert.throws(
+    () => internals.assertNoSecretFields({ nested: { privateKey: PRIVATE_KEY } }),
+    /secret-bearing field/i,
+  );
+  assert.doesNotThrow(() =>
+    internals.assertNoSecretFields({ approvalToken: "opaque-host-token" }),
+  );
+});

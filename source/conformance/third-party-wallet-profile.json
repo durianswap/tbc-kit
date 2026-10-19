@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "1.0",
+  "profile": "tws-third-party-wallet-minimal",
+  "version": "1.0.0-draft.6.11",
+  "protocolVersion": "1.0.0-candidate.1",
+  "example": "examples/third-party-wallet-minimal",
+  "privateCodeFree": true,
+  "publicDependencies": [
+    "@tbc-wallet/core",
+    "@tbc-wallet/host",
+    "@tbc-wallet/provider",
+    "@tbc-wallet/tbc-engine",
+    "@tbc-wallet/wallet-standard"
+  ],
+  "dappBoundary": [
+    "@tbc-wallet/provider"
+  ],
+  "hostPorts": [
+    "accounts",
+    "chainData",
+    "policy",
+    "permissionStore",
+    "approval",
+    "signer",
+    "crypto",
+    "reviewedTransaction",
+    "broadcast",
+    "clock",
+    "entropy"
+  ],
+  "transactionPath": [
+    "normalize",
+    "plan",
+    "approval-binding",
+    "signer.sign",
+    "finalize",
+    "broadcast"
+  ],
+  "scenarios": [
+    "account-authorization",
+    "arbitrary-mainnet-transfer",
+    "testnet-transfer",
+    "multi-input-selection",
+    "exact-spend",
+    "change-output",
+    "concurrent-same-method",
+    "sign-only-no-broadcast",
+    "provider-close",
+    "request-abort",
+    "cross-session-request-id-isolation",
+    "pending-close-host-cancellation",
+    "pre-registration-provider-close",
+    "pre-registration-controller-close",
+    "abort-host-cancellation",
+    "durable-delivery-replay"
+  ],
+  "forbiddenDependencies": [
+    "turing-wallet-plugin",
+    "wallet-vault/1",
+    "keyring",
+    "private-wallet-source"
+  ],
+  "commands": [
+    "npm run test:example:minimal",
+    "node scripts/check-example-boundary.mjs"
+  ]
+}

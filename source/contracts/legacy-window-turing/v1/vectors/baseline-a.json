@@ -1,0 +1,266 @@
+{
+  "kind": "legacy-window-turing-vectors",
+  "version": "1.0.5",
+  "profile": "baseline-a",
+  "vectors": [
+    {
+      "id": "ready-field",
+      "required": true,
+      "subject": "isReady",
+      "scenario": "The top-frame document receives a frozen Legacy facade without replacing Wallet Standard.",
+      "input": {
+        "topFrame": true,
+        "nativeInitialized": true
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": true,
+        "invariants": [
+          "window.Turing.isReady is true",
+          "Wallet Standard remains registered"
+        ]
+      }
+    },
+    {
+      "id": "ready-event-once",
+      "required": true,
+      "subject": "TuringReady",
+      "scenario": "Native initialization is delivered more than once for one document.",
+      "input": {
+        "initializeDeliveries": 2
+      },
+      "expected": {
+        "settlement": "event",
+        "event": "TuringReady",
+        "invariants": [
+          "event count is one per document"
+        ]
+      }
+    },
+    {
+      "id": "connect-approved",
+      "required": true,
+      "subject": "connect",
+      "scenario": "The exact verified Testnet origin approves the Legacy account permission.",
+      "input": {
+        "origin": "https://dapp.example",
+        "decision": "approve"
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "tbcAddress": "1LegacyTbcAddress"
+        },
+        "invariants": [
+          "permission namespace is legacy-window-turing/v1",
+          "one native approval grants tbc_accounts, tbc_accountMetadata, and tbc_signTransaction",
+          "getPubKey and the first transaction after connect require no second permission approval"
+        ]
+      }
+    },
+    {
+      "id": "connect-rejected",
+      "required": true,
+      "subject": "connect",
+      "scenario": "The user rejects the native Legacy permission approval.",
+      "input": {
+        "origin": "https://dapp.example",
+        "decision": "reject"
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "error": "User rejected the request"
+        },
+        "invariants": [
+          "no account data is delivered"
+        ]
+      }
+    },
+    {
+      "id": "connected-from-grant",
+      "required": true,
+      "subject": "isConnected",
+      "scenario": "A fresh session checks the durable exact-origin Legacy grant.",
+      "input": {
+        "origin": "https://dapp.example",
+        "grant": true
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": true,
+        "invariants": [
+          "no page cache is authoritative"
+        ]
+      }
+    },
+    {
+      "id": "address-shape",
+      "required": true,
+      "subject": "getAddress",
+      "scenario": "A connected TBC-only account requests its legacy address object.",
+      "input": {},
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "tbcAddress": "1LegacyTbcAddress"
+        }
+      }
+    },
+    {
+      "id": "public-key-shape",
+      "required": true,
+      "subject": "getPubKey",
+      "scenario": "A connected TBC account requests its public key.",
+      "input": {},
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "tbcPubKey": "02aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      }
+    },
+    {
+      "id": "network-shape",
+      "required": true,
+      "subject": "getNetwork",
+      "scenario": "The TBC Testnet product profile reports the legacy network shape.",
+      "input": {},
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "network": "tbc",
+          "type": "testnet"
+        }
+      }
+    },
+    {
+      "id": "wallet-info-ios",
+      "required": true,
+      "subject": "getInfo",
+      "scenario": "The iOS shell reports platform metadata without wallet authority data.",
+      "input": {
+        "platform": "ios",
+        "version": "0.1.0"
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "name": "Turing",
+          "platform": "ios",
+          "version": "0.1.0"
+        }
+      }
+    },
+    {
+      "id": "disconnect-transition",
+      "required": true,
+      "subject": "disconnect",
+      "scenario": "A connected origin revokes only its Legacy grant.",
+      "input": {
+        "connected": true
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": true,
+        "invariants": [
+          "TWS grants are unchanged"
+        ]
+      }
+    },
+    {
+      "id": "business-error-resolves",
+      "required": true,
+      "subject": "getAddress",
+      "scenario": "A valid request has no Legacy permission.",
+      "input": {
+        "grant": false
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "error": "User not connected"
+        }
+      }
+    },
+    {
+      "id": "transport-close-rejects",
+      "required": true,
+      "subject": "connect",
+      "scenario": "The renderer closes while a request is pending.",
+      "input": {
+        "pending": true,
+        "close": "renderer-close"
+      },
+      "expected": {
+        "settlement": "reject",
+        "errorMessage": "Legacy wallet session closed",
+        "invariants": [
+          "no durable result is retargeted"
+        ]
+      }
+    },
+    {
+      "id": "same-method-concurrency",
+      "required": true,
+      "subject": "getAddress",
+      "scenario": "Two same-method requests complete out of order.",
+      "input": {
+        "requestIds": [
+          "legacy-1",
+          "legacy-2"
+        ],
+        "completionOrder": [
+          "legacy-2",
+          "legacy-1"
+        ]
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": [
+          "legacy-2",
+          "legacy-1"
+        ],
+        "invariants": [
+          "each promise settles by request ID"
+        ]
+      }
+    },
+    {
+      "id": "origin-navigation-cancels",
+      "required": true,
+      "subject": "session",
+      "scenario": "The top frame navigates to a different exact origin while a request is pending.",
+      "input": {
+        "from": "https://dapp.example",
+        "to": "https://other.example"
+      },
+      "expected": {
+        "settlement": "reject",
+        "errorMessage": "Legacy wallet session closed",
+        "invariants": [
+          "stale delivery is suppressed",
+          "new origin receives no old account data"
+        ]
+      }
+    },
+    {
+      "id": "committed-account-event",
+      "required": true,
+      "subject": "TuringAccountChanged",
+      "scenario": "A committed Host account transition is delivered to the active Legacy session.",
+      "input": {
+        "committed": true,
+        "reason": "connected"
+      },
+      "expected": {
+        "settlement": "event",
+        "event": "TuringAccountChanged",
+        "invariants": [
+          "event follows durable Host commit",
+          "page input cannot synthesize authority"
+        ]
+      }
+    }
+  ]
+}

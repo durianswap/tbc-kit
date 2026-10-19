@@ -1,0 +1,359 @@
+// Historical TS implementation test. Replaced by required Rust and artifact tests;
+// see ../README.md. Retained as migration evidence, not an executable test.
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import test from "node:test";
+import { secp256k1 } from "@noble/curves/secp256k1.js";
+import { createTbcTransferEngine } from "@tbc-wallet/tbc-engine";
+import * as tws from "@tbc-wallet/core";
+import { loadInternals } from "./build-internals.mjs";
+import { makeTransferFixture } from "./fixtures/arbitrary-transfers.mjs";
+
+const integration = JSON.parse(
+  await readFile(new URL("../../../test-vectors/integration.json", import.meta.url), "utf8"),
+);
+const provider = JSON.parse(
+  await readFile(new URL("../../../test-vectors/provider.json", import.meta.url), "utf8"),
+);
+const permissions = JSON.parse(
+  await readFile(new URL("../../../test-vectors/permissions.json", import.meta.url), "utf8"),
+);
+const PRIVATE_KEY = "01".padStart(64, "0");
+const context = provider.trustedContexts[0].context;
+const session = provider.providerSessions.sessionA;
+const MULTI_INPUT_KAT = Object.freeze({
+  requestHash: "fd7202507e900655a52f2e3902899c2be5e1a5f630cff839bac000c8da054718",
+  snapshotHash: "8d74f61b29d20b502fba93022e65bb4b71ee7a79db9287051152dfd48e8fadc0",
+  policyHash: "6994e26cc09e79a82888496cd4b6b14007cb38b9bcb144c5fdd128df462780de",
+  planHash: "8d38577feae79e3a16c8a8dfa2401ec8fa55cdcb238636b73acfa65a239bffd8",
+  tasks: [
+    {
+      taskId: "sign-tx-1-input-0",
+      inputIndex: 0,
+      digest: "0abbbd1557c41709570d40e2f6f436435158bb4fb3510b5daaa626761c78208d",
+    },
+    {
+      taskId: "sign-tx-1-input-1",
+      inputIndex: 1,
+      digest: "03f2dfbd792cd5d162824fe88d1b5ef1cdf4b9baac31cea0f3a12baf0b655fa4",
+    },
+  ],
+  unsignedTransaction: "0a00000002790beceece9762ef281b955a24dc8ba5ae4be9d6720e90d7be8d00edf8edc0540000000000ffffffff2c78d986e42a59cd21728961e58fce28648ffc1c09b0fe87f91f57ee4d3b86c50000000000ffffffff0234080000000000001976a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88ac78000000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+  templateHash: "0e22c696504318c27ba53b4fef6d84dcaac297851295ec5b14b80c26cc1058d8",
+  rawTransaction: "0a00000002790beceece9762ef281b955a24dc8ba5ae4be9d6720e90d7be8d00edf8edc054000000006b483045022100b0b609d779dbe08f65556120f5033a1eb7b85552764fe8aac284884cc54417fe022079e8a29d724507de8177d622d392b399870c332d6177c017d441a3b3085001f341210279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798ffffffff2c78d986e42a59cd21728961e58fce28648ffc1c09b0fe87f91f57ee4d3b86c5000000006b483045022100e724dfc8f9031bd97ca6f64b84b31ad58cdb9813f24efbfb09ed5e399f7ae19c0220550ea0495162ad8acf2386e7dc1883673d401c21eccc48562c82b56597e404a141210279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798ffffffff0234080000000000001976a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88ac78000000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+  txid: "8bec3c6e96022aff0fafb76bd411924b02ff7df7e6f8cd07a2945a06450f12f8",
+});
+
+function permissionFor(capability) {
+  const base = permissions.result[0];
+  return {
+    ...base,
+    id: `permission-${capability.replaceAll("_", "-")}`,
+    parentCapability: capability,
+    caveats: base.caveats.map((caveat) =>
+      caveat.type === "restrictMethods"
+        ? { ...caveat, value: [capability] }
+        : caveat,
+    ),
+  };
+}
+
+function tracedEngine(trace, capturedEngineParams, planResults, finalizeResults) {
+  const engine = createTbcTransferEngine();
+  const invoke = (operation, params) => {
+    trace.push(`engine.${operation}${operation === "validate" ? `:${params.phase}` : ""}`);
+    capturedEngineParams.push(structuredClone(params));
+    const result = engine[operation](params);
+    if (operation === "plan") planResults.push(structuredClone(result));
+    if (operation === "finalize") finalizeResults.push(structuredClone(result));
+    return result;
+  };
+  return Object.freeze({
+    normalizeRequest: (params) => invoke("normalizeRequest", params),
+    plan: (params) => invoke("plan", params),
+    validate: (params) => invoke("validate", params),
+    finalize: (params) => invoke("finalize", params),
+  });
+}
+
+function signTask(task) {
+  return {
+    taskId: task.taskId,
+    signatureEncoding: "compact64",
+    signature: secp256k1
+      .sign(task.digest, PRIVATE_KEY, { prehash: false, lowS: true })
+      .toCompactHex(),
+  };
+}
+
+function assertNoSecretMaterial(value) {
+  const forbiddenNames = new Set([
+    "privatekey",
+    "seedphrase",
+    "mnemonic",
+    "seed",
+    "wif",
+  ]);
+  const seen = new Set();
+  const visit = (candidate, path = "$") => {
+    if (typeof candidate === "string") {
+      assert.notEqual(candidate.toLowerCase(), PRIVATE_KEY, `private-key canary escaped at ${path}`);
+      return;
+    }
+    if (candidate === null || typeof candidate !== "object" || seen.has(candidate)) return;
+    seen.add(candidate);
+    for (const [key, nested] of Object.entries(candidate)) {
+      const normalized = key.replaceAll(/[^a-z0-9]/gi, "").toLowerCase();
+      assert.equal(forbiddenNames.has(normalized), false, `secret field escaped at ${path}.${key}`);
+      visit(nested, `${path}.${key}`);
+    }
+  };
+  visit(value);
+}
+
+function signingTaskIdentity({ taskId, inputIndex, digest }) {
+  return { taskId, inputIndex, digest };
+}
+
+function transactionIdentity(plan) {
+  const transaction = plan.payload.transactions[0];
+  return {
+    unsignedTransaction: transaction.unsignedTransaction,
+    templateHash: transaction.templateHash,
+  }
+}
+
+function indexOf(trace, value, after = -1) {
+  const index = trace.indexOf(value, after + 1);
+  assert.notEqual(index, -1, `missing trace operation: ${value}`);
+  return index;
+}
+
+async function driveRealSend({ request, snapshot, policy }) {
+  const trace = [];
+  const capturedEngineParams = [];
+  const planResults = [];
+  const finalizeResults = [];
+  const coreCheckpoints = [];
+  const signerCalls = [];
+  const broadcastCalls = [];
+  const clocks = [
+    "2026-08-31T12:00:00Z",
+    "2026-08-31T12:00:05Z",
+    "2026-08-31T12:00:11Z",
+    "2026-08-31T12:00:12Z",
+    "2026-08-31T12:00:13Z",
+    "2026-08-31T12:00:14Z",
+  ];
+  let acceptedBindingHash;
+  let approvalAccepted = false;
+  const core = tws.createTwsCore({
+    transactionEngine: tracedEngine(
+      trace,
+      capturedEngineParams,
+      planResults,
+      finalizeResults,
+    ),
+  });
+  let transition = await core.start({
+    version: "1.0",
+    release: tws.TWS_RELEASE,
+    request: {
+      jsonrpc: "2.0",
+      id: `real-send-${request.intent.amount}`,
+      method: "tbc_sendTransaction",
+      params: request,
+    },
+    currentContext: context,
+    currentSession: session,
+  });
+  coreCheckpoints.push(structuredClone(transition.checkpoint));
+
+  for (let steps = 0; transition.kind !== "complete"; steps += 1) {
+    assert.ok(steps < 40, "real Core/engine lifecycle did not terminate");
+    if (transition.kind === "continue") {
+      transition = await core.resume({
+        version: "1.0",
+        checkpoint: transition.checkpoint,
+        currentContext: context,
+        currentSession: session,
+      });
+      coreCheckpoints.push(structuredClone(transition.checkpoint));
+      continue;
+    }
+
+    const call = transition.calls[0];
+    trace.push(`port.${call.operation}`);
+    let result;
+    switch (call.operation) {
+      case "clock.now":
+        result = { now: clocks.shift() };
+        break;
+      case "permissionStore.load":
+        result = {
+          revision: "0",
+          permissions: [permissionFor("tbc_accounts"), permissionFor("tbc_sendTransaction")],
+        };
+        break;
+      case "accounts.resolve":
+        result = { accounts: [snapshot.payload.account] };
+        break;
+      case "chainData.resolve":
+        result = snapshot;
+        break;
+      case "policy.resolve":
+        result = policy;
+        break;
+      case "approval.request":
+        acceptedBindingHash = call.params.binding.bindingHash;
+        approvalAccepted = true;
+        result = {
+          status: "approved",
+          approvalId: `approval-${request.intent.amount}`,
+          approvalToken: `approval-token-${request.intent.amount}`,
+          bindingHash: acceptedBindingHash,
+          approvedAt: "2026-08-31T12:00:10Z",
+          expiresAt: call.params.binding.payload.expiresAt,
+        };
+        break;
+      case "signer.sign":
+        assert.equal(approvalAccepted, true, "signer called before approval");
+        assert.equal(call.params.approval.bindingHash, acceptedBindingHash);
+        signerCalls.push(structuredClone(call.params));
+        result = signTask(call.params.task);
+        break;
+      case "broadcast.submit":
+        broadcastCalls.push(structuredClone(call.params));
+        result = {
+          txid: call.params.transaction.txid,
+          status: "accepted",
+        };
+        break;
+      default:
+        throw new Error(`unexpected Host Port operation: ${call.operation}`);
+    }
+    transition = await core.resume({
+      version: "1.0",
+      checkpoint: transition.checkpoint,
+      response: { version: "1.0", callId: call.callId, result },
+      currentContext: context,
+      currentSession: session,
+    });
+    coreCheckpoints.push(structuredClone(transition.checkpoint));
+  }
+
+  capturedEngineParams.forEach(assertNoSecretMaterial);
+  coreCheckpoints.forEach(assertNoSecretMaterial);
+  const chainData = indexOf(trace, "port.chainData.resolve");
+  const policyResolve = indexOf(trace, "port.policy.resolve", chainData);
+  const plan = indexOf(trace, "engine.plan", policyResolve);
+  const approval = indexOf(trace, "port.approval.request", plan);
+  const postApprovalClock = indexOf(trace, "port.clock.now", approval);
+  const signer = indexOf(trace, "port.signer.sign", postApprovalClock);
+  const finalize = indexOf(trace, "engine.finalize", signer);
+  const broadcast = indexOf(trace, "port.broadcast.submit", finalize);
+  const signerIndexes = trace
+    .map((operation, index) => operation === "port.signer.sign" ? index : -1)
+    .filter((index) => index >= 0);
+  assert.ok(chainData < policyResolve && policyResolve < plan);
+  assert.ok(plan < approval && approval < postApprovalClock);
+  assert.ok(postApprovalClock < signer && signer < finalize && finalize < broadcast);
+  assert.equal(trace.slice(0, approval).includes("port.signer.sign"), false);
+  assert.equal(
+    signerIndexes.every((index) => index > approval && index < finalize),
+    true,
+    "every signer call must occur after approval and before finalize",
+  );
+  assert.ok(signerCalls.length >= 1);
+  assert.equal(broadcastCalls.length, 1);
+  assert.equal(planResults.length, 1);
+  assert.equal(finalizeResults.length, 1);
+  assert.deepEqual(
+    broadcastCalls[0].transaction,
+    finalizeResults[0].bundle.transactions[0],
+  );
+  assert.deepEqual(
+    transition.completion.response.result.transactions.map(({ txid }) => txid),
+    broadcastCalls.map(({ transaction }) => transaction.txid),
+  );
+  return {
+    transition,
+    trace,
+    signerCalls,
+    broadcastCalls,
+    planResults,
+    finalizeResults,
+  };
+}
+
+test("Core drives the real package through approval-bound canonical TBC send", async () => {
+  const canonical = integration.canonicalTransfer;
+  const result = await driveRealSend(canonical);
+
+  assert.equal(
+    result.broadcastCalls[0].transaction.rawTransaction,
+    canonical.bundle.transactions[0].rawTransaction,
+  );
+  assert.equal(result.broadcastCalls[0].transaction.txid, canonical.bundle.transactions[0].txid);
+  assert.equal(result.signerCalls.length, 1);
+});
+
+test("Core drives the real package through an arbitrary multi-UTXO TBC send", async () => {
+  const { runtime, cleanup } = await loadInternals([
+    "bytes",
+    "p2pkh",
+    "transaction",
+    "turing-txid",
+  ]);
+  try {
+    const fixture = makeTransferFixture(runtime, {
+      amount: 2_100n,
+      utxoAmounts: [900n, 1_400n, 800n],
+      dust: 0n,
+    });
+    const result = await driveRealSend(fixture);
+
+    assert.equal(fixture.requestHash, MULTI_INPUT_KAT.requestHash);
+    assert.equal(fixture.snapshot.snapshotHash, MULTI_INPUT_KAT.snapshotHash);
+    assert.equal(fixture.policy.policyHash, MULTI_INPUT_KAT.policyHash);
+    const plan = result.planResults[0].plan;
+    assert.equal(plan.planHash, MULTI_INPUT_KAT.planHash);
+    assert.deepEqual(
+      plan.payload.signingTasks.map(signingTaskIdentity),
+      MULTI_INPUT_KAT.tasks,
+    );
+    assert.deepEqual(transactionIdentity(plan), {
+      unsignedTransaction: MULTI_INPUT_KAT.unsignedTransaction,
+      templateHash: MULTI_INPUT_KAT.templateHash,
+    });
+    assert.equal(result.signerCalls.length, 2);
+    assert.equal(
+      result.finalizeResults[0].bundle.transactions[0].rawTransaction,
+      MULTI_INPUT_KAT.rawTransaction,
+    );
+    assert.equal(
+      result.finalizeResults[0].bundle.transactions[0].txid,
+      MULTI_INPUT_KAT.txid,
+    );
+  } finally {
+    cleanup();
+  }
+});
+
+test("the shared Core test fixture delegates to the real published engine", async () => {
+  const fixtureSource = await readFile(
+    new URL("../../core/test/fixtures/tbc-transfer-engine.mjs", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(fixtureSource, /from\s+["']@tbc-wallet\/tbc-engine["']/);
+  for (const forbidden of [
+    "canonical.request",
+    "canonical.plan",
+    "canonical.bundle",
+    "changedPlan",
+    "changedBundle",
+  ]) {
+    assert.equal(fixtureSource.includes(forbidden), false, `fixture contains fake path: ${forbidden}`);
+  }
+});

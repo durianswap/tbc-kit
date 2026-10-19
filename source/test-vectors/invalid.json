@@ -1,0 +1,934 @@
+{
+  "version": "1.0.0",
+  "vectors": [
+    {
+      "id": "transaction-number-amount",
+      "schema": "transaction-request.schema.json",
+      "expectedKeyword": "type",
+      "instance": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.transfer",
+          "version": "1.0",
+          "to": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "amount": 1000
+        }
+      }
+    },
+    {
+      "id": "transaction-forged-origin",
+      "schema": "transaction-request.schema.json",
+      "expectedKeyword": "additionalProperties",
+      "instance": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "origin": "https://attacker.test",
+        "intent": {
+          "type": "tbc.transfer",
+          "version": "1.0",
+          "to": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "amount": "1000"
+        }
+      }
+    },
+    {
+      "id": "swap-missing-expiry",
+      "schema": "transaction-request.schema.json",
+      "expectedKeyword": "required",
+      "instance": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.pool.swap.exactTbcForToken",
+          "version": "1.0",
+          "poolContractId": "7777777777777777777777777777777777777777777777777777777777777777",
+          "receiver": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "tbcAmount": "1000",
+          "minimumFtAmount": "1"
+        }
+      }
+    },
+    {
+      "id": "provider-notification-without-id",
+      "schema": "provider.schema.json#/$defs/request",
+      "expectedKeyword": "required",
+      "instance": {
+        "jsonrpc": "2.0",
+        "method": "tbc_chainId"
+      }
+    },
+    {
+      "id": "provider-result-and-error",
+      "schema": "provider.schema.json#/$defs/response",
+      "expectedKeyword": "oneOf",
+      "instance": {
+        "jsonrpc": "2.0",
+        "id": "bad-response",
+        "result": null,
+        "error": {
+          "code": -32603,
+          "message": "Internal error"
+        }
+      }
+    },
+    {
+      "id": "permission-missing-account-caveat",
+      "schema": "permissions.schema.json#/$defs/permission",
+      "expectedKeyword": "contains",
+      "instance": {
+        "id": "bad-permission",
+        "parentCapability": "tbc_sendTransaction",
+        "invoker": "https://example.test",
+        "date": 1788177600000,
+        "caveats": [
+          {
+            "type": "restrictChains",
+            "value": [
+              "tbc:mainnet"
+            ]
+          },
+          {
+            "type": "restrictMethods",
+            "value": [
+              "tbc_sendTransaction"
+            ]
+          },
+          {
+            "type": "expiresAt",
+            "value": "2026-08-31T12:05:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "id": "workflow-nested-binding-target",
+      "schema": "workflow.schema.json",
+      "expectedKeyword": "pattern",
+      "instance": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "steps": [
+          {
+            "id": "trade",
+            "kind": "transaction",
+            "dependsOn": [],
+            "intent": {
+              "type": "tbc.transfer",
+              "version": "1.0",
+              "to": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+              "amount": "1000"
+            }
+          },
+          {
+            "id": "order",
+            "kind": "typedData",
+            "dependsOn": [
+              "trade"
+            ],
+            "data": {
+              "domain": {
+                "name": "Order",
+                "version": "1"
+              },
+              "types": {
+                "Order": [
+                  {
+                    "name": "meta",
+                    "type": "Meta"
+                  }
+                ]
+              },
+              "primaryType": "Order",
+              "message": {
+                "meta": {
+                  "$tbcBinding": "unresolved"
+                }
+              }
+            },
+            "bindings": [
+              {
+                "target": "/message/meta/txids",
+                "source": {
+                  "stepId": "trade",
+                  "output": "transactionIds"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "message-noncanonical-base64",
+      "schema": "signing.schema.json#/$defs/messageEnvelope",
+      "expectedKeyword": "pattern",
+      "instance": {
+        "type": "tbc.message",
+        "version": "1.0",
+        "message": {
+          "encoding": "base64",
+          "data": "SGVsbG8"
+        }
+      }
+    },
+    {
+      "id": "typed-data-domain-missing-chain",
+      "schema": "signing.schema.json#/$defs/typedDataEnvelope",
+      "expectedKeyword": "required",
+      "instance": {
+        "type": "tbc.typedData",
+        "version": "1.0",
+        "domain": {
+          "name": "Missing Chain"
+        },
+        "types": {
+          "Notice": [
+            {
+              "name": "text",
+              "type": "string"
+            }
+          ]
+        },
+        "primaryType": "Notice",
+        "message": {
+          "text": "Hello"
+        }
+      }
+    },
+    {
+      "id": "provider-unregistered-error-code",
+      "schema": "provider.schema.json#/$defs/errorResponse",
+      "expectedKeyword": "enum",
+      "instance": {
+        "jsonrpc": "2.0",
+        "id": "bad-error-code",
+        "error": {
+          "code": 4999,
+          "message": "Unregistered provider error"
+        }
+      }
+    },
+    {
+      "id": "execution-unregistered-name",
+      "schema": "provider.schema.json#/$defs/errorResponse",
+      "expectedKeyword": "enum",
+      "instance": {
+        "jsonrpc": "2.0",
+        "id": "bad-execution-name",
+        "error": {
+          "code": -32000,
+          "message": "Unknown execution error",
+          "data": {
+            "name": "UNKNOWN_EXECUTION_ERROR",
+            "stage": "planning",
+            "retryable": false
+          }
+        }
+      }
+    },
+    {
+      "id": "integration-secret-wif-field",
+      "schema": "integration.schema.json#/$defs/chainDataResolveParams",
+      "expectedKeyword": "additionalProperties",
+      "instance": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "requirement": {
+          "intentType": "tbc.transfer",
+          "includeAncestry": false,
+          "assets": []
+        },
+        "privateKeyWif": "test-only-not-a-real-key"
+      }
+    },
+    {
+      "id": "integration-transaction-wrong-sighash",
+      "schema": "integration.schema.json#/$defs/transactionSigningTask",
+      "expectedKeyword": "const",
+      "instance": {
+        "taskId": "sign-tx-1-input-0",
+        "purpose": "transaction",
+        "algorithm": "secp256k1-ecdsa-sha256d",
+        "digest": "1e06ca3ec00947bc4a174c62fbe08777796b2b525915640c5a144c001c27bf25",
+        "signatureEncoding": "compact64",
+        "transactionTemplateId": "tx-1",
+        "inputIndex": 0,
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+        "sighashType": 1
+      }
+    },
+    {
+      "id": "integration-recoverable-bad-header",
+      "schema": "integration.schema.json#/$defs/recoverableSignatureResult",
+      "expectedKeyword": "pattern",
+      "instance": {
+        "taskId": "sign-message-1",
+        "signatureEncoding": "compact65-recoverable",
+        "signature": "1e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      }
+    },
+    {
+      "id": "pool-create-dapp-service-fee-rate",
+      "schema": "transaction-request.schema.json",
+      "expectedKeyword": "additionalProperties",
+      "instance": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "intent": {
+          "type": "tbc.pool.create",
+          "version": "1.0",
+          "ftContractId": "1111111111111111111111111111111111111111111111111111111111111111",
+          "lpPlan": 1,
+          "serviceFeeRate": 10,
+          "initialLiquidity": {
+            "receiver": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+            "tbcAmount": "1000",
+            "ftAmount": "1000"
+          }
+        }
+      }
+    },
+    {
+      "id": "core-library-manifest-without-integration",
+      "schema": "conformance-manifest.schema.json",
+      "expectedKeyword": "contains",
+      "instance": {
+        "implementation": {
+          "kind": "core-library",
+          "name": "Incomplete Core",
+          "version": "1.0.0",
+          "platforms": [
+            "other"
+          ]
+        },
+        "twsVersion": "1.0.0",
+        "featureVersion": "1.0.0",
+        "profiles": [
+          "core",
+          "transport:webview"
+        ],
+        "chainIds": [
+          "tbc:mainnet"
+        ],
+        "intents": {
+          "tbc.transfer": [
+            "1.0"
+          ]
+        },
+        "suite": {
+          "version": "1.0.0",
+          "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        },
+        "executedAt": "2026-08-31T12:00:00Z",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "wallet-manifest-without-transport",
+      "schema": "conformance-manifest.schema.json",
+      "expectedKeyword": "contains",
+      "instance": {
+        "implementation": {
+          "kind": "wallet",
+          "name": "Incomplete Wallet",
+          "version": "1.0.0",
+          "platforms": [
+            "android"
+          ]
+        },
+        "twsVersion": "1.0.0",
+        "featureVersion": "1.0.0",
+        "profiles": [
+          "core",
+          "integration"
+        ],
+        "chainIds": [
+          "tbc:mainnet"
+        ],
+        "intents": {
+          "tbc.transfer": [
+            "1.0"
+          ]
+        },
+        "suite": {
+          "version": "1.0.0",
+          "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        },
+        "executedAt": "2026-08-31T12:00:00Z",
+        "result": "pass"
+      }
+    },
+    {
+      "id": "trusted-context-webview-without-navigation",
+      "schema": "integration.schema.json#/$defs/trustedContext",
+      "expectedKeyword": "required",
+      "instance": {
+        "sessionId": "session-webview-missing-navigation",
+        "transport": "webview",
+        "origin": "https://example.test",
+        "topOrigin": "https://example.test",
+        "frame": "top",
+        "createdAt": "2026-08-31T12:00:00Z"
+      }
+    },
+    {
+      "id": "trusted-context-remote-with-navigation",
+      "schema": "integration.schema.json#/$defs/trustedContext",
+      "expectedKeyword": "not",
+      "instance": {
+        "sessionId": "session-remote-navigation",
+        "transport": "remote",
+        "origin": "https://remote.example.test",
+        "topOrigin": "https://remote.example.test",
+        "frame": "top",
+        "navigationId": "forbidden-navigation",
+        "createdAt": "2026-08-31T12:00:00Z"
+      }
+    },
+    {
+      "id": "trusted-context-private-tab-id",
+      "schema": "integration.schema.json#/$defs/trustedContext",
+      "expectedKeyword": "additionalProperties",
+      "instance": {
+        "sessionId": "session-private-tab",
+        "transport": "extension",
+        "origin": "https://example.test",
+        "topOrigin": "https://example.test",
+        "frame": "top",
+        "navigationId": "nav-private-tab",
+        "createdAt": "2026-08-31T12:00:00Z",
+        "tabId": 7
+      }
+    },
+    {
+      "id": "trusted-context-origin-with-path",
+      "schema": "integration.schema.json#/$defs/trustedContext",
+      "expectedKeyword": "pattern",
+      "instance": {
+        "sessionId": "session-origin-path",
+        "transport": "webview",
+        "origin": "https://example.test/path",
+        "topOrigin": "https://example.test",
+        "frame": "child",
+        "navigationId": "nav-origin-path",
+        "createdAt": "2026-08-31T12:00:00Z"
+      }
+    },
+    {
+      "id": "approval-method-kind-mismatch",
+      "schema": "integration.schema.json#/$defs/approvalBindingPayload",
+      "expectedKeyword": "const",
+      "instance": {
+        "version": "1.0",
+        "method": "tbc_signTransaction",
+        "operationKind": "message",
+        "contextHash": "761bc48d9bffdbb3f93c42896b61e6ba682b1ad661fb8c30c427ba07500d0ae6",
+        "origin": "https://example.test",
+        "sessionId": "session-approval-mismatch",
+        "chainId": "tbc:mainnet",
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "requestHash": "1111111111111111111111111111111111111111111111111111111111111111",
+        "operationHash": "2222222222222222222222222222222222222222222222222222222222222222",
+        "expiresAt": "2026-08-31T12:02:00Z"
+      }
+    },
+    {
+      "id": "approval-permission-with-single-chain-field",
+      "schema": "integration.schema.json#/$defs/approvalBindingPayload",
+      "expectedKeyword": "false schema",
+      "instance": {
+        "version": "1.0",
+        "method": "tbc_requestAccounts",
+        "operationKind": "permission",
+        "contextHash": "761bc48d9bffdbb3f93c42896b61e6ba682b1ad661fb8c30c427ba07500d0ae6",
+        "origin": "https://example.test",
+        "sessionId": "session-permission-chain-field",
+        "chainId": "tbc:mainnet",
+        "chainIds": [
+          "tbc:mainnet"
+        ],
+        "requestHash": "1111111111111111111111111111111111111111111111111111111111111111",
+        "operationHash": "2222222222222222222222222222222222222222222222222222222222222222",
+        "expiresAt": "2026-08-31T12:02:00Z"
+      }
+    },
+    {
+      "id": "approval-transaction-with-chain-array",
+      "schema": "integration.schema.json#/$defs/approvalBindingPayload",
+      "expectedKeyword": "false schema",
+      "instance": {
+        "version": "1.0",
+        "method": "tbc_sendTransaction",
+        "operationKind": "transaction",
+        "contextHash": "761bc48d9bffdbb3f93c42896b61e6ba682b1ad661fb8c30c427ba07500d0ae6",
+        "origin": "https://example.test",
+        "sessionId": "session-transaction-chain-array",
+        "chainId": "tbc:mainnet",
+        "chainIds": [
+          "tbc:mainnet"
+        ],
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "requestHash": "1111111111111111111111111111111111111111111111111111111111111111",
+        "operationHash": "2222222222222222222222222222222222222222222222222222222222222222",
+        "expiresAt": "2026-08-31T12:02:00Z"
+      }
+    },
+    {
+      "id": "approval-preview-mixed-variants",
+      "schema": "integration.schema.json#/$defs/approvalPreview",
+      "expectedKeyword": "oneOf",
+      "instance": {
+        "operationKind": "message",
+        "message": {
+          "encoding": "utf8",
+          "data": "Approve login"
+        },
+        "domain": {
+          "origin": "https://example.test",
+          "chainId": "tbc:mainnet",
+          "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+        },
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "digest": "8888888888888888888888888888888888888888888888888888888888888888",
+        "warnings": [],
+        "transactionCount": 1
+      }
+    },
+    {
+      "id": "permission-commit-empty-batch",
+      "schema": "integration.schema.json#/$defs/permissionStoreCommitParams",
+      "expectedKeyword": "minItems",
+      "instance": {
+        "version": "1.0",
+        "changes": []
+      }
+    },
+    {
+      "id": "permission-commit-too-many-scopes",
+      "schema": "integration.schema.json#/$defs/permissionStoreCommitParams",
+      "expectedKeyword": "maxItems",
+      "instance": {
+        "version": "1.0",
+        "changes": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "id": "permission-commit-duplicate-scope-change",
+      "schema": "integration.schema.json#/$defs/permissionStoreCommitParams",
+      "expectedKeyword": "uniqueItems",
+      "instance": {
+        "version": "1.0",
+        "changes": [
+          {
+            "scope": {
+              "origin": "https://example.test",
+              "chainId": "tbc:mainnet"
+            },
+            "expectedRevision": "0",
+            "permissions": []
+          },
+          {
+            "scope": {
+              "origin": "https://example.test",
+              "chainId": "tbc:mainnet"
+            },
+            "expectedRevision": "0",
+            "permissions": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "workflow-binding-target-outside-message",
+      "schema": "workflow.schema.json#/$defs/binding",
+      "expectedKeyword": "pattern",
+      "instance": {
+        "target": "/domain/chainId",
+        "source": {
+          "stepId": "trade",
+          "output": "transactionIds"
+        }
+      }
+    },
+    {
+      "id": "workflow-more-than-five-steps",
+      "schema": "workflow.schema.json#/$defs/request",
+      "expectedKeyword": "maxItems",
+      "instance": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "steps": [
+          {
+            "id": "step-1",
+            "kind": "transaction",
+            "dependsOn": [],
+            "intent": {
+              "type": "tbc.transfer",
+              "version": "1.0",
+              "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+              "amount": "1"
+            }
+          },
+          {
+            "id": "step-2",
+            "kind": "transaction",
+            "dependsOn": [],
+            "intent": {
+              "type": "tbc.transfer",
+              "version": "1.0",
+              "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+              "amount": "1"
+            }
+          },
+          {
+            "id": "step-3",
+            "kind": "transaction",
+            "dependsOn": [],
+            "intent": {
+              "type": "tbc.transfer",
+              "version": "1.0",
+              "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+              "amount": "1"
+            }
+          },
+          {
+            "id": "step-4",
+            "kind": "transaction",
+            "dependsOn": [],
+            "intent": {
+              "type": "tbc.transfer",
+              "version": "1.0",
+              "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+              "amount": "1"
+            }
+          },
+          {
+            "id": "step-5",
+            "kind": "transaction",
+            "dependsOn": [],
+            "intent": {
+              "type": "tbc.transfer",
+              "version": "1.0",
+              "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+              "amount": "1"
+            }
+          },
+          {
+            "id": "step-6",
+            "kind": "transaction",
+            "dependsOn": [],
+            "intent": {
+              "type": "tbc.transfer",
+              "version": "1.0",
+              "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+              "amount": "1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "workflow-deferred-target-type-unknown",
+      "schema": "workflow.schema.json#/$defs/deferredTargetType",
+      "expectedKeyword": "enum",
+      "instance": "uint256"
+    },
+    {
+      "id": "workflow-failure-with-partial-results",
+      "schema": "workflow.schema.json#/$defs/workflowTerminalFailure",
+      "expectedKeyword": "additionalProperties",
+      "instance": {
+        "version": "1.0",
+        "state": "failed",
+        "error": {
+          "code": -32603,
+          "message": "Workflow failed before atomic result commit"
+        },
+        "steps": []
+      }
+    },
+    {
+      "id": "checkpoint-validating-without-created-at",
+      "schema": "integration.schema.json#/$defs/operationCheckpoint",
+      "expectedKeyword": "required",
+      "checkpointId": "validating",
+      "mutation": {
+        "operation": "delete",
+        "path": "/payload/createdAt"
+      }
+    },
+    {
+      "id": "checkpoint-initializing-with-predecessor",
+      "schema": "integration.schema.json#/$defs/operationCheckpoint",
+      "expectedKeyword": "false schema",
+      "checkpointId": "initializing",
+      "mutation": {
+        "operation": "set",
+        "path": "/payload/previousCheckpointHash",
+        "value": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      }
+    },
+    {
+      "id": "checkpoint-terminal-with-pending-call",
+      "schema": "integration.schema.json#/$defs/operationCheckpoint",
+      "expectedKeyword": "maxItems",
+      "checkpointId": "completed",
+      "mutation": {
+        "operation": "set",
+        "path": "/payload/pendingCalls",
+        "value": [
+          {
+            "version": "1.0",
+            "callId": "1FYldPLoxmyjMXnuM59MMJevCqv3N88DcNZdSpTWbec",
+            "operation": "clock.now",
+            "params": {
+              "version": "1.0"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "core-transition-mixes-waiting-and-commit",
+      "schema": "integration.schema.json#/$defs/coreTransition",
+      "expectedKeyword": "oneOf",
+      "transitionId": "wait-for-clock",
+      "mutation": {
+        "operation": "set",
+        "path": "/mutation",
+        "value": true
+      }
+    },
+    {
+      "id": "port-call-id-is-not-deterministic-hash",
+      "schema": "integration.schema.json#/$defs/portCall",
+      "expectedKeyword": "pattern",
+      "instance": {
+        "version": "1.0",
+        "callId": "caller-selected-id",
+        "operation": "clock.now",
+        "params": {
+          "version": "1.0"
+        }
+      }
+    },
+    {
+      "id": "provider-session-mutation-without-events",
+      "schema": "provider.schema.json#/$defs/providerSessionMutationPayload",
+      "expectedKeyword": "minItems",
+      "instance": {
+        "version": "1.0",
+        "scope": {
+          "walletProfile": "turing-wallet",
+          "sessionId": "session-transfer-1"
+        },
+        "expectedRevision": "0",
+        "target": {
+          "version": "1.0",
+          "sessionId": "session-transfer-1",
+          "revision": "1",
+          "connected": true,
+          "activeChainId": "tbc:other",
+          "activeAccountIds": [
+            "tbc:other:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+          ]
+        },
+        "events": []
+      }
+    },
+    {
+      "id": "provider-session-ack-not-committed",
+      "schema": "provider.schema.json#/$defs/providerSessionCommitAck",
+      "expectedKeyword": "const",
+      "instance": {
+        "version": "1.0",
+        "commitId": "KpUy5PXU0wnsr2kFD_re6nC0i0t28vAbiP2s4ozlOjY",
+        "status": "pending",
+        "revision": "1"
+      }
+    },
+    {
+      "id": "provider-session-commit-id-not-deterministic",
+      "schema": "provider.schema.json#/$defs/providerSessionMutation",
+      "expectedKeyword": "pattern",
+      "instance": {
+        "payload": {
+          "version": "1.0",
+          "scope": {
+            "walletProfile": "turing-wallet",
+            "sessionId": "session-transfer-1"
+          },
+          "expectedRevision": "0",
+          "target": {
+            "version": "1.0",
+            "sessionId": "session-transfer-1",
+            "revision": "1",
+            "connected": true,
+            "activeChainId": "tbc:other",
+            "activeAccountIds": [
+              "tbc:other:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+            ]
+          },
+          "events": [
+            {
+              "name": "chainChanged",
+              "payload": "tbc:other"
+            }
+          ]
+        },
+        "commitId": "caller-selected-commit-id"
+      }
+    },
+    {
+      "id": "provider-cancellation-terminal-completed",
+      "schema": "provider.schema.json#/$defs/providerCancellationDisposition",
+      "expectedKeyword": "enum",
+      "instance": {
+        "reason": "REQUEST_ABORTED",
+        "terminalState": "completed",
+        "delivery": "suppress",
+        "providerCode": null,
+        "executionErrorName": null,
+        "retryable": false
+      }
+    },
+    {
+      "id": "lifecycle-effect-not-registered",
+      "schema": "integration.schema.json#/$defs/lifecycleEffectName",
+      "expectedKeyword": "enum",
+      "instance": "provider.disconnect"
+    },
+    {
+      "id": "provider-session-snapshot-missing-active-accounts",
+      "schema": "provider.schema.json#/$defs/providerSessionSnapshot",
+      "expectedKeyword": "required",
+      "instance": {
+        "version": "1.0",
+        "scope": {
+          "walletProfile": "turing-wallet",
+          "sessionId": "session-transfer-1"
+        },
+        "state": {
+          "version": "1.0",
+          "sessionId": "session-transfer-1",
+          "revision": "0",
+          "connected": true,
+          "activeChainId": "tbc:mainnet"
+        }
+      }
+    },
+    {
+      "id": "provider-session-duplicate-active-account",
+      "schema": "provider.schema.json#/$defs/providerSessionState",
+      "expectedKeyword": "uniqueItems",
+      "instance": {
+        "version": "1.0",
+        "sessionId": "session-transfer-1",
+        "revision": "0",
+        "connected": true,
+        "activeChainId": "tbc:mainnet",
+        "activeAccountIds": [
+          "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+        ]
+      }
+    },
+    {
+      "id": "remove-current-session",
+      "schema": "integration.schema.json#/$defs/startInput",
+      "expectedKeyword": "required",
+      "instance": {
+        "version": "1.0",
+        "release": {
+          "version": "1.0.0-draft.3",
+          "schemaBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "registryBundleSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        },
+        "request": {
+          "jsonrpc": "2.0",
+          "id": "missing-current-session",
+          "method": "tbc_chainId"
+        },
+        "currentContext": {
+          "sessionId": "session-transfer-1",
+          "transport": "webview",
+          "origin": "https://example.test",
+          "topOrigin": "https://example.test",
+          "frame": "top",
+          "navigationId": "nav-1",
+          "createdAt": "2026-08-31T12:00:00Z"
+        }
+      }
+    },
+    {
+      "id": "chain-switch-proposal-missing-hash",
+      "schema": "integration.schema.json#/$defs/chainSwitchProposal",
+      "expectedKeyword": "required",
+      "instance": {
+        "payload": {
+          "version": "1.0",
+          "fromChainId": "tbc:mainnet",
+          "toChainId": "tbc:other",
+          "expectedSessionRevision": "0",
+          "expiresAt": "2026-08-31T12:02:00Z"
+        }
+      }
+    },
+    {
+      "id": "continue-with-pending-call",
+      "schema": "integration.schema.json#/$defs/continueTransition",
+      "expectedKeyword": "maxItems",
+      "transitionId": "continue-validating",
+      "mutation": {
+        "operation": "set",
+        "path": "/checkpoint/payload/pendingCalls/0",
+        "value": {
+          "version": "1.0",
+          "callId": "1FYldPLoxmyjMXnuM59MMJevCqv3N88DcNZdSpTWbec",
+          "operation": "clock.now",
+          "params": {
+            "version": "1.0"
+          }
+        }
+      }
+    },
+    {
+      "id": "waiting-without-call",
+      "schema": "integration.schema.json#/$defs/waitingTransition",
+      "expectedKeyword": "minItems",
+      "transitionId": "wait-for-clock",
+      "mutation": {
+        "operation": "set",
+        "path": "/calls",
+        "value": []
+      }
+    }
+  ]
+}

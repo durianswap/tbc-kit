@@ -1,0 +1,19 @@
+{
+  "source": {
+    "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+    "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+    "path": "modules/tbc-transaction-engine/rust/src/lib.rs",
+    "function": "build_stablecoin_transaction_json",
+    "sdkFunction": "StableCoin::transfer"
+  },
+  "intent": {
+    "type": "tbc.stablecoin.transfer",
+    "version": "1.0",
+    "contractId": "STABLECOIN_ID",
+    "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+    "amount": "400",
+    "attachedTbcAmount": "24"
+  },
+  "balances": ["1000"],
+  "lockTime": 500000001
+}

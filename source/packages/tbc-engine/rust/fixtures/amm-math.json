@@ -1,0 +1,1646 @@
+{
+  "upstream": {
+    "commit": "af77616121db340e15bb8b73c197bc2f8d1ee986",
+    "sources": {
+      "lib/util/poolnft3/tape.ts": "26525045fa19c5a985e35ce9b7d57cefda5f9b1aac56aa2daed4f019558646ec",
+      "lib/util/poolnft3/fees.ts": "274b2cccde4bc065c94a6cf284ed27b8e891053d2eb3b576133c77074920950c",
+      "lib/util/poolnft3/math.ts": "619e46f1cc75b7ea9a27f1b8062203344f589e1e02628265234062f85e7f0f8b"
+    }
+  },
+  "cases": [
+    {
+      "op": "fees",
+      "input": {
+        "amount": "1",
+        "plan": 1
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "1",
+          "totalFeeSat": "0",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "0",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "0",
+          "netAmountSat": "1"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "285",
+        "plan": 1
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "285",
+          "totalFeeSat": "0",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "0",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "0",
+          "netAmountSat": "285"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "286",
+        "plan": 1
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "286",
+          "totalFeeSat": "1",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "1",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "1",
+          "poolFeeRetainedSat": "1",
+          "netAmountSat": "285"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "999",
+        "plan": 1
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "999",
+          "totalFeeSat": "3",
+          "lpFeeSat": "2",
+          "serviceFeeAccruedSat": "1",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "1",
+          "poolFeeRetainedSat": "3",
+          "netAmountSat": "996"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "10000",
+        "plan": 1
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "10000",
+          "totalFeeSat": "35",
+          "lpFeeSat": "25",
+          "serviceFeeAccruedSat": "10",
+          "serviceFeePaidSat": "10",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "25",
+          "netAmountSat": "9965"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "9223372036854775807",
+        "plan": 1
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "9223372036854775807",
+          "totalFeeSat": "32281802128991715",
+          "lpFeeSat": "23058430092136939",
+          "serviceFeeAccruedSat": "9223372036854776",
+          "serviceFeePaidSat": "9223372036854776",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "23058430092136939",
+          "netAmountSat": "9191090234725784092"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "1",
+        "plan": 2
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "1",
+          "totalFeeSat": "0",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "0",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "0",
+          "netAmountSat": "1"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "285",
+        "plan": 2
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "285",
+          "totalFeeSat": "0",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "0",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "0",
+          "netAmountSat": "285"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "286",
+        "plan": 2
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "286",
+          "totalFeeSat": "1",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "1",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "1",
+          "poolFeeRetainedSat": "1",
+          "netAmountSat": "285"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "999",
+        "plan": 2
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "999",
+          "totalFeeSat": "3",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "3",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "3",
+          "poolFeeRetainedSat": "3",
+          "netAmountSat": "996"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "10000",
+        "plan": 2
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "10000",
+          "totalFeeSat": "35",
+          "lpFeeSat": "5",
+          "serviceFeeAccruedSat": "30",
+          "serviceFeePaidSat": "30",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "5",
+          "netAmountSat": "9965"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "9223372036854775807",
+        "plan": 2
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "9223372036854775807",
+          "totalFeeSat": "32281802128991715",
+          "lpFeeSat": "4611686018427387",
+          "serviceFeeAccruedSat": "27670116110564328",
+          "serviceFeePaidSat": "27670116110564328",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "4611686018427387",
+          "netAmountSat": "9191090234725784092"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "1",
+        "plan": 3
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "1",
+          "totalFeeSat": "0",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "0",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "0",
+          "netAmountSat": "1"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "285",
+        "plan": 3
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "285",
+          "totalFeeSat": "3",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "3",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "3",
+          "poolFeeRetainedSat": "3",
+          "netAmountSat": "282"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "286",
+        "plan": 3
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "286",
+          "totalFeeSat": "3",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "3",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "3",
+          "poolFeeRetainedSat": "3",
+          "netAmountSat": "283"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "999",
+        "plan": 3
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "999",
+          "totalFeeSat": "13",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "13",
+          "serviceFeePaidSat": "13",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "0",
+          "netAmountSat": "986"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "10000",
+        "plan": 3
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "10000",
+          "totalFeeSat": "135",
+          "lpFeeSat": "5",
+          "serviceFeeAccruedSat": "130",
+          "serviceFeePaidSat": "130",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "5",
+          "netAmountSat": "9865"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "9223372036854775807",
+        "plan": 3
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "9223372036854775807",
+          "totalFeeSat": "124515522497539473",
+          "lpFeeSat": "4611686018427387",
+          "serviceFeeAccruedSat": "119903836479112086",
+          "serviceFeePaidSat": "119903836479112086",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "4611686018427387",
+          "netAmountSat": "9098856514357236334"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "1",
+        "plan": 4
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "1",
+          "totalFeeSat": "0",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "0",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "0",
+          "netAmountSat": "1"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "285",
+        "plan": 4
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "285",
+          "totalFeeSat": "9",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "9",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "9",
+          "poolFeeRetainedSat": "9",
+          "netAmountSat": "276"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "286",
+        "plan": 4
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "286",
+          "totalFeeSat": "9",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "9",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "9",
+          "poolFeeRetainedSat": "9",
+          "netAmountSat": "277"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "999",
+        "plan": 4
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "999",
+          "totalFeeSat": "33",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "33",
+          "serviceFeePaidSat": "33",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "0",
+          "netAmountSat": "966"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "10000",
+        "plan": 4
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "10000",
+          "totalFeeSat": "335",
+          "lpFeeSat": "5",
+          "serviceFeeAccruedSat": "330",
+          "serviceFeePaidSat": "330",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "5",
+          "netAmountSat": "9665"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "9223372036854775807",
+        "plan": 4
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "9223372036854775807",
+          "totalFeeSat": "308982963234634989",
+          "lpFeeSat": "4611686018427387",
+          "serviceFeeAccruedSat": "304371277216207602",
+          "serviceFeePaidSat": "304371277216207602",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "4611686018427387",
+          "netAmountSat": "8914389073620140818"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "1",
+        "plan": 5
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "1",
+          "totalFeeSat": "0",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "0",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "0",
+          "netAmountSat": "1"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "285",
+        "plan": 5
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "285",
+          "totalFeeSat": "15",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "15",
+          "serviceFeePaidSat": "15",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "0",
+          "netAmountSat": "270"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "286",
+        "plan": 5
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "286",
+          "totalFeeSat": "15",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "15",
+          "serviceFeePaidSat": "15",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "0",
+          "netAmountSat": "271"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "999",
+        "plan": 5
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "999",
+          "totalFeeSat": "53",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "53",
+          "serviceFeePaidSat": "53",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "0",
+          "netAmountSat": "946"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "10000",
+        "plan": 5
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "10000",
+          "totalFeeSat": "535",
+          "lpFeeSat": "5",
+          "serviceFeeAccruedSat": "530",
+          "serviceFeePaidSat": "530",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "5",
+          "netAmountSat": "9465"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "9223372036854775807",
+        "plan": 5
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "9223372036854775807",
+          "totalFeeSat": "493450403971730505",
+          "lpFeeSat": "4611686018427387",
+          "serviceFeeAccruedSat": "488838717953303118",
+          "serviceFeePaidSat": "488838717953303118",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "4611686018427387",
+          "netAmountSat": "8729921632883045302"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "1",
+        "plan": 6
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "1",
+          "totalFeeSat": "0",
+          "lpFeeSat": "0",
+          "serviceFeeAccruedSat": "0",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "0",
+          "netAmountSat": "1"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "285",
+        "plan": 6
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "285",
+          "totalFeeSat": "3",
+          "lpFeeSat": "2",
+          "serviceFeeAccruedSat": "1",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "1",
+          "poolFeeRetainedSat": "3",
+          "netAmountSat": "282"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "286",
+        "plan": 6
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "286",
+          "totalFeeSat": "3",
+          "lpFeeSat": "2",
+          "serviceFeeAccruedSat": "1",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "1",
+          "poolFeeRetainedSat": "3",
+          "netAmountSat": "283"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "999",
+        "plan": 6
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "999",
+          "totalFeeSat": "12",
+          "lpFeeSat": "7",
+          "serviceFeeAccruedSat": "5",
+          "serviceFeePaidSat": "0",
+          "serviceFeeRetainedSat": "5",
+          "poolFeeRetainedSat": "12",
+          "netAmountSat": "987"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "10000",
+        "plan": 6
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "10000",
+          "totalFeeSat": "130",
+          "lpFeeSat": "80",
+          "serviceFeeAccruedSat": "50",
+          "serviceFeePaidSat": "50",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "80",
+          "netAmountSat": "9870"
+        }
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "9223372036854775807",
+        "plan": 6
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "baseTbcSat": "9223372036854775807",
+          "totalFeeSat": "119903836479112085",
+          "lpFeeSat": "73786976294838206",
+          "serviceFeeAccruedSat": "46116860184273879",
+          "serviceFeePaidSat": "46116860184273879",
+          "serviceFeeRetainedSat": "0",
+          "poolFeeRetainedSat": "73786976294838206",
+          "netAmountSat": "9103468200375663722"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "input": {
+        "state": {
+          "ftLpAmount": "0",
+          "ftAAmount": "0",
+          "tbcAmount": "0",
+          "poolValue": "1500"
+        },
+        "budget": {
+          "incrementSat": "100000",
+          "firstFtAmountRaw": "300000"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "101500",
+            "tbcAmount": "100000",
+            "ftAAmount": "300000",
+            "ftLpAmount": "100000"
+          },
+          "isFirstAddLP": true,
+          "tbcIncrementSat": "100000",
+          "tbcReserveIncrementSat": "100000",
+          "ftAIncrementRaw": "300000",
+          "ftLpIncrementRaw": "100000"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "input": {
+        "state": {
+          "ftLpAmount": "0",
+          "ftAAmount": "0",
+          "tbcAmount": "0",
+          "poolValue": "1500"
+        },
+        "budget": {
+          "incrementFtRaw": "10"
+        }
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "add",
+      "input": {
+        "state": {
+          "ftLpAmount": "0",
+          "ftAAmount": "0",
+          "tbcAmount": "0",
+          "poolValue": "1500"
+        },
+        "budget": {
+          "incrementSat": "1"
+        }
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "add",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "budget": {
+          "incrementSat": "111"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "1002611",
+            "tbcAmount": "1000110",
+            "ftAAmount": "3000330",
+            "ftLpAmount": "1000110"
+          },
+          "isFirstAddLP": false,
+          "tbcIncrementSat": "111",
+          "tbcReserveIncrementSat": "110",
+          "ftAIncrementRaw": "330",
+          "ftLpIncrementRaw": "110"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "budget": {
+          "incrementFtRaw": "333"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "1002612",
+            "tbcAmount": "1000111",
+            "ftAAmount": "3000333",
+            "ftLpAmount": "1000111"
+          },
+          "isFirstAddLP": false,
+          "tbcIncrementSat": "112",
+          "tbcReserveIncrementSat": "111",
+          "ftAIncrementRaw": "333",
+          "ftLpIncrementRaw": "111"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "budget": {
+          "incrementSat": "1"
+        }
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "add",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "budget": {
+          "incrementSat": "100",
+          "firstFtAmountRaw": "30"
+        }
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "add",
+      "input": {
+        "state": {
+          "ftLpAmount": "13",
+          "ftAAmount": "17",
+          "tbcAmount": "23",
+          "poolValue": "1531"
+        },
+        "budget": {
+          "incrementSat": "7"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "1536",
+            "tbcAmount": "27",
+            "ftAAmount": "20",
+            "ftLpAmount": "15"
+          },
+          "isFirstAddLP": false,
+          "tbcIncrementSat": "5",
+          "tbcReserveIncrementSat": "4",
+          "ftAIncrementRaw": "3",
+          "ftLpIncrementRaw": "2"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "input": {
+        "state": {
+          "ftLpAmount": "13",
+          "ftAAmount": "17",
+          "tbcAmount": "23",
+          "poolValue": "1531"
+        },
+        "budget": {
+          "incrementFtRaw": "7"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "1543",
+            "tbcAmount": "32",
+            "ftAAmount": "24",
+            "ftLpAmount": "18"
+          },
+          "isFirstAddLP": false,
+          "tbcIncrementSat": "12",
+          "tbcReserveIncrementSat": "9",
+          "ftAIncrementRaw": "7",
+          "ftLpIncrementRaw": "5"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "input": {
+        "state": {
+          "ftLpAmount": "2305843009213693951",
+          "ftAAmount": "2305843009213693951",
+          "tbcAmount": "2305843009213693951",
+          "poolValue": "2305843009213695451"
+        },
+        "budget": {
+          "incrementSat": "123456789"
+        }
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "2305843009337152240",
+            "tbcAmount": "2305843009337150740",
+            "ftAAmount": "2305843009337150740",
+            "ftLpAmount": "2305843009337150740"
+          },
+          "isFirstAddLP": false,
+          "tbcIncrementSat": "123456789",
+          "tbcReserveIncrementSat": "123456789",
+          "ftAIncrementRaw": "123456789",
+          "ftLpIncrementRaw": "123456789"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1501"
+        },
+        "budget": {
+          "incrementSat": "100"
+        }
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "add",
+      "input": {
+        "state": {
+          "ftLpAmount": "2305843009213693951",
+          "ftAAmount": "2305843009213693951",
+          "tbcAmount": "2305843009213693951",
+          "poolValue": "9223372036854775807"
+        },
+        "budget": {
+          "incrementSat": "9223372036854775807"
+        }
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "remove",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "amount": "1"
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "remove",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "amount": "1000"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "1001499",
+            "ftLpAmount": "999000",
+            "ftAAmount": "2997000",
+            "tbcAmount": "999000"
+          },
+          "ftLpBurnRaw": "1000",
+          "ftADecrementRaw": "3000",
+          "tbcDecrementSat": "1000",
+          "poolValueDecrementSat": "1001"
+        }
+      }
+    },
+    {
+      "op": "remove",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "amount": "1000000"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "1500",
+            "ftLpAmount": "0",
+            "ftAAmount": "0",
+            "tbcAmount": "0"
+          },
+          "ftLpBurnRaw": "1000000",
+          "ftADecrementRaw": "3000000",
+          "tbcDecrementSat": "1000000",
+          "poolValueDecrementSat": "1001000"
+        }
+      }
+    },
+    {
+      "op": "remove",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "amount": "1000001"
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "remove",
+      "input": {
+        "state": {
+          "ftLpAmount": "0",
+          "ftAAmount": "0",
+          "tbcAmount": "0",
+          "poolValue": "1500"
+        },
+        "amount": "1"
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "remove",
+      "input": {
+        "state": {
+          "ftLpAmount": "13",
+          "ftAAmount": "17",
+          "tbcAmount": "23",
+          "poolValue": "1531"
+        },
+        "amount": "6"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "1517",
+            "ftLpAmount": "7",
+            "ftAAmount": "10",
+            "tbcAmount": "13"
+          },
+          "ftLpBurnRaw": "6",
+          "ftADecrementRaw": "7",
+          "tbcDecrementSat": "10",
+          "poolValueDecrementSat": "14"
+        }
+      }
+    },
+    {
+      "op": "remove",
+      "input": {
+        "state": {
+          "ftLpAmount": "2305843009213693951",
+          "ftAAmount": "2305843009213693951",
+          "tbcAmount": "2305843009213693951",
+          "poolValue": "2305843009213695451"
+        },
+        "amount": "123456"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "2305843009213571995",
+            "ftLpAmount": "2305843009213570495",
+            "ftAAmount": "2305843009213570495",
+            "tbcAmount": "2305843009213570495"
+          },
+          "ftLpBurnRaw": "123456",
+          "ftADecrementRaw": "123456",
+          "tbcDecrementSat": "123456",
+          "poolValueDecrementSat": "123456"
+        }
+      }
+    },
+    {
+      "op": "buy",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "amount": "10000",
+        "plan": 1,
+        "minimum": "0"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "1012490",
+            "tbcAmount": "1009965",
+            "ftAAmount": "2970400",
+            "ftLpAmount": "1000000"
+          },
+          "inputTbcSat": "10000",
+          "effectiveTbcIncrementSat": "9965",
+          "poolValueIncrementSat": "9990",
+          "ftOutRaw": "29600",
+          "fees": {
+            "baseTbcSat": "10000",
+            "totalFeeSat": "35",
+            "lpFeeSat": "25",
+            "serviceFeeAccruedSat": "10",
+            "serviceFeePaidSat": "10",
+            "serviceFeeRetainedSat": "0",
+            "poolFeeRetainedSat": "25",
+            "netAmountSat": "9965"
+          }
+        }
+      }
+    },
+    {
+      "op": "buy",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "amount": "10000",
+        "plan": 6,
+        "minimum": "0"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "1012450",
+            "tbcAmount": "1009870",
+            "ftAAmount": "2970680",
+            "ftLpAmount": "1000000"
+          },
+          "inputTbcSat": "10000",
+          "effectiveTbcIncrementSat": "9870",
+          "poolValueIncrementSat": "9950",
+          "ftOutRaw": "29320",
+          "fees": {
+            "baseTbcSat": "10000",
+            "totalFeeSat": "130",
+            "lpFeeSat": "80",
+            "serviceFeeAccruedSat": "50",
+            "serviceFeePaidSat": "50",
+            "serviceFeeRetainedSat": "0",
+            "poolFeeRetainedSat": "80",
+            "netAmountSat": "9870"
+          }
+        }
+      }
+    },
+    {
+      "op": "buy",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "amount": "1",
+        "plan": 1,
+        "minimum": "0"
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "buy",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "amount": "10000",
+        "plan": 1,
+        "minimum": "9223372036854775807"
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "buy",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "amount": "3000000",
+        "plan": 1,
+        "minimum": "0"
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "buy",
+      "input": {
+        "state": {
+          "ftLpAmount": "2305843009213693951",
+          "ftAAmount": "2305843009213693951",
+          "tbcAmount": "2305843009213693951",
+          "poolValue": "2305843009213695451"
+        },
+        "amount": "123456789",
+        "plan": 3,
+        "minimum": "0"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "2305843009335547302",
+            "tbcAmount": "2305843009335484074",
+            "ftAAmount": "2305843009091903829",
+            "ftLpAmount": "2305843009213693951"
+          },
+          "inputTbcSat": "123456789",
+          "effectiveTbcIncrementSat": "121790123",
+          "poolValueIncrementSat": "121851851",
+          "ftOutRaw": "121790122",
+          "fees": {
+            "baseTbcSat": "123456789",
+            "totalFeeSat": "1666666",
+            "lpFeeSat": "61728",
+            "serviceFeeAccruedSat": "1604938",
+            "serviceFeePaidSat": "1604938",
+            "serviceFeeRetainedSat": "0",
+            "poolFeeRetainedSat": "61728",
+            "netAmountSat": "121790123"
+          }
+        }
+      }
+    },
+    {
+      "op": "buy",
+      "input": {
+        "state": {
+          "ftLpAmount": "0",
+          "ftAAmount": "0",
+          "tbcAmount": "0",
+          "poolValue": "1500"
+        },
+        "amount": "10000",
+        "plan": 1,
+        "minimum": "0"
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "sell",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "amount": "10000",
+        "plan": 1,
+        "minimum": "0"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "999189",
+            "tbcAmount": "996678",
+            "ftAAmount": "3010000",
+            "ftLpAmount": "1000000"
+          },
+          "inputFtRaw": "10000",
+          "grossTbcOutSat": "3322",
+          "tbcOutSat": "3311",
+          "poolValueDecrementSat": "3311",
+          "fees": {
+            "baseTbcSat": "3322",
+            "totalFeeSat": "11",
+            "lpFeeSat": "8",
+            "serviceFeeAccruedSat": "3",
+            "serviceFeePaidSat": "0",
+            "serviceFeeRetainedSat": "3",
+            "poolFeeRetainedSat": "11",
+            "netAmountSat": "3311"
+          }
+        }
+      }
+    },
+    {
+      "op": "sell",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "amount": "10000",
+        "plan": 6,
+        "minimum": "0"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "999204",
+            "tbcAmount": "996678",
+            "ftAAmount": "3010000",
+            "ftLpAmount": "1000000"
+          },
+          "inputFtRaw": "10000",
+          "grossTbcOutSat": "3322",
+          "tbcOutSat": "3279",
+          "poolValueDecrementSat": "3296",
+          "fees": {
+            "baseTbcSat": "3322",
+            "totalFeeSat": "43",
+            "lpFeeSat": "26",
+            "serviceFeeAccruedSat": "17",
+            "serviceFeePaidSat": "17",
+            "serviceFeeRetainedSat": "0",
+            "poolFeeRetainedSat": "26",
+            "netAmountSat": "3279"
+          }
+        }
+      }
+    },
+    {
+      "op": "sell",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "amount": "1",
+        "plan": 1,
+        "minimum": "0"
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "sell",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "amount": "10000",
+        "plan": 1,
+        "minimum": "9223372036854775807"
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "sell",
+      "input": {
+        "state": {
+          "ftLpAmount": "1000000",
+          "ftAAmount": "3000000",
+          "tbcAmount": "1000000",
+          "poolValue": "1002500"
+        },
+        "amount": "3000000",
+        "plan": 1,
+        "minimum": "0"
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "sell",
+      "input": {
+        "state": {
+          "ftLpAmount": "2305843009213693951",
+          "ftAAmount": "2305843009213693951",
+          "tbcAmount": "2305843009213693951",
+          "poolValue": "2305843009213695451"
+        },
+        "amount": "123456789",
+        "plan": 3,
+        "minimum": "0"
+      },
+      "expected": {
+        "ok": true,
+        "value": {
+          "nextState": {
+            "poolValue": "2305843009090300391",
+            "tbcAmount": "2305843009090237163",
+            "ftAAmount": "2305843009337150740",
+            "ftLpAmount": "2305843009213693951"
+          },
+          "inputFtRaw": "123456789",
+          "grossTbcOutSat": "123456788",
+          "tbcOutSat": "121790122",
+          "poolValueDecrementSat": "123395060",
+          "fees": {
+            "baseTbcSat": "123456788",
+            "totalFeeSat": "1666666",
+            "lpFeeSat": "61728",
+            "serviceFeeAccruedSat": "1604938",
+            "serviceFeePaidSat": "1604938",
+            "serviceFeeRetainedSat": "0",
+            "poolFeeRetainedSat": "61728",
+            "netAmountSat": "121790122"
+          }
+        }
+      }
+    },
+    {
+      "op": "sell",
+      "input": {
+        "state": {
+          "ftLpAmount": "0",
+          "ftAAmount": "0",
+          "tbcAmount": "0",
+          "poolValue": "1500"
+        },
+        "amount": "10000",
+        "plan": 1,
+        "minimum": "0"
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "1000",
+        "plan": 0
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "1000",
+        "plan": 7
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "1000",
+        "plan": 1,
+        "rate": 36
+      },
+      "expected": {
+        "ok": false
+      }
+    },
+    {
+      "op": "fees",
+      "input": {
+        "amount": "9223372036854775808",
+        "plan": 1
+      },
+      "expected": {
+        "ok": false
+      }
+    }
+  ],
+  "policies": [
+    {
+      "lpPlan": 1,
+      "totalFeeBps": 35,
+      "lpFeeBps": 25,
+      "serviceFeeAddress": "13oCEJaqyyiC8iRrfup6PDL2GKZ3xQrsZL",
+      "servicePayoutThresholdSat": "10"
+    },
+    {
+      "lpPlan": 2,
+      "totalFeeBps": 35,
+      "lpFeeBps": 5,
+      "serviceFeeAddress": "1Fa6Uy64Ub4qNdB896zX2pNMx4a8zMhtCy",
+      "servicePayoutThresholdSat": "10"
+    },
+    {
+      "lpPlan": 3,
+      "totalFeeBps": 135,
+      "lpFeeBps": 5,
+      "serviceFeeAddress": "125fTLNsraQxTYqT4EeQNF2ggzcqicveKL",
+      "servicePayoutThresholdSat": "10"
+    },
+    {
+      "lpPlan": 4,
+      "totalFeeBps": 335,
+      "lpFeeBps": 5,
+      "serviceFeeAddress": "19DetoaaohQkjFVJ6oGXd83xhZYQSbpE1g",
+      "servicePayoutThresholdSat": "10"
+    },
+    {
+      "lpPlan": 5,
+      "totalFeeBps": 535,
+      "lpFeeBps": 5,
+      "serviceFeeAddress": "15EKrhuD8Yf3SfhjAgbizYqfnBbKh9ZMZ7",
+      "servicePayoutThresholdSat": "10"
+    },
+    {
+      "lpPlan": 6,
+      "totalFeeBps": 130,
+      "lpFeeBps": 80,
+      "serviceFeeAddress": "1N7rf2AuAHB2aCrVgnbQhSWhaUVk3rGhjm",
+      "servicePayoutThresholdSat": "10"
+    }
+  ],
+  "tapes": [
+    {
+      "hex": "006a4c82111111111111111111111111111111111111111111111111111111111111111180002222222222222222222222222222222222222222222222222222222222222222ff7fffffffffffffff7f87d6120000000000b1cb740000000000000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f23000100000008504f4f4c54415045",
+      "changedHex": "006a4c82111111111111111111111111111111111111111111111111111111111111111180002222222222222222222222222222222222222222222222222222222222222222ff7f010000000000000002000000000000000300000000000000000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f23000100000008504f4f4c54415045",
+      "variant": "public"
+    },
+    {
+      "hex": "006a4c82111111111111111111111111111111111111111111111111111111111111111180002222222222222222222222222222222222222222222222222222222222222222ff7fffffffffffffff7f87d6120000000000b1cb740000000000000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f23000101000108504f4f4c54415045",
+      "changedHex": "006a4c82111111111111111111111111111111111111111111111111111111111111111180002222222222222222222222222222222222222222222222222222222222222222ff7f010000000000000002000000000000000300000000000000000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f23000101000108504f4f4c54415045",
+      "variant": "controller"
+    },
+    {
+      "hex": "006a4c82111111111111111111111111111111111111111111111111111111111111111180002222222222222222222222222222222222222222222222222222222222222222ff7fffffffffffffff7f87d6120000000000b1cb740000000000000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f23000100010008504f4f4c54415045",
+      "changedHex": "006a4c82111111111111111111111111111111111111111111111111111111111111111180002222222222222222222222222222222222222222222222222222222222222222ff7f010000000000000002000000000000000300000000000000000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f23000100010008504f4f4c54415045",
+      "variant": "public-timelocked"
+    },
+    {
+      "hex": "006a4c82111111111111111111111111111111111111111111111111111111111111111180002222222222222222222222222222222222222222222222222222222222222222ff7fffffffffffffff7f87d6120000000000b1cb740000000000000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f23000101010108504f4f4c54415045",
+      "changedHex": "006a4c82111111111111111111111111111111111111111111111111111111111111111180002222222222222222222222222222222222222222222222222222222222222222ff7f010000000000000002000000000000000300000000000000000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f23000101010108504f4f4c54415045",
+      "variant": "controller-timelocked"
+    }
+  ]
+}

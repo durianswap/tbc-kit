@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "candidate": "@tbc/kit@0.1.0-candidate.78",
+  "baseline": {
+    "package": "@tbc/kit@0.1.0-candidate.77",
+    "tarSha256": "5b73f985d02deb970701878ca1a3155c5e008fad9cceac256f3f305d57c287e8"
+  },
+  "checks": {
+    "sourceTests": 69,
+    "builtPackageTests": 48,
+    "publicTypes": "passed",
+    "apiRpcBundleIsolation": "passed",
+    "successfulRequestBehavior": "64 independent requests start in the same turn; one duplicate adds no HTTP; success schedules no retry wait",
+    "writeRetry": "named API/RPC write methods force one attempt",
+    "confirmationSemantics": "Unchanged optional observations; no missing-to-zero projection"
+  },
+  "benchmark": {
+    "measuredAt": "2026-09-19T19:21:11.875Z",
+    "node": "v22.23.2",
+    "methodology": "Same process, same input, observer disabled, alternating order. No real HTTP, no iOS claim.",
+    "processing": [
+      {
+        "bytes": 512,
+        "requestsPerRound": 1500,
+        "rounds": 8,
+        "baselineMedianUs": 11.461694333333355,
+        "currentMedianUs": 14.437472333333329,
+        "baselineSamplesUs": [
+          27.8735,
+          18.730861333333337,
+          14.391805333333346,
+          10.94358333333332,
+          10.403722666666681,
+          10.059333333333331,
+          10.58755599999995,
+          11.979805333333388
+        ],
+        "currentSamplesUs": [
+          26.065416666666657,
+          23.416277999999995,
+          13.953749999999976,
+          14.02911133333335,
+          12.826028000000028,
+          13.158694666666673,
+          14.845833333333305,
+          16.114000000000033
+        ]
+      },
+      {
+        "bytes": 65536,
+        "requestsPerRound": 250,
+        "rounds": 8,
+        "baselineMedianUs": 83.15158399999996,
+        "currentMedianUs": 67.46541800000023,
+        "baselineSamplesUs": [
+          48.109167999999954,
+          68.49599999999964,
+          84.68100000000004,
+          87.3231639999999,
+          111.45633600000018,
+          86.68200000000024,
+          74.42266800000014,
+          81.62216799999987
+        ],
+        "currentSamplesUs": [
+          60.436667999999834,
+          69.88516800000025,
+          81.15333200000032,
+          70.26833199999965,
+          73.96549999999979,
+          65.0456680000002,
+          64.90366799999993,
+          64.74216400000023
+        ]
+      }
+    ],
+    "parallel": {
+      "independent": 64,
+      "duplicate": 1,
+      "httpAttempts": 64,
+      "controlledDelayMs": 20,
+      "baselineMedianMs": 23.293395499999974,
+      "currentMedianMs": 23.229646000000002,
+      "baselineSamplesMs": [
+        24.083082999999988,
+        22.596459000000095,
+        23.718625000000088,
+        21.61770800000022,
+        23.865375000000085,
+        23.379624999999805,
+        22.680250000000115,
+        23.207166000000143
+      ],
+      "currentSamplesMs": [
+        25.16045799999995,
+        23.045374999999922,
+        23.413917000000083,
+        22.53037499999982,
+        22.938499999999976,
+        23.748124999999845,
+        23.453666999999996,
+        21.241084
+      ]
+    }
+  },
+  "limitations": [
+    "Controlled Node comparison only; not device/iOS or live HTTP latency evidence.",
+    "Small-response processing has a measured approximately 3 microsecond median local overhead; not a claim of zero CPU overhead.",
+    "Dynamic credential providers are not single-flighted to prevent cross-identity response sharing.",
+    "Text-only native fetch adapters enforce size after text() resolves; streaming adapters enforce size during consumption."
+  ]
+}

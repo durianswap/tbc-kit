@@ -1,0 +1,399 @@
+// Historical TS implementation test. Replaced by required Rust and artifact tests;
+// see ../README.md. Retained as migration evidence, not an executable test.
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import { after, before, test } from "node:test";
+import { loadInternals } from "./build-internals.mjs";
+import {
+  makeTransferFixture,
+  RECIPIENT_PUBLIC_KEY,
+  rehashPolicy,
+  rehashSnapshot,
+} from "./fixtures/arbitrary-transfers.mjs";
+
+const vectors = JSON.parse(
+  await readFile(new URL("../../../test-vectors/integration.json", import.meta.url), "utf8"),
+);
+let internals;
+let cleanup;
+
+before(async () => {
+  ({ runtime: internals, cleanup } = await loadInternals([
+    "bytes",
+    "p2pkh",
+    "transaction",
+    "turing-txid",
+    "engine",
+  ]));
+});
+
+after(() => cleanup?.());
+
+function assertDeepFrozen(value) {
+  if (value === null || typeof value !== "object") return;
+  assert.equal(Object.isFrozen(value), true);
+  for (const child of Object.values(value)) assertDeepFrozen(child);
+}
+
+function expectEngineError(action, code) {
+  assert.throws(action, (error) => error?.name === "TbcEngineError" && error.code === code);
+}
+
+function withSnapshot(params, mutate) {
+  const snapshot = structuredClone(params.snapshot);
+  mutate(snapshot.payload);
+  const rehashed = rehashSnapshot(snapshot);
+  return { ...params, snapshot: rehashed };
+}
+
+function withPolicy(params, mutate) {
+  const policy = structuredClone(params.policy);
+  mutate(policy.payload);
+  const rehashed = rehashPolicy(policy);
+  return { ...params, policy: rehashed };
+}
+
+test("reproduces the canonical Draft 6 normalization and plan byte-for-byte", () => {
+  const engine = internals.createTbcTransferEngine();
+  const canonical = vectors.canonicalTransfer;
+  const originalRequest = structuredClone(canonical.request);
+  const originalSnapshot = structuredClone(canonical.snapshot);
+  const normalized = engine.normalizeRequest({ version: "1.0", request: canonical.request });
+
+  assert.deepEqual(normalized, {
+    request: canonical.request,
+    requestHash: canonical.requestHash,
+  });
+  const result = engine.plan({
+    version: "1.0",
+    request: normalized.request,
+    requestHash: normalized.requestHash,
+    snapshot: canonical.snapshot,
+    policy: canonical.policy,
+  });
+  assert.deepEqual(result, { plan: canonical.plan });
+  assert.deepEqual(canonical.request, originalRequest);
+  assert.deepEqual(canonical.snapshot, originalSnapshot);
+  assertDeepFrozen(normalized);
+  assertDeepFrozen(result);
+});
+
+test("selects the smallest sufficient single UTXO", () => {
+  const fixture = makeTransferFixture(internals, {
+    amount: 1_500n,
+    utxoAmounts: [5_000n, 2_000n, 3_000n],
+  });
+  const engine = internals.createTbcTransferEngine();
+  const result = engine.plan(fixture.params);
+  const transaction = internals.parseTransaction(
+    result.plan.payload.transactions[0].unsignedTransaction,
+  );
+  const expected = fixture.snapshot.payload.utxos.find(({ satoshis }) => satoshis === "2000");
+
+  assert.equal(transaction.inputs.length, 1);
+  assert.equal(transaction.inputs[0].txid, expected.txid);
+  assert.deepEqual(transaction.outputs.map(({ satoshis }) => satoshis), [1_500n, 420n]);
+});
+
+test("uses deterministic multi-input accumulation and canonical outpoint serialization", () => {
+  const fixture = makeTransferFixture(internals, {
+    amount: 1_550n,
+    utxoAmounts: [700n, 1_000n, 700n],
+    order: [2, 0, 1],
+  });
+  const result = internals.createTbcTransferEngine().plan(fixture.params);
+  const transaction = internals.parseTransaction(
+    result.plan.payload.transactions[0].unsignedTransaction,
+  );
+  const actual = transaction.inputs.map(({ txid, vout }) => ({ txid, vout }));
+  const sorted = structuredClone(actual).sort((left, right) =>
+    left.txid.localeCompare(right.txid) || left.vout - right.vout,
+  );
+
+  assert.equal(transaction.inputs.length, 2);
+  assert.deepEqual(actual, sorted);
+  assert.equal(transaction.outputs[1].satoshis, 70n);
+});
+
+test("preserves the fixed fee for exact spend, ordinary change, and dust rejection", () => {
+  const engine = internals.createTbcTransferEngine();
+  const exact = makeTransferFixture(internals, { amount: 1_000n, utxoAmounts: [1_080n] });
+  const change = makeTransferFixture(internals, { amount: 1_000n, utxoAmounts: [2_000n] });
+  const dust = makeTransferFixture(internals, { amount: 1_000n, utxoAmounts: [1_100n] });
+  const exactTransaction = internals.parseTransaction(
+    engine.plan(exact.params).plan.payload.transactions[0].unsignedTransaction,
+  );
+  const changeResult = engine.plan(change.params);
+  const changeTransaction = internals.parseTransaction(
+    changeResult.plan.payload.transactions[0].unsignedTransaction,
+  );
+
+  assert.deepEqual(exactTransaction.outputs.map(({ satoshis }) => satoshis), [1_000n]);
+  assert.deepEqual(changeTransaction.outputs.map(({ satoshis }) => satoshis), [1_000n, 920n]);
+  assert.equal(changeResult.plan.payload.transactions[0].fee, "80");
+  assert.equal(changeResult.plan.payload.preview.totalFee, "80");
+  expectEngineError(() => engine.plan(dust.params), "MINIMUM_OUTPUT_NOT_MET");
+});
+
+test("fails closed on invalid funds, limits, identities, ancestry, and classifications", () => {
+  const engine = internals.createTbcTransferEngine();
+  const insufficient = makeTransferFixture(internals, {
+    amount: 1_000n,
+    utxoAmounts: [1_000n],
+  });
+  const maxFee = makeTransferFixture(internals, {
+    amount: 1_000n,
+    utxoAmounts: [2_000n],
+    maxFee: 79n,
+  });
+  const maximum = makeTransferFixture(internals, {
+    amount: 1_000n,
+    utxoAmounts: [2_000n],
+    maximum: 999n,
+  });
+  const ordinary = makeTransferFixture(internals, {
+    amount: 1_000n,
+    utxoAmounts: [2_000n],
+  });
+
+  expectEngineError(() => engine.plan(insufficient.params), "INSUFFICIENT_FUNDS");
+  expectEngineError(() => engine.plan(maxFee.params), "INVALID_POLICY");
+  expectEngineError(() => engine.plan(maximum.params), "AMOUNT_OUT_OF_RANGE");
+  expectEngineError(
+    () => engine.plan({ ...ordinary.params, requestHash: "00".repeat(32) }),
+    "INVALID_REQUEST",
+  );
+  expectEngineError(
+    () =>
+      engine.plan({
+        ...ordinary.params,
+        snapshot: { ...ordinary.snapshot, snapshotHash: "00".repeat(32) },
+      }),
+    "INVALID_SNAPSHOT",
+  );
+  expectEngineError(
+    () =>
+      engine.plan({
+        ...ordinary.params,
+        policy: { ...ordinary.policy, policyHash: "00".repeat(32) },
+      }),
+    "INVALID_POLICY",
+  );
+  expectEngineError(
+    () =>
+      engine.plan(
+        withSnapshot(ordinary.params, (payload) => {
+          payload.chainId = "tbc:other";
+        }),
+      ),
+    "INVALID_SNAPSHOT",
+  );
+  expectEngineError(
+    () =>
+      engine.plan(
+        withSnapshot(ordinary.params, (payload) => {
+          const wrongTxid = "11".repeat(32);
+          payload.utxos[0].txid = wrongTxid;
+          payload.parents[0].txid = wrongTxid;
+        }),
+      ),
+    "INVALID_SNAPSHOT",
+  );
+  expectEngineError(
+    () =>
+      engine.plan(
+        withSnapshot(ordinary.params, (payload) => {
+          payload.utxos[0].satoshis = "18446744073709551616";
+        }),
+      ),
+    "INVALID_SNAPSHOT",
+  );
+  expectEngineError(
+    () =>
+      engine.plan(
+        withSnapshot(ordinary.params, (payload) => {
+          payload.utxos[0].confirmations = "4294967296";
+        }),
+      ),
+    "INVALID_SNAPSHOT",
+  );
+  expectEngineError(
+    () =>
+      engine.plan(
+        withSnapshot(ordinary.params, (payload) => {
+          payload.account.address = ordinary.request.intent.to;
+          payload.account.accountId = `${payload.chainId}:${ordinary.request.intent.to}`;
+          payload.account.publicKey = RECIPIENT_PUBLIC_KEY;
+        }),
+      ),
+    "INVALID_SNAPSHOT",
+  );
+  expectEngineError(
+    () =>
+      engine.plan(
+        withSnapshot(ordinary.params, (payload) => {
+          payload.account.publicKey = RECIPIENT_PUBLIC_KEY;
+        }),
+      ),
+    "INVALID_SNAPSHOT",
+  );
+  expectEngineError(
+    () =>
+      engine.plan(
+        withSnapshot(ordinary.params, (payload) => {
+          payload.utxos[0].satoshis = "1999";
+        }),
+      ),
+    "INVALID_SNAPSHOT",
+  );
+  expectEngineError(
+    () =>
+      engine.plan(
+        withSnapshot(ordinary.params, (payload) => {
+          payload.utxos[0].confirmations = "0";
+        }),
+      ),
+    "INSUFFICIENT_FUNDS",
+  );
+  expectEngineError(
+    () =>
+      engine.plan(
+        withSnapshot(ordinary.params, (payload) => {
+          payload.utxos[0].classification = "nft";
+        }),
+      ),
+    "INSUFFICIENT_FUNDS",
+  );
+  expectEngineError(
+    () =>
+      engine.plan(
+        withSnapshot(ordinary.params, (payload) => {
+          payload.utxos.push(structuredClone(payload.utxos[0]));
+        }),
+      ),
+    "INVALID_SNAPSHOT",
+  );
+  expectEngineError(
+    () =>
+      engine.plan(
+        withPolicy(ordinary.params, (payload) =>
+          payload.amountLimits.push({ scope: "native", maximum: "999999" }),
+        ),
+      ),
+    "INVALID_POLICY",
+  );
+  expectEngineError(
+    () =>
+      engine.plan(
+        withPolicy(ordinary.params, (payload) => {
+          payload.minConfirmations = "4294967296";
+        }),
+      ),
+    "INVALID_POLICY",
+  );
+});
+
+test("supports a custom alternate-version network profile without treating it as TBC Testnet", () => {
+  const chainId = "tbc:other";
+  const testnet = makeTransferFixture(internals, {
+    chainId,
+    p2pkhVersion: 0x6f,
+    amount: 1_000n,
+    utxoAmounts: [2_000n],
+  });
+  const engine = internals.createTbcTransferEngine({ networks: [testnet.profile] });
+
+  assert.deepEqual(engine.normalizeRequest({ version: "1.0", request: testnet.request }), {
+    request: testnet.request,
+    requestHash: testnet.requestHash,
+  });
+  assert.equal(engine.plan(testnet.params).plan.payload.chainId, chainId);
+  const mainnet = vectors.canonicalTransfer.request;
+  expectEngineError(
+    () => engine.normalizeRequest({ version: "1.0", request: { ...mainnet, chainId } }),
+    "INVALID_ADDRESS",
+  );
+  expectEngineError(
+    () =>
+      internals.createTbcTransferEngine().normalizeRequest({
+        version: "1.0",
+        request: testnet.request,
+      }),
+    "UNSUPPORTED_CHAIN",
+  );
+});
+
+test("rejects unsupported intents and invalid Base58Check addresses", () => {
+  const request = vectors.canonicalTransfer.request;
+  const engine = internals.createTbcTransferEngine();
+  expectEngineError(
+    () =>
+      engine.normalizeRequest({
+        version: "1.0",
+        request: {
+          ...request,
+          intent: {
+            type: "tbc.ft.create",
+            version: "1.0",
+            name: "Token",
+            symbol: "TOK",
+            decimals: 8,
+            initialSupply: "1000",
+          },
+        },
+      }),
+    "INVALID_REQUEST",
+  );
+  expectEngineError(
+    () =>
+      engine.normalizeRequest({
+        version: "1.0",
+        request: { ...request, from: `${request.from.slice(0, -1)}J` },
+      }),
+    "INVALID_ADDRESS",
+  );
+});
+
+test("is invariant under 1,000 deterministic UTXO order permutations", () => {
+  const engine = internals.createTbcTransferEngine();
+  let state = 0x6d2b79f5;
+  const next = () => {
+    state = (Math.imul(state ^ (state >>> 15), 1 | state) + 0x6d2b79f5) >>> 0;
+    return state;
+  };
+
+  for (let iteration = 0; iteration < 1_000; iteration += 1) {
+    const amounts = Array.from(
+      { length: 3 + (next() % 4) },
+      () => BigInt(400 + (next() % 4_000)),
+    );
+    const total = amounts.reduce((sum, value) => sum + value, 0n);
+    const amount = 1n + BigInt(next() % Number(total - 104n));
+    const fixture = makeTransferFixture(internals, { amount, utxoAmounts: amounts, dust: 0n });
+    const baseline = engine.plan(fixture.params).plan;
+    const order = amounts.map((_, index) => index);
+    for (let index = order.length - 1; index > 0; index -= 1) {
+      const target = next() % (index + 1);
+      [order[index], order[target]] = [order[target], order[index]];
+    }
+    const permuted = makeTransferFixture(internals, {
+      amount,
+      utxoAmounts: amounts,
+      dust: 0n,
+      order,
+    });
+    const actual = engine.plan(permuted.params).plan;
+
+    assert.equal(
+      actual.payload.transactions[0].unsignedTransaction,
+      baseline.payload.transactions[0].unsignedTransaction,
+      `iteration ${iteration}`,
+    );
+    assert.deepEqual(
+      actual.payload.signingTasks,
+      baseline.payload.signingTasks,
+      `iteration ${iteration}`,
+    );
+    assert.deepEqual(actual.payload.preview, baseline.payload.preview, `iteration ${iteration}`);
+  }
+});

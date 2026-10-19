@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.22.1)
+project(tbc_signer_jni LANGUAGES CXX)
+add_library(tbc_signer_kernel SHARED IMPORTED)
+set_target_properties(tbc_signer_kernel PROPERTIES
+  IMPORTED_LOCATION "${CMAKE_CURRENT_LIST_DIR}/../jniLibs/${ANDROID_ABI}/libtbc_signer_kernel.so"
+  IMPORTED_NO_SONAME TRUE)
+add_library(tbc_signer_jni SHARED bridge.cpp)
+option(TBC_SIGNER_MUSIG "Enable wallet-private MuSig (requires matching Rust library)" OFF)
+if(TBC_SIGNER_MUSIG)
+  target_sources(tbc_signer_jni PRIVATE musig.cpp)
+endif()
+target_include_directories(tbc_signer_jni PRIVATE include)
+target_compile_features(tbc_signer_jni PRIVATE cxx_std_17)
+target_link_libraries(tbc_signer_jni PRIVATE tbc_signer_kernel)
+target_link_options(tbc_signer_jni PRIVATE "-Wl,-z,max-page-size=16384")

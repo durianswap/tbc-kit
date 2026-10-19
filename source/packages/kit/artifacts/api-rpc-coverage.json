@@ -1,0 +1,5526 @@
+{
+  "schemaVersion": 1,
+  "generatedFrom": {
+    "api": {
+      "authority": "TBC API official documentation",
+      "source": "https://docs.turingbitchain.io/zh/Introduction",
+      "capturedAt": "2026-09-20",
+      "catalog": "packages/kit/src/official-api.ts#TBC_OFFICIAL_API_ENDPOINTS",
+      "supplementalSource": {
+        "repository": "https://github.com/TuringBitChain/tbc-contract",
+        "commit": "af77616121db340e15bb8b73c197bc2f8d1ee986",
+        "file": "lib/api/api.ts",
+        "methods": ["fetchFrozenTBCBalance", "fetchFrozenUTXOList"],
+        "scope": "timelock balance and deposit endpoints; supplements the captured documentation"
+      }
+    },
+    "rpc": {
+      "repository": "https://github.com/TuringBitChain/TBCNODE",
+      "release": "v3.3.1",
+      "commit": "6ddea88c57e9bc9390c1730657ac766b56c4a670",
+      "publishedAt": "2026-08-12T08:42:14Z",
+      "tagRefVerifiedAt": "2026-09-20",
+      "catalog": "packages/kit/src/rpc-catalog.ts#TBC_RPC_METHODS"
+    }
+  },
+  "invariants": {
+    "integerPrecision": "Every JSON integer is returned as a canonical decimal string; fractional and exponent numbers remain JavaScript numbers.",
+    "apiErrors": [
+      "TbcTransportError",
+      "TbcApiError"
+    ],
+    "rpcErrors": [
+      "TbcTransportError",
+      "TbcRpcError"
+    ],
+    "retry": "Only idempotent reads retry; official write and sensitive methods are forced to one attempt.",
+    "isolation": "API and read RPC are standalone exports. Node administration and wallet RPC require trustedServer=true in a non-browser runtime.",
+    "fallback": "No implicit REST-to-RPC or RPC-to-REST fallback."
+  },
+  "api": [
+    {
+      "name": "health",
+      "http": "GET",
+      "path": "/api/tbc/health",
+      "params": [],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: health"
+    },
+    {
+      "name": "chainState",
+      "http": "GET",
+      "path": "/api/tbc/chainstate",
+      "params": [],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: chain"
+    },
+    {
+      "name": "nodeInfo",
+      "http": "GET",
+      "path": "/api/tbc/nodeinfo",
+      "params": [],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: chain"
+    },
+    {
+      "name": "blockByHash",
+      "http": "GET",
+      "path": "/api/tbc/blockByHash/hash/{hash}",
+      "params": [
+        "path.hash"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: block"
+    },
+    {
+      "name": "blockByHeight",
+      "http": "GET",
+      "path": "/api/tbc/blockByHeight/height/{height}",
+      "params": [
+        "path.height"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: block"
+    },
+    {
+      "name": "recentBlocks",
+      "http": "GET",
+      "path": "/api/tbc/recentblocks/start/{start}/end/{end}",
+      "params": [
+        "path.start",
+        "path.end"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: block"
+    },
+    {
+      "name": "transactionsByBlockHash",
+      "http": "GET",
+      "path": "/api/tbc/txbyblockhash/blockhash/{blockhash}/start/{start}/end/{end}",
+      "params": [
+        "path.blockhash",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: block"
+    },
+    {
+      "name": "transactionsByBlockHeight",
+      "http": "GET",
+      "path": "/api/tbc/txbyblockheight/height/{height}/start/{start}/end/{end}",
+      "params": [
+        "path.height",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: block"
+    },
+    {
+      "name": "decodeTransaction",
+      "http": "GET",
+      "path": "/api/tbc/decode/txid/{txid}",
+      "params": [
+        "path.txid"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: transaction"
+    },
+    {
+      "name": "rawTransaction",
+      "http": "GET",
+      "path": "/api/tbc/txraw/txid/{txid}",
+      "params": [
+        "path.txid"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: transaction"
+    },
+    {
+      "name": "broadcastTransaction",
+      "http": "POST",
+      "path": "/api/tbc/broadcasttx",
+      "params": [
+        "body.txraw"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "single-attempt fixture"
+      ],
+      "evidence": "official docs section: transaction"
+    },
+    {
+      "name": "broadcastTransactions",
+      "http": "POST",
+      "path": "/api/tbc/broadcasttxs",
+      "params": [
+        "body[].txraw"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "single-attempt fixture"
+      ],
+      "evidence": "official docs section: transaction"
+    },
+    {
+      "name": "txoStatus",
+      "http": "POST",
+      "path": "/api/tbc/txo/status",
+      "params": [
+        "body.txos[].txid",
+        "body.txos[].index"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: transaction"
+    },
+    {
+      "name": "mempoolInfo",
+      "http": "GET",
+      "path": "/api/tbc/mempoolinfo",
+      "params": [],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: mempool"
+    },
+    {
+      "name": "mempoolTransactions",
+      "http": "GET",
+      "path": "/api/tbc/mempooltxs",
+      "params": [],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: mempool"
+    },
+    {
+      "name": "utxosByAddress",
+      "http": "GET",
+      "path": "/api/tbc/utxo/address/{address}",
+      "params": [
+        "path.address",
+        "query.limit"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: utxo"
+    },
+    {
+      "name": "utxosByScriptHash",
+      "http": "GET",
+      "path": "/api/tbc/utxo/scriptpubkeyhash/{scriptpubkeyhash}",
+      "params": [
+        "path.scriptpubkeyhash",
+        "query.limit"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: utxo"
+    },
+    {
+      "name": "balanceByAddress",
+      "http": "GET",
+      "path": "/api/tbc/balance/address/{address}",
+      "params": [
+        "path.address"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: address"
+    },
+    {
+      "name": "timelockBalanceByAddress",
+      "http": "GET",
+      "path": "/api/tbc/frozenBalance/address/{address}/piggyBank",
+      "params": ["path.address"],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": ["transport", "HTTP", "invalid JSON/envelope", "non-200 API code"],
+      "units": "Native atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": ["browser", "react-native", "node"],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": ["catalog exact-path fixture", "lossless integer fixture"],
+      "evidence": "pinned tbc-contract lib/api/api.ts: fetchFrozenTBCBalance; read-only Testnet empty-account HTTP 200"
+    },
+    {
+      "name": "timelockUtxosByAddress",
+      "http": "GET",
+      "path": "/api/tbc/frozenUtxo/address/{address}/piggyBank",
+      "params": ["path.address"],
+      "result": "TbcApiUtxoList with lossless integer leaves and normalized mempool heights",
+      "errors": ["transport", "HTTP", "invalid JSON/envelope", "non-200 API code"],
+      "units": "Native atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": ["browser", "react-native", "node"],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": ["catalog exact-path fixture", "lossless integer fixture", "timelock height normalization fixture"],
+      "evidence": "pinned tbc-contract lib/api/api.ts: fetchFrozenUTXOList; read-only Testnet empty-account HTTP 200"
+    },
+    {
+      "name": "historyByAddress",
+      "http": "GET",
+      "path": "/api/tbc/history/address/{address}/start/{start}/end/{end}",
+      "params": [
+        "path.address",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: address"
+    },
+    {
+      "name": "historyByScriptHash",
+      "http": "GET",
+      "path": "/api/tbc/history/scriptpubkeyhash/{scriptpubkeyhash}/start/{start}/end/{end}",
+      "params": [
+        "path.scriptpubkeyhash",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: script"
+    },
+    {
+      "name": "multisigAddress",
+      "http": "GET",
+      "path": "/api/tbc/multisig/multisigaddress/address/{address}",
+      "params": [
+        "path.address"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: multisig"
+    },
+    {
+      "name": "ftTokenListByAddress",
+      "http": "GET",
+      "path": "/api/tbc/ft/tokenlist/address/{address}",
+      "params": [
+        "path.address"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "ftBalanceByAddress",
+      "http": "GET",
+      "path": "/api/tbc/ft/tokenbalance/address/{address}/contract/{contract_id}",
+      "params": [
+        "path.address",
+        "path.contract_id"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "ftHistoryByAddress",
+      "http": "GET",
+      "path": "/api/tbc/ft/history/address/{address}/contract/{contract_id}/start/{start}/end/{end}",
+      "params": [
+        "path.address",
+        "path.contract_id",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "ftAllHistoryByAddress",
+      "http": "GET",
+      "path": "/api/tbc/ft/allhistory/address/{address}/start/{start}/end/{end}",
+      "params": [
+        "path.address",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "ftUtxosByAddress",
+      "http": "GET",
+      "path": "/api/tbc/ft/utxo/address/{address}/contract/{contract_id}",
+      "params": [
+        "path.address",
+        "path.contract_id",
+        "query.limit"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "ftTokenListByCombineScript",
+      "http": "GET",
+      "path": "/api/tbc/ft/tokenlist/combinescript/{combine_script}",
+      "params": [
+        "path.combine_script"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "ftBalanceByCombineScript",
+      "http": "GET",
+      "path": "/api/tbc/ft/tokenbalance/combinescript/{combine_script}/contract/{contract_id}",
+      "params": [
+        "path.combine_script",
+        "path.contract_id"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "ftHistoryByCombineScript",
+      "http": "GET",
+      "path": "/api/tbc/ft/history/combinescript/{combine_script}/contract/{contract_id}/start/{start}/end/{end}",
+      "params": [
+        "path.combine_script",
+        "path.contract_id",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "ftAllHistoryByCombineScript",
+      "http": "GET",
+      "path": "/api/tbc/ft/allhistory/combinescript/{combine_script}/start/{start}/end/{end}",
+      "params": [
+        "path.combine_script",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "ftUtxosByCombineScript",
+      "http": "GET",
+      "path": "/api/tbc/ft/utxo/combinescript/{combine_script}/contract/{contract_id}",
+      "params": [
+        "path.combine_script",
+        "path.contract_id",
+        "query.limit"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "ftInfo",
+      "http": "GET",
+      "path": "/api/tbc/ft/info/contract/{contract_id}",
+      "params": [
+        "path.contract_id"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "ftDecode",
+      "http": "GET",
+      "path": "/api/tbc/ft/decode/txid/{txid}",
+      "params": [
+        "path.txid"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "ftRank",
+      "http": "GET",
+      "path": "/api/tbc/ft/rank/contract/{contract_id}/start/{start}/end/{end}",
+      "params": [
+        "path.contract_id",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "poolList",
+      "http": "GET",
+      "path": "/api/tbc/pool/poollist/start/{start}/end/{end}",
+      "params": [
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "poolInfo",
+      "http": "GET",
+      "path": "/api/tbc/pool/poolinfo/poolid/{pool_id}",
+      "params": [
+        "path.pool_id"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "poolLpUtxosByScriptHash",
+      "http": "GET",
+      "path": "/api/tbc/pool/lputxo/scriptpubkeyhash/{scriptpubkeyhash}",
+      "params": [
+        "path.scriptpubkeyhash"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc20"
+    },
+    {
+      "name": "stablecoinInfo",
+      "http": "GET",
+      "path": "/api/tbc/stablecoin/info/stablecoinid/{stablecoin_id}",
+      "params": [
+        "path.stablecoin_id"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: stablecoin"
+    },
+    {
+      "name": "stablecoinBalanceByAddress",
+      "http": "GET",
+      "path": "/api/tbc/stablecoin/tokenbalance/address/{address}/stablecoinid/{stablecoin_id}",
+      "params": [
+        "path.address",
+        "path.stablecoin_id"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: stablecoin"
+    },
+    {
+      "name": "stablecoinBalanceByCombineScript",
+      "http": "GET",
+      "path": "/api/tbc/stablecoin/tokenbalance/combinescript/{combine_script}/stablecoinid/{stablecoin_id}",
+      "params": [
+        "path.combine_script",
+        "path.stablecoin_id"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: stablecoin"
+    },
+    {
+      "name": "stablecoinUtxosByAddress",
+      "http": "GET",
+      "path": "/api/tbc/stablecoin/utxo/address/{address}/stablecoinid/{stablecoin_id}",
+      "params": [
+        "path.address",
+        "path.stablecoin_id"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: stablecoin"
+    },
+    {
+      "name": "stablecoinUtxosByCombineScript",
+      "http": "GET",
+      "path": "/api/tbc/stablecoin/utxo/combinescript/{combine_script}/stablecoinid/{stablecoin_id}",
+      "params": [
+        "path.combine_script",
+        "path.stablecoin_id"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: stablecoin"
+    },
+    {
+      "name": "stablecoinHistoryByAddress",
+      "http": "GET",
+      "path": "/api/tbc/stablecoin/history/address/{address}/stablecoinid/{stablecoin_id}/start/{start}/end/{end}",
+      "params": [
+        "path.address",
+        "path.stablecoin_id",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: stablecoin"
+    },
+    {
+      "name": "stablecoinHistoryByCombineScript",
+      "http": "GET",
+      "path": "/api/tbc/stablecoin/history/combinescript/{combine_script}/stablecoinid/{stablecoin_id}/start/{start}/end/{end}",
+      "params": [
+        "path.combine_script",
+        "path.stablecoin_id",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: stablecoin"
+    },
+    {
+      "name": "stablecoinAllHistoryByAddress",
+      "http": "GET",
+      "path": "/api/tbc/stablecoin/allhistory/address/{address}/start/{start}/end/{end}",
+      "params": [
+        "path.address",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: stablecoin"
+    },
+    {
+      "name": "stablecoinAllHistoryByCombineScript",
+      "http": "GET",
+      "path": "/api/tbc/stablecoin/allhistory/combinescript/{combine_script}/start/{start}/end/{end}",
+      "params": [
+        "path.combine_script",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: stablecoin"
+    },
+    {
+      "name": "stablecoinListByAddress",
+      "http": "GET",
+      "path": "/api/tbc/stablecoin/stablecoinlist/address/{address}",
+      "params": [
+        "path.address"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: stablecoin"
+    },
+    {
+      "name": "stablecoinListByCombineScript",
+      "http": "GET",
+      "path": "/api/tbc/stablecoin/stablecoinlist/combinescript/{combine_script}",
+      "params": [
+        "path.combine_script"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: stablecoin"
+    },
+    {
+      "name": "stablecoinDecode",
+      "http": "GET",
+      "path": "/api/tbc/stablecoin/decode/txid/{txid}",
+      "params": [
+        "path.txid"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: stablecoin"
+    },
+    {
+      "name": "stablecoinRank",
+      "http": "GET",
+      "path": "/api/tbc/stablecoin/rank/stablecoinid/{stablecoin_id}/start/{start}/end/{end}",
+      "params": [
+        "path.stablecoin_id",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: stablecoin"
+    },
+    {
+      "name": "nftCollectionInfo",
+      "http": "GET",
+      "path": "/api/tbc/nft/collectioninfo/collectionid/{collection_id}",
+      "params": [
+        "path.collection_id"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc721"
+    },
+    {
+      "name": "nftInfo",
+      "http": "GET",
+      "path": "/api/tbc/nft/nftinfo/nftid/{nftid}",
+      "params": [
+        "path.nftid"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc721"
+    },
+    {
+      "name": "nftUtxosByScriptHash",
+      "http": "GET",
+      "path": "/api/tbc/nft/utxo/scriptpubkeyhash/{scriptpubkeyhash}",
+      "params": [
+        "path.scriptpubkeyhash"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc721"
+    },
+    {
+      "name": "nftCollectionsByAddress",
+      "http": "GET",
+      "path": "/api/tbc/nft/collectionbyaddress/address/{address}/start/{start}/end/{end}",
+      "params": [
+        "path.address",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc721"
+    },
+    {
+      "name": "nftHistoryByAddress",
+      "http": "GET",
+      "path": "/api/tbc/nft/history/address/{address}/nftid/{nftid}/start/{start}/end/{end}",
+      "params": [
+        "path.address",
+        "path.nftid",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc721"
+    },
+    {
+      "name": "nftAllHistoryByAddress",
+      "http": "GET",
+      "path": "/api/tbc/nft/allhistory/address/{address}/start/{start}/end/{end}",
+      "params": [
+        "path.address",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc721"
+    },
+    {
+      "name": "nftsByCollection",
+      "http": "GET",
+      "path": "/api/tbc/nft/nftbycollection/collectionid/{collection_id}/start/{start}/end/{end}",
+      "params": [
+        "path.collection_id",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc721"
+    },
+    {
+      "name": "nftsByAddress",
+      "http": "GET",
+      "path": "/api/tbc/nft/nftbyaddress/address/{address}/start/{start}/end/{end}",
+      "params": [
+        "path.address",
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc721"
+    },
+    {
+      "name": "nftCollectionList",
+      "http": "GET",
+      "path": "/api/tbc/nft/collectionlist/start/{start}/end/{end}",
+      "params": [
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc721"
+    },
+    {
+      "name": "nftList",
+      "http": "GET",
+      "path": "/api/tbc/nft/nftlist/start/{start}/end/{end}",
+      "params": [
+        "path.start",
+        "path.end"
+      ],
+      "result": "TbcApiRecord with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON/envelope",
+        "non-200 API code"
+      ],
+      "units": "Endpoint-defined; atomic values remain decimal strings",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser",
+        "react-native",
+        "node"
+      ],
+      "implementation": "packages/kit/src/official-api.ts",
+      "tests": [
+        "catalog exact-path fixture",
+        "lossless integer fixture",
+        "idempotent-read retry fixture"
+      ],
+      "evidence": "official docs section: tbc721"
+    }
+  ],
+  "rpc": [
+    {
+      "name": "abandontransaction",
+      "category": "wallet",
+      "params": [
+        "txid"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "addmultisigaddress",
+      "category": "wallet",
+      "params": [
+        "nrequired",
+        "keys",
+        "account"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "addnode",
+      "category": "network",
+      "params": [
+        "node",
+        "command"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/net.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "backupwallet",
+      "category": "wallet",
+      "params": [
+        "destination"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "checkjournal",
+      "category": "blockchain",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "clearbanned",
+      "category": "network",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/net.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "createmultisig",
+      "category": "util",
+      "params": [
+        "nrequired",
+        "keys"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/misc.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "createrawtransaction",
+      "category": "rawtransactions",
+      "params": [
+        "inputs",
+        "outputs",
+        "locktime"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/rawtransaction.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "decoderawtransaction",
+      "category": "rawtransactions",
+      "params": [
+        "hexstring"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/rawtransaction.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "decodescript",
+      "category": "rawtransactions",
+      "params": [
+        "hexstring"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/rawtransaction.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "disconnectnode",
+      "category": "network",
+      "params": [
+        "address",
+        "nodeid"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/net.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "dumpprivkey",
+      "category": "wallet",
+      "params": [
+        "address"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "sensitive",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcdump.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "dumpwallet",
+      "category": "wallet",
+      "params": [
+        "filename"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "sensitive",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcdump.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "echo",
+      "category": "hidden",
+      "params": [
+        "arg0",
+        "arg1",
+        "arg2",
+        "arg3",
+        "arg4",
+        "arg5",
+        "arg6",
+        "arg7",
+        "arg8",
+        "arg9"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/misc.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "echojson",
+      "category": "hidden",
+      "params": [
+        "arg0",
+        "arg1",
+        "arg2",
+        "arg3",
+        "arg4",
+        "arg5",
+        "arg6",
+        "arg7",
+        "arg8",
+        "arg9"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/misc.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "encryptwallet",
+      "category": "wallet",
+      "params": [
+        "passphrase"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "fundrawtransaction",
+      "category": "rawtransactions",
+      "params": [
+        "hexstring",
+        "options"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "generate",
+      "category": "generating",
+      "params": [
+        "nblocks",
+        "maxtries"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "generatetoaddress",
+      "category": "generating",
+      "params": [
+        "nblocks",
+        "address",
+        "maxtries"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/mining.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getaccount",
+      "category": "wallet",
+      "params": [
+        "address"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getaccountaddress",
+      "category": "wallet",
+      "params": [
+        "account"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getaddednodeinfo",
+      "category": "network",
+      "params": [
+        "node"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/net.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getaddressesbyaccount",
+      "category": "wallet",
+      "params": [
+        "account"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getbalance",
+      "category": "wallet",
+      "params": [
+        "account",
+        "minconf",
+        "include_watchonly"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getbestblockhash",
+      "category": "blockchain",
+      "params": [],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getblock",
+      "category": "blockchain",
+      "params": [
+        "blockhash",
+        "verbosity|verbose"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getblockbyheight",
+      "category": "blockchain",
+      "params": [
+        "blockhash",
+        "verbosity|verbose"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getblockchainactivity",
+      "category": "hidden",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getblockchaininfo",
+      "category": "blockchain",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getblockcount",
+      "category": "blockchain",
+      "params": [],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getblockhash",
+      "category": "blockchain",
+      "params": [
+        "height"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getblockheader",
+      "category": "blockchain",
+      "params": [
+        "blockhash",
+        "verbose"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getblockstats",
+      "category": "blockchain",
+      "params": [
+        "blockhash",
+        "stats"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getblockstatsbyheight",
+      "category": "blockchain",
+      "params": [
+        "height",
+        "stats"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getblocktemplate",
+      "category": "mining",
+      "params": [
+        "template_request"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/mining.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getchaintips",
+      "category": "blockchain",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getchaintxstats",
+      "category": "blockchain",
+      "params": [
+        "nblocks",
+        "blockhash"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getconnectioncount",
+      "category": "network",
+      "params": [],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/net.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getcurrentlyvalidatingblocks",
+      "category": "hidden",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getdifficulty",
+      "category": "blockchain",
+      "params": [],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getexcessiveblock",
+      "category": "network",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/abc.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getinfo",
+      "category": "control",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/misc.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getmemoryinfo",
+      "category": "control",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/misc.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getmempoolancestors",
+      "category": "blockchain",
+      "params": [
+        "txid",
+        "verbose"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getmempooldescendants",
+      "category": "blockchain",
+      "params": [
+        "txid",
+        "verbose"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getmempoolentry",
+      "category": "blockchain",
+      "params": [
+        "txid"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getmempoolinfo",
+      "category": "blockchain",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getminingcandidate",
+      "category": "mining",
+      "params": [
+        "coinbase"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/mining-fbb.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getmininginfo",
+      "category": "mining",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/mining.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getnettotals",
+      "category": "network",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/net.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getnetworkhashps",
+      "category": "mining",
+      "params": [
+        "nblocks",
+        "height"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/mining.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getnetworkinfo",
+      "category": "network",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/net.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getnewaddress",
+      "category": "wallet",
+      "params": [
+        "account"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getpeerinfo",
+      "category": "network",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/net.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getrawchangeaddress",
+      "category": "wallet",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getrawmempool",
+      "category": "blockchain",
+      "params": [
+        "verbose"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getrawnonfinalmempool",
+      "category": "blockchain",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getrawtransaction",
+      "category": "rawtransactions",
+      "params": [
+        "txid",
+        "verbose"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/rawtransaction.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getreceivedbyaccount",
+      "category": "wallet",
+      "params": [
+        "account",
+        "minconf"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getreceivedbyaddress",
+      "category": "wallet",
+      "params": [
+        "address",
+        "minconf"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "gettransaction",
+      "category": "wallet",
+      "params": [
+        "txid",
+        "include_watchonly"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "gettxout",
+      "category": "blockchain",
+      "params": [
+        "txid",
+        "n",
+        "include_mempool"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "gettxoutproof",
+      "category": "blockchain",
+      "params": [
+        "txids",
+        "blockhash"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/rawtransaction.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "gettxoutsetinfo",
+      "category": "blockchain",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getunconfirmedbalance",
+      "category": "wallet",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getwaitingblocks",
+      "category": "hidden",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "getwalletinfo",
+      "category": "wallet",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "help",
+      "category": "control",
+      "params": [
+        "command"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/server.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "importaddress",
+      "category": "wallet",
+      "params": [
+        "address",
+        "label",
+        "rescan",
+        "p2sh"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcdump.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "importmulti",
+      "category": "wallet",
+      "params": [
+        "requests",
+        "options"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcdump.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "importprivkey",
+      "category": "wallet",
+      "params": [
+        "privkey",
+        "label",
+        "rescan"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "sensitive",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcdump.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "importprunedfunds",
+      "category": "wallet",
+      "params": [
+        "rawtransaction",
+        "txoutproof"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcdump.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "importpubkey",
+      "category": "wallet",
+      "params": [
+        "pubkey",
+        "label",
+        "rescan"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcdump.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "importwallet",
+      "category": "wallet",
+      "params": [
+        "filename"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcdump.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "invalidateblock",
+      "category": "hidden",
+      "params": [
+        "blockhash"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "keypoolrefill",
+      "category": "wallet",
+      "params": [
+        "newsize"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "listaccounts",
+      "category": "wallet",
+      "params": [
+        "minconf",
+        "include_watchonly"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "listaddressgroupings",
+      "category": "wallet",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "listbanned",
+      "category": "network",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/net.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "listlockunspent",
+      "category": "wallet",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "listreceivedbyaccount",
+      "category": "wallet",
+      "params": [
+        "minconf",
+        "include_empty",
+        "include_watchonly"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "listreceivedbyaddress",
+      "category": "wallet",
+      "params": [
+        "minconf",
+        "include_empty",
+        "include_watchonly"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "listsinceblock",
+      "category": "wallet",
+      "params": [
+        "blockhash",
+        "target_confirmations",
+        "include_watchonly"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "listtransactions",
+      "category": "wallet",
+      "params": [
+        "account",
+        "count",
+        "skip",
+        "include_watchonly"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "listunspent",
+      "category": "wallet",
+      "params": [
+        "minconf",
+        "maxconf",
+        "addresses",
+        "include_unsafe"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "listwallets",
+      "category": "wallet",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "lockunspent",
+      "category": "wallet",
+      "params": [
+        "unlock",
+        "transactions"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "move",
+      "category": "wallet",
+      "params": [
+        "fromaccount",
+        "toaccount",
+        "amount",
+        "minconf",
+        "comment"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "ping",
+      "category": "network",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/net.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "preciousblock",
+      "category": "blockchain",
+      "params": [
+        "blockhash"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "prioritisetransaction",
+      "category": "mining",
+      "params": [
+        "txid",
+        "priority_delta",
+        "fee_delta"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/mining.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "pruneblockchain",
+      "category": "blockchain",
+      "params": [
+        "height"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "rebuildjournal",
+      "category": "blockchain",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "reconsiderblock",
+      "category": "hidden",
+      "params": [
+        "blockhash"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "removeprunedfunds",
+      "category": "wallet",
+      "params": [
+        "txid"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcdump.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "resendwallettransactions",
+      "category": "hidden",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "sendfrom",
+      "category": "wallet",
+      "params": [
+        "fromaccount",
+        "toaddress",
+        "amount",
+        "minconf",
+        "comment",
+        "comment_to"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "sendmany",
+      "category": "wallet",
+      "params": [
+        "fromaccount",
+        "amounts",
+        "minconf",
+        "comment",
+        "subtractfeefrom"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "sendrawtransaction",
+      "category": "rawtransactions",
+      "params": [
+        "hexstring",
+        "allowhighfees",
+        "dontcheckfee"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/rawtransaction.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "sendrawtransactions",
+      "category": "rawtransactions",
+      "params": [
+        "inputs"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/rawtransaction.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "sendtoaddress",
+      "category": "wallet",
+      "params": [
+        "address",
+        "amount",
+        "comment",
+        "comment_to",
+        "subtractfeefromamount"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "setaccount",
+      "category": "wallet",
+      "params": [
+        "address",
+        "account"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "setban",
+      "category": "network",
+      "params": [
+        "subnet",
+        "command",
+        "bantime",
+        "absolute"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/net.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "setblockmaxsize",
+      "category": "network",
+      "params": [
+        "maxBlockSize"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/abc.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "setexcessiveblock",
+      "category": "network",
+      "params": [
+        "maxBlockSize"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/abc.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "setmocktime",
+      "category": "hidden",
+      "params": [
+        "timestamp"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/misc.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "setnetworkactive",
+      "category": "network",
+      "params": [
+        "state"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/net.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "settxfee",
+      "category": "wallet",
+      "params": [
+        "amount"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "settxnpropagationfreq",
+      "category": "network",
+      "params": [
+        "freq"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/net.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "signmessage",
+      "category": "wallet",
+      "params": [
+        "address",
+        "message"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "sensitive",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "signmessagewithprivkey",
+      "category": "util",
+      "params": [
+        "privkey",
+        "message"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "sensitive",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/misc.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "signrawtransaction",
+      "category": "rawtransactions",
+      "params": [
+        "hexstring",
+        "prevtxs",
+        "privkeys",
+        "sighashtype"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "sensitive",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/rawtransaction.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "stop",
+      "category": "control",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/server.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "submitblock",
+      "category": "mining",
+      "params": [
+        "hexdata",
+        "parameters"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/mining.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "submitminingsolution",
+      "category": "mining",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/mining-fbb.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "uptime",
+      "category": "control",
+      "params": [],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/server.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "validateaddress",
+      "category": "util",
+      "params": [
+        "address"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/misc.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "verifyblockcandidate",
+      "category": "mining",
+      "params": [
+        "hexdata",
+        "parameters"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/mining.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "verifychain",
+      "category": "blockchain",
+      "params": [
+        "checklevel",
+        "nblocks"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "node-admin",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "verifymessage",
+      "category": "util",
+      "params": [
+        "address",
+        "signature",
+        "message"
+      ],
+      "result": "named TypeScript result",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/misc.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "verifytxoutproof",
+      "category": "blockchain",
+      "params": [
+        "proof"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/rawtransaction.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "waitaftervalidatingblock",
+      "category": "hidden",
+      "params": [
+        "blockhash",
+        "action"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "trusted non-browser",
+        "regtest only"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "waitforblockheight",
+      "category": "hidden",
+      "params": [
+        "height",
+        "timeout"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "waitfornewblock",
+      "category": "hidden",
+      "params": [
+        "timeout"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "read",
+      "environment": [
+        "browser or trusted non-browser"
+      ],
+      "surface": "read",
+      "implementation": "src/rpc/blockchain.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "idempotent-read policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "walletlock",
+      "category": "wallet",
+      "params": [],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "write",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "walletpassphrase",
+      "category": "wallet",
+      "params": [
+        "passphrase",
+        "timeout"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "sensitive",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    },
+    {
+      "name": "walletpassphrasechange",
+      "category": "wallet",
+      "params": [
+        "oldpassphrase",
+        "newpassphrase"
+      ],
+      "result": "TbcJsonValue with lossless integer leaves",
+      "errors": [
+        "transport",
+        "HTTP",
+        "invalid JSON-RPC envelope/id",
+        "JSON-RPC error"
+      ],
+      "units": "Method-defined by TBCNODE help/implementation",
+      "precision": "lossless integers",
+      "effect": "sensitive",
+      "environment": [
+        "trusted non-browser"
+      ],
+      "surface": "wallet",
+      "implementation": "src/wallet/rpcwallet.cpp",
+      "tests": [
+        "127-name source snapshot",
+        "exact JSON-RPC name/params fixture",
+        "single-attempt policy"
+      ],
+      "evidence": "v3.3.1@6ddea88c57e9bc9390c1730657ac766b56c4a670"
+    }
+  ],
+  "knownSourceDiscrepancies": [
+    {
+      "method": "getblockbyheight",
+      "detail": "The v3.3.1 registration table names its first named parameter blockhash although the method itself operates by height; the catalog preserves the registered source name exactly."
+    }
+  ]
+}

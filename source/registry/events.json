@@ -1,0 +1,48 @@
+{
+  "$schema": "../schemas/event-registry.schema.json",
+  "version": "1.0.0",
+  "events": [
+    {
+      "name": "connect",
+      "version": "1.0",
+      "profile": "core",
+      "trigger": "provider-connected",
+      "payload": { "schema": "provider.schema.json#/$defs/connectInfo" }
+    },
+    {
+      "name": "disconnect",
+      "version": "1.0",
+      "profile": "core",
+      "trigger": "provider-disconnected",
+      "payload": { "schema": "provider.schema.json#/$defs/disconnectError" }
+    },
+    {
+      "name": "chainChanged",
+      "version": "1.0",
+      "profile": "core",
+      "trigger": "active-chain-changed",
+      "payload": { "schema": "common.schema.json#/$defs/chainId" }
+    },
+    {
+      "name": "accountsChanged",
+      "version": "1.0",
+      "profile": "core",
+      "trigger": "authorized-accounts-changed",
+      "payload": { "schema": "provider.schema.json#/$defs/addressArray" }
+    },
+    {
+      "name": "permissionsChanged",
+      "version": "1.0",
+      "profile": "core",
+      "trigger": "permissions-changed",
+      "payload": { "schema": "permissions.schema.json#/$defs/permissionArray" }
+    },
+    {
+      "name": "capabilitiesChanged",
+      "version": "1.0",
+      "profile": "core",
+      "trigger": "capabilities-changed",
+      "payload": { "schema": "provider.schema.json#/$defs/capabilities" }
+    }
+  ]
+}

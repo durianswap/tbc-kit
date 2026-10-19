@@ -1,0 +1,17 @@
+{
+  "sdkVersion": "0.1.0-local.3",
+  "description": "Add isolated deterministic BIP340 Schnorr digest signing with explicit ABI encoding 164 and 64-byte output. Preserve ECDSA and BIE1; no Engine/custody/network dependency. Source candidate, not device accepted.",
+  "upstreamAlgorithm": "secp256k1 0.31.1 sign_schnorr_no_aux_rand; official BIP340 test vector 0",
+  "files": {
+    "Cargo.toml": "4fd34d2cb1263120d003ad4081b579568cf6b4829c3ee35554b7183dd46b60d6",
+    "Cargo.lock": "eebbc056268572d3a0570140c855ae21b6d098ba32ac978f5a8de158dcb4439a",
+    "src/lib.rs": "8c352c1afffd1d0d6087a7d097dde1cb2734d2d7b1e762b688cffc228dc49471",
+    "src/crypto.rs": "21302b15f5e0e3225b4e6786f8c9a2f0de3260929875a53cab9aa1abf5d50327",
+    "include/tbc_signer_kernel.h": "9d5576b45c5d5b01fe79fae4594a877ff9a17375f0eb37470b8cea011124215c",
+    "tests/compatibility.rs": "78d56174a0727a7dcff5394af759f58e3d32418344f831188c23a2e921f41390",
+    "wasm/adapter.mjs": "d3bb283fe69bb642478d096f9d35790f1467deef8947ec82e511a211e70bfe04",
+    "wasm/adapter.d.mts": "d4d1d64b04cb1a9cda497925d9139c0b9f3e2aca2b16a74484220c66a4a9729f",
+    "scripts/check.mjs": "00acc9fe23f2f5fee42c4c9ef6df0711278b26b9c75a29e87725ac11953ab9ab",
+    "fixtures/schnorr-vector.json": "2863e30f66455f125b023214bdaa8bb21ed1b806819e45b2ea25c8db13b91754"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+  "permission": {
+    "input": {
+      "operationId": "cNB8h3rzetsQsQLJAPDlZ7fn2h9a0VIaXnjAZRQJYsY",
+      "chainId": "tbc:mainnet",
+      "parentCapability": "tbc_accounts",
+      "ordinal": 0
+    },
+    "expected": "UbmjylWSCr1MJPS9M3Wfcdbnbnnrwt149GnpmDnnfYk"
+  },
+  "permissionSecondary": {
+    "input": {
+      "operationId": "cNB8h3rzetsQsQLJAPDlZ7fn2h9a0VIaXnjAZRQJYsY",
+      "chainId": "tbc:other",
+      "parentCapability": "tbc_accounts",
+      "ordinal": 1
+    },
+    "expected": "Lsnkw7o-NUviaeKrWJU1XdTi3kxDj8H2YWdGt5o75do"
+  },
+  "broadcast": {
+    "input": {
+      "operationId": "cNB8h3rzetsQsQLJAPDlZ7fn2h9a0VIaXnjAZRQJYsY",
+      "txid": "e715bbe7ea8e6e95ff339b24e1e2aaff8771e8e17af4682b775919fad953c907"
+    },
+    "expected": "51YiJt1D8c2szl1fWP4lSQCPuttoE_1gm077-2XxEv8"
+  },
+  "vectors": [
+    {
+      "network": "mainnet",
+      "reference": "mainnet",
+      "chainId": "tbc:mainnet",
+      "addressVersion": "00",
+      "address": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+    },
+    {
+      "network": "testnet",
+      "reference": "testnet",
+      "chainId": "tbc:testnet",
+      "addressVersion": "00",
+      "address": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+      "accountId": "tbc:testnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+    }
+  ],
+  "identityPolicy": "stable-network-name"
+}

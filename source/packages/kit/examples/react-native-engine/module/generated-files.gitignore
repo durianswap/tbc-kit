@@ -1,0 +1,4 @@
+platform-sdk/
+generated/
+android/build/
+android/.cxx/

@@ -1,0 +1,32 @@
+{
+  "$schema": "../schemas/network-registry.schema.json",
+  "version": "1.0.1",
+  "namespace": "tbc",
+  "identityPolicy": "stable-network-name",
+  "networks": [
+    {
+      "name": "TBC Mainnet",
+      "network": "mainnet",
+      "chainId": "tbc:mainnet",
+      "reference": "mainnet",
+      "nativeAsset": {
+        "id": "tbc:native",
+        "symbol": "TBC",
+        "decimals": 6
+      },
+      "informationalApi": "https://api.turingbitchain.io/api/tbc"
+    },
+    {
+      "name": "TBC Testnet",
+      "network": "testnet",
+      "chainId": "tbc:testnet",
+      "reference": "testnet",
+      "nativeAsset": {
+        "id": "tbc:native",
+        "symbol": "TBC",
+        "decimals": 6
+      },
+      "informationalApi": "https://api.tbcdev.org/api/tbc"
+    }
+  ]
+}

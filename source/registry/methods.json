@@ -1,0 +1,362 @@
+{
+  "$schema": "../schemas/method-registry.schema.json",
+  "version": "1.0.0",
+  "methods": [
+    {
+      "name": "tbc_chainId",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "public",
+        "permissions": []
+      },
+      "approval": "none",
+      "operationKind": null,
+      "effect": "read",
+      "params": { "kind": "none" },
+      "result": { "schema": "common.schema.json#/$defs/chainId" }
+    },
+    {
+      "name": "tbc_accounts",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "permission-derived",
+        "permissions": ["tbc_accounts"]
+      },
+      "approval": "none",
+      "operationKind": null,
+      "effect": "read",
+      "params": { "kind": "none" },
+      "result": { "schema": "provider.schema.json#/$defs/addressArray" }
+    },
+    {
+      "name": "tbc_requestAccounts",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "grants",
+        "permissions": ["tbc_accounts"]
+      },
+      "approval": "permission-prompt",
+      "operationKind": "permission",
+      "effect": "permission-grant",
+      "params": { "kind": "none" },
+      "result": { "schema": "provider.schema.json#/$defs/nonEmptyAddressArray" }
+    },
+    {
+      "name": "tbc_getAccount",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "requires",
+        "permissions": ["tbc_accounts", "tbc_accountMetadata"]
+      },
+      "approval": "none",
+      "operationKind": null,
+      "effect": "read",
+      "params": {
+        "kind": "named",
+        "schema": "provider.schema.json#/$defs/getAccountParams"
+      },
+      "result": { "schema": "provider.schema.json#/$defs/account" }
+    },
+    {
+      "name": "tbc_getCapabilities",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "conditional",
+        "permissions": ["tbc_accounts"],
+        "condition": "address-param"
+      },
+      "approval": "none",
+      "operationKind": null,
+      "effect": "read",
+      "params": {
+        "kind": "named",
+        "schema": "provider.schema.json#/$defs/getCapabilitiesParams"
+      },
+      "result": { "schema": "provider.schema.json#/$defs/capabilities" }
+    },
+    {
+      "name": "tbc_switchChain",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "requires",
+        "permissions": ["tbc_switchChain"]
+      },
+      "approval": "wallet-policy",
+      "operationKind": "switchChain",
+      "effect": "wallet-state",
+      "params": {
+        "kind": "named",
+        "schema": "provider.schema.json#/$defs/switchChainParams"
+      },
+      "result": { "schema": "provider.schema.json#/$defs/nullResult" }
+    },
+    {
+      "name": "tbc_signMessage",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "requires",
+        "permissions": ["tbc_accounts", "tbc_signMessage"]
+      },
+      "approval": "operation",
+      "operationKind": "message",
+      "effect": "signature",
+      "params": {
+        "kind": "named",
+        "schema": "signing.schema.json#/$defs/messageRequest"
+      },
+      "result": { "schema": "signing.schema.json#/$defs/messageSignature" }
+    },
+    {
+      "name": "tbc_signTypedData",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "requires",
+        "permissions": ["tbc_accounts", "tbc_signTypedData"]
+      },
+      "approval": "operation",
+      "operationKind": "typedData",
+      "effect": "signature",
+      "params": {
+        "kind": "named",
+        "schema": "signing.schema.json#/$defs/typedDataRequest"
+      },
+      "result": { "schema": "signing.schema.json#/$defs/typedDataSignature" }
+    },
+    {
+      "name": "tbc_signTransaction",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "requires",
+        "permissions": ["tbc_accounts", "tbc_signTransaction"]
+      },
+      "approval": "operation",
+      "operationKind": "transaction",
+      "effect": "signed-transaction",
+      "params": {
+        "kind": "named",
+        "schema": "transaction-request.schema.json#/$defs/transactionRequest"
+      },
+      "result": {
+        "schema": "transaction-request.schema.json#/$defs/signedTransactionBundle"
+      }
+    },
+    {
+      "name": "tbc_signPreparedTransaction",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "requires",
+        "permissions": ["tbc_accounts", "tbc_signTransaction"]
+      },
+      "approval": "operation",
+      "operationKind": "transaction",
+      "effect": "signed-transaction",
+      "params": {
+        "kind": "named",
+        "schema": "prepared-transaction.schema.json#/$defs/preparedTransactionRequest"
+      },
+      "result": {
+        "schema": "transaction-request.schema.json#/$defs/signedTransactionBundle"
+      }
+    },
+    {
+      "name": "tbc_sendTransaction",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "requires",
+        "permissions": ["tbc_accounts", "tbc_sendTransaction"]
+      },
+      "approval": "operation",
+      "operationKind": "transaction",
+      "effect": "broadcast",
+      "params": {
+        "kind": "named",
+        "schema": "transaction-request.schema.json#/$defs/transactionRequest"
+      },
+      "result": {
+        "schema": "transaction-request.schema.json#/$defs/submittedTransactionBundle"
+      }
+    },
+    {
+      "name": "tbc_sendPreparedTransaction",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "requires",
+        "permissions": ["tbc_accounts", "tbc_sendTransaction"]
+      },
+      "approval": "operation",
+      "operationKind": "transaction",
+      "effect": "broadcast",
+      "params": {
+        "kind": "named",
+        "schema": "prepared-transaction.schema.json#/$defs/preparedTransactionRequest"
+      },
+      "result": {
+        "schema": "transaction-request.schema.json#/$defs/submittedTransactionBundle"
+      }
+    },
+    {
+      "name": "tbc_signReviewedTransaction",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": { "mode": "requires", "permissions": ["tbc_accounts", "tbc_signTransaction"] },
+      "approval": "operation",
+      "operationKind": "transaction",
+      "effect": "signed-transaction",
+      "params": { "kind": "named", "schema": "wallet-actions.schema.json#/$defs/signReviewedTransactionRequest" },
+      "result": { "schema": "transaction-request.schema.json#/$defs/signedTransactionBundle" }
+    },
+    {
+      "name": "tbc_encrypt",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": { "mode": "requires", "permissions": ["tbc_accounts", "tbc_crypto"] },
+      "approval": "operation",
+      "operationKind": "crypto",
+      "effect": "private-crypto",
+      "params": { "kind": "named", "schema": "wallet-actions.schema.json#/$defs/encryptRequest" },
+      "result": { "schema": "wallet-actions.schema.json#/$defs/encryptResult" }
+    },
+    {
+      "name": "tbc_decrypt",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": { "mode": "requires", "permissions": ["tbc_accounts", "tbc_crypto"] },
+      "approval": "operation",
+      "operationKind": "crypto",
+      "effect": "private-crypto",
+      "params": { "kind": "named", "schema": "wallet-actions.schema.json#/$defs/decryptRequest" },
+      "result": { "schema": "wallet-actions.schema.json#/$defs/decryptResult" }
+    },
+    {
+      "name": "tbc_signWorkflow",
+      "version": "1.0",
+      "profile": "defi",
+      "authorization": {
+        "mode": "requires",
+        "permissions": ["tbc_accounts", "tbc_signWorkflow"]
+      },
+      "approval": "operation",
+      "operationKind": "workflow",
+      "effect": "signed-workflow",
+      "params": {
+        "kind": "named",
+        "schema": "workflow.schema.json#/$defs/request"
+      },
+      "result": { "schema": "workflow.schema.json#/$defs/result" }
+    },
+    {
+      "name": "tbc_signPreparedWorkflow",
+      "version": "1.0",
+      "profile": "defi",
+      "authorization": {
+        "mode": "requires",
+        "permissions": ["tbc_accounts", "tbc_signWorkflow"]
+      },
+      "approval": "operation",
+      "operationKind": "workflow",
+      "effect": "signed-workflow",
+      "params": {
+        "kind": "named",
+        "schema": "prepared-workflow.schema.json#/$defs/request"
+      },
+      "result": { "schema": "workflow.schema.json#/$defs/result" }
+    },
+    {
+      "name": "tbc_sendWorkflow",
+      "version": "1.0",
+      "profile": "defi",
+      "authorization": {
+        "mode": "requires",
+        "permissions": ["tbc_accounts", "tbc_signWorkflow", "tbc_sendTransaction"]
+      },
+      "approval": "operation",
+      "operationKind": "workflow",
+      "effect": "broadcast",
+      "params": { "kind": "named", "schema": "workflow.schema.json#/$defs/request" },
+      "result": { "schema": "workflow.schema.json#/$defs/sendResult" }
+    },
+    {
+      "name": "tbc_sendPreparedWorkflow",
+      "version": "1.0",
+      "profile": "defi",
+      "authorization": {
+        "mode": "requires",
+        "permissions": ["tbc_accounts", "tbc_signWorkflow", "tbc_sendTransaction"]
+      },
+      "approval": "operation",
+      "operationKind": "workflow",
+      "effect": "broadcast",
+      "params": { "kind": "named", "schema": "prepared-workflow.schema.json#/$defs/request" },
+      "result": { "schema": "workflow.schema.json#/$defs/sendResult" }
+    },
+    {
+      "name": "wallet_getPermissions",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "public",
+        "permissions": []
+      },
+      "approval": "none",
+      "operationKind": null,
+      "effect": "read",
+      "params": { "kind": "none" },
+      "result": { "schema": "permissions.schema.json#/$defs/permissionArray" }
+    },
+    {
+      "name": "wallet_requestPermissions",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "grants",
+        "permissions": [
+          "tbc_accounts",
+          "tbc_accountMetadata",
+          "tbc_switchChain",
+          "tbc_signMessage",
+          "tbc_signTypedData",
+          "tbc_crypto",
+          "tbc_signTransaction",
+          "tbc_sendTransaction",
+          "tbc_signWorkflow"
+        ]
+      },
+      "approval": "permission-prompt",
+      "operationKind": "permission",
+      "effect": "permission-grant",
+      "params": {
+        "kind": "positional",
+        "schema": "permissions.schema.json#/$defs/requestPermissionsParams"
+      },
+      "result": {
+        "schema": "permissions.schema.json#/$defs/nonEmptyPermissionArray"
+      }
+    },
+    {
+      "name": "tbc_disconnect",
+      "version": "1.0",
+      "profile": "core",
+      "authorization": {
+        "mode": "public",
+        "permissions": []
+      },
+      "approval": "none",
+      "operationKind": null,
+      "effect": "permission-revoke",
+      "params": { "kind": "none" },
+      "result": { "schema": "provider.schema.json#/$defs/nullResult" }
+    }
+  ]
+}

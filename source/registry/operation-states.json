@@ -1,0 +1,321 @@
+{
+  "version": "1.0.0",
+  "states": [
+    {
+      "name": "initializing",
+      "terminal": false,
+      "requiredArtifacts": ["release", "operation", "contextHash"],
+      "allowedTransitions": ["validating", "failed", "cancelled"],
+      "allowedPortOperations": ["clock.now"],
+      "allowsContinue": false,
+      "memoryRequired": [],
+      "memoryAllowed": []
+    },
+    {
+      "name": "validating",
+      "terminal": false,
+      "requiredArtifacts": ["trustedTime", "normalizedOperation"],
+      "allowedTransitions": ["authorizing", "completed", "failed", "cancelled"],
+      "allowedPortOperations": [],
+      "allowsContinue": true,
+      "memoryRequired": ["trustedTime"],
+      "memoryAllowed": ["trustedTime"]
+    },
+    {
+      "name": "authorizing",
+      "terminal": false,
+      "requiredArtifacts": ["permissionSnapshot"],
+      "allowedTransitions": ["authorizing", "resolving", "approval", "committing", "completed", "rejected", "failed", "cancelled"],
+      "allowedPortOperations": ["permissionStore.load"],
+      "allowsContinue": false,
+      "memoryRequired": ["trustedTime"],
+      "memoryAllowed": ["trustedTime", "permissionLoads"]
+    },
+    {
+      "name": "resolving",
+      "terminal": false,
+      "requiredArtifacts": ["resolvedInputs"],
+      "allowedTransitions": ["resolving", "planning", "approval", "completed", "failed", "cancelled"],
+      "allowedPortOperations": ["accounts.resolve", "chainData.resolve", "policy.resolve", "reviewedTransaction.review", "entropy.randomBytes"],
+      "allowsContinue": false,
+      "memoryRequired": ["trustedTime", "permissionLoads"],
+      "memoryAllowed": ["trustedTime", "permissionLoads", "accountResolutions", "requestHash", "normalizedTransaction", "chainSnapshot", "executionPolicy", "workflowPolicies", "reviewedTransactionReviews", "messageEnvelope", "typedDataEnvelope", "walletActionPlan"]
+    },
+    {
+      "name": "planning",
+      "terminal": false,
+      "requiredArtifacts": ["requestHash"],
+      "allowedTransitions": ["planning", "approval", "failed", "cancelled"],
+      "allowedPortOperations": ["clock.now"],
+      "allowsContinue": true,
+      "memoryRequired": ["trustedTime", "permissionLoads", "accountResolutions", "requestHash"],
+      "memoryAllowed": ["trustedTime", "requestHash", "permissionLoads", "accountResolutions", "normalizedTransaction", "chainSnapshot", "executionPolicy", "workflowPolicies", "reviewedTransactionReviews", "executionPlan", "workflowPlan"]
+    },
+    {
+      "name": "approval",
+      "terminal": false,
+      "requiredArtifacts": ["approvalBinding", "approvalPreview"],
+      "allowedTransitions": ["approval", "signing", "committing", "completed", "rejected", "failed", "cancelled"],
+      "allowedPortOperations": ["clock.now", "approval.request"],
+      "allowsContinue": false,
+      "memoryRequired": ["trustedTime", "permissionLoads", "approvalBinding", "approvalPreview"],
+      "memoryAllowed": ["trustedTime", "requestHash", "permissionLoads", "accountResolutions", "normalizedTransaction", "chainSnapshot", "executionPolicy", "workflowPolicies", "reviewedTransactionReviews", "executionPlan", "permissionProposal", "chainSwitchProposal", "messageEnvelope", "typedDataEnvelope", "workflowPlan", "walletActionPlan", "approvalBinding", "approvalPreview"]
+    },
+    {
+      "name": "signing",
+      "terminal": false,
+      "requiredArtifacts": ["approvalReceipt", "signingTask"],
+      "allowedTransitions": ["signing", "finalizing", "completed", "failed", "cancelled"],
+      "allowedPortOperations": ["clock.now", "signer.sign", "crypto.execute", "reviewedTransaction.execute"],
+      "allowsContinue": false,
+      "memoryRequired": ["trustedTime", "approvalBinding", "approvalReceipt", "signingTasks"],
+      "memoryAllowed": ["trustedTime", "requestHash", "permissionLoads", "accountResolutions", "normalizedTransaction", "chainSnapshot", "executionPolicy", "workflowPolicies", "reviewedTransactionReviews", "executionPlan", "messageEnvelope", "typedDataEnvelope", "workflowPlan", "walletActionPlan", "approvalBinding", "approvalPreview", "approvalReceipt", "signingTasks", "signatures", "cryptoResults", "reviewedTransactionResults", "workflowProgress"]
+    },
+    {
+      "name": "finalizing",
+      "terminal": false,
+      "requiredArtifacts": ["signatures"],
+      "allowedTransitions": ["signing", "finalizing", "broadcasting", "completed", "failed", "cancelled"],
+      "allowedPortOperations": ["clock.now"],
+      "allowsContinue": true,
+      "memoryRequired": ["trustedTime", "approvalBinding", "approvalReceipt", "signingTasks", "signatures"],
+      "memoryAllowed": ["trustedTime", "requestHash", "permissionLoads", "accountResolutions", "normalizedTransaction", "chainSnapshot", "executionPolicy", "workflowPolicies", "reviewedTransactionReviews", "executionPlan", "messageEnvelope", "typedDataEnvelope", "workflowPlan", "approvalBinding", "approvalPreview", "approvalReceipt", "signingTasks", "signatures", "cryptoResults", "reviewedTransactionResults", "finalizedBundle", "workflowProgress"]
+    },
+    {
+      "name": "broadcasting",
+      "terminal": false,
+      "requiredArtifacts": ["finalizedBundle"],
+      "allowedTransitions": ["broadcasting", "reconciliation", "completed", "failed", "cancelled"],
+      "allowedPortOperations": ["clock.now", "broadcast.submit", "broadcast.submitBatch"],
+      "allowsContinue": false,
+      "memoryRequired": ["trustedTime", "approvalBinding", "approvalReceipt", "signatures", "finalizedBundle", "broadcastProgress"],
+      "memoryAllowed": ["trustedTime", "requestHash", "permissionLoads", "accountResolutions", "normalizedTransaction", "chainSnapshot", "executionPolicy", "workflowPolicies", "reviewedTransactionReviews", "executionPlan", "workflowPlan", "workflowResult", "approvalBinding", "approvalPreview", "approvalReceipt", "signingTasks", "signatures", "cryptoResults", "reviewedTransactionResults", "finalizedBundle", "workflowProgress", "broadcastProgress"]
+    },
+    {
+      "name": "reconciliation",
+      "terminal": false,
+      "requiredArtifacts": ["submittedTransactionIds"],
+      "allowedTransitions": ["completed", "failed", "cancelled"],
+      "allowedPortOperations": ["broadcast.reconcile"],
+      "allowsContinue": false,
+      "memoryRequired": ["trustedTime", "finalizedBundle", "broadcastProgress"],
+      "memoryAllowed": ["trustedTime", "requestHash", "permissionLoads", "accountResolutions", "normalizedTransaction", "chainSnapshot", "executionPolicy", "executionPlan", "approvalBinding", "approvalPreview", "approvalReceipt", "signingTasks", "signatures", "finalizedBundle", "broadcastProgress"]
+    },
+    {
+      "name": "committing",
+      "terminal": false,
+      "requiredArtifacts": ["commitKind"],
+      "allowedTransitions": ["committing", "completed", "failed", "cancelled"],
+      "allowedPortOperations": ["clock.now", "permissionStore.commit"],
+      "allowsContinue": false,
+      "memoryRequired": ["trustedTime"],
+      "memoryAllowed": ["trustedTime", "requestHash", "permissionLoads", "accountResolutions", "normalizedTransaction", "chainSnapshot", "executionPolicy", "executionPlan", "permissionProposal", "chainSwitchProposal", "approvalBinding", "approvalPreview", "permissionCommit", "providerSessionMutation", "providerSessionCommitAck"]
+    },
+    {
+      "name": "completed",
+      "terminal": true,
+      "requiredArtifacts": ["providerCompletion"],
+      "allowedTransitions": [],
+      "allowedPortOperations": [],
+      "allowsContinue": false,
+      "memoryRequired": ["providerCompletion"],
+      "memoryAllowed": ["trustedTime", "requestHash", "permissionLoads", "accountResolutions", "normalizedTransaction", "chainSnapshot", "executionPolicy", "workflowPolicies", "reviewedTransactionReviews", "executionPlan", "permissionProposal", "chainSwitchProposal", "messageEnvelope", "typedDataEnvelope", "workflowPlan", "walletActionPlan", "approvalBinding", "approvalPreview", "approvalReceipt", "signingTasks", "signatures", "cryptoResults", "reviewedTransactionResults", "finalizedBundle", "workflowProgress", "permissionCommit", "broadcastProgress", "providerSessionMutation", "providerSessionCommitAck", "providerCompletion"]
+    },
+    {
+      "name": "rejected",
+      "terminal": true,
+      "requiredArtifacts": ["cancellationReason"],
+      "allowedTransitions": [],
+      "allowedPortOperations": [],
+      "allowsContinue": false,
+      "memoryRequired": [],
+      "memoryAllowed": ["trustedTime", "requestHash", "permissionLoads", "accountResolutions", "normalizedTransaction", "chainSnapshot", "executionPolicy", "workflowPolicies", "reviewedTransactionReviews", "executionPlan", "permissionProposal", "chainSwitchProposal", "messageEnvelope", "typedDataEnvelope", "workflowPlan", "walletActionPlan", "approvalBinding", "approvalPreview", "approvalReceipt", "signingTasks", "signatures", "cryptoResults", "reviewedTransactionResults", "finalizedBundle", "workflowProgress", "permissionCommit", "broadcastProgress", "providerSessionMutation", "providerSessionCommitAck", "providerCompletion"]
+    },
+    {
+      "name": "failed",
+      "terminal": true,
+      "requiredArtifacts": ["providerError"],
+      "allowedTransitions": [],
+      "allowedPortOperations": [],
+      "allowsContinue": false,
+      "memoryRequired": [],
+      "memoryAllowed": ["trustedTime", "requestHash", "permissionLoads", "accountResolutions", "normalizedTransaction", "chainSnapshot", "executionPolicy", "workflowPolicies", "reviewedTransactionReviews", "executionPlan", "permissionProposal", "chainSwitchProposal", "messageEnvelope", "typedDataEnvelope", "workflowPlan", "walletActionPlan", "approvalBinding", "approvalPreview", "approvalReceipt", "signingTasks", "signatures", "cryptoResults", "reviewedTransactionResults", "finalizedBundle", "workflowProgress", "permissionCommit", "broadcastProgress", "providerSessionMutation", "providerSessionCommitAck", "providerCompletion"]
+    },
+    {
+      "name": "cancelled",
+      "terminal": true,
+      "requiredArtifacts": ["cancellationReason"],
+      "allowedTransitions": [],
+      "allowedPortOperations": [],
+      "allowsContinue": false,
+      "memoryRequired": [],
+      "memoryAllowed": ["trustedTime", "requestHash", "permissionLoads", "accountResolutions", "normalizedTransaction", "chainSnapshot", "executionPolicy", "workflowPolicies", "reviewedTransactionReviews", "executionPlan", "permissionProposal", "chainSwitchProposal", "messageEnvelope", "typedDataEnvelope", "workflowPlan", "walletActionPlan", "approvalBinding", "approvalPreview", "approvalReceipt", "signingTasks", "signatures", "cryptoResults", "reviewedTransactionResults", "finalizedBundle", "workflowProgress", "permissionCommit", "broadcastProgress", "providerSessionMutation", "providerSessionCommitAck", "providerCompletion"]
+    }
+  ],
+  "methodPaths": [
+    {
+      "category": "session-read",
+      "methods": ["tbc_chainId"],
+      "states": ["initializing", "validating", "completed"]
+    },
+    {
+      "category": "permission-read",
+      "methods": ["wallet_getPermissions"],
+      "states": ["initializing", "validating", "authorizing", "completed"]
+    },
+    {
+      "category": "account-read",
+      "methods": ["tbc_accounts", "tbc_getAccount", "tbc_getCapabilities"],
+      "states": ["initializing", "validating", "authorizing", "resolving", "completed"]
+    },
+    {
+      "category": "permission-request",
+      "methods": ["tbc_requestAccounts", "wallet_requestPermissions"],
+      "states": ["initializing", "validating", "authorizing", "resolving", "approval", "committing", "completed"]
+    },
+    {
+      "category": "switch-chain",
+      "methods": ["tbc_switchChain"],
+      "states": ["initializing", "validating", "authorizing", "approval", "committing", "completed"]
+    },
+    {
+      "category": "message-signing",
+      "methods": ["tbc_signMessage", "tbc_signTypedData"],
+      "states": ["initializing", "validating", "authorizing", "resolving", "approval", "signing", "completed"]
+    },
+    {
+      "category": "sign-transaction",
+      "methods": ["tbc_signTransaction", "tbc_signPreparedTransaction"],
+      "states": ["initializing", "validating", "authorizing", "resolving", "planning", "approval", "signing", "finalizing", "completed"]
+    },
+    {
+      "category": "send-transaction",
+      "methods": ["tbc_sendTransaction", "tbc_sendPreparedTransaction"],
+      "states": ["initializing", "validating", "authorizing", "resolving", "planning", "approval", "signing", "finalizing", "broadcasting", "reconciliation", "completed"]
+    },
+    {
+      "category": "sign-workflow",
+      "methods": ["tbc_signWorkflow", "tbc_signPreparedWorkflow"],
+      "states": ["initializing", "validating", "authorizing", "resolving", "planning", "approval", "signing", "finalizing", "completed"]
+    },
+    {
+      "category": "send-workflow",
+      "methods": ["tbc_sendWorkflow", "tbc_sendPreparedWorkflow"],
+      "states": ["initializing", "validating", "authorizing", "resolving", "planning", "approval", "signing", "finalizing", "broadcasting", "completed"]
+    },
+    {
+      "category": "wallet-action",
+      "methods": ["tbc_signReviewedTransaction", "tbc_encrypt", "tbc_decrypt"],
+      "states": ["initializing", "validating", "authorizing", "resolving", "approval", "signing", "completed"]
+    },
+    {
+      "category": "disconnect",
+      "methods": ["tbc_disconnect"],
+      "states": ["initializing", "validating", "authorizing", "committing", "completed"]
+    }
+  ],
+  "expiryPolicy": {
+    "authorizationWindowSeconds": 300,
+    "narrowingSources": ["request", "snapshot", "policy", "plan", "approval", "workflow"],
+    "afterExpiryForbiddenEffects": ["approval.request", "signer.sign", "crypto.execute", "reviewedTransaction.execute", "transaction.finalize", "broadcast.submit", "broadcast.submitBatch"],
+    "expiredPartialBroadcast": {
+      "allowedEffect": "broadcast.reconcile",
+      "maxAttempts": 1
+    }
+  },
+  "lateResponsePolicy": {
+    "disposition": "ignore",
+    "advancesRevision": false,
+    "classes": ["unknown", "late", "duplicate", "cancelled"]
+  },
+  "cancellationReasons": [
+    {
+      "reason": "USER_REJECTED",
+      "terminalState": "rejected",
+      "delivery": "respond",
+      "providerCode": 4001,
+      "executionErrorName": null,
+      "retryable": false
+    },
+    {
+      "reason": "REQUEST_ABORTED",
+      "terminalState": "cancelled",
+      "delivery": "suppress",
+      "providerCode": null,
+      "executionErrorName": null,
+      "retryable": false
+    },
+    {
+      "reason": "REQUEST_EXPIRED",
+      "terminalState": "failed",
+      "delivery": "respond",
+      "providerCode": -32000,
+      "executionErrorName": "REQUEST_EXPIRED",
+      "retryable": false
+    },
+    {
+      "reason": "SESSION_REVOKED",
+      "terminalState": "cancelled",
+      "delivery": "conditional",
+      "providerCode": 4100,
+      "executionErrorName": null,
+      "retryable": false
+    },
+    {
+      "reason": "NAVIGATION_CHANGED",
+      "terminalState": "cancelled",
+      "delivery": "suppress",
+      "providerCode": null,
+      "executionErrorName": null,
+      "retryable": false
+    },
+    {
+      "reason": "ORIGIN_CHANGED",
+      "terminalState": "cancelled",
+      "delivery": "suppress",
+      "providerCode": null,
+      "executionErrorName": null,
+      "retryable": false
+    },
+    {
+      "reason": "CHAIN_CHANGED",
+      "terminalState": "cancelled",
+      "delivery": "respond",
+      "providerCode": 4100,
+      "executionErrorName": null,
+      "retryable": false
+    },
+    {
+      "reason": "ACCOUNT_CHANGED",
+      "terminalState": "cancelled",
+      "delivery": "respond",
+      "providerCode": 4100,
+      "executionErrorName": null,
+      "retryable": false
+    },
+    {
+      "reason": "TRANSPORT_CLOSED",
+      "terminalState": "cancelled",
+      "delivery": "suppress",
+      "providerCode": null,
+      "executionErrorName": null,
+      "retryable": false
+    },
+    {
+      "reason": "SNAPSHOT_INVALIDATED",
+      "terminalState": "failed",
+      "delivery": "respond",
+      "providerCode": -32000,
+      "executionErrorName": "CONFLICT",
+      "retryable": true
+    },
+    {
+      "reason": "PROTOCOL_RELEASE_CHANGED",
+      "terminalState": "cancelled",
+      "delivery": "conditional",
+      "providerCode": -32603,
+      "executionErrorName": null,
+      "retryable": false
+    }
+  ]
+}

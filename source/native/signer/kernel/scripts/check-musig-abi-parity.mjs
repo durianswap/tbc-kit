@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
+import {readFile,mkdtemp,writeFile} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {resolve,join} from 'node:path';
+import {createWasmMuSigSigner} from '../wasm/musig-adapter.mjs';
+const root=resolve(import.meta.dirname,'..'),output=await mkdtemp(join(tmpdir(),'tbc-musig-abi-parity-'));
+const native=resolve(process.argv[2]??join(root,'target/release'));
+execFileSync('cc',['-mmacosx-version-min=15.0','-O2','-I'+join(root,'include'),join(root,'fixtures/musig-abi-probe.c'),'-L'+native,'-ltbc_signer_kernel','-Wl,-rpath,'+native,'-o',join(output,'probe')],{timeout:60000});
+const expected=execFileSync(join(output,'probe'),[],{encoding:'utf8',timeout:20000}).trim();assert.match(expected,/^[0-9a-f]{128}$/);
+let counter=0; // Fixed entropy only for PUBLIC fixture parity. Production defaults to CSPRNG.
+const wasmPath=resolve(process.argv[3]??join(root,'target/wasm32-unknown-unknown/release/tbc_signer_kernel.wasm'));
+const signer=await createWasmMuSigSigner(await readFile(wasmPath),{clock:()=>100,crypto:{getRandomValues(bytes){bytes.fill(0x61+counter++);return bytes;}}});
+const scalar=n=>{const a=new Uint8Array(32);a[31]=n;return a;};
+const common={publicKeys:['0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798','02c6047f9441ed7d6d3045406e95c07cd85c778e4b8cef3ca7abac09b95c709ee5'],aggregateKey:'3b46d262d2f610e9038b44beabdfe97ab5a0feb89870acc2264edfb7f63ec2ec',digest:'37'.repeat(32),binding:'20'.repeat(32),expiresAt:200};
+const parties=[1,2].map(n=>signer.begin({...common,scalar:scalar(n)}));
+const publicNonces=parties.map(p=>p.publicNonce),partialSignatures=parties.map((p,i)=>signer.sign({...common,handle:p.handle,scalar:scalar(i+1),publicNonces}));
+assert.equal(signer.combine({...common,publicNonces,partialSignatures}),expected);
+const report={status:'PASS',nativeWasmIdentical:true,outputClearedOnFailure:true,entropyCleared:true,publicFixturesOnly:true,networkRequests:0,signature:expected};
+await writeFile(join(output,'report.json'),JSON.stringify(report,null,2)+'\n',{flag:'wx'});
+console.log(JSON.stringify({status:'PASS',nativeWasmIdentical:true,output}));

@@ -1,0 +1,175 @@
+// Historical TS implementation test. Replaced by required Rust and artifact tests;
+// see ../README.md. Retained as migration evidence, not an executable test.
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import { after, before, test } from "node:test";
+import { loadInternals } from "./build-internals.mjs";
+
+const vectors = JSON.parse(
+  await readFile(new URL("../../../test-vectors/integration.json", import.meta.url), "utf8"),
+);
+const fixture = vectors.fixture;
+const template = vectors.canonicalTransfer.plan.payload.transactions[0];
+const finalized = vectors.canonicalTransfer.bundle.transactions[0];
+
+let internals;
+let cleanup;
+
+before(async () => {
+  ({ runtime: internals, cleanup } = await loadInternals([
+    "bytes",
+    "transaction",
+    "sighash",
+    "turing-txid",
+  ]));
+});
+
+after(() => cleanup?.());
+
+function cloneTransaction(transaction, changes = {}) {
+  return {
+    ...transaction,
+    inputs: transaction.inputs.map((input) => ({ ...input })),
+    outputs: transaction.outputs.map((output) => ({ ...output })),
+    ...changes,
+  };
+}
+
+test("derives the canonical direct TBC SIGHASH_ALL|FORKID digest", () => {
+  const transaction = internals.parseTransaction(template.unsignedTransaction);
+  const digest = internals.tbcInputSighash(transaction, 0, {
+    satoshis: 10_000n,
+    scriptPubKey: internals.hexToBytes(fixture.sourceScriptPubKey),
+  });
+
+  assert.equal(internals.TBC_SIGHASH_ALL_FORKID, 0x41);
+  assert.equal(digest, fixture.sighashDigest);
+  assert.equal(
+    digest,
+    "1e06ca3ec00947bc4a174c62fbe08777796b2b525915640c5a144c001c27bf25",
+  );
+});
+
+test("binds every consensus field covered by the input digest", () => {
+  const transaction = internals.parseTransaction(template.unsignedTransaction);
+  const prevout = {
+    satoshis: 10_000n,
+    scriptPubKey: internals.hexToBytes(fixture.sourceScriptPubKey),
+  };
+  const expected = internals.tbcInputSighash(transaction, 0, prevout);
+  const mutations = [
+    [
+      "outpoint",
+      {
+        transaction: cloneTransaction(transaction, {
+          inputs: [{ ...transaction.inputs[0], txid: `0${transaction.inputs[0].txid.slice(1)}` }],
+        }),
+        prevout,
+      },
+    ],
+    ["amount", { transaction, prevout: { ...prevout, satoshis: 9_999n } }],
+    [
+      "sequence",
+      {
+        transaction: cloneTransaction(transaction, {
+          inputs: [{ ...transaction.inputs[0], sequence: 0xfffffffe }],
+        }),
+        prevout,
+      },
+    ],
+    [
+      "script",
+      {
+        transaction,
+        prevout: {
+          ...prevout,
+          scriptPubKey: Uint8Array.of(...prevout.scriptPubKey, 0x00),
+        },
+      },
+    ],
+    [
+      "output",
+      {
+        transaction: cloneTransaction(transaction, {
+          outputs: [{ ...transaction.outputs[0], satoshis: 999n }, transaction.outputs[1]],
+        }),
+        prevout,
+      },
+    ],
+    ["locktime", { transaction: cloneTransaction(transaction, { locktime: 1 }), prevout }],
+  ];
+
+  for (const [label, mutation] of mutations) {
+    assert.notEqual(
+      internals.tbcInputSighash(mutation.transaction, 0, mutation.prevout),
+      expected,
+      `${label} must change the digest`,
+    );
+  }
+});
+
+test("rejects unknown sighash types and invalid input indexes", () => {
+  const transaction = internals.parseTransaction(template.unsignedTransaction);
+  const prevout = {
+    satoshis: 10_000n,
+    scriptPubKey: internals.hexToBytes(fixture.sourceScriptPubKey),
+  };
+
+  assert.throws(
+    () => internals.tbcInputSighash(transaction, 0, prevout, 1),
+    /sighash type 65/,
+  );
+  assert.throws(
+    () => internals.tbcInputSighash(transaction, 1, prevout),
+    /input index/,
+  );
+});
+
+test("derives canonical display-order version-10 TuringTXIDs", () => {
+  assert.equal(
+    internals.turingTxid(internals.parseTransaction(fixture.parentTransaction)),
+    fixture.parentTxid,
+  );
+  assert.equal(
+    internals.turingTxid(internals.parseTransaction(finalized.rawTransaction)),
+    "e715bbe7ea8e6e95ff339b24e1e2aaff8771e8e17af4682b775919fad953c907",
+  );
+});
+
+test("binds outpoints, sequences, unlock scripts, outputs, and locktime into TuringTXID", () => {
+  const transaction = internals.parseTransaction(finalized.rawTransaction);
+  const expected = internals.turingTxid(transaction);
+  const mutations = [
+    cloneTransaction(transaction, {
+      inputs: [{ ...transaction.inputs[0], txid: `0${transaction.inputs[0].txid.slice(1)}` }],
+    }),
+    cloneTransaction(transaction, {
+      inputs: [{ ...transaction.inputs[0], sequence: 0xfffffffe }],
+    }),
+    cloneTransaction(transaction, {
+      inputs: [
+        {
+          ...transaction.inputs[0],
+          scriptSig: Uint8Array.of(...transaction.inputs[0].scriptSig, 0x00),
+        },
+      ],
+    }),
+    cloneTransaction(transaction, {
+      outputs: [{ ...transaction.outputs[0], satoshis: 999n }, transaction.outputs[1]],
+    }),
+    cloneTransaction(transaction, {
+      outputs: [
+        {
+          ...transaction.outputs[0],
+          scriptPubKey: Uint8Array.of(...transaction.outputs[0].scriptPubKey, 0x00),
+        },
+        transaction.outputs[1],
+      ],
+    }),
+    cloneTransaction(transaction, { locktime: 1 }),
+  ];
+
+  for (const mutation of mutations) {
+    assert.notEqual(internals.turingTxid(mutation), expected);
+  }
+});

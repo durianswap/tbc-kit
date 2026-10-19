@@ -1,0 +1,118 @@
+{
+  "format": "tws-v1-candidate-manifest",
+  "candidateVersion": "1.0.0-candidate.3",
+  "status": "pre-release",
+  "compatibilityBaseline": "legacy-window-turing-only",
+  "providerMethodCount": 22,
+  "providerEventCount": 6,
+  "schemaBundleSha256": "93fb6e69052f4e05de5d69fd8cb8d5cc66aa019090c24cf4d1c36f82a0ea24b8",
+  "registryBundleSha256": "a2cc11861c50a6e38212bbd971a24d0f4f0349309f24e6ccd777fd98dc9ee92b",
+  "schemaFiles": [
+    {
+      "path": "schemas/common.schema.json",
+      "sha256": "6d7f09c17faf2808c893d79d9b706a42eb4108470124ef589de6dc05799eec56"
+    },
+    {
+      "path": "schemas/conformance-manifest.schema.json",
+      "sha256": "41b374d10c30c07edf8a460e75442731018058b1fd8c7e23cae2f74441607b8a"
+    },
+    {
+      "path": "schemas/error-registry.schema.json",
+      "sha256": "d9b5da06f538f8fc387395d695ebcefb9fd3d1677cdeadf506a6180ae767fb50"
+    },
+    {
+      "path": "schemas/event-registry.schema.json",
+      "sha256": "0141823d3d3564dce7ea8515fe764281597b764e23436a98bcb120b09eaf5e1a"
+    },
+    {
+      "path": "schemas/hash-binding-registry.schema.json",
+      "sha256": "764eb14897c91adf68c3041c2abca83f073fe96fbc9b7bb5236ef85ca88d7669"
+    },
+    {
+      "path": "schemas/integration-port-registry.schema.json",
+      "sha256": "49f93685ac666cdf9b09771e14ee5a7badafc7013671c68fcf80783fa0cb3335"
+    },
+    {
+      "path": "schemas/integration.schema.json",
+      "sha256": "6838c9ddaec2af8c1c6d88ea307b222b327c394cad0933d0dd9269b33116e933"
+    },
+    {
+      "path": "schemas/method-registry.schema.json",
+      "sha256": "a8dc2a7333956b78cb53a006b26b56763e379ad5b05154044b288ba5249a3f7d"
+    },
+    {
+      "path": "schemas/network-registry.schema.json",
+      "sha256": "d5c52eeb86fb9dcbb1f992c596498a5e99467c6a0d9534bb09c5bbe0e54a9f44"
+    },
+    {
+      "path": "schemas/operation-state-registry.schema.json",
+      "sha256": "71ab0b24a10df96c5751b6c3b0f6132dee95e8468c5ce2ee594e4327e88ce00b"
+    },
+    {
+      "path": "schemas/permissions.schema.json",
+      "sha256": "9e08d5dd8127b59a200dfcdeb690e91424cf1591de8f46feaea45092decc27cd"
+    },
+    {
+      "path": "schemas/prepared-transaction.schema.json",
+      "sha256": "7d1a2bdb647486ecf7fa798ae3750477a613126f2771a8bf4ce44714b190d859"
+    },
+    {
+      "path": "schemas/prepared-workflow.schema.json",
+      "sha256": "dcea3eaaec274852b6bd70a8a53f1e4011ddc74205ed2fb563e41983da324b13"
+    },
+    {
+      "path": "schemas/provider.schema.json",
+      "sha256": "f3cb286141fb8ff127c3b034d5d4f20b3de10f8c99dab0d0e7aec2dcf2d982ac"
+    },
+    {
+      "path": "schemas/reviewed-transaction.schema.json",
+      "sha256": "435c3562556194591881f1e761f629500c7c21f888b8d7d24079d203421bae26"
+    },
+    {
+      "path": "schemas/signing.schema.json",
+      "sha256": "f9ef713767a68569bbdb248835f0756381f94f8c1e19dbe9f53da84740def68d"
+    },
+    {
+      "path": "schemas/transaction-request.schema.json",
+      "sha256": "31b2fc137a6e1953de25e9ef6dd0a762df5c2411bc0652f6ea8b34af84177837"
+    },
+    {
+      "path": "schemas/wallet-actions.schema.json",
+      "sha256": "db6ba20d0181ce68cc751b7d2fa0d43a02dd13bb55c88eff4892b092fb9883c7"
+    },
+    {
+      "path": "schemas/workflow.schema.json",
+      "sha256": "167515dde994a87a5e15751f4a45f739d1f10c2c6ebb2705fc16879c50e5b1a1"
+    }
+  ],
+  "registryFiles": [
+    {
+      "path": "registry/errors.json",
+      "sha256": "4b6fdf01b2d53f34b404e8cb0ad6e2681260cf8ac34aab9652cfbd9dd211c2d3"
+    },
+    {
+      "path": "registry/events.json",
+      "sha256": "0d8a37ee1cc36f1aaedee71910d735662b0fc48ac5517bc8a91cb9b8a992ce61"
+    },
+    {
+      "path": "registry/hash-bindings.json",
+      "sha256": "602cb84da627032c1c282c0c35fa3749924cb3721b42161a363a3c1f35edd055"
+    },
+    {
+      "path": "registry/integration-ports.json",
+      "sha256": "a341f7b0e0f46facc5f27728d3362b937ae68a1617d15d8d2d521042830fd7c6"
+    },
+    {
+      "path": "registry/methods.json",
+      "sha256": "aa4265eeeee0375900a471d87500ab7a1256cf3bd369dfc76eddfb0da9ef9655"
+    },
+    {
+      "path": "registry/networks.json",
+      "sha256": "983d94e32c389ae5c58ce91c0d4e023b88350a387d6eaa4dc0b1476aab23b06b"
+    },
+    {
+      "path": "registry/operation-states.json",
+      "sha256": "c39933b44d10c105c451d5ef0a6bd7b3abda67977ab43886c8cea51c72add815"
+    }
+  ]
+}

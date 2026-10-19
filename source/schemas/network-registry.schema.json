@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://turingbitchain.io/tws/1.0/schemas/network-registry.schema.json",
+  "title": "TBC network registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "version", "namespace", "identityPolicy", "networks"],
+  "properties": {
+    "$schema": { "const": "../schemas/network-registry.schema.json" },
+    "version": { "const": "1.0.1" },
+    "namespace": { "const": "tbc" },
+    "identityPolicy": { "const": "stable-network-name" },
+    "networks": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/network" }
+    }
+  },
+  "$defs": {
+    "network": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "network",
+        "chainId",
+        "reference",
+        "nativeAsset",
+        "informationalApi"
+      ],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "network": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}$" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "reference": { "enum": ["mainnet", "testnet"] },
+        "nativeAsset": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "symbol", "decimals"],
+          "properties": {
+            "id": { "const": "tbc:native" },
+            "symbol": { "const": "TBC" },
+            "decimals": { "const": 6 }
+          }
+        },
+        "informationalApi": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        }
+      }
+    }
+  }
+}

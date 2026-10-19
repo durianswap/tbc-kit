@@ -1,0 +1,11 @@
+[package]
+name = "tbc-engine-adapter-parity"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+tbc-engine-core = { path = "../tbc-engine-core" }
+tbc-engine-native = { path = "../tbc-engine-native" }
+tbc-engine-wasm = { path = "../tbc-engine-wasm" }

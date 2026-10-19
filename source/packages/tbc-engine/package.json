@@ -1,0 +1,56 @@
+{
+  "name": "@tbc-wallet/tbc-engine",
+  "version": "1.0.0-draft.6.10.rust13",
+  "description": "Portable deterministic native TBC transaction engine for TWS Draft 6",
+  "private": false,
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "artifacts",
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "react-native": "./dist/esm/index.js",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.js"
+    },
+    "./native": {
+      "types": "./dist/types/native.d.ts",
+      "react-native": "./dist/esm/native.js",
+      "import": "./dist/esm/native.js",
+      "require": "./dist/cjs/native.cjs"
+    },
+    "./wasm": {
+      "types": "./dist/types/wasm.d.ts",
+      "import": "./dist/esm/wasm.js",
+      "require": "./dist/cjs/wasm.cjs"
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build:fixed-delivery": "node ./scripts/build-fixed-delivery.mjs",
+    "build:rust:mobile": "node ./scripts/build-rust-mobile.mjs",
+    "build:rust:native": "node ./scripts/build-rust-native.mjs",
+    "build:rust:wasm": "node ./scripts/build-rust-wasm.mjs",
+    "check:capabilities": "node ./scripts/check-capability-matrix.mjs",
+    "check:boundaries": "node ./scripts/check-engine-boundaries.mjs",
+    "check:rust-delivery": "node ./scripts/check-rust-delivery.mjs",
+    "check:rust:adapter-parity": "node ./scripts/check-rust-adapter-parity.mjs",
+    "check:rust:artifact-runtime": "node ./scripts/check-rust-runtime-artifacts.mjs",
+    "import:rust-sdk": "node ./scripts/import-rust-sdk.mjs",
+    "verify:rust-provenance": "node ./scripts/verify-rust-provenance.mjs"
+  },
+  "license": "CC0-1.0",
+  "dependencies": {
+    "@noble/curves": "1.9.7",
+    "@noble/hashes": "1.8.0",
+    "@tbc-wallet/core": "1.0.0-draft.6.10"
+  }
+}

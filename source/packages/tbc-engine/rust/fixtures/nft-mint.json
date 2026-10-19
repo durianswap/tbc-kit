@@ -1,0 +1,26 @@
+{
+  "source": {
+    "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+    "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+    "path": "modules/tbc-transaction-engine/rust/src/nft.rs",
+    "function": "build_nft_transaction_json",
+    "sdkFunction": "Nft::create_nft"
+  },
+  "intent": {
+    "type": "tbc.nft.mint",
+    "version": "1.0",
+    "collectionId": "COLLECTION_ID",
+    "name": "Task Six NFT",
+    "symbol": "TSNFT",
+    "description": "Deterministic NFT fixture",
+    "attributes": [
+      { "traitType": "rarity", "value": "genesis" }
+    ],
+    "media": {
+      "kind": "base64",
+      "data": "AQIDBA==",
+      "mediaType": "image/png",
+      "sha256": "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a"
+    }
+  }
+}

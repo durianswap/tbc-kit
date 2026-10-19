@@ -1,0 +1,269 @@
+{
+  "kind": "legacy-window-turing-vectors",
+  "version": "1.0.5",
+  "profile": "baseline-b",
+  "vectors": [
+    {
+      "id": "p2pkh-sign-only",
+      "required": true,
+      "subject": "sendTransaction",
+      "scenario": "A P2PKH transfer requests signing without broadcast.",
+      "input": {
+        "flag": "P2PKH",
+        "address": "1LegacyDestination",
+        "satoshis": "1000",
+        "broadcastEnabled": false
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "txraw": "signed-p2pkh-raw"
+        },
+        "invariants": [
+          "same Host and nine Ports",
+          "native approval",
+          "wallet-private signer",
+          "no broadcast"
+        ]
+      }
+    },
+    {
+      "id": "p2pkh-broadcast",
+      "required": true,
+      "subject": "sendTransaction",
+      "scenario": "A P2PKH transfer requests one controlled broadcast.",
+      "input": {
+        "flag": "P2PKH",
+        "address": "1LegacyDestination",
+        "satoshis": "1000",
+        "broadcastEnabled": true
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "txid": "p2pkh-txid"
+        },
+        "invariants": [
+          "broadcast response is durable",
+          "no blind retry"
+        ]
+      }
+    },
+    {
+      "id": "durian-ft-transfer-sign-only",
+      "required": true,
+      "subject": "sendTransaction",
+      "scenario": "DurianSwap sell signs an FT transfer without broadcast.",
+      "input": {
+        "flag": "FT_TRANSFER",
+        "ft_contract_address": "ft-contract",
+        "ft_amount": "1",
+        "broadcastEnabled": false
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "txraw": "signed-ft-transfer-raw"
+        },
+        "invariants": [
+          "Rust-backed restricted capability",
+          "backend business invariants"
+        ]
+      }
+    },
+    {
+      "id": "durian-lp-increase-sign-only",
+      "required": true,
+      "subject": "sendTransaction",
+      "scenario": "DurianSwap LP increase signs without broadcast.",
+      "input": {
+        "flag": "POOLNFT_LP_INCREASE",
+        "broadcastEnabled": false
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "txraw": "signed-lp-increase-raw"
+        },
+        "invariants": [
+          "Rust-backed restricted capability"
+        ]
+      }
+    },
+    {
+      "id": "durian-lp-consume-sign-only",
+      "required": true,
+      "subject": "sendTransaction",
+      "scenario": "DurianSwap LP consume signs without broadcast.",
+      "input": {
+        "flag": "POOLNFT_LP_CONSUME",
+        "broadcastEnabled": false
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "txraw": "signed-lp-consume-raw"
+        },
+        "invariants": [
+          "Rust-backed restricted capability"
+        ]
+      }
+    },
+    {
+      "id": "durian-pool-mint-source-order",
+      "required": true,
+      "subject": "sendTransaction",
+      "scenario": "DurianSwap Pool mint signs the source and Pool mint transactions in one sign-only call.",
+      "input": {
+        "flag": "POOLNFT_MINT",
+        "broadcastEnabled": false
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "txraw": "pool-source-raw,pool-mint-raw"
+        },
+        "invariants": [
+          "exactly two comma-ordered raws",
+          "source precedes Pool mint",
+          "caller broadcasts each raw before deriving poolId",
+          "Rust-backed restricted capability"
+        ]
+      }
+    },
+    {
+      "id": "durian-pool-init-single",
+      "required": true,
+      "subject": "sendTransaction",
+      "scenario": "DurianSwap initializes the derived poolId in a second sign-only call.",
+      "input": {
+        "flag": "POOLNFT_INIT",
+        "broadcastEnabled": false
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "txraw": "pool-init-raw"
+        },
+        "invariants": [
+          "exactly one raw",
+          "requires poolId derived after the prior Pool mint broadcasts",
+          "Rust-backed restricted capability"
+        ]
+      }
+    },
+    {
+      "id": "durian-ft-create-broadcast",
+      "required": true,
+      "subject": "sendTransaction",
+      "scenario": "DurianSwap FT create broadcasts through the wallet.",
+      "input": {
+        "flag": "FT_MINT",
+        "broadcastEnabled": true
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "txid": "ft-create-txid"
+        },
+        "invariants": [
+          "broadcast is single-attempt and recoverable",
+          "Rust-backed restricted capability"
+        ]
+      }
+    },
+    {
+      "id": "legacy-bitcoin-magic-message",
+      "required": true,
+      "subject": "signMessage",
+      "scenario": "A legacy order message is signed with the historical Bitcoin envelope.",
+      "input": {
+        "message": "legacy-order",
+        "encoding": "utf8"
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "address": "1LegacyTbcAddress",
+          "maddress": "1LegacyTbcAddress",
+          "pubkey": "02aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sig": "legacy-signature",
+          "message": "legacy-order"
+        },
+        "invariants": [
+          "magic is Bitcoin Signed Message newline",
+          "signature is not labeled TWS"
+        ]
+      }
+    },
+    {
+      "id": "durian-sign-message-public-key-alias",
+      "required": true,
+      "subject": "signMessage",
+      "scenario": "The unchanged DurianSwap production page reads the historical camel-case public-key alias.",
+      "input": {
+        "message": "legacy-order",
+        "encoding": "utf8"
+      },
+      "expected": {
+        "settlement": "resolve",
+        "value": {
+          "address": "1LegacyTbcAddress",
+          "maddress": "1LegacyTbcAddress",
+          "pubkey": "02aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "pubKey": "02aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "sig": "legacy-signature",
+          "message": "legacy-order"
+        },
+        "invariants": [
+          "pubKey equals pubkey byte-for-byte",
+          "address, maddress, message, and sig retain their historical meanings"
+        ]
+      }
+    },
+    {
+      "id": "dependent-batch-txids",
+      "required": true,
+      "subject": "sendBatchRequest",
+      "scenario": "A two-step signAssociatedTransaction then signMessage batch injects ordered txids into structured JSON.",
+      "input": [
+        {
+          "method": "signAssociatedTransaction",
+          "params": {
+            "sourceTxraw": "source-raw",
+            "sourceUtxos": []
+          }
+        },
+        {
+          "method": "signMessage",
+          "params": {
+            "message": "{\"txids\":[]}",
+            "encoding": "utf8"
+          },
+          "dependsOn": "txids"
+        }
+      ],
+      "expected": {
+        "settlement": "resolve",
+        "value": [
+          {
+            "txraws": [
+              "associated-raw"
+            ]
+          },
+          {
+            "address": "1LegacyTbcAddress",
+            "pubkey": "02aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "sig": "legacy-signature",
+            "message": "{\"txids\":[\"associated-txid\"]}"
+          }
+        ],
+        "invariants": [
+          "maximum five requests",
+          "first failure prevents second step",
+          "JSON is parsed and updated structurally"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://tbc.dev/contracts/legacy-window-turing/v1/contract.schema.json",
+  "title": "Legacy window.Turing compatibility contract assets",
+  "oneOf": [
+    { "$ref": "#/$defs/contract" },
+    { "$ref": "#/$defs/vectors" },
+    { "$ref": "#/$defs/provenance" },
+    { "$ref": "#/$defs/manifest" }
+  ],
+  "$defs": {
+    "method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "profile", "required", "approval", "target"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "profile": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "required": { "type": "boolean" },
+        "approval": {
+          "enum": ["none", "permission", "transaction", "signature", "crypto"]
+        },
+        "target": { "type": "string", "minLength": 1, "maxLength": 128 }
+      }
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "source"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "source": { "enum": ["document-ready", "host-committed-state", "durable-delivery"] }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "required", "evidence"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "required": { "type": "boolean" },
+        "evidence": { "type": "string", "minLength": 1, "maxLength": 256 }
+      }
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "version",
+        "surface",
+        "permissionNamespace",
+        "profiles",
+        "fields",
+        "methods",
+        "events",
+        "authority",
+        "permissions",
+        "transport",
+        "errors",
+        "execution",
+        "deletion"
+      ],
+      "properties": {
+        "kind": { "const": "legacy-window-turing-contract" },
+        "version": { "const": "1.0.5" },
+        "surface": { "const": "window.Turing" },
+        "permissionNamespace": { "const": "legacy-window-turing/v1" },
+        "profiles": {
+          "type": "array",
+          "minItems": 2,
+          "items": { "$ref": "#/$defs/profile" }
+        },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1, "maxLength": 64 }
+        },
+        "methods": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/method" }
+        },
+        "events": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/event" }
+        },
+        "authority": { "type": "object" },
+        "permissions": { "type": "object" },
+        "transport": { "type": "object" },
+        "errors": { "type": "object" },
+        "execution": { "type": "object" },
+        "deletion": { "type": "object" }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["settlement"],
+      "properties": {
+        "settlement": { "enum": ["resolve", "reject", "event"] },
+        "value": {},
+        "errorMessage": { "type": "string" },
+        "event": { "type": "string" },
+        "invariants": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1, "maxLength": 160 }
+        }
+      }
+    },
+    "vector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "required", "subject", "scenario", "input", "expected"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,63}$" },
+        "required": { "type": "boolean" },
+        "subject": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "scenario": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "input": {},
+        "expected": { "$ref": "#/$defs/expected" }
+      }
+    },
+    "vectors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "version", "profile", "vectors"],
+      "properties": {
+        "kind": { "const": "legacy-window-turing-vectors" },
+        "version": { "const": "1.0.5" },
+        "profile": { "enum": ["baseline-a", "baseline-b"] },
+        "vectors": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/vector" }
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "repository", "file", "sha256"],
+      "properties": {
+        "role": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "repository": { "type": "string", "minLength": 1 },
+        "commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "file": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "version", "evidencePolicy", "sources"],
+      "properties": {
+        "kind": { "const": "legacy-window-turing-provenance" },
+        "version": { "const": "1.0.5" },
+        "evidencePolicy": { "type": "string", "minLength": 1 },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/source" }
+        }
+      }
+    },
+    "manifestFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "version", "algorithm", "files", "bundleSha256"],
+      "properties": {
+        "kind": { "const": "legacy-window-turing-manifest" },
+        "version": { "const": "1.0.5" },
+        "algorithm": {
+          "const": "sha256(relativePath + NUL + sha256(rawFileBytes) + LF), sorted by relativePath"
+        },
+        "files": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/manifestFile" }
+        },
+        "bundleSha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    }
+  }
+}

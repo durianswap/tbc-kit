@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "repository": "https://github.com/durianswap/tbc-kit",
+  "publicRelease": false,
+  "registryPublished": false,
+  "selection": {
+    "kit": "kit",
+    "flutter": "flutter",
+    "nativeSdk": [
+      "sdk-ios",
+      "sdk-android"
+    ]
+  },
+  "pairing": {
+    "kitVersion": "0.1.0-rc.1",
+    "sdkVersion": "0.1.0-multisig.20261016.2.native.2",
+    "sdkArtifactSetId": "06b16e9e0a1089d5c54cd7c6fd8eaa64239c0d580a2bab4823ba7a3507644b6b",
+    "keylessArtifactSetId": "c9f54ff972cbebd6be49b3eaa316647997e4da1c4b510534fe209d3d0424d619",
+    "flutterIsIndependentPairedDistribution": true
+  },
+  "artifacts": [
+    {
+      "id": "kit",
+      "path": "artifacts/tbc-kit.tgz",
+      "sha256": "b42766bccff1bfcec6a3a0e7c2b823ba973fc3d437907adb3f8acf449af972a0",
+      "bytes": 3812897,
+      "version": "0.1.0-rc.1",
+      "role": "JS/TS full Kit, including optional wallet-only multisig"
+    },
+    {
+      "id": "flutter",
+      "path": "artifacts/tbc-kit-flutter.tgz",
+      "sha256": "f782b21ff2aa5d069669ae080615bde083e45006e5536a98b11233025d322b7f",
+      "bytes": 15595700,
+      "version": "0.1.0-rc.1",
+      "role": "Flutter SDK with Dart, native libraries, WebView bridge and examples"
+    },
+    {
+      "id": "resources-macos-arm64",
+      "path": "artifacts/native/macos-arm64-resources.tgz",
+      "sha256": "be5c3b920d435288c6fa99c9a17b08bee88cff59c5766d7a43cd647ac59ca32c",
+      "bytes": 5602850,
+      "version": "0.1.0-multisig.20261016.3",
+      "role": "Optional raw native resources; do not also install a complete SDK for the same purpose"
+    },
+    {
+      "id": "resources-android",
+      "path": "artifacts/native/android-resources.tgz",
+      "sha256": "52ee247429a4c1fc02e932fe37a8c29f8d6fa66b6695b2d5f3eb804b0544833f",
+      "bytes": 17509858,
+      "version": "0.1.0-multisig.20261016.3",
+      "role": "Optional raw native resources; do not also install a complete SDK for the same purpose"
+    },
+    {
+      "id": "resources-ios",
+      "path": "artifacts/native/ios-resources.tgz",
+      "sha256": "4d60d1b04ae23796c6345a4a9b0eb0a848a27af05ab5e89357a1549d94cc2fd4",
+      "bytes": 43262242,
+      "version": "0.1.0-multisig.20261016.3",
+      "role": "Optional raw native resources; do not also install a complete SDK for the same purpose"
+    },
+    {
+      "id": "sdk-ios",
+      "path": "artifacts/native/ios-sdk.tgz",
+      "sha256": "f779bae87b74cde330c87543078e2a4ee7ae2f26b03e32bd219e4d38165a5e2b",
+      "bytes": 43290076,
+      "version": "0.1.0-multisig.20261016.2.native.2",
+      "role": "Standalone ios calculation SDK paired with the JS Kit"
+    },
+    {
+      "id": "sdk-android",
+      "path": "artifacts/native/android-sdk.tgz",
+      "sha256": "6c217af7f29348ceb81cfae62f4092031a264dbe53d7ab6dd9d9793b2a2d2c39",
+      "bytes": 17748833,
+      "version": "0.1.0-multisig.20261016.2.native.2",
+      "role": "Standalone android calculation SDK paired with the JS Kit"
+    }
+  ],
+  "source": {
+    "path": "source",
+    "manifest": "release/source-files.json"
+  }
+}

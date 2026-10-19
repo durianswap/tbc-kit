@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TBC 共用钱包 DApp</title><link rel="stylesheet" href="/style.css">
+<script type="importmap">{"imports":{"@wallet-standard/core":"/wallet-standard-core.js"}}</script></head>
+<body><main>
+<header><span class="brand">TBC / OPEN WALLET</span><span class="badge">TESTNET</span></header>
+<h1>一个 DApp，连接你的钱包。</h1><p class="intro">选择钱包，查看能力，通过同一套公开接口完成交易。</p>
+<section><h2>钱包连接</h2><label for="wallet">选择已发现的钱包</label><select id="wallet"><option value="">正在发现钱包…</option></select>
+<div class="actions"><button id="connect">连接钱包</button><button class="secondary" id="refresh">刷新状态</button><button class="secondary" id="disconnect">断开授权</button></div>
+<p id="connection" role="status">等待钱包</p><p id="account" class="mono"></p><p id="network"></p>
+<details><summary>钱包声明的公开能力</summary><pre id="capabilities">连接后查看</pre></details></section>
+<section><h2>发送 TBC</h2><p>测试网 TBC 使用 6 位小数。</p>
+<form id="transfer"><label for="to">接收地址</label><input id="to" autocomplete="off" required placeholder="输入另一个测试钱包的地址">
+<div class="fields"><div><label for="amount">金额（TBC）</label><input id="amount" inputmode="decimal" value="0.001" required></div>
+<div><label for="fee">最高费用（TBC）</label><input id="fee" inputmode="decimal" value="0.001" required></div></div>
+<p id="atomic" class="hint"></p><button type="submit" id="send" disabled>在钱包中确认发送</button></form>
+<p id="notice" role="status" aria-live="polite"></p></section>
+<section><h2>交易记录</h2><p class="hint">保存本页发起的请求与公开交易状态。未确定结果的请求不会自动重发。</p><div id="history"></div></section>
+<footer>公开 Wallet Standard · TBC Provider · <a href="/build-identity.json">构建信息</a></footer>
+</main><script type="module" src="/app.js"></script></body></html>

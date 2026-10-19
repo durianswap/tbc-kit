@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "1.0",
+  "profile": "tws-provider",
+  "package": "@tbc-wallet/provider",
+  "version": "1.0.0-draft.6.15",
+  "protocolVersion": "1.0.0-candidate.1",
+  "providerFacade": [
+    "request",
+    "on",
+    "removeListener",
+    "destroy"
+  ],
+  "methods": [
+    "tbc_chainId",
+    "tbc_accounts",
+    "tbc_requestAccounts",
+    "tbc_getAccount",
+    "tbc_getCapabilities",
+    "tbc_switchChain",
+    "tbc_signMessage",
+    "tbc_signTypedData",
+    "tbc_signTransaction",
+    "tbc_signPreparedTransaction",
+    "tbc_sendTransaction",
+    "tbc_sendPreparedTransaction",
+    "tbc_signReviewedTransaction",
+    "tbc_encrypt",
+    "tbc_decrypt",
+    "tbc_signWorkflow",
+    "tbc_signPreparedWorkflow",
+    "tbc_sendWorkflow",
+    "tbc_sendPreparedWorkflow",
+    "wallet_getPermissions",
+    "wallet_requestPermissions",
+    "tbc_disconnect"
+  ],
+  "events": [
+    "connect",
+    "disconnect",
+    "chainChanged",
+    "accountsChanged",
+    "permissionsChanged",
+    "capabilitiesChanged"
+  ],
+  "atomicDelivery": [
+    "deliveryId",
+    "response",
+    "events"
+  ],
+  "transportLifecycle": [
+    "unique-session-id",
+    "atomic-delivery",
+    "promise-before-events",
+    "sent-before-page-dispatch",
+    "abort-suppresses-late-delivery",
+    "close-rejects-pending",
+    "replay-fails-closed"
+  ],
+  "portabilityTargets": [
+    "browser",
+    "worker",
+    "chrome-mv3-csp",
+    "react-native-hermes",
+    "node-esm",
+    "node-cjs"
+  ],
+  "packageArtifacts": [
+    "esm",
+    "commonjs",
+    "declarations",
+    "declaration-maps",
+    "root-export",
+    "in-memory-export",
+    "webview-export"
+  ],
+  "limits": {
+    "canonicalJsonBytes": 4194304,
+    "jsonRpcProfile": "strict-single-request"
+  },
+  "forbiddenCapabilities": [
+    "trusted-context-input",
+    "host-port-access",
+    "transaction-engine-access",
+    "wallet-private-state",
+    "execute-shortcut",
+    "sign-and-send-shortcut",
+    "ambient-platform-authority"
+  ],
+  "commands": [
+    "npm run test:provider",
+    "npm run check:provider-portability",
+    "npm pack ./packages/provider --dry-run"
+  ]
+}

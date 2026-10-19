@@ -1,0 +1,431 @@
+{
+  "version": "1.0.0",
+  "request": [
+    {
+      "tbc_accounts": {
+        "chains": [
+          "tbc:mainnet",
+          "tbc:other"
+        ],
+        "maxAccounts": 2
+      }
+    }
+  ],
+  "result": [
+    {
+      "id": "UbmjylWSCr1MJPS9M3Wfcdbnbnnrwt149GnpmDnnfYk",
+      "parentCapability": "tbc_accounts",
+      "invoker": "https://example.test",
+      "date": 1788177600000,
+      "caveats": [
+        {
+          "type": "restrictChains",
+          "value": [
+            "tbc:mainnet"
+          ]
+        },
+        {
+          "type": "restrictAccounts",
+          "value": [
+            "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+          ]
+        },
+        {
+          "type": "restrictMethods",
+          "value": [
+            "tbc_accounts"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Lsnkw7o-NUviaeKrWJU1XdTi3kxDj8H2YWdGt5o75do",
+      "parentCapability": "tbc_accounts",
+      "invoker": "https://example.test",
+      "date": 1788177600000,
+      "caveats": [
+        {
+          "type": "restrictChains",
+          "value": [
+            "tbc:other"
+          ]
+        },
+        {
+          "type": "restrictAccounts",
+          "value": [
+            "tbc:other:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+          ]
+        },
+        {
+          "type": "restrictMethods",
+          "value": [
+            "tbc_accounts"
+          ]
+        }
+      ]
+    }
+  ],
+  "proposal": {
+    "payload": {
+      "version": "1.0",
+      "origin": "https://example.test",
+      "requested": [
+        {
+          "tbc_accounts": {
+            "chains": [
+              "tbc:mainnet",
+              "tbc:other"
+            ],
+            "maxAccounts": 2
+          }
+        }
+      ],
+      "changes": [
+        {
+          "scope": {
+            "origin": "https://example.test",
+            "chainId": "tbc:mainnet"
+          },
+          "expectedRevision": "2",
+          "permissions": [
+            {
+              "id": "UbmjylWSCr1MJPS9M3Wfcdbnbnnrwt149GnpmDnnfYk",
+              "parentCapability": "tbc_accounts",
+              "invoker": "https://example.test",
+              "date": 1788177600000,
+              "caveats": [
+                {
+                  "type": "restrictChains",
+                  "value": [
+                    "tbc:mainnet"
+                  ]
+                },
+                {
+                  "type": "restrictAccounts",
+                  "value": [
+                    "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+                  ]
+                },
+                {
+                  "type": "restrictMethods",
+                  "value": [
+                    "tbc_accounts"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scope": {
+            "origin": "https://example.test",
+            "chainId": "tbc:other"
+          },
+          "expectedRevision": "5",
+          "permissions": [
+            {
+              "id": "Lsnkw7o-NUviaeKrWJU1XdTi3kxDj8H2YWdGt5o75do",
+              "parentCapability": "tbc_accounts",
+              "invoker": "https://example.test",
+              "date": 1788177600000,
+              "caveats": [
+                {
+                  "type": "restrictChains",
+                  "value": [
+                    "tbc:other"
+                  ]
+                },
+                {
+                  "type": "restrictAccounts",
+                  "value": [
+                    "tbc:other:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+                  ]
+                },
+                {
+                  "type": "restrictMethods",
+                  "value": [
+                    "tbc_accounts"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "decisions": [
+        {
+          "capability": "tbc_accounts",
+          "status": "narrowed",
+          "reason": "ONE_ACCOUNT_PER_CHAIN"
+        }
+      ],
+      "createdAt": "2026-08-31T12:00:00Z",
+      "expiresAt": "2026-08-31T12:05:00Z"
+    },
+    "permissionProposalHash": "9e5963cef064360b4df9176730000d6cc98b007f4ddd80a9af0b0c81e38b95ef"
+  },
+  "bindingChainIds": [
+    "tbc:mainnet",
+    "tbc:other"
+  ],
+  "previewChainIds": [
+    "tbc:mainnet",
+    "tbc:other"
+  ],
+  "commit": {
+    "params": {
+      "version": "1.0",
+      "changes": [
+        {
+          "scope": {
+            "origin": "https://example.test",
+            "chainId": "tbc:mainnet"
+          },
+          "expectedRevision": "2",
+          "permissions": [
+            {
+              "id": "UbmjylWSCr1MJPS9M3Wfcdbnbnnrwt149GnpmDnnfYk",
+              "parentCapability": "tbc_accounts",
+              "invoker": "https://example.test",
+              "date": 1788177600000,
+              "caveats": [
+                {
+                  "type": "restrictChains",
+                  "value": [
+                    "tbc:mainnet"
+                  ]
+                },
+                {
+                  "type": "restrictAccounts",
+                  "value": [
+                    "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+                  ]
+                },
+                {
+                  "type": "restrictMethods",
+                  "value": [
+                    "tbc_accounts"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "scope": {
+            "origin": "https://example.test",
+            "chainId": "tbc:other"
+          },
+          "expectedRevision": "5",
+          "permissions": [
+            {
+              "id": "Lsnkw7o-NUviaeKrWJU1XdTi3kxDj8H2YWdGt5o75do",
+              "parentCapability": "tbc_accounts",
+              "invoker": "https://example.test",
+              "date": 1788177600000,
+              "caveats": [
+                {
+                  "type": "restrictChains",
+                  "value": [
+                    "tbc:other"
+                  ]
+                },
+                {
+                  "type": "restrictAccounts",
+                  "value": [
+                    "tbc:other:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+                  ]
+                },
+                {
+                  "type": "restrictMethods",
+                  "value": [
+                    "tbc_accounts"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "result": {
+      "revisions": [
+        {
+          "scope": {
+            "origin": "https://example.test",
+            "chainId": "tbc:mainnet"
+          },
+          "revision": "3"
+        },
+        {
+          "scope": {
+            "origin": "https://example.test",
+            "chainId": "tbc:other"
+          },
+          "revision": "6"
+        }
+      ]
+    }
+  },
+  "disconnectCommit": {
+    "params": {
+      "version": "1.0",
+      "changes": [
+        {
+          "scope": {
+            "origin": "https://example.test",
+            "chainId": "tbc:mainnet"
+          },
+          "expectedRevision": "3",
+          "permissions": []
+        },
+        {
+          "scope": {
+            "origin": "https://example.test",
+            "chainId": "tbc:other"
+          },
+          "expectedRevision": "6",
+          "permissions": []
+        }
+      ]
+    }
+  },
+  "mergedResult": [
+    {
+      "id": "UbmjylWSCr1MJPS9M3Wfcdbnbnnrwt149GnpmDnnfYk",
+      "parentCapability": "tbc_accounts",
+      "invoker": "https://example.test",
+      "date": 1788177600000,
+      "caveats": [
+        {
+          "type": "restrictChains",
+          "value": [
+            "tbc:mainnet"
+          ]
+        },
+        {
+          "type": "restrictAccounts",
+          "value": [
+            "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+          ]
+        },
+        {
+          "type": "restrictMethods",
+          "value": [
+            "tbc_accounts"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "Lsnkw7o-NUviaeKrWJU1XdTi3kxDj8H2YWdGt5o75do",
+      "parentCapability": "tbc_accounts",
+      "invoker": "https://example.test",
+      "date": 1788177600000,
+      "caveats": [
+        {
+          "type": "restrictChains",
+          "value": [
+            "tbc:other"
+          ]
+        },
+        {
+          "type": "restrictAccounts",
+          "value": [
+            "tbc:other:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+          ]
+        },
+        {
+          "type": "restrictMethods",
+          "value": [
+            "tbc_accounts"
+          ]
+        }
+      ]
+    }
+  ],
+  "semanticFailures": [
+    {
+      "id": "commit-result-scope-mismatch",
+      "expectedScopes": [
+        {
+          "origin": "https://example.test",
+          "chainId": "tbc:mainnet"
+        },
+        {
+          "origin": "https://example.test",
+          "chainId": "tbc:other"
+        }
+      ],
+      "actualScopes": [
+        {
+          "origin": "https://example.test",
+          "chainId": "tbc:other"
+        },
+        {
+          "origin": "https://example.test",
+          "chainId": "tbc:mainnet"
+        }
+      ],
+      "expectedViolation": "RESULT_SCOPE_MISMATCH"
+    },
+    {
+      "id": "cross-chain-account-caveat",
+      "change": {
+        "scope": {
+          "origin": "https://example.test",
+          "chainId": "tbc:mainnet"
+        },
+        "expectedRevision": "2",
+        "permissions": [
+          {
+            "id": "permission-cross-chain-account",
+            "parentCapability": "tbc_accounts",
+            "invoker": "https://example.test",
+            "date": 1788177600000,
+            "caveats": [
+              {
+                "type": "restrictChains",
+                "value": [
+                  "tbc:mainnet"
+                ]
+              },
+              {
+                "type": "restrictAccounts",
+                "value": [
+                  "tbc:other:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+                ]
+              },
+              {
+                "type": "restrictMethods",
+                "value": [
+                  "tbc_accounts"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "expectedViolation": "ACCOUNT_SCOPE_MISMATCH"
+    },
+    {
+      "id": "proposal-approval-scope-mismatch",
+      "proposalScopes": [
+        "tbc:mainnet",
+        "tbc:other"
+      ],
+      "approvalChainIds": [
+        "tbc:mainnet"
+      ],
+      "expectedViolation": "APPROVAL_SCOPE_MISMATCH"
+    },
+    {
+      "id": "proposal-duplicate-permission-id",
+      "permissionIds": [
+        "UbmjylWSCr1MJPS9M3Wfcdbnbnnrwt149GnpmDnnfYk",
+        "UbmjylWSCr1MJPS9M3Wfcdbnbnnrwt149GnpmDnnfYk"
+      ],
+      "expectedViolation": "PERMISSION_ID_DUPLICATE"
+    }
+  ]
+}

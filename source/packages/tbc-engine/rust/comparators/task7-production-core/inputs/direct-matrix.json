@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "scenarios": [
+    "create-standard-plan-1",
+    "create-standard-plan-2",
+    "create-standard-plan-3",
+    "create-standard-plan-4",
+    "create-standard-plan-5",
+    "create-standard-plan-6",
+    "create-locked-plan-1",
+    "add-standard",
+    "add-locked",
+    "remove-standard",
+    "remove-locked",
+    "close-standard",
+    "close-locked",
+    "swap-tbc-for-token-standard",
+    "swap-tbc-for-token-locked",
+    "swap-token-for-tbc-standard",
+    "swap-token-for-tbc-locked",
+    "pool-ft-no-merge-threshold",
+    "ftlp-no-merge-threshold"
+  ]
+}

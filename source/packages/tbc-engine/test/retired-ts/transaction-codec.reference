@@ -1,0 +1,147 @@
+// Historical TS implementation test. Replaced by required Rust and artifact tests;
+// see ../README.md. Retained as migration evidence, not an executable test.
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import { after, before, test } from "node:test";
+import { loadInternals } from "./build-internals.mjs";
+
+const vectors = JSON.parse(
+  await readFile(new URL("../../../test-vectors/integration.json", import.meta.url), "utf8"),
+);
+const UNSIGNED =
+  vectors.canonicalTransfer.plan.payload.transactions[0].unsignedTransaction;
+const SIGNED = vectors.canonicalTransfer.bundle.transactions[0].rawTransaction;
+
+let internals;
+let cleanup;
+
+before(async () => {
+  ({ runtime: internals, cleanup } = await loadInternals(["bytes", "transaction"]));
+});
+
+after(() => cleanup?.());
+
+test("round-trips the canonical unsigned version-10 transaction byte-for-byte", () => {
+  const transaction = internals.parseTransaction(UNSIGNED);
+
+  assert.equal(transaction.version, 10);
+  assert.equal(transaction.locktime, 0);
+  assert.equal(transaction.inputs.length, 1);
+  assert.deepEqual(
+    {
+      txid: transaction.inputs[0].txid,
+      vout: transaction.inputs[0].vout,
+      scriptSig: internals.bytesToHex(transaction.inputs[0].scriptSig),
+      sequence: transaction.inputs[0].sequence,
+    },
+    {
+      txid: "f32f5392aa7ab9414bf93d497fde479dce609f6a74b708be7988cf9bb698e4d1",
+      vout: 0,
+      scriptSig: "",
+      sequence: 0xffffffff,
+    },
+  );
+  assert.deepEqual(
+    transaction.outputs.map((output) => ({
+      satoshis: output.satoshis,
+      scriptPubKey: internals.bytesToHex(output.scriptPubKey),
+    })),
+    [
+      {
+        satoshis: 1000n,
+        scriptPubKey: "76a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88ac",
+      },
+      {
+        satoshis: 8920n,
+        scriptPubKey: "76a914751e76e8199196d454941c45d1b3a323f1433bd688ac",
+      },
+    ],
+  );
+  assert.equal(internals.bytesToHex(internals.serializeTransaction(transaction)), UNSIGNED);
+  assert.equal(Object.isFrozen(transaction), true);
+  assert.equal(Object.isFrozen(transaction.inputs), true);
+  assert.equal(Object.isFrozen(transaction.inputs[0]), true);
+  assert.equal(Object.isFrozen(transaction.outputs), true);
+});
+
+test("round-trips the canonical signed scriptSig without reinterpretation", () => {
+  const transaction = internals.parseTransaction(SIGNED);
+
+  assert.equal(
+    internals.bytesToHex(transaction.inputs[0].scriptSig),
+    "47304402205f8792e014eb953efc9c563e18c8024a750e7513ec575775b371102fde8ceb22022056a6df64fe1e2d9e31c2e34f3581464cc682d70e72ec4b78cd44ce891500c60d41210279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+  );
+  assert.equal(internals.bytesToHex(internals.serializeTransaction(transaction)), SIGNED);
+});
+
+test("rejects invalid versions, counts, scripts, truncation, and trailing bytes", () => {
+  assert.throws(() => internals.parseTransaction(`01000000${UNSIGNED.slice(8)}`), /version 10/);
+  assert.throws(() => internals.parseTransaction("0a000000000000000000"), /at least one input/);
+  assert.throws(() => internals.parseTransaction("0a000000fd1127"), /input count exceeds/);
+  assert.throws(
+    () =>
+      internals.parseTransaction(
+        `0a00000001${"00".repeat(32)}00000000fd1127`,
+      ),
+    /script exceeds/,
+  );
+  assert.throws(() => internals.parseTransaction("0a000000fd0100"), /non-minimal/);
+  assert.throws(() => internals.parseTransaction(UNSIGNED.slice(0, -2)), /unexpected end/);
+  assert.throws(() => internals.parseTransaction(`${UNSIGNED}00`), /trailing bytes/);
+});
+
+test("rejects zero outputs, duplicate outpoints, and uint64 overflow", () => {
+  const transaction = internals.parseTransaction(UNSIGNED);
+  assert.throws(
+    () => internals.serializeTransaction({ ...transaction, outputs: [] }),
+    /at least one output/,
+  );
+  assert.throws(
+    () =>
+      internals.serializeTransaction({
+        ...transaction,
+        inputs: [transaction.inputs[0], transaction.inputs[0]],
+      }),
+    /duplicate outpoint/,
+  );
+  assert.throws(
+    () =>
+      internals.serializeTransaction({
+        ...transaction,
+        outputs: [{ ...transaction.outputs[0], satoshis: 0x10000000000000000n }],
+      }),
+    /uint64/,
+  );
+});
+
+test("rejects duplicate outpoints while parsing hostile wire bytes", () => {
+  const transaction = internals.parseTransaction(UNSIGNED);
+  const input = transaction.inputs[0];
+  const inputWire = internals.concatBytes(
+    internals.reverseBytes(internals.hexToBytes(input.txid)),
+    internals.uint32LE(input.vout),
+    internals.compactSize(BigInt(input.scriptSig.length)),
+    input.scriptSig,
+    internals.uint32LE(input.sequence),
+  );
+  const outputWire = transaction.outputs.map((output) =>
+    internals.concatBytes(
+      internals.uint64LE(output.satoshis),
+      internals.compactSize(BigInt(output.scriptPubKey.length)),
+      output.scriptPubKey,
+    ),
+  );
+  const hostile = internals.bytesToHex(
+    internals.concatBytes(
+      internals.uint32LE(10),
+      internals.compactSize(2n),
+      inputWire,
+      inputWire,
+      internals.compactSize(BigInt(outputWire.length)),
+      ...outputWire,
+      internals.uint32LE(0),
+    ),
+  );
+
+  assert.throws(() => internals.parseTransaction(hostile), /duplicate outpoint/);
+});

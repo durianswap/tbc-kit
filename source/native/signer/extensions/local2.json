@@ -1,0 +1,12 @@
+{
+  "sdkVersion": "0.1.0-local.2",
+  "description": "Add isolated BIE1 self crypto. Existing digest signing and original import provenance retained; no Engine or transaction construction dependency.",
+  "upstreamAlgorithm": "packages/tbc-engine/rust/crates/tbc-wallet-private-core/src/lib.rs encrypt/decrypt/bie1_material",
+  "files": {
+    "Cargo.toml": "4fd34d2cb1263120d003ad4081b579568cf6b4829c3ee35554b7183dd46b60d6",
+    "Cargo.lock": "eebbc056268572d3a0570140c855ae21b6d098ba32ac978f5a8de158dcb4439a",
+    "src/lib.rs": "c2a85df2967fe6c160a535d4340852f55132ffb3d5d2f3cd48f1c133b740265d",
+    "src/crypto.rs": "21302b15f5e0e3225b4e6786f8c9a2f0de3260929875a53cab9aa1abf5d50327",
+    "include/tbc_signer_kernel.h": "85d959e1ccc766d417b8cfbbb4c63b04ef5d135d7f5654210bf14293364a4747"
+  }
+}

@@ -1,0 +1,404 @@
+{
+  "version": "1.0.0",
+  "protocolRelease": {
+    "version": "1.0.0-draft.2",
+    "schemaBundleSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "registryBundleSha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "trustedContexts": [
+    {
+      "id": "webview-top-frame",
+      "context": {
+        "sessionId": "session-transfer-1",
+        "transport": "webview",
+        "origin": "https://example.test",
+        "topOrigin": "https://example.test",
+        "frame": "top",
+        "navigationId": "nav-1",
+        "createdAt": "2026-08-31T12:00:00Z"
+      },
+      "contextHash": "761bc48d9bffdbb3f93c42896b61e6ba682b1ad661fb8c30c427ba07500d0ae6",
+      "approvalRequester": {
+        "transport": "webview",
+        "origin": "https://example.test",
+        "topOrigin": "https://example.test",
+        "frame": "top"
+      }
+    },
+    {
+      "id": "extension-child-frame",
+      "context": {
+        "sessionId": "session-extension-1",
+        "transport": "extension",
+        "origin": "https://frame.example.test",
+        "topOrigin": "https://example.test",
+        "frame": "child",
+        "navigationId": "extension-nav-3",
+        "createdAt": "2026-08-31T12:00:00Z"
+      },
+      "contextHash": "76e86ebac73200d843dfa87c438f0b97414de6bd399f4522710390e96fe2aef4",
+      "approvalRequester": {
+        "transport": "extension",
+        "origin": "https://frame.example.test",
+        "topOrigin": "https://example.test",
+        "frame": "child"
+      }
+    },
+    {
+      "id": "remote-top-frame",
+      "context": {
+        "sessionId": "session-remote-1",
+        "transport": "remote",
+        "origin": "https://remote.example.test",
+        "topOrigin": "https://remote.example.test",
+        "frame": "top",
+        "createdAt": "2026-08-31T12:00:00Z"
+      },
+      "contextHash": "deed9c93969451f2d03aba0553443ccc8575cbe53a0b6457123d9702f6a57cd6",
+      "approvalRequester": {
+        "transport": "remote",
+        "origin": "https://remote.example.test",
+        "topOrigin": "https://remote.example.test",
+        "frame": "top"
+      }
+    }
+  ],
+  "trustedContextSemanticFailures": [
+    {
+      "id": "top-frame-origin-mismatch",
+      "context": {
+        "sessionId": "session-mismatch-1",
+        "transport": "webview",
+        "origin": "https://frame.example.test",
+        "topOrigin": "https://example.test",
+        "frame": "top",
+        "navigationId": "nav-mismatch-1",
+        "createdAt": "2026-08-31T12:00:00Z"
+      },
+      "expectedViolation": "TOP_FRAME_ORIGIN_MISMATCH"
+    }
+  ],
+  "concurrentRequests": [
+    {
+      "jsonrpc": "2.0",
+      "id": "same-method-a",
+      "method": "tbc_chainId"
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": "same-method-b",
+      "method": "tbc_chainId"
+    }
+  ],
+  "responsesOutOfOrder": [
+    {
+      "jsonrpc": "2.0",
+      "id": "same-method-b",
+      "result": "tbc:mainnet"
+    },
+    {
+      "jsonrpc": "2.0",
+      "id": "same-method-a",
+      "result": "tbc:mainnet"
+    }
+  ],
+  "account": {
+    "address": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+    "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+    "chainId": "tbc:mainnet",
+    "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+    "label": "TWS Test Account",
+    "features": [
+      "tbc:provider"
+    ]
+  },
+  "providerSessions": {
+    "chainA": "tbc:mainnet",
+    "chainB": "tbc:other",
+    "sessionA": {
+      "version": "1.0",
+      "scope": {
+        "walletProfile": "turing-wallet",
+        "sessionId": "session-transfer-1"
+      },
+      "state": {
+        "version": "1.0",
+        "sessionId": "session-transfer-1",
+        "revision": "0",
+        "connected": true,
+        "activeChainId": "tbc:mainnet",
+        "activeAccountIds": [
+          "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+        ]
+      }
+    },
+    "sessionB": {
+      "version": "1.0",
+      "scope": {
+        "walletProfile": "turing-wallet",
+        "sessionId": "session-remote-1"
+      },
+      "state": {
+        "version": "1.0",
+        "sessionId": "session-remote-1",
+        "revision": "0",
+        "connected": true,
+        "activeChainId": "tbc:mainnet",
+        "activeAccountIds": [
+          "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+        ]
+      }
+    },
+    "commitId": {
+      "input": {
+        "operationId": "cNB8h3rzetsQsQLJAPDlZ7fn2h9a0VIaXnjAZRQJYsY",
+        "checkpointRevision": "6",
+        "mutationPayload": {
+          "version": "1.0",
+          "scope": {
+            "walletProfile": "turing-wallet",
+            "sessionId": "session-transfer-1"
+          },
+          "expectedRevision": "0",
+          "target": {
+            "version": "1.0",
+            "sessionId": "session-transfer-1",
+            "revision": "1",
+            "connected": true,
+            "activeChainId": "tbc:other",
+            "activeAccountIds": [
+              "tbc:other:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+            ]
+          },
+          "events": [
+            {
+              "name": "chainChanged",
+              "payload": "tbc:other"
+            }
+          ]
+        }
+      }
+    },
+    "switchA": {
+      "payload": {
+        "version": "1.0",
+        "scope": {
+          "walletProfile": "turing-wallet",
+          "sessionId": "session-transfer-1"
+        },
+        "expectedRevision": "0",
+        "target": {
+          "version": "1.0",
+          "sessionId": "session-transfer-1",
+          "revision": "1",
+          "connected": true,
+          "activeChainId": "tbc:other",
+          "activeAccountIds": [
+            "tbc:other:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+          ]
+        },
+        "events": [
+          {
+            "name": "chainChanged",
+            "payload": "tbc:other"
+          }
+        ]
+      },
+      "commitId": "KtfmSX2l0hJ0hW6xqJsNSbAny3RFZZIIh5vJZeIMeqo"
+    },
+    "commitAck": {
+      "version": "1.0",
+      "commitId": "KtfmSX2l0hJ0hW6xqJsNSbAny3RFZZIIh5vJZeIMeqo",
+      "status": "committed",
+      "revision": "1"
+    },
+    "switchCompletion": {
+      "delivery": "respond",
+      "response": {
+        "jsonrpc": "2.0",
+        "id": "switch-request-1",
+        "result": null
+      },
+      "events": [
+        {
+          "name": "chainChanged",
+          "payload": "tbc:other"
+        }
+      ]
+    },
+    "switchLifecycle": [
+      {
+        "kind": "transition:commit"
+      },
+      {
+        "kind": "host:cas"
+      },
+      {
+        "kind": "host:persist-ack"
+      },
+      {
+        "kind": "core:acknowledgeCommit"
+      },
+      {
+        "kind": "transition:complete"
+      },
+      {
+        "kind": "host:emit-events"
+      }
+    ],
+    "commitReplay": {
+      "exact": {
+        "attempts": [
+          "switchA",
+          "switchA"
+        ],
+        "firstAck": {
+          "version": "1.0",
+          "commitId": "KtfmSX2l0hJ0hW6xqJsNSbAny3RFZZIIh5vJZeIMeqo",
+          "status": "committed",
+          "revision": "1"
+        }
+      },
+      "collision": {
+        "attempts": [
+          "switchA",
+          "collisionMutation"
+        ],
+        "firstAck": {
+          "version": "1.0",
+          "commitId": "KtfmSX2l0hJ0hW6xqJsNSbAny3RFZZIIh5vJZeIMeqo",
+          "status": "committed",
+          "revision": "1"
+        }
+      }
+    },
+    "collisionMutation": {
+      "payload": {
+        "version": "1.0",
+        "scope": {
+          "walletProfile": "turing-wallet",
+          "sessionId": "session-transfer-1"
+        },
+        "expectedRevision": "0",
+        "target": {
+          "version": "1.0",
+          "sessionId": "session-transfer-1",
+          "revision": "1",
+          "connected": false,
+          "activeChainId": "tbc:other",
+          "activeAccountIds": []
+        },
+        "events": [
+          {
+            "name": "disconnect",
+            "payload": {
+              "code": 4900
+            }
+          }
+        ]
+      },
+      "commitId": "KtfmSX2l0hJ0hW6xqJsNSbAny3RFZZIIh5vJZeIMeqo"
+    },
+    "switchNoop": {
+      "requestedChainId": "tbc:mainnet",
+      "approvalRequested": false,
+      "mutation": null,
+      "events": [],
+      "completion": {
+        "delivery": "respond",
+        "response": {
+          "jsonrpc": "2.0",
+          "id": "switch-noop-1",
+          "result": null
+        },
+        "events": []
+      }
+    },
+    "disconnect": {
+      "sessionMutation": null,
+      "permissionCommit": {
+        "params": {
+          "version": "1.0",
+          "changes": [
+            {
+              "scope": {
+                "origin": "https://example.test",
+                "chainId": "tbc:mainnet"
+              },
+              "expectedRevision": "3",
+              "permissions": []
+            },
+            {
+              "scope": {
+                "origin": "https://example.test",
+                "chainId": "tbc:other"
+              },
+              "expectedRevision": "6",
+              "permissions": []
+            }
+          ]
+        }
+      }
+    },
+    "semanticFailures": [
+      {
+        "id": "scope-target-session-mismatch",
+        "expectedViolation": "PROVIDER_SESSION_SCOPE_MISMATCH"
+      },
+      {
+        "id": "expected-revision-mismatch",
+        "expectedViolation": "PROVIDER_SESSION_REVISION_CONFLICT"
+      },
+      {
+        "id": "commit-id-mismatch",
+        "expectedViolation": "PROVIDER_SESSION_COMMIT_ID_MISMATCH"
+      },
+      {
+        "id": "completion-events-mismatch",
+        "expectedViolation": "PROVIDER_SESSION_EVENTS_MISMATCH"
+      }
+    ]
+  },
+  "capabilities": {
+    "standard": "1.0.0",
+    "provider": "1.0.0",
+    "chainId": "tbc:mainnet",
+    "methods": {
+      "tbc_chainId": "1.0",
+      "tbc_accounts": "1.0",
+      "tbc_requestAccounts": "1.0",
+      "tbc_getAccount": "1.0",
+      "tbc_getCapabilities": "1.0",
+      "tbc_switchChain": "1.0",
+      "tbc_signMessage": "1.0",
+      "tbc_signTypedData": "1.0",
+      "tbc_signTransaction": "1.0",
+      "tbc_signPreparedTransaction": "1.0",
+      "tbc_sendTransaction": "1.0",
+      "tbc_sendPreparedTransaction": "1.0",
+      "tbc_signReviewedTransaction": "1.0",
+      "tbc_encrypt": "1.0",
+      "tbc_decrypt": "1.0",
+      "tbc_signWorkflow": "1.0",
+      "tbc_signPreparedWorkflow": "1.0",
+      "tbc_sendWorkflow": "1.0",
+      "tbc_sendPreparedWorkflow": "1.0",
+      "wallet_getPermissions": "1.0",
+      "wallet_requestPermissions": "1.0",
+      "tbc_disconnect": "1.0"
+    },
+    "intents": {
+      "tbc.transfer": [
+        "1.0"
+      ]
+    },
+    "limits": {
+      "workflowSteps": 5,
+      "transactionBundleSize": 32
+    },
+    "profiles": [
+      "core",
+      "transport:webview"
+    ]
+  }
+}

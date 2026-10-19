@@ -1,0 +1,433 @@
+{
+  "version": "1.0.0",
+  "vectors": [
+    {
+      "id": "sign-transaction-then-order",
+      "request": {
+        "version": "1.0",
+        "chainId": "tbc:mainnet",
+        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "clientRequestId": "workflow-order-1",
+        "expiresAt": "2026-08-31T12:02:00Z",
+        "maxTotalFee": "80",
+        "steps": [
+          {
+            "id": "trade",
+            "kind": "transaction",
+            "dependsOn": [],
+            "intent": {
+              "type": "tbc.transfer",
+              "version": "1.0",
+              "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+              "amount": "1000"
+            },
+            "constraints": {
+              "expiresAt": "2026-08-31T12:02:00Z",
+              "maxFee": "80",
+              "feePreference": "standard"
+            }
+          },
+          {
+            "id": "order",
+            "kind": "typedData",
+            "dependsOn": [
+              "trade"
+            ],
+            "data": {
+              "domain": {
+                "name": "DurianSwap Order",
+                "version": "1",
+                "origin": "https://example.test",
+                "chainId": "tbc:mainnet"
+              },
+              "types": {
+                "Order": [
+                  {
+                    "name": "side",
+                    "type": "string"
+                  },
+                  {
+                    "name": "txids",
+                    "type": "bytes32[]"
+                  }
+                ]
+              },
+              "primaryType": "Order",
+              "message": {
+                "side": "buy",
+                "txids": {
+                  "$tbcBinding": "unresolved"
+                }
+              }
+            },
+            "bindings": [
+              {
+                "target": "/message/txids",
+                "source": {
+                  "stepId": "trade",
+                  "output": "transactionIds"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "plan": {
+        "payload": {
+          "version": "1.0",
+          "requestHash": "9b0c4ede6733bb8f0822e381a852b50fa5a8800a93466ef80470ec5fbaf50f4d",
+          "chainId": "tbc:mainnet",
+          "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "expiresAt": "2026-08-31T12:02:00Z",
+          "failureMode": "atomic",
+          "stepOrder": [
+            "trade",
+            "order"
+          ],
+          "transactionPlans": [
+            {
+              "stepId": "trade",
+              "plan": {
+                "payload": {
+                  "version": "1.0",
+                  "requestHash": "acbb68e4f5980513a3733015a8d4d9f073e1c16270553c2b5a6acfc009797f4f",
+                  "snapshotHash": "1df77b54bce912fa6ef8aeae1cf32968972de120f13a8d584202f0f953d7d619",
+                  "policyHash": "9903a29e963a4d097c94671b2a1796a3ecef2ea082b0b52786af701bae22aafe",
+                  "chainId": "tbc:mainnet",
+                  "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+                  "expiresAt": "2026-08-31T12:02:00Z",
+                  "transactions": [
+                    {
+                      "id": "tx-1",
+                      "role": "primary",
+                      "dependsOn": [],
+                      "unsignedTransaction": "0a00000001d1e498b69bcf8879be08b7746a9f60ce9d47de7f493df94b41b97aaa92532ff30000000000ffffffff02e8030000000000001976a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88acd8220000000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+                      "templateHash": "0fa25e6e108f43e2f9119e7f985b84c22453d8da3a893d58ea448a40d703f658",
+                      "fee": "80"
+                    }
+                  ],
+                  "signingTasks": [
+                    {
+                      "taskId": "sign-tx-1-input-0",
+                      "purpose": "transaction",
+                      "algorithm": "secp256k1-ecdsa-sha256d",
+                      "digest": "1e06ca3ec00947bc4a174c62fbe08777796b2b525915640c5a144c001c27bf25",
+                      "signatureEncoding": "compact64",
+                      "transactionTemplateId": "tx-1",
+                      "inputIndex": 0,
+                      "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+                      "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+                      "sighashType": 65
+                    }
+                  ],
+                  "preview": {
+                    "operationKind": "transaction",
+                    "assetFlows": [
+                      {
+                        "kind": "native",
+                        "direction": "send",
+                        "amount": "1000",
+                        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+                        "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP"
+                      },
+                      {
+                        "kind": "native",
+                        "direction": "fee",
+                        "amount": "80",
+                        "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+                      }
+                    ],
+                    "totalFee": "80",
+                    "transactionCount": 1,
+                    "warnings": [],
+                    "irreversible": true
+                  }
+                },
+                "planHash": "23e5d5d128ba5672ac36fc7375307989ccc0e8adf12fe8638be6ed17bfdb5cd6"
+              }
+            }
+          ],
+          "immediateSigningTasks": [
+            {
+              "stepId": "trade",
+              "task": {
+                "taskId": "sign-tx-1-input-0",
+                "purpose": "transaction",
+                "algorithm": "secp256k1-ecdsa-sha256d",
+                "digest": "1e06ca3ec00947bc4a174c62fbe08777796b2b525915640c5a144c001c27bf25",
+                "signatureEncoding": "compact64",
+                "transactionTemplateId": "tx-1",
+                "inputIndex": 0,
+                "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+                "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+                "sighashType": 65
+              }
+            }
+          ],
+          "deferredSigningTasks": [
+            {
+              "taskId": "sign-order",
+              "source": {
+                "stepId": "trade",
+                "output": "transactionIds"
+              },
+              "targetStepId": "order",
+              "target": "/message/txids",
+              "targetType": "bytes32[]",
+              "purpose": "typedData",
+              "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+              "envelopeTemplate": {
+                "type": "tbc.typedData",
+                "version": "1.0",
+                "domain": {
+                  "name": "DurianSwap Order",
+                  "version": "1",
+                  "origin": "https://example.test",
+                  "chainId": "tbc:mainnet"
+                },
+                "types": {
+                  "Order": [
+                    {
+                      "name": "side",
+                      "type": "string"
+                    },
+                    {
+                      "name": "txids",
+                      "type": "bytes32[]"
+                    }
+                  ]
+                },
+                "primaryType": "Order",
+                "message": {
+                  "side": "buy",
+                  "txids": {
+                    "$tbcBinding": "unresolved"
+                  }
+                }
+              }
+            }
+          ],
+          "legacyBitcoinMessageStepIds": [],
+          "cryptoTasks": [],
+          "reviewedTransactionTasks": [],
+          "maxTotalFee": "80",
+          "totalFee": "80",
+          "preview": {
+            "operationKind": "workflow",
+            "failureMode": "atomic",
+            "steps": [
+              {
+                "id": "trade",
+                "kind": "transaction",
+                "dependsOn": [],
+                "assetFlows": [
+                  {
+                    "kind": "native",
+                    "direction": "send",
+                    "amount": "1000",
+                    "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+                    "to": "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP"
+                  },
+                  {
+                    "kind": "native",
+                    "direction": "fee",
+                    "amount": "80",
+                    "from": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"
+                  }
+                ]
+              },
+              {
+                "id": "order",
+                "kind": "typedData",
+                "dependsOn": [
+                  "trade"
+                ],
+                "typedData": {
+                  "domain": {
+                    "name": "DurianSwap Order",
+                    "version": "1",
+                    "origin": "https://example.test",
+                    "chainId": "tbc:mainnet"
+                  },
+                  "types": {
+                    "Order": [
+                      {
+                        "name": "side",
+                        "type": "string"
+                      },
+                      {
+                        "name": "txids",
+                        "type": "bytes32[]"
+                      }
+                    ]
+                  },
+                  "primaryType": "Order",
+                  "message": {
+                    "side": "buy",
+                    "txids": {
+                      "$tbcBinding": "unresolved"
+                    }
+                  }
+                }
+              }
+            ],
+            "bindings": [
+              {
+                "sourceStepId": "trade",
+                "sourceOutput": "transactionIds",
+                "target": "/message/txids",
+                "targetType": "bytes32[]"
+              }
+            ],
+            "totalFee": "80",
+            "warnings": [
+              "DYNAMIC_BINDING"
+            ]
+          }
+        },
+        "workflowPlanHash": "310a55e35c088769556813a770313eab3323364b2dcb62b602d026abd6057540"
+      },
+      "derivation": {
+        "planTaskId": "sign-order",
+        "source": {
+          "stepId": "trade",
+          "output": "transactionIds"
+        },
+        "sourceValue": [
+          "e715bbe7ea8e6e95ff339b24e1e2aaff8771e8e17af4682b775919fad953c907"
+        ],
+        "targetStepId": "order",
+        "target": "/message/txids",
+        "targetType": "bytes32[]",
+        "purpose": "typedData",
+        "resolvedEnvelope": {
+          "type": "tbc.typedData",
+          "version": "1.0",
+          "domain": {
+            "name": "DurianSwap Order",
+            "version": "1",
+            "origin": "https://example.test",
+            "chainId": "tbc:mainnet"
+          },
+          "types": {
+            "Order": [
+              {
+                "name": "side",
+                "type": "string"
+              },
+              {
+                "name": "txids",
+                "type": "bytes32[]"
+              }
+            ]
+          },
+          "primaryType": "Order",
+          "message": {
+            "side": "buy",
+            "txids": [
+              "e715bbe7ea8e6e95ff339b24e1e2aaff8771e8e17af4682b775919fad953c907"
+            ]
+          }
+        },
+        "canonical": "{\"domain\":{\"chainId\":\"tbc:mainnet\",\"name\":\"DurianSwap Order\",\"origin\":\"https://example.test\",\"version\":\"1\"},\"message\":{\"side\":\"buy\",\"txids\":[\"e715bbe7ea8e6e95ff339b24e1e2aaff8771e8e17af4682b775919fad953c907\"]},\"primaryType\":\"Order\",\"type\":\"tbc.typedData\",\"types\":{\"Order\":[{\"name\":\"side\",\"type\":\"string\"},{\"name\":\"txids\",\"type\":\"bytes32[]\"}]},\"version\":\"1.0\"}",
+        "digest": "ff32b007969a5d543880a9f8e34d48b6707b8c6dd1bb85cd69688addcf63a1d4",
+        "concreteTask": {
+          "taskId": "sign-order",
+          "purpose": "typedData",
+          "algorithm": "secp256k1-recoverable-ecdsa-sha256d",
+          "digest": "ff32b007969a5d543880a9f8e34d48b6707b8c6dd1bb85cd69688addcf63a1d4",
+          "signatureEncoding": "compact65-recoverable",
+          "origin": "https://example.test",
+          "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+          "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
+        }
+      }
+    }
+  ],
+  "progress": {
+    "steps": [
+      {
+        "stepId": "trade",
+        "status": "completed"
+      },
+      {
+        "stepId": "order",
+        "status": "signing"
+      }
+    ],
+    "completedStepIds": [
+      "trade"
+    ]
+  },
+  "terminalFailure": {
+    "version": "1.0",
+    "state": "failed",
+    "error": {
+      "code": -32603,
+      "message": "Workflow failed before atomic result commit",
+      "data": {
+        "reason": "DEFERRED_DERIVATION_INVALID"
+      }
+    }
+  },
+  "semanticFailures": [
+    {
+      "id": "deferred-source-undeclared",
+      "mutation": {
+        "path": "/plan/payload/deferredSigningTasks/0/source/stepId",
+        "value": "unknown-step"
+      },
+      "expectedViolation": "DEFERRED_SOURCE_UNDECLARED"
+    },
+    {
+      "id": "deferred-source-not-dependency",
+      "mutation": {
+        "path": "/request/steps/1/dependsOn",
+        "value": []
+      },
+      "expectedViolation": "DEFERRED_SOURCE_NOT_DEPENDENCY"
+    },
+    {
+      "id": "deferred-target-pointer-invalid",
+      "mutation": {
+        "path": "/plan/payload/deferredSigningTasks/0/target",
+        "value": "/message/missing"
+      },
+      "expectedViolation": "DEFERRED_TARGET_POINTER_INVALID"
+    },
+    {
+      "id": "deferred-target-type-mismatch",
+      "mutation": {
+        "path": "/plan/payload/deferredSigningTasks/0/targetType",
+        "value": "bytes32"
+      },
+      "expectedViolation": "DEFERRED_TARGET_TYPE_MISMATCH"
+    },
+    {
+      "id": "deferred-extra-replacement",
+      "mutation": {
+        "path": "/derivation/resolvedEnvelope/message/side",
+        "value": "sell"
+      },
+      "expectedViolation": "DEFERRED_EXTRA_REPLACEMENT"
+    },
+    {
+      "id": "workflow-dag-cycle",
+      "mutation": {
+        "path": "/request/steps/0/dependsOn",
+        "value": [
+          "order"
+        ]
+      },
+      "expectedViolation": "WORKFLOW_DAG_CYCLE"
+    },
+    {
+      "id": "workflow-partial-result-forbidden",
+      "mutation": {
+        "path": "/terminalFailure/steps",
+        "value": []
+      },
+      "expectedViolation": "WORKFLOW_PARTIAL_RESULT_FORBIDDEN"
+    }
+  ]
+}

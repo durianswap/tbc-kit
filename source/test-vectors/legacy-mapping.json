@@ -1,0 +1,99 @@
+{
+  "version": "1.0.0",
+  "legacySurface": "window.Turing",
+  "conformanceProfile": false,
+  "vectors": [
+    {
+      "flag": "P2PKH",
+      "classification": "public-intent",
+      "target": "tbc.transfer"
+    },
+    {
+      "flag": "COLLECTION_CREATE",
+      "classification": "public-intent",
+      "target": "tbc.collection.create"
+    },
+    {
+      "flag": "NFT_CREATE",
+      "classification": "public-intent",
+      "target": "tbc.nft.mint"
+    },
+    {
+      "flag": "NFT_TRANSFER",
+      "classification": "public-intent",
+      "target": "tbc.nft.transfer"
+    },
+    {
+      "flag": "FT_MINT",
+      "classification": "public-intent",
+      "target": "tbc.ft.create"
+    },
+    {
+      "flag": "FT_TRANSFER",
+      "classification": "public-intent",
+      "target": "tbc.ft.transfer"
+    },
+    {
+      "flag": "FT_MERGE",
+      "classification": "internal-maintenance",
+      "target": "maintenance.ft"
+    },
+    {
+      "flag": "POOLNFT_MINT",
+      "classification": "legacy-internal",
+      "target": "legacy.pool.mint",
+      "replacement": "tbc.pool.create"
+    },
+    {
+      "flag": "POOLNFT_INIT",
+      "classification": "legacy-internal",
+      "target": "legacy.pool.initialize",
+      "replacement": "tbc.pool.create"
+    },
+    {
+      "flag": "POOLNFT_LP_INCREASE",
+      "classification": "public-intent",
+      "target": "tbc.pool.liquidity.add"
+    },
+    {
+      "flag": "POOLNFT_LP_CONSUME",
+      "classification": "public-intent",
+      "target": "tbc.pool.liquidity.remove"
+    },
+    {
+      "flag": "POOLNFT_LP_BURN",
+      "classification": "public-intent",
+      "target": "tbc.pool.ftlp.burn"
+    },
+    {
+      "flag": "POOLNFT_SWAP_TO_TOKEN",
+      "classification": "public-intent",
+      "target": "tbc.pool.swap.exactTbcForToken"
+    },
+    {
+      "flag": "POOLNFT_SWAP_TO_TBC",
+      "classification": "public-intent",
+      "target": "tbc.pool.swap.exactTokenForTbc"
+    },
+    {
+      "flag": "POOLNFT_MERGE",
+      "classification": "internal-maintenance",
+      "target": "maintenance.poolFt"
+    },
+    {
+      "flag": "FTLP_MERGE",
+      "classification": "internal-maintenance",
+      "target": "maintenance.ftlp"
+    },
+    {
+      "flag": "STABLECOIN_TRANSFER",
+      "classification": "public-intent",
+      "target": "tbc.stablecoin.transfer"
+    },
+    {
+      "flag": "STABLECOIN_MERGE",
+      "classification": "internal-maintenance",
+      "target": "maintenance.stablecoin"
+    }
+  ]
+}

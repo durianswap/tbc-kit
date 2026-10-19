@@ -1,0 +1,1 @@
+{"maintenanceRole":"ftlp-merge","publicIntent":"tbc.pool.ftlp.merge","publicTransactionRole":"primary","minimumPublicInputs":2,"maximumPublicInputs":5,"maximumInternalInputs":{"standard":1,"locked":6},"requiredChangeVout":2}

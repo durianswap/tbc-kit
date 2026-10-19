@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://turingbitchain.io/tws/1.0/schemas/prepared-transaction.schema.json",
+  "title": "TWS DApp-prepared transaction proposal",
+  "$ref": "#/$defs/preparedTransactionRequest",
+  "$defs": {
+    "dependsOn": {
+      "type": "array",
+      "maxItems": 31,
+      "uniqueItems": true,
+      "items": { "$ref": "common.schema.json#/$defs/localId" }
+    },
+    "parentTransactionEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["txid", "rawTransaction"],
+      "properties": {
+        "txid": { "$ref": "common.schema.json#/$defs/transactionId" },
+        "rawTransaction": { "$ref": "common.schema.json#/$defs/rawTransaction" }
+      }
+    },
+    "contractEvidence": {
+      "$comment": "DApp-supplied evidence is untrusted. Wallet Engine MUST independently match these fields to the proposal raw transactions and trusted chain material before approval/signing; labels do not authorize a template or bypass supported-operation policy.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contractId", "family", "sourceTransactionId"],
+      "properties": {
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "family": {
+          "enum": ["collection", "nft", "ft", "stablecoin", "pool"]
+        },
+        "sourceTransactionId": {
+          "$ref": "common.schema.json#/$defs/transactionId"
+        },
+        "standardId": { "enum": ["tbc20-standard", "tbc721-standard", "tbc20-stablecoin", "tbc-amm"] },
+        "protocolVersion": { "enum": ["tbc20", "tbc721", "coin", "pool3"] },
+        "templateRevision": { "$ref": "common.schema.json#/$defs/hash32" },
+        "genesisOutpoint": {
+          "$comment": "Proposed Genesis Code (or collection Tape): txid must equal contractId and vout is zero, distinct from Code.OriginalUTXO36. Engine must independently verify raw identity, slots and required ancestry rather than trust this label.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["txid", "vout"],
+          "properties": {
+            "txid": { "$ref": "common.schema.json#/$defs/transactionId" },
+            "vout": { "const": 0 }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "type": "object", "required": ["standardId"], "properties": { "standardId": true } },
+          "then": {
+            "type": "object",
+            "required": ["protocolVersion", "templateRevision", "genesisOutpoint"],
+            "properties": {
+              "protocolVersion": true,
+              "templateRevision": true,
+              "genesisOutpoint": true
+            },
+            "oneOf": [
+              { "type": "object", "properties": {
+                "standardId": { "const": "tbc20-standard" }, "family": { "const": "ft" },
+                "protocolVersion": { "const": "tbc20" },
+                "templateRevision": { "const": "0f5db33bb46e4517963cbd383518f74283b5c2c4efb0a733522a1fbc0d4a9f84" }
+              } },
+              { "type": "object", "properties": {
+                "standardId": { "const": "tbc721-standard" }, "family": { "enum": ["collection", "nft"] },
+                "protocolVersion": { "const": "tbc721" },
+                "templateRevision": { "const": "a97688ec62777b01e93c8486e0505b56701f48dc8cf7947637ece57fe88df104" }
+              } },
+              { "type": "object", "properties": {
+                "standardId": { "const": "tbc20-stablecoin" }, "family": { "const": "stablecoin" },
+                "protocolVersion": { "const": "coin" },
+                "templateRevision": { "const": "c686fc271f0ee8116325bf541d87c4d2e6ad839896a9d9dd21dcf2ac847660e3" }
+              } },
+              { "type": "object", "properties": {
+                "standardId": { "const": "tbc-amm" }, "family": { "const": "pool" },
+                "protocolVersion": { "const": "pool3" },
+                "templateRevision": { "enum": ["c98ecae0a22452ce37bcaf24be0c836521d3de3a75aa8f16cef587b8b6f031b2", "cf7f95c0483b56ad24825591acbce6e82e37890aa0047fc63183d3fb7a7a4ffc", "a821abdb280268430ad7ea7a9421068a719a8e959b84c11265d4456e8d740db7", "834610c0726fa0829c50aaa75c3a0b58c046105248f0b023257437a22f8aca22"] }
+              } }
+            ]
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "protocolVersion": false,
+              "templateRevision": false,
+              "genesisOutpoint": false
+            }
+          }
+        }
+      ]
+    },
+    "proposalEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observedAt", "parentTransactions", "contracts"],
+      "properties": {
+        "observedAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "parentTransactions": {
+          "type": "array",
+          "maxItems": 256,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/parentTransactionEvidence" }
+        },
+        "contracts": {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/contractEvidence" }
+        }
+      }
+    },
+    "fixedProposedTransaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "dependsOn", "kind", "unsignedTransaction", "fee"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "role": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,63}$" },
+        "dependsOn": { "$ref": "#/$defs/dependsOn" },
+        "kind": { "const": "fixed" },
+        "unsignedTransaction": {
+          "$ref": "common.schema.json#/$defs/rawTransaction"
+        },
+        "fee": { "$ref": "common.schema.json#/$defs/atomicAmount" }
+      }
+    },
+    "deferredInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["inputIndex", "sourceTransactionId", "sourceOutputIndex"],
+      "properties": {
+        "inputIndex": { "type": "integer", "minimum": 0, "maximum": 65535 },
+        "sourceTransactionId": {
+          "$ref": "common.schema.json#/$defs/localId"
+        },
+        "sourceOutputIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967295
+        }
+      }
+    },
+    "deferredProposedTransaction": {
+      "$comment": "Each deferred input identifies a parsed transaction input whose zero prev-txid placeholder is replaced with the finalized signed txid of sourceTransactionId. Byte offsets and arbitrary JSON pointers are forbidden.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "dependsOn", "kind", "unsignedTransactionTemplate", "deferredInputs", "fee"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "role": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,63}$" },
+        "dependsOn": { "$ref": "#/$defs/dependsOn" },
+        "kind": { "const": "deferred" },
+        "unsignedTransactionTemplate": {
+          "$ref": "common.schema.json#/$defs/rawTransaction"
+        },
+        "deferredInputs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 128,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/deferredInput" }
+        },
+        "fee": { "$ref": "common.schema.json#/$defs/atomicAmount" }
+      }
+    },
+    "proposedTransaction": {
+      "oneOf": [
+        { "$ref": "#/$defs/fixedProposedTransaction" },
+        { "$ref": "#/$defs/deferredProposedTransaction" }
+      ]
+    },
+    "transactionProposalPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "engineProfile", "createdAt", "expiresAt", "intentHash", "transactions", "evidence", "estimatedTotalFee"],
+      "properties": {
+        "version": { "const": "1.0" },
+        "engineProfile": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "createdAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "intentHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "transactions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/proposedTransaction" }
+        },
+        "evidence": { "$ref": "#/$defs/proposalEvidence" },
+        "estimatedTotalFee": {
+          "$ref": "common.schema.json#/$defs/atomicAmount"
+        }
+      }
+    },
+    "transactionProposal": {
+      "$comment": "proposalHash is SHA-256 over the TWS canonical JSON encoding of payload.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload", "proposalHash"],
+      "properties": {
+        "payload": { "$ref": "#/$defs/transactionProposalPayload" },
+        "proposalHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "preparedTransactionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "chainId", "from", "intent", "proposal"],
+      "properties": {
+        "version": { "const": "1.0" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "from": { "$ref": "common.schema.json#/$defs/address" },
+        "signingRoles": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "transaction-request.schema.json#/$defs/signingRole" } },
+        "clientRequestId": {
+          "$ref": "common.schema.json#/$defs/clientRequestId"
+        },
+        "intent": {
+          "$ref": "transaction-request.schema.json#/$defs/tbcIntent"
+        },
+        "proposal": { "$ref": "#/$defs/transactionProposal" },
+        "constraints": {
+          "$ref": "transaction-request.schema.json#/$defs/constraints"
+        }
+      },
+      "allOf": [{ "$ref": "transaction-request.schema.json#/$defs/signingRoleIntentScope" }]
+    }
+  }
+}

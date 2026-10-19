@@ -1,0 +1,1 @@
+{"intent":{"type":"tbc.pool.liquidity.remove","version":"1.0","receiver":"1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH","poolContractId":"fixture","lpAmount":"1000","minimumTbcAmount":"1000","minimumFtAmount":"250000"}}

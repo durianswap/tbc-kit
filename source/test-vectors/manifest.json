@@ -1,0 +1,33 @@
+{
+  "implementation": {
+    "kind": "wallet",
+    "name": "TWS Draft.3 Closure Fixture",
+    "version": "1.0.0-draft.3",
+    "platforms": [
+      "web"
+    ],
+    "releaseArtifact": "https://example.test/tws-fixture/1.0.0-draft.3"
+  },
+  "twsVersion": "1.0.0",
+  "featureVersion": "1.0.0",
+  "profiles": [
+    "core",
+    "integration",
+    "transport:webview"
+  ],
+  "chainIds": [
+    "tbc:mainnet"
+  ],
+  "intents": {
+    "tbc.transfer": [
+      "1.0"
+    ]
+  },
+  "suite": {
+    "version": "1.0.0",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "executedAt": "2026-08-31T12:00:00Z",
+  "result": "pass",
+  "securityReview": "https://example.test/tws-fixture/1.0.0-draft.3/security-review"
+}

@@ -1,0 +1,30 @@
+{
+  "source": {
+    "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+    "commit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+    "path": "modules/tbc-transaction-engine/rust/src/lib.rs",
+    "function": "build_ft_transaction_json",
+    "sdkFunction": "Ft::mint_ft_with_version"
+  },
+  "intent": {
+    "type": "tbc.ft.create",
+    "version": "1.0",
+    "name": "Task Five Token",
+    "symbol": "TFT",
+    "decimals": 6,
+    "initialSupply": "1000000"
+  },
+  "mintVersion": "FT_MINT_V4",
+  "expectedRoles": ["prerequisite", "primary"],
+  "expected": {
+    "planHash": "5d634a7e122bc7435e3fc9b9f96b90ae4eb18008c6a4ebc25e5d78300940b4fd",
+    "templateHashes": [
+      "d1b3f81a48a25c74381df4cd37978d5872bb104e832c796180342cdc021ce072",
+      "6174c5be05639cc20c4c4c14fc1eddb24fa1ce863a95e9a08402d6b7d3863a1a"
+    ],
+    "stageZeroDigests": [
+      "d61a27355fdf880c2490faebaddf1ea399ef90294e452375f22b4135a7a31f9e"
+    ],
+    "fees": ["100", "190"]
+  }
+}

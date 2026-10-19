@@ -1,0 +1,105 @@
+// Historical TS implementation test. Replaced by required Rust and artifact tests;
+// see ../README.md. Retained as migration evidence, not an executable test.
+import assert from "node:assert/strict";
+import { after, before, test } from "node:test";
+import { loadInternals } from "./build-internals.mjs";
+
+const PUBLIC_KEY =
+  "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798";
+const ADDRESS = "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH";
+const SCRIPT = "76a914751e76e8199196d454941c45d1b3a323f1433bd688ac";
+const RECIPIENT = "1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP";
+const RECIPIENT_SCRIPT = "76a91406afd46bcdfd22ef94ac122aa11f241244a37ecc88ac";
+
+let internals;
+let cleanup;
+
+before(async () => {
+  ({ runtime: internals, cleanup } = await loadInternals([
+    "bytes",
+    "base58",
+    "p2pkh",
+  ]));
+});
+
+after(() => cleanup?.());
+
+test("encodes fixed-width little-endian integers without number truncation", () => {
+  assert.equal(internals.bytesToHex(internals.uint16LE(0x1234)), "3412");
+  assert.equal(internals.bytesToHex(internals.uint32LE(0x12345678)), "78563412");
+  assert.equal(
+    internals.bytesToHex(internals.uint64LE(0x0102030405060708n)),
+    "0807060504030201",
+  );
+  assert.throws(() => internals.uint64LE(-1n), RangeError);
+  assert.throws(() => internals.uint64LE(0x10000000000000000n), RangeError);
+});
+
+test("uses minimal CompactSize encodings at every boundary", () => {
+  const cases = [
+    [0xfcn, "fc"],
+    [0xfdn, "fdfd00"],
+    [0xffffn, "fdffff"],
+    [0x10000n, "fe00000100"],
+    [0xffffffffn, "feffffffff"],
+    [0x100000000n, "ff0000000001000000"],
+  ];
+  for (const [value, expected] of cases) {
+    const encoded = internals.compactSize(value);
+    assert.equal(internals.bytesToHex(encoded), expected);
+    const reader = new internals.ByteReader(encoded);
+    assert.equal(reader.readCompactSize(), value);
+    reader.finish();
+  }
+
+  for (const nonMinimal of ["fdfc00", "feffff0000", "ffffffffff00000000"]) {
+    assert.throws(
+      () => new internals.ByteReader(internals.hexToBytes(nonMinimal)).readCompactSize(),
+      /non-minimal CompactSize/,
+    );
+  }
+});
+
+test("rejects malformed hex, short reads, and trailing bytes", () => {
+  for (const malformed of ["0", "AA", "0g", " 00", "00 "]) {
+    assert.throws(() => internals.hexToBytes(malformed), /lowercase hexadecimal/);
+  }
+  assert.throws(
+    () => new internals.ByteReader(internals.hexToBytes("fd")).readCompactSize(),
+    /unexpected end/,
+  );
+  const reader = new internals.ByteReader(internals.hexToBytes("0001"));
+  assert.equal(reader.readUint8(), 0);
+  assert.throws(() => reader.finish(), /trailing bytes/);
+});
+
+test("round-trips Base58 leading zeroes and rejects checksum or network changes", () => {
+  assert.equal(internals.base58Encode(internals.hexToBytes("000001")), "112");
+  assert.equal(
+    internals.bytesToHex(internals.base58Decode("112")),
+    "000001",
+  );
+  assert.equal(
+    internals.bytesToHex(internals.decodeBase58Check(ADDRESS, 0x00)),
+    "751e76e8199196d454941c45d1b3a323f1433bd6",
+  );
+  assert.throws(() => internals.decodeBase58Check(`${ADDRESS.slice(0, -1)}J`, 0x00), /checksum/);
+  assert.throws(() => internals.decodeBase58Check(ADDRESS, 0x6f), /network/);
+});
+
+test("derives canonical mainnet addresses and P2PKH scripts", () => {
+  assert.equal(internals.publicKeyToAddress(PUBLIC_KEY, 0x00), ADDRESS);
+  assert.equal(
+    internals.bytesToHex(internals.addressToP2pkhScript(ADDRESS, 0x00)),
+    SCRIPT,
+  );
+  assert.equal(
+    internals.bytesToHex(internals.addressToP2pkhScript(RECIPIENT, 0x00)),
+    RECIPIENT_SCRIPT,
+  );
+  assert.equal(
+    internals.bytesToHex(internals.publicKeyToP2pkhScript(PUBLIC_KEY)),
+    SCRIPT,
+  );
+  assert.throws(() => internals.publicKeyToAddress(`04${PUBLIC_KEY.slice(2)}`, 0x00), /compressed/);
+});

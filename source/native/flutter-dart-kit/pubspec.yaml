@@ -1,0 +1,17 @@
+name: tbc_kit_flutter_dart
+description: TBC SDK for Flutter wallets with Dart APIs, native signing adapters and WebView integration.
+version: 0.0.0-dev.20261012.1
+publish_to: none
+environment:
+  sdk: '>=3.7.2 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+  ffi: 2.1.3
+  crypto: 3.0.7
+  pointycastle: 3.9.1
+  web3dart: 2.7.3
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  test: 1.25.14

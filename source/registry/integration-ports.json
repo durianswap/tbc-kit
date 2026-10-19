@@ -1,0 +1,271 @@
+{
+  "$schema": "../schemas/integration-port-registry.schema.json",
+  "version": "1.0.0",
+  "errorNames": [
+    "INVALID_INPUT",
+    "UNAVAILABLE",
+    "NOT_FOUND",
+    "CONFLICT",
+    "UNAUTHORIZED",
+    "REJECTED",
+    "SIGNATURE_FAILED",
+    "BROADCAST_REJECTED",
+    "INTERNAL_ERROR"
+  ],
+  "forbiddenFieldNames": [
+    "privateKey",
+    "privateKeyWif",
+    "wif",
+    "mnemonic",
+    "seed",
+    "password",
+    "vaultToken",
+    "vaultHandle",
+    "sessionHandle",
+    "quickSignGrantHandle",
+    "apiKey",
+    "authorization",
+    "endpoint",
+    "rpcUrl"
+  ],
+  "validationPhases": [
+    "plan",
+    "pre-sign",
+    "finalized",
+    "pre-broadcast"
+  ],
+  "violationCodes": [
+    "REQUEST_HASH_MISMATCH",
+    "SNAPSHOT_HASH_MISMATCH",
+    "POLICY_HASH_MISMATCH",
+    "PLAN_HASH_MISMATCH",
+    "APPROVAL_BINDING_MISMATCH",
+    "PLAN_EXPIRED",
+    "SNAPSHOT_EXPIRED",
+    "CHAIN_MISMATCH",
+    "ACCOUNT_MISMATCH",
+    "INPUT_NOT_IN_SNAPSHOT",
+    "INPUT_ALREADY_SPENT",
+    "ANCESTRY_INVALID",
+    "UNSUPPORTED_CONTRACT_VERSION",
+    "AMOUNT_OUT_OF_RANGE",
+    "BUSINESS_OUTPUT_MISMATCH",
+    "MINIMUM_OUTPUT_NOT_MET",
+    "CHANGE_NOT_CONTROLLED",
+    "FEE_MISMATCH",
+    "FEE_LIMIT_EXCEEDED",
+    "DEPENDENCY_INVALID",
+    "SIGNING_TASK_MISMATCH",
+    "SIGNATURE_INVALID",
+    "TXID_MISMATCH",
+    "ARTIFACT_MISMATCH",
+    "BUNDLE_LIMIT_EXCEEDED",
+    "SECRET_FIELD_PRESENT"
+  ],
+  "ports": [
+    {
+      "name": "accounts",
+      "version": "1.0",
+      "direction": "core-to-host",
+      "required": true,
+      "trustClass": "host-authority",
+      "purpose": "Resolve public TBC account identities without exposing secret or vault state.",
+      "operations": [
+        {
+          "name": "accounts.resolve",
+          "params": { "schema": "integration.schema.json#/$defs/accountsResolveParams" },
+          "result": { "schema": "integration.schema.json#/$defs/accountsResolveResult" },
+          "semantics": { "replay": "exact-response-by-callId" }
+        }
+      ]
+    },
+    {
+      "name": "chainData",
+      "version": "1.0",
+      "direction": "core-to-host",
+      "required": true,
+      "trustClass": "host-io",
+      "purpose": "Resolve immutable, hash-bound chain snapshots for deterministic planning.",
+      "operations": [
+        {
+          "name": "chainData.resolve",
+          "params": { "schema": "integration.schema.json#/$defs/chainDataResolveParams" },
+          "result": { "schema": "integration.schema.json#/$defs/chainDataResolveResult" },
+          "semantics": { "replay": "exact-response-by-callId" }
+        }
+      ]
+    },
+    {
+      "name": "policy",
+      "version": "1.0",
+      "direction": "core-to-host",
+      "required": true,
+      "trustClass": "host-authority",
+      "purpose": "Resolve wallet-controlled execution policy and contract-version rules.",
+      "operations": [
+        {
+          "name": "policy.resolve",
+          "params": { "schema": "integration.schema.json#/$defs/policyResolveParams" },
+          "result": { "schema": "integration.schema.json#/$defs/policyResolveResult" },
+          "semantics": { "replay": "exact-response-by-callId" }
+        }
+      ]
+    },
+    {
+      "name": "permissionStore",
+      "version": "1.0",
+      "direction": "core-to-host",
+      "required": true,
+      "trustClass": "host-authority",
+      "purpose": "Persist origin-and-chain-scoped permissions with atomic revision checks.",
+      "operations": [
+        {
+          "name": "permissionStore.load",
+          "params": { "schema": "integration.schema.json#/$defs/permissionStoreLoadParams" },
+          "result": { "schema": "integration.schema.json#/$defs/permissionStoreLoadResult" },
+          "semantics": { "replay": "exact-response-by-callId" }
+        },
+        {
+          "name": "permissionStore.commit",
+          "params": { "schema": "integration.schema.json#/$defs/permissionStoreCommitParams" },
+          "result": { "schema": "integration.schema.json#/$defs/permissionStoreCommitResult" },
+          "semantics": {
+            "replay": "exact-response-by-callId",
+            "atomicity": "all-or-none",
+            "conflict": "no-write"
+          }
+        }
+      ]
+    },
+    {
+      "name": "approval",
+      "version": "1.0",
+      "direction": "core-to-host",
+      "required": true,
+      "trustClass": "host-authority",
+      "purpose": "Present a trusted preview and return an exact hash-bound approval receipt.",
+      "operations": [
+        {
+          "name": "approval.request",
+          "params": { "schema": "integration.schema.json#/$defs/approvalRequestParams" },
+          "result": { "schema": "integration.schema.json#/$defs/approvalRequestResult" },
+          "semantics": { "replay": "exact-response-by-callId" }
+        }
+      ]
+    },
+    {
+      "name": "signer",
+      "version": "1.0",
+      "direction": "core-to-host",
+      "required": true,
+      "trustClass": "host-secret-boundary",
+      "purpose": "Sign an approved digest without passing key material or implementation handles.",
+      "operations": [
+        {
+          "name": "signer.sign",
+          "params": { "schema": "integration.schema.json#/$defs/signerSignParams" },
+          "result": { "schema": "integration.schema.json#/$defs/signerSignResult" },
+          "semantics": { "replay": "exact-response-by-callId" }
+        }
+      ]
+    },
+    {
+      "name": "crypto",
+      "version": "1.0",
+      "direction": "core-to-host",
+      "required": false,
+      "trustClass": "host-secret-boundary",
+      "purpose": "Execute an approved account-bound BIE1 encrypt or decrypt task without exposing key material.",
+      "operations": [
+        {
+          "name": "crypto.execute",
+          "params": { "schema": "integration.schema.json#/$defs/cryptoExecuteParams" },
+          "result": { "schema": "integration.schema.json#/$defs/cryptoExecuteResult" },
+          "semantics": { "replay": "exact-response-by-callId" }
+        }
+      ]
+    },
+    {
+      "name": "reviewedTransaction",
+      "version": "1.0",
+      "direction": "core-to-host",
+      "required": false,
+      "trustClass": "host-secret-boundary",
+      "purpose": "Review public raw or associated transaction material before approval, then execute only the exact approved review inside the wallet secret boundary.",
+      "operations": [
+        {
+          "name": "reviewedTransaction.review",
+          "params": { "schema": "integration.schema.json#/$defs/reviewedTransactionReviewParams" },
+          "result": { "schema": "integration.schema.json#/$defs/reviewedTransactionReviewResult" },
+          "semantics": { "replay": "exact-response-by-callId" }
+        },
+        {
+          "name": "reviewedTransaction.execute",
+          "params": { "schema": "integration.schema.json#/$defs/reviewedTransactionExecuteParams" },
+          "result": { "schema": "integration.schema.json#/$defs/reviewedTransactionExecuteResult" },
+          "semantics": { "replay": "exact-response-by-callId" }
+        }
+      ]
+    },
+    {
+      "name": "broadcast",
+      "version": "1.0",
+      "direction": "core-to-host",
+      "required": true,
+      "trustClass": "host-io",
+      "purpose": "Submit finalized transactions and reconcile uncertain or partial broadcast state.",
+      "operations": [
+        {
+          "name": "broadcast.submit",
+          "params": { "schema": "integration.schema.json#/$defs/broadcastSubmitParams" },
+          "result": { "schema": "integration.schema.json#/$defs/broadcastSubmitResult" },
+          "semantics": { "replay": "exact-response-by-callId" }
+        },
+        {
+          "name": "broadcast.submitBatch",
+          "params": { "schema": "integration.schema.json#/$defs/broadcastSubmitBatchParams" },
+          "result": { "schema": "integration.schema.json#/$defs/broadcastSubmitBatchResult" },
+          "semantics": { "replay": "exact-response-by-callId" }
+        },
+        {
+          "name": "broadcast.reconcile",
+          "params": { "schema": "integration.schema.json#/$defs/broadcastReconcileParams" },
+          "result": { "schema": "integration.schema.json#/$defs/broadcastReconcileResult" },
+          "semantics": { "replay": "exact-response-by-callId" }
+        }
+      ]
+    },
+    {
+      "name": "clock",
+      "version": "1.0",
+      "direction": "core-to-host",
+      "required": true,
+      "trustClass": "host-time",
+      "purpose": "Provide the sole trusted current-time source for expiry checks.",
+      "operations": [
+        {
+          "name": "clock.now",
+          "params": { "schema": "integration.schema.json#/$defs/clockNowParams" },
+          "result": { "schema": "integration.schema.json#/$defs/clockNowResult" },
+          "semantics": { "replay": "exact-response-by-callId" }
+        }
+      ]
+    },
+    {
+      "name": "entropy",
+      "version": "1.0",
+      "direction": "core-to-host",
+      "required": true,
+      "trustClass": "host-randomness",
+      "purpose": "Provide cryptographically secure random bytes for protocol identifiers and nonces.",
+      "operations": [
+        {
+          "name": "entropy.randomBytes",
+          "params": { "schema": "integration.schema.json#/$defs/entropyRandomBytesParams" },
+          "result": { "schema": "integration.schema.json#/$defs/entropyRandomBytesResult" },
+          "semantics": { "replay": "exact-response-by-callId" }
+        }
+      ]
+    }
+  ]
+}

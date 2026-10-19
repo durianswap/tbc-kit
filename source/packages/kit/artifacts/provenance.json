@@ -1,0 +1,2261 @@
+{
+  "schemaVersion": 3,
+  "poolPreferredFundingFix": {
+    "baseline": "@tbc/kit@0.1.0-candidate.192",
+    "baselineTarSha256": "5cf52fcf770b9538997a1d04a75f80c2dc182d059540873cd524d52a79f4e929",
+    "change": "Pool fee selection preserves Chain Data's largest authenticated native candidate instead of choosing an incidental smaller change whose parent is already present as contract ancestry. This avoids an unnecessary funding prerequisite when one proven native input is sufficient.",
+    "preserved": "No extra API reads, no removal of fee-parent proof, no change to signer separation, fees, approval binding or uncertain-broadcast recovery. Genuine fragmented funding retains the explicit shared prerequisite.",
+    "evidence": "docs/distribution/candidate193-pool-preferred-funding.md"
+  },
+  "fragmentedNativeFundingFix": {
+    "baseline": "@tbc/kit@0.1.0-candidate.191",
+    "baselineTarSha256": "4943b3712f31aeb7d08b395fd69379e2a2422700ec1e2fcadd22a6b82e539fda",
+    "change": "Contract families retain their successful single-fee-input path. When native funding is insufficient, the keyless Engine can include an explicit same-account funding prerequisite in the same approval-bound plan, with aggregate fee limits and signed-parent continuation binding. Pool Chain Data retains bounded descriptor alternatives while reading only the preferred fee parent.",
+    "limits": "Uses the existing 100-input native merge bound and policy maxBundleTransactions. This is not a UTXO reservation manager, fee pool, background consolidation, or automatic broadcast. Whole-balance sufficiency is still subject to real fees, dust, confirmations, asset availability, and plan resource limits.",
+    "protocolChange": "Finalize continuation family now includes collection and nft. Generated Core/Host/Provider identity must match; old stored operations are not silently migrated.",
+    "evidence": "docs/distribution/candidate192-fragmented-native-funding.md",
+    "deviceStatus": "Native/WASM artifacts rebuilt; Candidate192 real-device FT/Pool broadcast acceptance has not been run. Candidate191 device evidence is not promoted."
+  },
+  "atomicBatchSubmissionClaimFix": {
+    "baseline": "@tbc/kit@0.1.0-candidate.182",
+    "baselineTarSha256": "44cd20e91281aa6ef98d8207126618e5bbf1f507d01658b4718b2e5082f56a35",
+    "change": "Adds a durable all-or-none beginSubmitBatch SQLite transaction and makes submitBatch honor its created result, so concurrent same-batch calls across one or recreated runtimes cross the network POST boundary at most once.",
+    "preservedBehavior": "Candidate182 remains immutable. Every item still passes local preflight before the batch claim. Partial prior records and txid/raw overlap fail closed without inserting missing identities. Completed records replay exactly; prepared or uncertain records return unknown and remain reconciliation-only. Single-submit behavior, ambiguous-outcome no-resend policy, sign-only memory policy, network request set, UTXO ownership, Mobile source, Native/WASM Engine and funds behavior are unchanged.",
+    "focusedTests": [
+      "packages/kit/test/default-broadcast.test.mjs",
+      "packages/kit/test/default-broadcast-wallet-lifecycle.test.mjs",
+      "test/integration/kit-broadcast-boundaries.test.ts in an isolated Mobile consumer"
+    ],
+    "sourceFiles": {
+      "packages/kit/src/broadcast-journal.ts": "bcce6dc577b8966e9a0d6b0bcf5866552953710c0be6adf64ef63023373cd1f2",
+      "packages/kit/src/default-broadcast.ts": "638f757e326247697c6c29f0aee1ccfcda61f5e4fce4aebd76c4a2801aad668e",
+      "packages/kit/test/default-broadcast.test.mjs": "c6af19e281e726425906ba09713d95cf87e6bb5a63c2f9b9d0394fde28ddbdd7"
+    },
+    "protocolFingerprint": "080599f1b00f96c62d6e8eb40bc622849ccd9c343e184ab5b9502b7134595d71",
+    "mobileEvidence": "Candidate182 exact-package reproduction produced two POSTs for both same-runtime and recreated-runtime concurrent batches while the other 12 boundary cases passed. Candidate183 remains package evidence until the Mobile owner installs the exact new archive into isolated staging and reruns the same campaign."
+  },
+  "trustedCapabilityAndPreparedBoundaryFix": {
+    "baseline": "@tbc/kit@0.1.0-candidate.181",
+    "baselineTarSha256": "c1013b6a3f02f807e856bc65a7c0c437a091d14d15b2c8b595b3a8dfb4e11061",
+    "change": "Adds a trusted wallet-composition capability descriptor with chain-wide and exact-account scopes, and maps caller-tampered Prepared proposalHash self-mismatch to JSON-RPC -32602 before privileged work while preserving the Provider session.",
+    "preservedBehavior": "Candidate181 remains immutable. Omitted capability configuration remains conservatively tbc.transfer/core. The official Kit descriptor lists exactly the 18 public business intents exercised by Mobile and advertises core/assets only; Engine-only tbc.pool.liquidity.close and the defi profile are omitted. Capability data cannot come from page input and adds no Port, permission filtering, approval, storage or network read. Rehashed malicious payloads and wallet-produced checkpoint, approval and Engine artifacts remain fail-closed. No Mobile source, Native/WASM Engine or funds behavior changes.",
+    "focusedTests": [
+      "packages/core/test/read-methods.test.mjs",
+      "packages/core/test/transaction-lifecycle.test.mjs",
+      "packages/core/test/workflow-signing.test.mjs",
+      "packages/kit/test/capability-descriptor.test.mjs",
+      "packages/provider/test/public-types.test.mjs"
+    ],
+    "sourceFiles": {
+      "packages/core/src/engine.ts": "d86fb35696d5ec59847706bf122fee89e82fc3b7ffc824e096b0b573c0c3665a",
+      "packages/core/src/core.ts": "31f1d8465f1118a9699e5f8117c301aac61183b7811c2797108a0ff347cab9ff",
+      "packages/core/src/reducers/authorizing.ts": "62eeffb3ab0313aa25123ddc10ab04a50002b26776e7c9c492d63aedb9009321",
+      "packages/core/src/reducers/resolving.ts": "feb546dd8f428205b5b38c865b8e49a5a022c006ec27e74064aec8ee763437f4",
+      "packages/core/src/reducers/validating.ts": "9f12a7a9af628615d070401afc3ba03c9ef67e86523b1106fec2fec83a295ed9",
+      "packages/kit/src/wallet-runtime.ts": "e737e85b55e30db3ed2c1fc99b7996e53a5e6de84b498ab5239c6c2fd60b3268"
+    },
+    "protocolFingerprint": "080599f1b00f96c62d6e8eb40bc622849ccd9c343e184ab5b9502b7134595d71",
+    "mobileEvidence": "Candidate182 is package evidence only until the Mobile owner installs this exact archive and reruns Android acceptance. Candidate181 device observations are not automatically upgraded."
+  },
+  "coreProviderComplianceFix": {
+    "baseline": "@tbc/kit@0.1.0-candidate.180",
+    "baselineTarSha256": "8fef6e8806777d29cff33cb90694f3292bf1ae06e13c482212a10d603a0dd930",
+    "change": "Maps typed-data domain chain or verified-origin mismatch to JSON-RPC -32602 before approval, and emits permissionsChanged([]) followed by accountsChanged([]) after a successful atomic tbc_disconnect permission revocation.",
+    "preservedBehavior": "Candidate180 remains immutable. Invalid typed data performs no approval, signing or broadcast and does not close the Provider session. tbc_disconnect does not emit the Provider disconnect event. Internal artifact and Host result mismatches remain fail-closed. No network read, storage shape, Mobile source, Native Engine, WASM Engine or funds behavior changes.",
+    "focusedTests": [
+      "packages/core/test/message-signing.test.mjs",
+      "packages/core/test/permissions.test.mjs",
+      "packages/provider/test/provider-events.test.mjs"
+    ],
+    "sourceFiles": {
+      "packages/core/src/reducers/messages.ts": "0cec2e21933658bbda710ea1118d9aeace1804ea5822488dcd5aebd4e6a4cb13",
+      "packages/core/src/reducers/shared.ts": "b4bf7ccd30d9db5ba5932d575e2a5625938f67554bd6be16c7b9e15a10e61a8a",
+      "packages/core/src/reducers/committing.ts": "d104a28b7393be26759df924df187ce9c91bfb7221e3e5440b17e9fe23250d6d"
+    },
+    "protocolFingerprint": "080599f1b00f96c62d6e8eb40bc622849ccd9c343e184ab5b9502b7134595d71",
+    "mobileEvidence": "Candidate181 is package evidence only until the Mobile owner installs the exact archive and reruns the Android Standard acceptance cases. Prior Candidate180 device observations are not upgraded by this package build."
+  },
+  "poolLpEmptyIndexFix": {
+    "baseline": "@tbc/kit@0.1.0-candidate.179",
+    "baselineTarSha256": "b85d92df0126c0e458bd4fec63a65d59255bfdab352233f056d1128c0148cd33",
+    "change": "Treats explicit data.utxos null from a successful official Pool LP index response as the empty LP index across read-only multi-round indexing, LP consume and FTLP merge or burn.",
+    "preservedBehavior": "Missing utxos, non-array non-null values, HTTP failures and API business errors remain fail-closed. No request, retry, persistence, signing, broadcast, Mobile or funds behavior is added.",
+    "androidEvidence": "The triggering Candidate179 Android observation belongs to Mobile acceptance. Candidate180 is package evidence only until separately installed and rerun by the Mobile owner."
+  },
+  "nativeBridge": {
+    "integrationFix": "Candidate179 retains Candidate178 native bytes and fixes the Expo template: root Podspec with explicit podspecPath, native artifacts inside the pod root, symlink-safe setup/check CLI, and a Babel config example for Hermes. Candidate178 remains immutable and is rejected for full Expo app integration.",
+    "rejectedCandidate178Sha256": "19d6707104c2062a4fed6d3fd141d2d57ee5710f34640cc00e8da2e2ae4e66f7",
+    "appEvidence": "A fresh Expo 54.0.37 / React Native 0.81.5 Release consumer with this template passed eight concurrent normalize calls and three rejection calls on iOS 26.5. Exact packed-candidate reinstallation evidence is recorded separately in the handoff. This is not wallet transaction or older-OS acceptance.",
+    "baseline": "@tbc/kit@0.1.0-candidate.177",
+    "baselineTarSha256": "89e0cb4e87d2207602109701936179bddce9a25844227a3bac71c5e53330563a",
+    "iosMinimumVersion": "15.1",
+    "change": "Rebuilds only iOS transaction Engine libraries with explicit SDKROOT and IPHONEOS_DEPLOYMENT_TARGET=15.1 for Rust and C. Adds a reusable keyless Expo bridge template. Transaction algorithms, compiled Kit JS, WASM, Android and host libraries are unchanged.",
+    "evidence": "Every object in both iOS archives passed minimum-OS auditing; four successful Engine calls and four error calls match frozen Native and bundled WASM byte-for-byte on iOS 26.5 Simulator. This is not an iOS 15.1 device claim.",
+    "networkSigningBroadcast": "No network reads, keys, approvals, persistence, retry or broadcast are added to the bridge. Native identity changes require an app rebuild."
+  },
+  "package": "@tbc/kit@0.1.0-dev.20261007.1",
+  "createdAt": "2026-09-25T00:00:00.000Z",
+  "candidateDelta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.167",
+    "baselineTarSha256": "7856292cc47b0a33b40c3b96012fa7f8352a3930f50c469776e17ddcfdfa84c3",
+    "change": "Corrects Stablecoin holding ancestry traversal for valid split/remerge DAGs. Active recursion-path cycle detection is now separate from completed-node supply memoization and bounded unique-node/work accounting, so a shared completed ancestor is reused instead of misclassified as a cycle.",
+    "preservedBehavior": "Candidate167 remains immutable. Missing-parent, supply, sequence, lockTime, covenant identity and resource validation remain fail-closed. Genuine active-path cycles, the 1024 unique-node bound and the separate 8192 traversal-work bound are rejected. No Mobile source, signing, POST, broadcast or funds are involved in this candidate build.",
+    "focusedTests": [
+      "packages/tbc-engine/rust/crates/tbc-engine-core/src/ancestry.rs",
+      "packages/tbc-engine/rust/crates/tbc-engine-core/tests/nft_stablecoin.rs",
+      "packages/tbc-engine/scripts/check-rust-runtime-artifacts.mjs",
+      "packages/kit/scripts/check-install-candidate.mjs"
+    ],
+    "sourceFiles": {
+      "packages/tbc-engine/rust/crates/tbc-engine-core/src/ancestry.rs": "0326a94fc45aacc726deaf261644bb0271be947c71dfd1506435dbda4ba8a115"
+    },
+    "performanceEvidence": "Focused Rust coverage accepts a split/remerge/spend DAG with one memoized shared ancestor and rejects a genuine active-path cycle plus independent unique-node and work-budget exhaustion. A public Testnet read-only replay of Candidate167's failing input completed one WASM plan after 11 GET reads, then stopped at deliberate approval rejection with zero Signer and zero broadcast calls.",
+    "protocolAndEngine": "The protocol fingerprint remains 989bf4c21affbf64b5f2bdd40132386badd4733913254b816f76da6a6fc21e40. Main host, iOS, Android and WASM Engine artifacts are rebuilt from the corrected ancestry source and must be installed together; keyless Engine artifacts and Core protocol schemas are unchanged."
+  },
+  "previousCandidate167Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.166",
+    "baselineTarSha256": "bd1ededad997f228328f192aec52f548423d98f76dfa8b305b85ab0c589e20a4",
+    "change": "Adds Stablecoin to the shared bounded multi-round Standard/DApp/wallet coordinator and optionally maps mergeUtxos, mergeFtUtxos and mergeStableCoinUtxos into that public coordinator with wallet-supplied finite limits and target one. It also distinguishes Stablecoin metadata transport failure from invalid Legacy parameters.",
+    "preservedBehavior": "Candidate166 remains immutable. Existing one-shot Stablecoin merge remains one 2-to-5-input transaction. The Legacy controller contains no merge loop, signing, POST or recovery executor; public partial, stopped and uncertain states remain authoritative, accepted identities remain visible, and an uncertain submission is reconciled rather than resent. Metadata failure adds no retry and relaxes no validation.",
+    "performanceEvidence": "Focused controlled tests cover Stablecoin six-to-one in two rounds, exact five-input selection, zero-confirmation parent dependency, public DApp dispatch, wallet-session typing, three historical alias shapes, bounded stop/failure/no-resend behavior and Stablecoin metadata timeout classification. This is package evidence, not device, chain, POST, Android, MV3 or Mainnet acceptance.",
+    "protocolAndEngine": "The protocol fingerprint remains 989bf4c21affbf64b5f2bdd40132386badd4733913254b816f76da6a6fc21e40. Core protocol schemas and every Candidate166 Host, iOS, Android and WASM Engine artifact byte are unchanged; Candidate167 changes only Kit TypeScript composition, tests and documentation."
+  },
+  "previousCandidate166Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.165",
+    "baselineTarSha256": "815f02e57db1733b728414eee14d07af1788f085febcd7698ef29185eb5c4450",
+    "change": "Completes the bounded Legacy single-operation routing audit: the native controller connects all three existing NFT mappings, adds Stablecoin transfer display-to-raw resolution and one-shot STABLECOIN_MERGE mapping, and accepts FT_TRANSFER false, true or default broadcast modes in bare or single-item DTO form.",
+    "preservedBehavior": "Candidate165 remains immutable. The historical mergeStableCoinUtxos multi-window collapse-to-one helper stays explicitly unsupported because it is not equivalent to one 2-to-5-input Standard transaction. Generic Legacy batches still exclude maintenance flags. Navigation, authority, approval, Signer, ACK, persistence, query and broadcast boundaries are unchanged.",
+    "performanceEvidence": "Focused controlled tests cover 18-flag dispatch including NFT, Stablecoin transfer display-to-raw conversion, one-shot Stablecoin merge, FT default broadcast and the deliberate generic-batch and full-merge-alias exclusions. This is package evidence, not device, chain, POST, Android, MV3 or Mainnet acceptance.",
+    "protocolAndEngine": "The protocol fingerprint remains 989bf4c21affbf64b5f2bdd40132386badd4733913254b816f76da6a6fc21e40. Core protocol schemas and every Candidate165 Host, iOS, Android and WASM Engine artifact byte are unchanged; Candidate166 changes only Kit TypeScript compatibility composition and documentation."
+  },
+  "previousCandidate165Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.164",
+    "baselineTarSha256": "e2d5b44e74253b0f8848b8a69c7c477ad831ef156f2d0cb279f007ccae50ed93",
+    "change": "Restores the Stablecoin FT unlock ABI in public staged signing. The authenticated covenant-derived coinMode is carried in the FT recipe, checked again against the resolved previous-output covenant, and emits the required OP_0 between the public key and preTxData. Signed-size fee estimation accounts for the added byte.",
+    "preservedBehavior": "Candidate164 remains immutable and rejected for Stablecoin broadcast because its finalized Stablecoin input omitted the coin marker. Ordinary FT retains the prior no-marker layout. Existing ancestry, lockTime, sequence, staged dependency, approval, Signer, persistence and broadcast boundaries are unchanged.",
+    "focusedTests": [
+      "packages/tbc-engine/rust/crates/tbc-engine-core/tests/ft.rs",
+      "packages/tbc-engine/rust/crates/tbc-engine-core/tests/nft_stablecoin.rs",
+      "packages/kit/scripts/check-install-candidate.mjs"
+    ],
+    "sourceFiles": {
+      "packages/tbc-engine/rust/crates/tbc-engine-core/src/signing.rs": "aa111c5284a082fc881b034a19b6129d00b11fb3fec4dcee894410041b82ecfc",
+      "packages/tbc-engine/rust/crates/tbc-engine-core/src/families/ft.rs": "69df6e63652ab402fa5f76e93229d38f0580bf8b5a3309220048b341fdcd229c",
+      "packages/tbc-engine/rust/crates/tbc-engine-core/src/families/pool.rs": "ee99df86fee985e4199e481eaa78ecc2f55c50798f21f53330e9de8a1d3e395f",
+      "packages/tbc-engine/rust/crates/tbc-engine-core/tests/ft.rs": "f36011c4465deae1658da6daa366e11339df3b3897e099d0a76e11b3beb4b2de",
+      "packages/tbc-engine/rust/crates/tbc-engine-core/tests/nft_stablecoin.rs": "fb1e2200415f91c9a594101980986d99ca17d45daed8daa9e9066a5b2107fd43"
+    },
+    "performanceEvidence": "Stablecoin transfer and every staged Stablecoin merge transaction assert the exact public-key OP_0 preTxData boundary and a final serialized-size fee floor. Ordinary FT asserts that preTxData still immediately follows its public key. Full Rust core, Native/WASM runtime parity, full Kit and isolated installation gates pass without network submission.",
+    "protocolAndEngine": "The protocol fingerprint remains 989bf4c21affbf64b5f2bdd40132386badd4733913254b816f76da6a6fc21e40. Host, iOS, Android and WASM Engine artifacts are rebuilt from the corrected source and therefore must replace Candidate164 binaries together; a JS-only installation is invalid."
+  },
+  "previousCandidate164Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.163",
+    "baselineTarSha256": "a2b26d184bfe16525a4c03e128a7ffdf3447f16ae5e660ad5ad83f12fb82e403",
+    "change": "Projects every actual planned transaction input outpoint in transaction and input order, including native fee inputs, while retaining a separate Stablecoin-only asset input count.",
+    "preservedBehavior": "Candidate163 remains immutable and rejected for Mobile installation because its display projection omitted native fee input outpoints. All request, snapshot, policy, plan, preview, fee and signing-task bindings remain fail-closed; there are still no reads, signing or persistence.",
+    "focusedTests": [
+      "packages/kit/test/stablecoin-approval-evidence.test.mjs",
+      "packages/kit/test/types/approval-host-evidence-compatible.ts",
+      "packages/kit/scripts/check-install-candidate.mjs"
+    ],
+    "performanceEvidence": "The corrected projector still consumes one already detached Host evidence envelope and performs bounded in-memory validation only. It adds zero Host or network reads and cannot sign, persist, POST or broadcast.",
+    "protocolAndEngine": "Protocol fingerprint remains 989bf4c21affbf64b5f2bdd40132386badd4733913254b816f76da6a6fc21e40. Transaction Engine Native/WASM bytes and their hashes are unchanged from Candidate163."
+  },
+  "previousCandidate163Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.162",
+    "baselineTarSha256": "2cfa48299147fe6e57d01bb260f53ca246eac4cdc76a25d90085419e273729d5",
+    "change": "Aligns the Stablecoin approval projector with the Rust Engine staged-signing contract: current signing tasks exactly cover each current-stage transaction while later dependent transactions may remain taskless until their stage.",
+    "preservedBehavior": "Candidate162 remains immutable. All request, snapshot, policy, plan, preview, selected-input, fee and signing-task bindings remain fail-closed; the correction does not add reads, signing or persistence and does not change Engine bytes or public DApp APIs.",
+    "focusedTests": [
+      "packages/kit/test/stablecoin-approval-evidence.test.mjs",
+      "packages/kit/test/types/approval-host-evidence-compatible.ts",
+      "packages/kit/scripts/check-install-candidate.mjs"
+    ],
+    "performanceEvidence": "The corrected projector consumes one already detached Host evidence envelope and performs bounded in-memory validation only. It adds zero Host or network reads and cannot sign, persist, POST or broadcast.",
+    "protocolAndEngine": "Protocol fingerprint remains 989bf4c21affbf64b5f2bdd40132386badd4733913254b816f76da6a6fc21e40. Transaction Engine Native/WASM bytes and their hashes are unchanged from Candidate162."
+  },
+  "previousCandidate162Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.161",
+    "baselineTarSha256": "acb5e61d2245510c95bdcaffc0613931ca79e68c12613a5b31e6435fe59d813c",
+    "change": "Adds a wallet-only pure Stablecoin approval evidence projector that cross-binds the verified Host request, snapshot, policy, plan, preview, selected inputs, fees and signing tasks for transfer and merge display.",
+    "preservedBehavior": "Candidate161 remains immutable. The projector performs no reads, signing or persistence, keeps coinNFT contractId distinct from creationTxid and does not change Stablecoin planning, transaction bytes, public DApp APIs, Core/Provider schemas or Native/WASM Engine bytes.",
+    "focusedTests": [
+      "packages/kit/test/stablecoin-approval-evidence.test.mjs",
+      "packages/kit/test/types/approval-host-evidence-compatible.ts",
+      "packages/kit/scripts/check-install-candidate.mjs"
+    ],
+    "performanceEvidence": "The projector consumes one already detached Host evidence envelope and performs bounded in-memory validation only. It adds zero Host or network reads and cannot sign, persist, POST or broadcast.",
+    "protocolAndEngine": "Protocol fingerprint remains 989bf4c21affbf64b5f2bdd40132386badd4733913254b816f76da6a6fc21e40. Transaction Engine Native/WASM bytes and their hashes are unchanged from Candidate161."
+  },
+  "previousCandidate160Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.159",
+    "baselineTarSha256": "5b7ee078e92007eb75a90b180fef30a6f1be1f186d2116545b01e1b7d53b1262",
+    "change": "Completes the Stage 3 public stablecoin transfer and independent one-shot merge boundary with canonical intents/helpers, default policy and official-index Chain Data, exact coin-NFT/state/holding ancestry verification, immutable read reuse, and Rust Native/WASM planning.",
+    "preservedBehavior": "Candidate159 remains immutable. Existing approval, Signer, prefetch, retained immutable reads, session-only execution, broadcast journal and uncertain-submit reconciliation are reused unchanged. Stablecoin merge is one independent 2-to-5-input transaction; issuance, mint, freeze, unfreeze and automatic multi-round stablecoin consolidation are excluded.",
+    "focusedTests": [
+      "packages/tbc-engine/rust/crates/tbc-engine-core/tests/nft_stablecoin.rs",
+      "packages/kit/test/client-and-network.test.mjs",
+      "packages/kit/test/default-chain-data.test.mjs",
+      "packages/kit/test/core-host-runtime.test.mjs",
+      "packages/kit/scripts/check-install-candidate.mjs"
+    ],
+    "performanceEvidence": "A read-only live Testnet snapshot using the official stablecoin index resolved native funding, stablecoin holding and bounded ancestry and reached a real WASM self-transfer plan for 1000000 raw units with one primary transaction and a 469-atomic fee. It performed no signing, POST or broadcast. Independent merge evidence is controlled Rust only because the observed account had one stablecoin UTXO.",
+    "protocolAndEngine": "Core and Provider schemas plus the release fingerprint add tbc.stablecoin.merge. Rust ancestry accepts the current SDK coin-NFT template and one exact pinned historical Testnet template while binding its funding outpoint; stablecoin contract identity is the coin-NFT transaction and creation state is verified separately. Rebuilt host Native, iOS, Android and WASM artifacts carry the same Engine source."
+  },
+  "previousCandidate159Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.158",
+    "baselineTarSha256": "926495a3da6256ba8c47a259c5e8380ec84b79698b82ce2fdeb27acd45a6e1d4",
+    "change": "Keeps the wallet-session multi-round guard active until the orchestrator Promise fully settles by awaiting it inside the guarded try/finally lifecycle.",
+    "preservedBehavior": "Candidate158 remains immutable and rejected for Mobile installation because its guard was released before Promise settlement. Candidate159 changes only that Promise lifecycle and the regression semantics. Conflicting requests still fail before permission/index/UI, request cancellation remains isolated, later runs enter after settlement, and ordinary requests are not serialized.",
+    "focusedTests": [
+      "packages/kit/test/multi-round-merge-real-engine.test.mjs",
+      "packages/kit/test/multi-round-merge.test.mjs",
+      "packages/kit/test/client-and-network.test.mjs",
+      "packages/kit/scripts/check-install-candidate.mjs"
+    ],
+    "performanceEvidence": "The held-first regression does not abort the second request before assertion: it requires the exact -32603 active-run error, then cancels the already-rejected request, proves the first remains held, releases the first, and proves a third run can enter. Full Kit and installed-package gates remain required. This is controlled package evidence only.",
+    "protocolAndEngine": "The Kit orchestration extension decision is unchanged. Each executable step still enters Core/Host as canonical tbc_sendTransaction. TWS/Core fingerprint, Provider error-code set, Host Ports, Engine artifacts, ordinary request concurrency and transaction hot paths are unchanged from Candidate158."
+  },
+  "previousCandidate158Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.157",
+    "baselineTarSha256": "80870c104527f5c5d408872bc4701cd306546adc9ac4c0b475cb1a741e6a75c2",
+    "change": "Attempted to serialize bounded multi-round merge at the wallet-session boundary, but returned the orchestrator Promise without awaiting it and therefore released the guard before the run settled.",
+    "preservedBehavior": "Candidate157 remains immutable. Candidate158 is retained only as immutable defect evidence and must not be installed for Mobile multi-round integration.",
+    "focusedTests": [
+      "packages/kit/test/multi-round-merge-real-engine.test.mjs",
+      "packages/kit/test/multi-round-merge.test.mjs",
+      "packages/kit/test/client-and-network.test.mjs",
+      "packages/kit/scripts/check-install-candidate.mjs"
+    ],
+    "performanceEvidence": "The original test aborted the second request immediately, so Provider cancellation supplied the rejection and masked the prematurely released guard. A read-only no-abort variant failed with Missing expected rejection.",
+    "protocolAndEngine": "tbc_runMultiRoundMerge remains an intentional Kit orchestration extension before Core method validation. Every executable step still enters the shared Core/Host startWalletOperation path as canonical tbc_sendTransaction. TWS/Core fingerprint, Provider standard error-code set, Host Ports and Engine artifacts are unchanged from Candidate157."
+  },
+  "previousCandidate157Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.156",
+    "baselineTarSha256": "aa36be6745213967c00ae52540b079a10bee4298396f30c43c0f217687e6c631",
+    "change": "Completes the Stage 2 public DX boundary with a root typed workflow composer, separate installed DApp/browser and wallet/React Native consumer gates, and a bounded DApp multi-round merge Provider extension over the existing wallet session executor.",
+    "preservedBehavior": "Candidate156 remains immutable. The composer reuses tbc_signWorkflow and adds no executor. DApp multi-round merge reuses tbc_accounts plus tbc_sendTransaction permission, one bounded approval, exact per-step credentials, request-scoped cancellation and existing uncertain-submit reconciliation. Ordinary transaction paths gain no reads or persistence; Legacy and stablecoin remain unchanged.",
+    "focusedTests": [
+      "packages/kit/test/client-and-network.test.mjs",
+      "packages/kit/test/multi-round-merge.test.mjs",
+      "packages/kit/test/multi-round-merge-real-engine.test.mjs",
+      "packages/kit/test/package-boundary.test.mjs",
+      "packages/kit/test/hermes-wallet-import.test.mjs",
+      "packages/kit/test/metro-wallet-parse.test.mjs",
+      "packages/kit/scripts/check-install-candidate.mjs"
+    ],
+    "performanceEvidence": "Controlled tests prove invalid bounded requests fail before private index reads, permission is established before index and approval UI, TBC and FT cross the real Rust-WASM Engine path, and installed browser and React Native profiles compile separately. This is package evidence, not device, real-node, Mainnet, broadcast-delivery or real-fund acceptance.",
+    "protocolAndEngine": "TWS/Core release fingerprint, Host/Core Port registry, canonical transaction methods, Rust Engine, Native/WASM artifacts and private algorithms are unchanged from Candidate156. The DApp merge method is a Kit Provider extension intercepted by the wallet runtime before Core; live progress remains wallet-owned and the immutable DApp result is explicitly non-atomic."
+  },
+  "previousCandidate156Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.155",
+    "baselineTarSha256": "9960dae1958fec038fa2213a669ffc8f929d09a9b28a3e9107050df8b2720aa5",
+    "change": "Adds an exact public reviewed-transaction early-presentation scope derived from the canonical request: raw or associated format, transaction count, known parent-child dependency count and the bounded MULTI_TRANSACTION warning set.",
+    "preservedBehavior": "Candidate155 remains immutable. Early consent is reused only when the final reviewer transaction count and warnings remain inside the exact approved scope. Final request hash, fee, expiry, account, context and approval binding checks remain unchanged; warning wildcards, Legacy fallback, new reads and signing persistence are not introduced.",
+    "focusedTests": [
+      "packages/kit/test/standard-workflow-capabilities.test.mjs",
+      "packages/kit/test/session-execution.test.mjs",
+      "packages/kit/scripts/check-install-candidate.mjs"
+    ],
+    "performanceEvidence": "Controlled raw single, raw multi and associated parent-child tests cover exact scope presentation, one-approval reuse, immutable children and fail-closed count or warning drift. This is package evidence, not device, broadcast, node-acceptance or real-fund evidence.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, nine Host/Core Ports, transaction Engine Rust, Native/WASM artifacts and private algorithms are unchanged from Candidate155. The change is limited to the public TypeScript approval-preparation presentation and exact early-consent validation."
+  },
+  "previousCandidate155Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.154",
+    "baselineTarSha256": "a2430d30dd9ae469a04df18fdf5f5bc3c64dbc52621608491e7ad9ce9c150106",
+    "change": "Normalizes the Standard reviewed-transaction review expiry from an ordinary millisecond trusted clock to the whole-second RFC3339 form required by the unchanged Core schema.",
+    "preservedBehavior": "Candidate154 remains immutable. Review inputs, controlled API reads, review hashes, approval binding, private Native execution, signature validation, submission boundaries and expiry duration remain unchanged; flooring milliseconds cannot extend the two-minute review lifetime.",
+    "focusedTests": [
+      "packages/kit/test/standard-workflow-capabilities.test.mjs",
+      "packages/kit/scripts/check-install-candidate.mjs"
+    ],
+    "performanceEvidence": "Controlled raw and associated review regression covers fractional trusted time without adding reads or private execution. This is package evidence, not device, broadcast, node-acceptance or real-fund evidence.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, nine Host/Core Ports, transaction Engine Rust, Native/WASM artifacts and private algorithms are unchanged from Candidate154. The change is JavaScript-only review-artifact timestamp normalization."
+  },
+  "previousCandidate154Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.153",
+    "baselineTarSha256": "8b82959b27a8846c54531980b27ee1598d8ef35632d9d98473135496f62452c3",
+    "change": "Extends the exact snapshot-bound Pool material retention used by initialize, liquidity add and liquidity remove to both swap directions. Approval can reuse the exact material that produced the plan without another chain/API read.",
+    "preservedBehavior": "Candidate153 remains immutable. Snapshot hash, chain, trusted source identity, account, receiver, Pool contract, direction, exact input amount and expiry remain cache-key boundaries. A miss returns no material and grants no signing, submission or Legacy authority.",
+    "focusedTests": [
+      "packages/kit/test/default-chain-data.test.mjs",
+      "packages/kit/test/keyless.test.mjs",
+      "packages/kit/test/multi-round-pool.test.mjs",
+      "packages/kit/test/pool-policy.test.mjs",
+      "packages/kit/test/package-boundary.test.mjs",
+      "packages/kit/scripts/check-install-candidate.mjs"
+    ],
+    "performanceEvidence": "Controlled two-direction tests prove approval retention reuse adds zero API reads and does not invoke the Pool material loader again. Snapshot, chain, source identity, account, receiver, amount and expiry mismatches all miss. This is package evidence, not device or real-fund acceptance.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, nine Host/Core Ports, transaction Engine Rust, Native/WASM artifacts and private algorithms are unchanged from Candidate153. The public wallet helper adds two read-only swap retention readers and the default Chain Data resolver records the already-planned swap material."
+  },
+  "previousCandidate153Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.152",
+    "baselineTarSha256": "9bac375a04d04fbb92bacd77ddf73b391b6b040f713b175e0fc49d7595a30ade",
+    "change": "Extends the existing bounded wallet-session multi-round merge to Pool-held FT and FTLP by reusing their canonical single-round intents and the Candidate152 session-only execution state machine. A wallet-private full inventory binds Pool, underlying FT and current Pool state identity before one bounded approval; Pool FT retains its four-asset-input covenant path and FTLP retains its five-input no-Pool-state-input path.",
+    "preservedBehavior": "Candidate152 remains immutable. Permission-first entry, one bounded scope UI, exact per-step formal credentials, Signer isolation, session-only Host execution, fee and transaction limits, durable submit/reconcile, uncertain no-retry behavior and journal-only restart recovery remain unchanged. Stablecoin expansion is excluded.",
+    "focusedTests": [
+      "packages/kit/test/multi-round-merge.test.mjs",
+      "packages/kit/test/multi-round-pool.test.mjs",
+      "packages/kit/test/multi-round-merge-real-engine.test.mjs",
+      "packages/kit/test/default-chain-data.test.mjs",
+      "packages/kit/test/pool-policy.test.mjs"
+    ],
+    "performanceEvidence": "Focused controlled tests cover Pool FT and FTLP input bounds, approval custody/result ownership, complete Pool identity, exact accepted-tx Pool state progression, external-state rejection, permission and credential boundaries, and the retained real Rust-WASM TBC/FT paths. These are package fixtures, not real-node, device or real-fund acceptance.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, nine Host/Core Ports, transaction Engine Rust, Native/WASM artifacts and private algorithms are unchanged from Candidate152. Public wallet types add Pool FT/FTLP multi-round asset variants, approval impact and Pool identity; default Kit composition adds a wallet-private canonical Pool inventory read."
+  },
+  "previousCandidate152Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.151",
+    "baselineTarSha256": "39a61fcebc3f88311847e564713401f8382696bfc6447a9631774b8f5ffc3b8a",
+    "change": "Moves every new wallet Core/Host transition to one session-scoped memory store and makes the broadcast journal the only restart boundary. The journal atomically claims first submit intent and binds network source, active-account scope, exact submit-call digest, txid, raw hash, idempotency key and result. Startup lists prepared records for audit and permits status-only recovery for uncertain records; it never resumes Core, signs or POSTs.",
+    "preservedBehavior": "Candidate151 remains immutable. The nine Ports, Provider schemas, approval binding, authority/account/fee/expiry/signature validation, Engine planning/finalization, single live-session replay and explicit unknown-result reconciliation remain unchanged. Historical durable Host rows remain inspect/explicit-cancel only and are never deleted or resumed.",
+    "focusedTests": [
+      "packages/kit/test/default-broadcast.test.mjs",
+      "packages/kit/test/default-broadcast-wallet-lifecycle.test.mjs",
+      "packages/kit/test/session-execution.test.mjs",
+      "packages/kit/test/sqlite-recovery.test.mjs",
+      "packages/kit/test/multi-round-merge-real-engine.test.mjs"
+    ],
+    "performanceEvidence": "Controlled tests prove all new callbacks use session-only execution, the historical SQLite Host receives zero new rows, write-before-POST prepared state never submits on restart, uncertain state performs one status GET and zero POST, account filtering occurs before the recovery limit, and no extra account-provider or chain read is added on the submit path. No device timing, real-node or real-fund claim is made.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, nine Host/Core Ports, transaction Engine Rust, Native/WASM artifacts and private algorithms are unchanged from Candidate151. Public wallet/session and broadcast-journal TypeScript surfaces add the session execution store and journal-only list/recover methods."
+  },
+  "previousCandidate151Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.150",
+    "baselineTarSha256": "91d728008be6d223e15742ec27f60d2af1a61728ced9dd78125e8886d8f75e9a",
+    "change": "Replaces fixed microtask polling and ordinary-failure collapse for nonterminal multi-round Host operations with timer-yielded, 30-second and absolute-expiry-bounded same-operation recovery. Abort and expiry queue cooperative Host cancellation; an unfinished pre-broadcast operation returns operation-pending with its exact recoveryId and zero new fee.",
+    "preservedBehavior": "Candidate150 remains immutable. Completed and rejected operations, formal credentials, Signer and broadcast paths, post-submit uncertainty, permission-first entry, deadline normalization, selection and fee policy remain unchanged. No request is reconstructed and no second operation or POST is created.",
+    "focusedTests": [
+      "packages/kit/test/multi-round-merge.test.mjs",
+      "packages/kit/test/multi-round-merge-real-engine.test.mjs",
+      "packages/kit/test/package-boundary.test.mjs",
+      "packages/kit/test/metro-wallet-parse.test.mjs",
+      "packages/kit/test/bundle-module-identity.test.mjs"
+    ],
+    "performanceEvidence": "A controlled real Rust-WASM TBC run injects a store failure after 13 completed Signer calls while the next clock call is prepared and the lease remains active. Timer-yielded recovery reacquires the lease and completes the same durable operation. Unit evidence retains recoveryId with zero fee for an unfinished pre-broadcast operation and preserves abort/expiry outcomes. No device timing, real-node or real-fund claim is made.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, Host/Core protocol, transaction Engine Rust, Native/WASM artifacts and private algorithms are unchanged from Candidate150. The public multi-round result union adds operation-pending and pending step status for precise durable recovery identity."
+  },
+  "previousCandidate150Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.149",
+    "baselineTarSha256": "9d9749fca757b2e0fab8626bf556a6314d872c93ff99deb1644bd6c082d1a194",
+    "change": "Uses the existing no-envelope platform-local clock semantics for the bounded formal-approval expiry check instead of passing that approval.request envelope to the clock adapter. The actual clock.now Host Port branch continues to receive its own verified envelope.",
+    "preservedBehavior": "Candidate149 remains immutable. Permission-first entry, deadline normalization, per-approved-run Host identity, stable index identity, wallet-issued formal credentials, fee policy, selection, reads, real Engine/Signer execution, durable broadcast classification and recovery are unchanged.",
+    "focusedTests": [
+      "packages/kit/test/multi-round-merge.test.mjs",
+      "packages/kit/test/multi-round-merge-real-engine.test.mjs",
+      "packages/kit/test/package-boundary.test.mjs",
+      "packages/kit/test/metro-wallet-parse.test.mjs",
+      "packages/kit/test/bundle-module-identity.test.mjs"
+    ],
+    "performanceEvidence": "Controlled real Rust-WASM TBC execution succeeds with a strict platform clock adapter that rejects every supplied envelope whose operation is not clock.now, while wallet-local index and approval checks use the no-envelope path. No device timing, real-node or real-fund claim is made.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, Host/Core protocol, transaction Engine Rust, Native/WASM artifacts and private algorithms are unchanged from Candidate149. This is a default Kit composition boundary correction only."
+  },
+  "previousCandidate149Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.148",
+    "baselineTarSha256": "866974b8a17f73239dbf14beec5ff7f288813407d90bd59a595ef85c3decc2da",
+    "change": "Normalizes ordinary millisecond Date.toISOString deadlines to whole-second RFC3339 only at the default multi-round Core request boundary, and binds each internal step request identity to scopeHash, wallet approvalId and stepIndex so a newly approved run cannot replay an earlier pre-submit Host failure over the same index.",
+    "preservedBehavior": "Candidate148 remains immutable. Permission-first entry, stable index identity, wallet-issued formal credentials, fee policy, selection, reads, real Engine/Signer execution, durable broadcast classification and recovery are unchanged.",
+    "focusedTests": [
+      "packages/kit/test/multi-round-merge.test.mjs",
+      "packages/kit/test/multi-round-merge-real-engine.test.mjs",
+      "packages/kit/test/package-boundary.test.mjs",
+      "packages/kit/test/metro-wallet-parse.test.mjs",
+      "packages/kit/test/bundle-module-identity.test.mjs"
+    ],
+    "performanceEvidence": "The exact device-shaped .983Z request is reproduced as invalid before normalization and valid at whole-second precision. Controlled real Rust-WASM TBC execution accepts millisecond scope input, and two newly approved same-index runs reach the credential boundary with distinct clientRequestIds. No device timing, real-node or real-fund claim is made.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, Host/Core protocol, transaction Engine Rust, Native/WASM artifacts and private algorithms are unchanged from Candidate148. This is a default Kit composition boundary correction only."
+  },
+  "previousCandidate148Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.147",
+    "baselineTarSha256": "148ff0cd77bdabe95742564d5e7fe092b66b671486603642691c6cef97233201",
+    "change": "Closes the default multi-round platform boundary: Core permissions are proven before index/UI, the wallet issues each exact formal credential through its existing journal/token verifier without a second UI, index identity excludes observation time, and proven pre-POST failures return zero fee instead of broadcast uncertainty.",
+    "preservedBehavior": "Candidate147 remains immutable. Successful TBC/FT selection, real Engine planning/finalization, Signer tasks, durable submit/reconcile, uncertain recovery identity and bounded scope behavior remain unchanged.",
+    "focusedTests": [
+      "packages/kit/test/multi-round-merge.test.mjs",
+      "packages/kit/test/multi-round-merge-real-engine.test.mjs",
+      "packages/kit/test/package-boundary.test.mjs",
+      "packages/kit/test/metro-wallet-parse.test.mjs",
+      "packages/kit/test/bundle-module-identity.test.mjs"
+    ],
+    "performanceEvidence": "Controlled tests prove missing permission causes zero private index reads, zero scope prompts, zero credential/Signer/POST calls; formal-credential rejection has zero fee exposure; real Engine success verifies wallet-issued credentials before secp signing. No device timing, real-node or real-fund claim is made.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, Host/Core protocol, transaction Engine Rust, Native/WASM artifacts and private algorithms are unchanged from Candidate147. The public wallet composition adds the required authorizeStep platform hook and the stable state-hash helper."
+  },
+  "previousCandidate147Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.146",
+    "baselineTarSha256": "ec363edd2bdaac1bb089105f53ca6f2137b54f80ac1833cfccacaefe36c5b82a",
+    "change": "Finalizes structured failure handling after the Candidate146 pack boundary. Default execution now retains the durable Host operation identity as recoveryId when a callback fails or a submit outcome cannot be returned, while already completed steps remain in the result.",
+    "preservedBehavior": "All Candidate146 default-composition, exact-budget, expiry, authority, deep-freeze, refresh-delay, TBC and FT behavior remains unchanged. Candidate146 remains immutable.",
+    "focusedTests": [
+      "packages/kit/test/multi-round-merge.test.mjs",
+      "packages/kit/test/multi-round-merge-real-engine.test.mjs",
+      "packages/kit/test/package-boundary.test.mjs",
+      "packages/kit/test/metro-wallet-parse.test.mjs",
+      "packages/kit/test/bundle-module-identity.test.mjs"
+    ],
+    "performanceEvidence": "No success-path expansion from Candidate146. Focused failure tests prove preparation, execution and index exceptions return structured partial or uncertain results and preserve a durable recoveryId. No device timing, real-node or real-fund claim is made.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, Host/Core protocol, transaction Engine Rust, Native/WASM artifacts and private algorithms are unchanged from Candidate146."
+  },
+  "previousCandidate146Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.145",
+    "baselineTarSha256": "f0cd9445621321b6909e6006847f14c964df569b18b124096fab7bf50c4adc49",
+    "change": "Adds the default production multi-round composition to the wallet session. Kit now owns TBC/FT index reads, deterministic selection, Chain Data and Rust Engine planning, bounded-scope-derived exact formal receipts, Signer execution, durable submit/reconcile and index refresh. It also fixes exact-budget target completion and rechecks the earliest scope, approval and step expiry after preparation.",
+    "preservedBehavior": "The low-level advanced adapter remains public. Existing one-shot merge methods, Provider methods, Engine algorithms and Candidate145 bytes remain unchanged. Scope authority/asset/limits are deeply immutable; live authority is checked before each execution; default refreshes wait; partial and uncertain adapter failures retain completed step evidence.",
+    "focusedTests": [
+      "packages/kit/test/multi-round-merge.test.mjs",
+      "packages/kit/test/multi-round-merge-real-engine.test.mjs",
+      "packages/kit/examples/multi-round-merge/run.mjs"
+    ],
+    "performanceEvidence": "Controlled default-composition evidence executes TBC 205-to-1 in three Engine transactions and FT 6-to-1 in two Engine transactions. Both use real Rust-WASM planning/finalization and real secp Signer tasks with an explicitly controlled broadcast fixture. No device timing, real-node or real-fund claim is made.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, Host/Core protocol, transaction Engine Rust, Native/WASM artifacts and private algorithms are unchanged from Candidate145. The public wallet runtime type adds runMultiRoundMerge and its bounded native scope approval option."
+  },
+  "previousCandidate145Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.144",
+    "baselineTarSha256": "96df6cd6d9a578917361f3342b339dfa199a07afa8ef81075c45700cb94d85ac",
+    "change": "Retains Candidate144's bounded multi-round TBC/FT orchestration and records the approved fee of an unresolved submission in totalFee as possible exposure. The unknown transaction remains terminal and enters reconciliation only; it is never re-executed.",
+    "preservedBehavior": "All Candidate144 scope, material, budget, cancellation, partial-result, index and authority bindings are unchanged. Candidate144 remains immutable.",
+    "focusedTests": [
+      "packages/kit/test/multi-round-merge.test.mjs",
+      "packages/kit/test/multi-round-merge-real-engine.test.mjs",
+      "packages/kit/examples/multi-round-merge/run.mjs"
+    ],
+    "performanceEvidence": "No execution-path or request-count change from Candidate144. The same controlled 205-to-1 real Rust-WASM path remains the representative success evidence; no device timing or real-node claim is made.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, Host/Core protocol, transaction Engine Rust, Native/WASM artifacts and private algorithms are unchanged from Candidate144."
+  },
+  "previousCandidate144Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.143",
+    "baselineTarSha256": "e7e63fb6116b6ec0ec5c8feef126fde1164622b476e443d17b952e20bbb6f4b2",
+    "change": "Adds a public wallet-owned bounded multi-round merge orchestrator for TBC and FT. The finite scope binds account, network, origin, session, target UTXO count, maximum transaction count, total fee cap and expiry. Every round binds an exact index state and prepared material; cancellation, partial failure, index stall, external fact change and uncertain broadcast are explicit terminal results.",
+    "preservedBehavior": "Existing one-shot TBC/FT merge methods, Chain Data selection, policy, Rust Engine planning/finalization, formal approval, Signer isolation, durable broadcast/reconciliation and ordinary transaction read counts remain unchanged. Candidate143 remains immutable.",
+    "focusedTests": [
+      "packages/kit/test/multi-round-merge.test.mjs",
+      "packages/kit/test/multi-round-merge-real-engine.test.mjs",
+      "packages/kit/examples/multi-round-merge/run.mjs",
+      "packages/kit/test/package-boundary.test.mjs",
+      "packages/kit/test/metro-wallet-parse.test.mjs"
+    ],
+    "performanceEvidence": "A controlled 205-to-1 representative path executes three TBC merges through the real Rust-WASM Engine, Core/Host, 207 Signer tasks and an explicitly controlled broadcast fixture. Unit evidence proves bounded index polling and no second execute/POST after an unknown submission. No device timing or real-node claim is made.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, Host/Core protocol, transaction Engine Rust, Native/WASM artifacts and private algorithms are unchanged from Candidate143. The new public API is TypeScript orchestration exported from /wallet."
+  },
+  "previousCandidate143Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.142",
+    "baselineTarSha256": "ec7e7ad4eccd54c0093f0cb55b1a3232ca60008704204a607d1e3cef19f5a511",
+    "change": "Starts automatic Chain Data preparation only after Core validates the request permissions and advances from authorizing to resolving. Unauthorized requests retain the early wallet presentation but perform no remote Chain Data reads. The wallet entry also exports the existing canonical poolServiceFeeRate helper so consumers can remove their duplicate six-plan table.",
+    "preservedBehavior": "Authorized Standard and Legacy requests retain one early approval shell, permission-bound exact preparation, in-flight Chain Data reuse, parallel policy work, bounded warning and fee consent, Signer custody, durable send and reconciliation. Candidate142 remains immutable.",
+    "focusedTests": [
+      "packages/kit/test/request-preparation.test.mjs",
+      "packages/kit/test/session-execution.test.mjs",
+      "packages/kit/test/pool-policy.test.mjs",
+      "packages/kit/test/bundle-module-identity.test.mjs",
+      "packages/kit/test/package-boundary.test.mjs",
+      "packages/kit/test/metro-wallet-parse.test.mjs"
+    ],
+    "performanceEvidence": "Package tests prove an unauthorized automatic preparation returns 4100 with zero Chain Data reads, while an authorized LP request still begins one in-flight read before the approval decision and consumes it without a duplicate read. No device timing, Mobile UI, Testnet or real-chain claim is made.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, Host/Core protocol, transaction Engine Rust, Native/WASM artifacts and private algorithms are unchanged from Candidate142. The only public API addition is a re-export of the existing pure Pool fee helper from /wallet."
+  },
+  "previousCandidate142Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.141",
+    "baselineTarSha256": "9b20637380c6fb110da7f7fc7195ac68fb9a0f76919e9f6bf821b3e0c175a92a",
+    "change": "Deletes migrated Legacy reviewer wrappers, direct raw/associated/crypto controller fallbacks, the top-level FT transfer route, old preparation/consent options and the zero-consumer Pool loader alias. Legacy secure calls use one Standard adapter; FT, Pool and P2PKH transactions use one Standard preparation route. P2PKH preserves sign-only and broadcast behavior. Exact same-session request identities reuse one in-flight or completed delivery before preparation. Canonical FT create early consent covers only its fixed FT_MINT_V4 preview warning.",
+    "preservedBehavior": "Per-navigation capability construction, Legacy workflow/action mapping, method-specific permissions, exact approval and authority binding, early popup, bounded consent, parallel prefetch, immutable material reuse, Signer custody, durable send/reconciliation, historical Legacy results and the legacyPoolPreview native ABI remain unchanged. Any additional or unknown FT mint warning still requires formal approval.",
+    "focusedTests": [
+      "packages/kit/test/request-preparation.test.mjs",
+      "packages/kit/test/legacy-webview-composition.test.mjs",
+      "packages/kit/test/legacy-standard-workflow.test.mjs",
+      "packages/kit/test/session-execution.test.mjs",
+      "packages/kit/test/standard-workflow-capabilities.test.mjs",
+      "packages/kit/test/legacy-cleanup-audit.test.mjs",
+      "packages/kit/test/package-boundary.test.mjs",
+      "packages/kit/test/metro-wallet-parse.test.mjs"
+    ],
+    "performanceEvidence": "Package tests prove identical concurrent and completed request identities do not restart Chain Data preparation, while a reused id with different input fails closed. They also prove FT_MINT_V4 reuses exact bounded early consent while an additional warning fails closed to formal approval. No device timing, Mobile UI, Testnet or real-chain claim is made.",
+    "protocolAndEngine": "Provider methods, schemas, release fingerprint, transaction Engine Rust, Native/WASM artifacts, private algorithms and public package subpaths are unchanged from Candidate141. The /wallet Legacy-controller compatibility surface is intentionally reduced."
+  },
+  "previousCandidate140Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.139",
+    "baselineTarSha256": "21d01a3c9536d8cf3427cb55ab4af74464fb17b489286c98cf73ad532a8a84d2",
+    "change": "Adds independent reviewed-transaction, encrypt and decrypt Provider methods. Public helpers and standalone Legacy raw/associated signing and crypto dispatch those methods directly; true multi-step Legacy batches remain one Standard workflow. Both paths reuse the same reviewed-transaction and crypto execution kernels.",
+    "preservedBehavior": "Trusted wallet review, exact approval/request/account/session binding, native private execution, Legacy parameter/result/error shapes, workflow topology, Candidate139 FT input budgeting, prefetch, immutable material reuse, broadcast submission and unknown-result reconciliation remain enforced.",
+    "focusedTests": [
+      "packages/core/test/workflow-signing.test.mjs",
+      "packages/kit/test/client-and-network.test.mjs",
+      "packages/kit/test/legacy-standard-workflow.test.mjs",
+      "packages/kit/test/legacy-webview-composition.test.mjs",
+      "packages/kit/test/session-execution.test.mjs",
+      "packages/kit/test/sqlite-recovery.test.mjs",
+      "packages/kit/test/package-boundary.test.mjs",
+      "packages/kit/test/metro-wallet-parse.test.mjs"
+    ],
+    "performanceEvidence": "Pure signing/private methods select a live-session Host by default and do not write the configured durable SQLite Host. Wallet send methods retain durable Host execution. This is package-level evidence only; no device timing or Testnet acceptance is claimed.",
+    "protocolAndEngine": "The draft Provider/Core schema and fingerprint add three methods and one crypto approval kind. Transaction Engine Rust, Native/WASM artifacts and signing algorithms are unchanged."
+  },
+  "previousCandidate139Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.138",
+    "baselineTarSha256": "379954eafa65e0b76ecae974463c24addb259b34a3c9a6167b83d598b47f6523",
+    "change": "Separates FT transfer/merge native funding alternatives from the actual input budget. Kit retains up to the existing 256 native candidates for unchanged Rust smallest-sufficient selection; these routes select at most five FT inputs and consume one native fee input. No candidate truncation, limit increase, automatic consolidation or Legacy bypass is introduced.",
+    "preservedBehavior": "Native descriptor validation, duplicate checks, selected FT parent/ancestry reads, parallel index reads, immutable caching, account/authority binding, exact Engine fee/change/confirmation/ownership checks, maxFee, Pool selection, prefetch, approval, Signer, broadcast and recovery remain unchanged.",
+    "focusedTests": [
+      "packages/kit/test/default-chain-data.test.mjs",
+      "packages/kit/test/package-boundary.test.mjs",
+      "packages/kit/test/metro-wallet-parse.test.mjs"
+    ],
+    "performanceEvidence": "Controlled 128/256-native-candidate plus one FT snapshots reach real Rust-WASM planning with exactly two spent inputs and the same HTTP read multiset as the two-native-candidate baseline. No device timing, signing or broadcast claim is made.",
+    "protocolAndEngine": "Core, Host, schemas, protocol fingerprint, public exports, Rust source and native/WASM artifacts are unchanged. This fix is Kit Chain Data only. The prior stale-native pre-sign failure is a separate Mobile integration issue."
+  },
+  "previousCandidate138Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.136",
+    "baselineTarSha256": "935de9345f721711e28060b80e4edc5595892999eb595a4f9384994273049b4c",
+    "change": "Candidate138 freezes the reviewed Candidate137 runtime changes: Kit-owned Legacy migration contract, canonical approvalPreparation aliases, Pool capability warmup, verified bound-account reuse, shared native funding for swaps, shared immutable inspection, and parallel independent Pool material reads. Candidate137 remains an unchanged historical review tarball. Mobile wiring, device acceptance and a fix for the reported workflow pre-sign failure are not claimed.",
+    "preservedBehavior": "Approval binding, exact authority/session/account checks, fee-cap and warning validation, Host/Core, Signer, Engine finalize, HTTP, POST, broadcast and recovery behavior remain unchanged. Legacy DTO/result/error/ACK shapes, wallet-owned approval UI, Signer custody, Keychain, SQLite and recovery seams remain compatibility boundaries.",
+    "focusedTests": [
+      "packages/kit/test/candidate136-supported-capability-matrix.test.mjs",
+      "packages/kit/test/standard-workflow-capabilities.test.mjs",
+      "packages/kit/test/default-success-lifecycles.test.mjs",
+      "packages/kit/test/legacy-migration-contract.test.mjs",
+      "packages/kit/test/package-boundary.test.mjs",
+      "packages/kit/test/metro-wallet-parse.test.mjs"
+    ],
+    "performanceEvidence": "Package tests cover capability warmup without chain reads, verified account reuse, shared swap funding, and exact prefetch binding. Independent reads are scheduled concurrently; no device timing or physical HTTP parity is claimed. Approval, Signer, POST, broadcast and recovery authority are preserved.",
+    "protocolAndEngine": "The Candidate.136 protocol fingerprint, Core and Provider schemas, nine Ports and Engine Native/WASM artifacts are unchanged. Kit runtime and optional preparation/account/material adapter interfaces changed as listed above; no new signing, approval, broadcast or recovery protocol is introduced. React Native export branches, including ./engine, remain present."
+  },
+  "previousCandidate110Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.109",
+    "baselineTarSha256": "b3a2da339d09758bb8ce01c4719278ca95edae2e91d40b3bd36b0d271337dda0",
+    "change": "Makes shared early-approval fee requirements match the exact workflow step kinds. Pure message, typed-data, encrypt and decrypt workflows no longer require or suggest a fee cap; workflows containing transaction, prepared-transaction or reviewed-transaction steps still require the displayed cap and final fee check.",
+    "preservedBehavior": "Candidate.109 standalone Legacy-to-Standard routing, exact request and authority binding, formal workflow approval, wallet-private crypto execution, reviewed-transaction fee checks, Signer custody, read retry/backoff, HTTP behavior, POST, broadcast and durable reconciliation remain unchanged.",
+    "focusedTests": [
+      "packages/kit/test/session-execution.test.mjs",
+      "packages/kit/test/legacy-standard-workflow.test.mjs",
+      "packages/kit/test/legacy-webview-composition.test.mjs",
+      "pure crypto workflow early consent requires no fee cap and performs no ChainData or Policy Port call",
+      "LP transaction preparation continues to require its exact displayed fee cap",
+      "standalone Legacy secure methods continue to map to one-step Standard workflows"
+    ],
+    "performanceEvidence": "A pure crypto workflow completes with one formal approval and one crypto execution while invoking neither chainData.resolve nor policy.resolve. This is Port-level evidence only; no physical HTTP count is inferred. No new read, retry, approval, Signer, POST or broadcast path is added.",
+    "protocolAndEngine": "The Candidate.109 protocol fingerprint, Core/Provider schemas, Ports, Engine Native/WASM artifacts and workflow execution are unchanged. Candidate.110 only corrects Kit presentation metadata and early-consent fee gating from the already validated canonical workflow request."
+  },
+  "previousCandidate109Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.108",
+    "baselineTarSha256": "29b4242ed83a2f11abc19f7733d96980759b4725745c05e471d869359f76ce4a",
+    "change": "Maps standalone Legacy raw signing, associated signing, encrypt and decrypt requests into single-step Standard workflows whenever the shared workflow adapter is configured. The old wallet-private services remain only as a migration fallback when that adapter is absent.",
+    "preservedBehavior": "Historical standalone result and cancellation shapes, exact navigation/session context, delivery acknowledgment, reviewed-transaction parsing, associated material validation, crypto key custody, formal workflow approval and the Candidate.108 shared approval preparation boundary remain unchanged.",
+    "focusedTests": [
+      "packages/kit/test/session-execution.test.mjs",
+      "packages/kit/test/legacy-standard-workflow.test.mjs",
+      "packages/kit/test/legacy-webview-composition.test.mjs",
+      "standalone raw, associated, encrypt and decrypt each map to one single-step Standard workflow",
+      "old private secure-operation services are not called when the shared adapter is configured",
+      "historical method-specific cancellation text and one ACK-able delivery are preserved"
+    ],
+    "performanceEvidence": "The Legacy controller performs one shared workflow adapter call per standalone request and no private redispatch. This candidate adds no Legacy account lookup, material prefetch, HTTP read, approval, Signer call, POST or broadcast; physical HTTP counts remain a Mobile device acceptance item and are not inferred from Port counts.",
+    "protocolAndEngine": "The Candidate.108 protocol fingerprint, Core/Provider schemas, Ports, Engine Native/WASM artifacts and generic approval lifecycle are unchanged. Candidate.109 changes only Legacy-to-Standard routing preference and keeps the old services as an unselected fallback during device migration."
+  },
+  "previousCandidate108Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.107",
+    "baselineTarSha256": "e1c6915afcce52d54c0e49165c5ae770bb4ba35eae504a1a026b262647a95207",
+    "change": "Generalizes the wallet-owned Standard preparation lifecycle from workflows to every current Core method that requires approval. Early UI decisions remain non-authorizing, are correlated to the exact later approval binding, and transactions/workflows require a displayed fee cap. Legacy LP and transaction routes may opt into the shared lifecycle without running the old prefetch or consent branch.",
+    "preservedBehavior": "Core formal approval receipts, exact authority binding, Signer custody, workflow preparation compatibility, parallel mapping, single-flight reads, safe read retry/backoff, selected-parent reads, immutable cache rules, prepared material/checkpoint reuse, one batch approval, POST, broadcast and durable reconciliation remain unchanged.",
+    "focusedTests": [
+      "packages/kit/test/session-execution.test.mjs",
+      "packages/kit/test/legacy-standard-workflow.test.mjs",
+      "packages/kit/test/legacy-webview-composition.test.mjs",
+      "exact no-fee message early consent remains behind formal approval",
+      "Standard LP preparation performs one chain-data read and one policy read",
+      "Legacy LP opt-in skips the old Legacy prefetch and consent branches"
+    ],
+    "performanceEvidence": "The early decision and the existing Host material preparation overlap within one operation. The focused LP test records exactly one ChainData resolve and one Policy resolve; no duplicate Legacy prefetch, HTTP read, approval, Signer call, POST or broadcast is added. Device latency remains unclaimed pending Mobile acceptance.",
+    "protocolAndEngine": "The Candidate.107 protocol fingerprint, Core/Provider schemas, nine Ports, Host authority enforcement, Engine Native/WASM artifacts and Signer behavior are unchanged. Candidate.108 adds only a wallet-runtime orchestration surface and opt-in Legacy mapping into it."
+  },
+  "previousCandidate105Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.104",
+    "baselineTarSha256": "a15bff81ec0caa639dbc320e00fa01e59ac9d3d674d5ca1d2061a0e87918713b",
+    "change": "Deletes the migration-only three-recipe Legacy batch fallback after Mobile proved production no longer depends on it. sendBatchRequest is now owned exclusively by the Kit generic Standard workflow adapter. Obsolete FT-transfer batch prefetch, consent, progress, dependent-coordinator and result-stitching branches are removed from the controller and its public option type.",
+    "preservedBehavior": "Candidate.104 generic intent/workflow path, exact Legacy result shapes, standalone FT/P2PKH/associated interfaces, workflow permission grant, one business approval, exact authority checks, Signer semantics, zero-confirmation behavior, retry policy, custody and broadcast durability remain unchanged.",
+    "focusedTests": [
+      "packages/kit/test/legacy-webview-composition.test.mjs",
+      "packages/kit/test/legacy-standard-workflow.test.mjs",
+      "without genericBatch the three old recipe shapes are unsupported before prefetch, approval or dispatch",
+      "standalone FT and associated operations remain supported",
+      "generic mixed batches retain one workflow execution and one business approval"
+    ],
+    "performanceEvidence": "The active generic workflow path is byte-for-byte unchanged. Deleted fallback code can no longer perform duplicate per-step reads, prefetch, approvals or dispatch. No request, parse, retry, POST, broadcast or wait is added.",
+    "protocolAndEngine": "The Candidate.104 protocol fingerprint, nine Ports, Host/Core permission enforcement, schemas and transaction Engine Native/WASM artifacts are unchanged. Candidate.105 changes only removal of production-dead Legacy controller fallback code and obsolete option fields."
+  },
+  "previousCandidate104Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.103",
+    "baselineTarSha256": "7bdc291c79e6b55e2cf3bad7ebbf8200c76ccb71622a61a10af7a922b54ab9bb",
+    "change": "Restores strict historical Legacy generic-workflow result shapes, with sendTransaction returning only { txraw } and associated signing retaining { txraws }.",
+    "tarSha256": "a15bff81ec0caa639dbc320e00fa01e59ac9d3d674d5ca1d2061a0e87918713b"
+  },
+  "previousCandidate103Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.102",
+    "baselineTarSha256": "50d27107ca78d9b9f8d5df36f2622576d954dbe8b7ad70983d4e9bed06418e2b",
+    "change": "Adds tbc_signWorkflow to the exact-origin Legacy connect permission proposal while retaining a separate workflow business approval and every Core authority check.",
+    "tarSha256": "7bdc291c79e6b55e2cf3bad7ebbf8200c76ccb71622a61a10af7a922b54ab9bb"
+  },
+  "previousCandidate102Delta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.100",
+    "baselineTarSha256": "fd43c7eeae2d48eb86cdc6dc98abc9273d097b89f435b820f993709186c85385",
+    "change": "Adds createTbcStandardWorkflowCapabilities as the reusable Kit-owned implementation of the optional reviewedTransaction and crypto Ports, with a neutral wallet-private ABI and no Standard dependency on Legacy modules.",
+    "tarSha256": "50d27107ca78d9b9f8d5df36f2622576d954dbe8b7ad70983d4e9bed06418e2b"
+  },
+  "previousCandidateDelta": {
+    "baseline": "@tbc/kit@0.1.0-candidate.99",
+    "baselineTarSha256": "6c9a11f892342d4af9085d3d820f37ada4b128845eb45c45c881bed92f9fbc94",
+    "change": "Closes the shared standard workflow gap for reviewed raw/associated transactions, message txid binding, encrypt/decrypt and mixed one-to-five batches. The Legacy WebView controller delegates the complete list to one wallet-local standard workflow and preserves the Host deliveryId for exact durable acknowledgment.",
+    "preservedBehavior": "Candidate.99 transaction intent mapping, raw and associated review, Bitcoin-message compatibility, historical ordered result shapes, sign-only batch sends, merge exclusion, zero-confirmation behavior, idempotent-read retry policy, signing custody and broadcast durability remain unchanged.",
+    "focusedTests": [
+      "packages/core/test/workflow-signing.test.mjs",
+      "packages/kit/test/legacy-standard-workflow.test.mjs",
+      "packages/kit/test/legacy-webview-composition.test.mjs"
+    ],
+    "performanceEvidence": "The adapter adds no HTTP read, confirmation decode, retry, POST, broadcast, second approval or per-child Provider redispatch.",
+    "protocolAndEngine": "The public protocol fingerprint changes for the explicit workflow closure; transaction Engine Native/WASM behavior is unchanged."
+  },
+  "artifacts": [
+    {
+      "role": "transaction-engine",
+      "path": "artifacts/wasm/tbc_engine_wasm.wasm",
+      "sha256": "6e7bc0f998319566269cdf09be4f1f390888a6c8f0b825e51ca54abb53690233"
+    },
+    {
+      "role": "transaction-engine-wallet-private-native",
+      "path": "artifacts/native/aarch64-apple-darwin/libtbc_engine_native.dylib",
+      "sha256": "afd28443e5d09cb1040a8833bc84d18da11e798be1d917614f9549cc88d02366",
+      "target": "aarch64-apple-darwin"
+    },
+    {
+      "role": "transaction-engine-wallet-private-native",
+      "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/libtbc_engine_native.a",
+      "sha256": "7d0a08a43119eaf3e46bae015ab1bb577bbad367deb15248d4c53cd3b04be5ef",
+      "target": "aarch64-apple-ios"
+    },
+    {
+      "role": "transaction-engine-wallet-private-native",
+      "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/libtbc_engine_native.a",
+      "sha256": "13e3a29e222a2a769e80708183b6a49a4753384a1f62c4ef9c33bb234fe25de4",
+      "target": "aarch64-apple-ios-sim"
+    },
+    {
+      "role": "transaction-engine-wallet-private-native",
+      "path": "artifacts/native/android/jniLibs/arm64-v8a/libtbc_engine_native.so",
+      "sha256": "35e91efafb6df87c2e6be9a4a203c98fafbab0b8d95fbc2444324c32edf7322b",
+      "target": "aarch64-linux-android"
+    },
+    {
+      "role": "transaction-engine-wallet-private-native",
+      "path": "artifacts/native/android/jniLibs/armeabi-v7a/libtbc_engine_native.so",
+      "sha256": "f99ec587416fd85b6f35bf35d2381637a2528ba7499df4f0c33e385988e46d42",
+      "target": "armv7-linux-androideabi"
+    },
+    {
+      "role": "transaction-engine-wallet-private-native",
+      "path": "artifacts/native/android/jniLibs/x86_64/libtbc_engine_native.so",
+      "sha256": "fe3bf46702da1271081ea840636b666a1fdbf74a8522486ce387d5b932ab80ce",
+      "target": "x86_64-linux-android"
+    },
+    {
+      "role": "keyless-pool-preparation",
+      "path": "artifacts/wasm/tbc_keyless_wasm.wasm",
+      "sha256": "a49b8e2a220f2ff3ce743ed6e546ee225ebff242b5f034aeb3ab4ea00bb91168",
+      "operations": [
+        "preparePoolNft",
+        "prepareAssetAncestry",
+        "legacyPoolPreview",
+        "inspectTokenReceipt",
+        "inspectNftReceipt"
+      ],
+      "ambientImports": 0
+    },
+    {
+      "role": "keyless-pool-preparation-native",
+      "path": "artifacts/keyless-native/aarch64-apple-darwin/libtbc_keyless_native.dylib",
+      "sha256": "94e2c203a951c4c400c80e16018e2c5fb334615c1f1a826fb061b595e7ea6309",
+      "target": "aarch64-apple-darwin",
+      "operations": [
+        "preparePoolNft",
+        "prepareAssetAncestry",
+        "legacyPoolPreview",
+        "inspectTokenReceipt",
+        "inspectNftReceipt"
+      ],
+      "header": "artifacts/keyless-native/aarch64-apple-darwin/tbc_keyless.h"
+    }
+  ],
+  "protocolFingerprint": "06e72b2cfa9fa249b2e1b386d68afb0600af9562555e988722129ff3fcb22a28",
+  "semantics": "Absent confirmations mean unobserved, not zero. Only wallet minimum zero permits absence. FTLP burn has no DApp amount or receiver: the wallet selects one to five complete eligible outputs and sends their exact combined balance to the released eater without spending Pool state or returning reserves.",
+  "publicMerge": {
+    "intents": [
+      "tbc.maintenance.merge",
+      "tbc.ft.merge",
+      "tbc.stablecoin.merge",
+      "tbc.pool.ft.merge",
+      "tbc.pool.ftlp.merge"
+    ],
+    "inputBounds": {
+      "tbc": [
+        2,
+        100
+      ],
+      "ft": [
+        2,
+        5
+      ],
+      "stablecoin": [
+        2,
+        5
+      ],
+      "poolFt": [
+        2,
+        4
+      ],
+      "ftlp": [
+        2,
+        5
+      ]
+    },
+    "transactionRole": "primary",
+    "transactionCountPerCall": 1,
+    "schemas": {
+      "schemas/transaction-request.schema.json": "2905fefcea93ce38d1a0a5e0fb49276cd7e39b8e3954b69157b6b5ccc75b309d",
+      "schemas/integration.schema.json": "48f148ad1e305574244d259091411cd0c27faec3e5c28b7d44a431991016aa43"
+    },
+    "nativeDelivery": {
+      "iosArm64Sha256": "7d0a08a43119eaf3e46bae015ab1bb577bbad367deb15248d4c53cd3b04be5ef",
+      "iosSimulatorArm64Sha256": "13e3a29e222a2a769e80708183b6a49a4753384a1f62c4ef9c33bb234fe25de4",
+      "wasmSha256": "6e7bc0f998319566269cdf09be4f1f390888a6c8f0b825e51ca54abb53690233"
+    }
+  },
+  "publicFtlpBurn": {
+    "intent": "tbc.pool.ftlp.burn",
+    "clientMethod": "wallet.maintenance.burnFtlp({ poolContractId })",
+    "legacyFlag": "POOLNFT_LP_BURN",
+    "inputBounds": [
+      1,
+      5
+    ],
+    "selection": "whole eligible FTLP UTXOs sorted by balance, txid and vout",
+    "destination": "1BitcoinEaterAddressDontSendf59kuE",
+    "poolStateConsumed": false,
+    "returnsPoolReserves": false,
+    "lockedFamilyRequirement": "already-unlocked zero-lock FTLP inputs only",
+    "approval": "lp burn exact amount, Pool identity, fixed eater, fee and irreversible effect",
+    "runtimeParityChecks": 28
+  },
+  "candidate87BoundaryRepair": {
+    "burnDefaultPolicy": {
+      "intent": "tbc.pool.ftlp.burn",
+      "allowed": true,
+      "poolContractIdBoundToSnapshot": true,
+      "otherPolicyIntentsChanged": false
+    },
+    "directSwap": {
+      "methods": [
+        "wallet.pool.buy",
+        "wallet.pool.sell"
+      ],
+      "requiredConstraints": {
+        "expiresAt": "future RFC 3339 UTC time with second precision"
+      },
+      "defaultDeadlineGenerated": false,
+      "missingOrExpiredRejectedBeforeTransport": true,
+      "strictProviderSchemaRelaxed": false
+    },
+    "sourceHashes": {
+      "packages/kit/src/client.ts": "68041fd19ea087b96e88bb57c176ea3309ed6161088fac86049783461554c88c",
+      "packages/kit/src/default-network.ts": "68336c50dfe3af546378ec3967fc98fd9452dc51841f5870fba4efcae47fd7fd",
+      "packages/kit/src/public-types.ts": "9f329013300301262d89108b54f47fb8258707a72a0ea4e75fb1c6d41ddd193d",
+      "packages/kit/src/index.ts": "7a14c579a9a6cb67f789f5dca6258aa037910c7dbe1ff929408016634df768a4",
+      "packages/kit/src/index.native.ts": "0a1f5d6d3b16fc01cfeab6260912d37376397608a82a391f85582ba20e598c62"
+    },
+    "testHashes": {
+      "packages/kit/test/client-and-network.test.mjs": "278691f34759364e5ae2378c37fe29958785da25665e0a4430eb36550711cdd8",
+      "packages/kit/test/default-chain-data.test.mjs": "4a1b8945e1885036a66c2a00385c00280ba5c16ddde8f35fa76dad1cd1de4913",
+      "packages/kit/test/client-types.test.mjs": "f98a82d1396c692b8b39d1815c719274363885165c24d9a10c0dca9ac780f9c9",
+      "packages/kit/test/types/client-public-consumer.ts": "469c6f0bf8b810a5e78cf0d2e1bc4013ad334455346c0d44f463788da3f83413"
+    }
+  },
+  "candidate88GenericInterfaces": {
+    "scope": {
+      "signTransaction": "historical TBC raw request, including contract input scripts, with exact two-dimensional sigs result",
+      "signAssociatedTransaction": "existing Kit orchestration and wallet-private native construction retained",
+      "sendBatchRequest": "existing fixed two-step dependent coordinator retained",
+      "crypto": "fresh exact-operation approval followed by wallet-private encrypt or decrypt adapter",
+      "balance": "TBC-only official idempotent read bound to the immutable network context",
+      "events": "existing trusted Provider delivery mapping with committed navigation isolation"
+    },
+    "excluded": [
+      "StableCoin",
+      "BTC",
+      "EVM",
+      "Snap",
+      "signMessage rewrite",
+      "signTypedData rewrite"
+    ],
+    "securityBoundary": {
+      "pageReceivesPrivateKey": false,
+      "kitReceivesPrivateKey": false,
+      "rawSigningUsesSignMessage": false,
+      "recognizedAssetFlowReviewRequired": true,
+      "reviewBoundToApproval": true,
+      "authorityRecheckedBeforePrivateExecution": true,
+      "approvalReuse": false,
+      "writeRetryAdded": false,
+      "balanceConfirmationReadAdded": false,
+      "balanceDecodeAdded": false
+    },
+    "sourceHashes": {
+      "packages/kit/src/legacy-generic-capabilities.ts": "10007d11c619336bf96f3944095b6735608636cb97558afd6a032de5edb27fe2",
+      "packages/kit/src/legacy-webview-native.ts": "6efda19e446c1cda292ddd14437dab8b33917fdd5c306ed284bfbf07470967fb",
+      "packages/kit/src/wallet.ts": "b7f612dee3bbcffa1955681fa5e81df163ae4ed20fdef3ba4a36bc4bc02a7e26"
+    },
+    "testHashes": {
+      "packages/kit/test/legacy-generic-capabilities.test.mjs": "b0115162f40a279d5be86b7721033e83d0f97354a24a2accee141c0fcd36ee28",
+      "packages/kit/test/types/legacy-generic-consumer.ts": "742c82a2afe4c476ac75cb0a8cf0b027af852bbda44e809d5f5233c316cf9c36"
+    },
+    "builtWalletHashes": {
+      "esm": "cb1dddac469d793683c7c12fbd586b221a09e32e2a5a0eebd179ab20cc72c235",
+      "cjsRuntime": "156690e4e52ca0c08572cad6b9b4070b48b03584ed3b876f49882c6efe49d5a7"
+    }
+  },
+  "candidate89DefaultReviewerAndPrivateNative": {
+    "defaultReviewer": {
+      "parser": "tbc-tx-parser@0.1.10 lazy external import",
+      "inputReadBatches": 1,
+      "maximumDependencyReadBatches": 1,
+      "confirmationReadAdded": false,
+      "rawTransactionReadAdded": false,
+      "serverDecodeAdded": false,
+      "rejects": [
+        "stale prevout",
+        "spent prevout",
+        "missing dependency",
+        "StableCoin",
+        "nonstandard",
+        "unknown flow",
+        "unspendable flow"
+      ]
+    },
+    "walletPrivateNative": {
+      "cAbi": "tbc_wallet_private_call",
+      "publicAbiRoutesPrivateMethods": false,
+      "methods": [
+        "signP2pkh",
+        "signAssociated",
+        "encryptMessage",
+        "decryptMessage"
+      ],
+      "scalarTransport": "separate exact 32-byte ABI buffer",
+      "scalarInRequestJson": false,
+      "automaticRetry": false,
+      "associatedSupportedInputs": [
+        "p2pkh",
+        "tbc20",
+        "tbc20_contract",
+        "other"
+      ],
+      "stableCoinAssociatedSupported": false
+    },
+    "sourceHashes": {
+      "packages/kit/src/legacy-raw-transaction-reviewer.ts": "1f81ffc5079b1be98e5caa96e5168056e0d0b97d128b237daea700efa3853a2c",
+      "packages/kit/src/legacy-wallet-private-native.ts": "d33f8bff9d58d0308dcc25adff5dec861ab3a340e332b376e48dd1409eb7a99f",
+      "packages/kit/src/legacy-associated-transaction.ts": "4fa44efd6e8dc906d98a6c82315b1c3c1a80be007192737da2d37c440b75a0bb",
+      "packages/kit/src/legacy-webview-native.ts": "42cf383cc2c6ccd7f5d13bbec23aecdc4fe57ae27b80c608dcbe962fbd0f328e",
+      "packages/tbc-engine/rust/crates/tbc-wallet-private-core/src/lib.rs": "a22bc1ec97463ea23377e0afb6967e9a18d2e9493433cafb196a80dad0c471eb",
+      "packages/tbc-engine/rust/crates/tbc-engine-native/src/lib.rs": "61ecdc5870b2bb317054a944f9642c9bfba496741a4c237a5fdb9102c7f700fe"
+    },
+    "testHashes": {
+      "packages/kit/test/legacy-raw-transaction-reviewer.test.mjs": "e1fb444e61572fce04d46f616e1188bb66e743d5f0b9a7aadcdc02554fd3bb55",
+      "packages/kit/test/legacy-wallet-private-native.test.mjs": "465d56bbc8577ad0abeeec97f68e40164c4ec4e7ff8e138b2d9f0d908052613b",
+      "packages/kit/test/legacy-webview-composition.test.mjs": "86316172270790dcb73088ea75f1f5016a5984cc7d65d7a7b7393f3df9ae9fa7",
+      "packages/tbc-engine/rust/crates/tbc-wallet-private-core/tests/private_ops.rs": "fcd2855e76dfb75034d7d4b602391842075f0ba8dd26042fc56eefecd4d716a4",
+      "packages/kit/test/types/legacy-generic-consumer.ts": "631b049dda979e21a462063846646c587312b4cac75c01b042fc91f20953d9d0"
+    },
+    "builtWalletHashes": {
+      "esm": "5a13ae0ad84fc3186da21a78cc16e10c64bf6b3849bdb04d8428cc3e8e7afc95",
+      "cjsRuntime": "ca870a53224dccfe36bbfb9f49934468342a1ec0655a1678cac67b07cc123aae"
+    }
+  },
+  "candidate90AssociatedApprovalHardening": {
+    "approval": {
+      "operationKind": "signAssociatedTransaction",
+      "exactRequestBound": true,
+      "verifiedMaterialBound": true,
+      "recognizedAssetFlowPreviewBound": true,
+      "freshPerPageRequest": true,
+      "authorityCheckedBeforeReview": true,
+      "authorityRecheckedBeforeNative": true,
+      "labelOnlySignMessageFallback": false
+    },
+    "reviewer": {
+      "externalInputReadBatches": 1,
+      "maximumDependencyReadBatches": 1,
+      "constructedLocalOutputsFetched": false,
+      "localTrustScope": "only the immediately constructed predecessor chain",
+      "parser": "tbc-tx-parser@0.1.10 lazy external import",
+      "previewTxidKind": "unsigned-preview",
+      "stableCoinSupported": false
+    },
+    "execution": {
+      "controllerAssociatedPaths": 1,
+      "nativeExecutors": 1,
+      "automaticRetry": false,
+      "durableCompletionPreventsDuplicateExecution": true
+    },
+    "sourceHashes": {
+      "packages/kit/src/legacy-generic-capabilities.ts": "16e57adc438f84edb3e444e7a776b417ccf11852060c5fd25236e6fc24c6f157",
+      "packages/kit/src/legacy-raw-transaction-reviewer.ts": "6f6649d30776f1a72532ce2e51a2b33c168f324ce7de32bef9838e96c8ac760a",
+      "packages/kit/src/legacy-webview-native.ts": "543473688c15e85b091ede2afc2d96c35505d5daebeb6a57479544617be78812",
+      "packages/kit/src/wallet.ts": "c0fcd5fa9a1f80e5036cc69f88b04d4db4a0e6b1b342bc07cb281f71b7fed63d"
+    },
+    "testHashes": {
+      "packages/kit/test/legacy-generic-capabilities.test.mjs": "77579a745dd55cc503699ab6eae1cacb991e3a3363b635814f1f495b55540f26",
+      "packages/kit/test/legacy-raw-transaction-reviewer.test.mjs": "098967dfd24e4530113ed9c11b24f4c5b9b8e7cd3658550f90b5c7367e78a9fc",
+      "packages/kit/test/legacy-webview-composition.test.mjs": "85c1ce97f9aa37fd4dbaba3fe3dabd9c51a949cdf40a059a5c10b31b4ac6b024",
+      "packages/kit/test/types/legacy-generic-consumer.ts": "1e91d8a30855b939daf1f25844adec3639e36828e708da0a18bab4d94810feff"
+    },
+    "builtWalletHashes": {
+      "esm": "cd295f5fcf0496be35daa7dfc9d54e4611d44c3e3ef733c4ca8bd6f906f25424",
+      "cjsRuntime": "ca870a53224dccfe36bbfb9f49934468342a1ec0655a1678cac67b07cc123aae"
+    }
+  },
+  "candidate91LegacyRequestErrorSettlement": {
+    "contract": {
+      "standard": "TWS-008 section 8",
+      "businessFailureSettlement": "resolve",
+      "businessFailureShape": "{error:string}",
+      "transportFailureSettlement": "reject"
+    },
+    "classifiedRequestStages": {
+      "raw": [
+        "request normalization",
+        "reviewed material and asset-flow validation"
+      ],
+      "associated": [
+        "request normalization",
+        "reviewed material and asset-flow validation"
+      ],
+      "crypto": [
+        "request parameter normalization"
+      ]
+    },
+    "excludedFromBusinessCatch": [
+      "authority checks",
+      "journal integrity and storage",
+      "approval",
+      "Signer or wallet-private Native execution and result validation",
+      "bridge decoding, session, navigation, request identity and acknowledgment"
+    ],
+    "pageErrors": {
+      "raw": "Invalid Legacy transaction request",
+      "associated": "Invalid Legacy associated transaction request",
+      "encrypt": "Invalid Legacy encrypt request",
+      "decrypt": "Invalid Legacy decrypt request",
+      "reviewDetailsExposed": false
+    },
+    "negativeEvidence": {
+      "approvalCalls": 0,
+      "nativeSignerCalls": 0,
+      "sessionRemainsUsable": true,
+      "unclassifiedAuthorityFailureCloses": true
+    },
+    "portableReviewerParser": {
+      "publishedBaseline": "tbc-tx-parser@0.1.10",
+      "loading": "package-private lazy dynamic import",
+      "nodeCryptoOrAssertInMetroGraph": false,
+      "mobilePolyfillRequired": false,
+      "publishedResultEquivalentForRealFtFixture": true,
+      "iosMetroBundle": "pass",
+      "hermesBytecodeCompilation": "pass",
+      "startupPathChanged": false
+    },
+    "sourceHashes": {
+      "packages/kit/src/legacy-generic-capabilities.ts": "d44a639fed83a7e318f8d56cc3b8edb303dd1a4801dddbf4672162f2e8f8655b",
+      "packages/kit/src/legacy-webview-native.ts": "d75eeeae0d570a0406cdba686cae1f937761346295a1f80151284b3f4a30d73e",
+      "packages/kit/src/wallet.ts": "049c2980a3c04ef2c629c298de64a91b820a94df463cefe56008a3f8d97f62ac",
+      "packages/kit/src/legacy-raw-transaction-reviewer.ts": "aba7cda711e4caf40d618c43297fc941fb19876d77c6f61edf205ee441384475",
+      "packages/kit/scripts/build.mjs": "6e6ab814d432867c189596b87cc5e97e5047e44221f331d3dd65caaea2c15a15"
+    },
+    "testHashes": {
+      "packages/kit/test/legacy-generic-capabilities.test.mjs": "a3fa72f374fe83b7f2446430d750945c1bd6de116a01956dc911aecea464f3da",
+      "packages/kit/test/legacy-raw-transaction-reviewer.test.mjs": "b53f628d1ad268e32feaa28f0139e0a8f34cd5891b8a3153709fe93bf7fe9650"
+    },
+    "builtWalletHashes": {
+      "esm": "3b5c33b2025ee31529a1a66a97dd309cefa372958d1b964e7d494a60d7c54ccf",
+      "cjsRuntime": "b01a53de87005591e9a2f25da22f8cac284103e9de0209b98d8f3413bc7ad250"
+    }
+  },
+  "candidate92MobileBufferPortability": {
+    "failureReproduced": {
+      "runtime": "React Native Hermes",
+      "error": "ReferenceError: Property 'Buffer' doesn't exist",
+      "stage": "lazy real FT raw review before approval",
+      "approvalCalls": 0,
+      "signerOrNativeCalls": 0,
+      "postCalls": 0
+    },
+    "correction": {
+      "ambientGlobalBufferRequired": false,
+      "declaredDependency": "buffer@5.7.1",
+      "bindingScope": "package-private lazy parser modules",
+      "mobileGlobalShimRequired": false,
+      "parserLogicCopiedIntoMobile": false,
+      "nodeCryptoEdges": 0
+    },
+    "runtimeEvidence": {
+      "realFtReviewerWithGlobalThisBufferUndefined": "pass",
+      "publishedParserRealFtResultEquivalent": true,
+      "canonicalNftCodeScriptVersionsEquivalent": [
+        0,
+        1,
+        2
+      ],
+      "focusedTestsPassed": 14,
+      "focusedTestsFailed": 0
+    },
+    "sourceHashes": {
+      "packages/kit/scripts/build.mjs": "3753cfc6edeb684cd77df0eecafb71757344ca5660282b1f92745296db4303a5",
+      "packages/kit/test/legacy-raw-reviewer-no-global-buffer.test.mjs": "b50743a3077cfd2fe127f3dc8726a45b444a3d9e98d6eb6653899edc2d3db076"
+    },
+    "builtWalletHashes": {
+      "esm": "3b5c33b2025ee31529a1a66a97dd309cefa372958d1b964e7d494a60d7c54ccf",
+      "cjsRuntime": "b01a53de87005591e9a2f25da22f8cac284103e9de0209b98d8f3413bc7ad250"
+    }
+  },
+  "candidate93BrowserBufferUint64": {
+    "failureReproduced": {
+      "runtime": "React Native Hermes",
+      "error": "buffer.readBigUInt64LE is not a function",
+      "stage": "real FT raw review before approval",
+      "approvalCalls": 0,
+      "signerOrNativeCalls": 0,
+      "postCalls": 0,
+      "cause": "buffer@5.7.1 does not implement the BigInt 64-bit methods used by the vendored parser"
+    },
+    "correction": {
+      "declaredDependency": "buffer@6.0.3",
+      "readBigUInt64LE": true,
+      "writeBigUInt64LE": true,
+      "bindingScope": "package-private lazy parser modules",
+      "mobileGlobalShimRequired": false,
+      "parserLogicChanged": false,
+      "readsRetriesDecodePassesAdded": 0
+    },
+    "runtimeEvidence": {
+      "nodeBuiltinBufferWasNotUsedForBrowserRegression": true,
+      "browserResolvedParserUint64Execution": "pass",
+      "realFtTxid": "1a17f1e2ed29f27c29ca70bc1336e7c9b5ca9d8c33f37f9a0dab3d86b703da76",
+      "globalThisBufferAbsent": true,
+      "focusedTestsPassed": 15,
+      "focusedTestsFailed": 0
+    },
+    "sourceHashes": {
+      "packages/kit/scripts/build.mjs": "3753cfc6edeb684cd77df0eecafb71757344ca5660282b1f92745296db4303a5",
+      "packages/kit/test/legacy-raw-reviewer-no-global-buffer.test.mjs": "0ad5e9c292b40b673010a1d4ff01e70f8f693a359d8022054c85ab9d17039681"
+    },
+    "builtWalletHashes": {
+      "esm": "3b5c33b2025ee31529a1a66a97dd309cefa372958d1b964e7d494a60d7c54ccf",
+      "cjsRuntime": "b01a53de87005591e9a2f25da22f8cac284103e9de0209b98d8f3413bc7ad250"
+    }
+  },
+  "candidate94CjsStrictPreservation": {
+    "baseline": {
+      "candidate": "@tbc/kit@0.1.0-candidate.93",
+      "tarSha256": "3b5e4b0d5f81d619a0825e4743811ad1e30f6672d5e79de9d64068ecb6b60c60",
+      "immutable": true,
+      "deviceAdmissionGranted": false
+    },
+    "correction": {
+      "bufferDependency": "6.0.3",
+      "cjsBindingInsertedAfterOriginalStrictDirective": true,
+      "modulesWithoutTopLevelDirective": "binding remains at module start",
+      "parserLogicChanged": false,
+      "runtimeRequestsChanged": false,
+      "nativeOrProtocolChanged": false
+    },
+    "runtimeEvidence": {
+      "browserResolvedParserUint64Execution": "pass",
+      "globalThisBufferAbsent": true,
+      "cjsStrictDirectiveScan": "pass",
+      "focusedTestsPassed": 16,
+      "focusedTestsFailed": 0
+    },
+    "sourceHashes": {
+      "packages/kit/scripts/build.mjs": "ab154ed0f37989954a5217c715ba3dca316d67072e07b458e19e22a709a2bdcc",
+      "packages/kit/test/legacy-raw-reviewer-no-global-buffer.test.mjs": "9b08a3ebc2ae3561849ce4fe37129e75df45f5c8c98df84a356489f98d62892c"
+    },
+    "builtWalletHashes": {
+      "esm": "3b5c33b2025ee31529a1a66a97dd309cefa372958d1b964e7d494a60d7c54ccf",
+      "cjsRuntime": "b01a53de87005591e9a2f25da22f8cac284103e9de0209b98d8f3413bc7ad250"
+    }
+  },
+  "candidate95Uint8ArrayOutpoint": {
+    "failureReproduced": {
+      "runtime": "React Native Hermes",
+      "error": "input.prevTxRaw.copy is not a function",
+      "stage": "real FT raw review before approval",
+      "approvalCalls": 0,
+      "signerOrNativeCalls": 0,
+      "postCalls": 0
+    },
+    "correction": {
+      "operation": "copy 32-byte previous outpoint hash into canonical transaction-id preimage",
+      "oldPrimitive": "Buffer.copy",
+      "newPrimitive": "Uint8Array.set",
+      "byteSemanticsChanged": false,
+      "parserValidationChanged": false,
+      "networkOrExecutionStepsAdded": 0
+    },
+    "runtimeEvidence": {
+      "browserResolvedNpmBuffer": true,
+      "forcedPlainUint8ArrayPrevTxRaw": true,
+      "representativeRealFtDecode": "pass",
+      "globalThisBufferAbsent": true,
+      "focusedTestsPassed": 16,
+      "focusedTestsFailed": 0
+    },
+    "sourceHashes": {
+      "packages/kit/scripts/build.mjs": "7695f87c8763e1b78bffb797497d11094a9c297e785d75585b2467650b9f8028",
+      "packages/kit/test/legacy-raw-reviewer-no-global-buffer.test.mjs": "f16a13978ec5e935cd5102e5493ddde0f8460c82ee7baf75dc26ff67413f9c25"
+    },
+    "builtWalletHashes": {
+      "esm": "3b5c33b2025ee31529a1a66a97dd309cefa372958d1b964e7d494a60d7c54ccf",
+      "cjsRuntime": "b01a53de87005591e9a2f25da22f8cac284103e9de0209b98d8f3413bc7ad250"
+    }
+  },
+  "candidate96ParserByteBoundary": {
+    "baseline": {
+      "candidate": "@tbc/kit@0.1.0-candidate.95",
+      "tarSha256": "7193b24f797b66a1f93db325f3ea451969f2ed24dc00b7d1db6d99af1b1dc530",
+      "immutable": true
+    },
+    "correction": {
+      "normalizedSlices": [
+        "previous transaction hash",
+        "input script",
+        "output script"
+      ],
+      "normalization": "Buffer.from(Uint8Array)",
+      "outpointCopy": "Uint8Array.set",
+      "parserValidationChanged": false,
+      "recognizedImpactChecksChanged": false,
+      "networkOrExecutionStepsAdded": 0
+    },
+    "runtimeEvidence": {
+      "browserResolvedNpmBuffer": true,
+      "everyBufferSubarrayForcedToPlainUint8Array": true,
+      "realDefaultFtReviewer": "pass",
+      "recognizedProtocol": "ft",
+      "globalThisBufferAbsent": true,
+      "focusedTestsPassed": 16,
+      "focusedTestsFailed": 0
+    },
+    "sourceHashes": {
+      "packages/kit/scripts/build.mjs": "fa298ea1cbc2fca0bb802a1773f1f358bbdf603995aa33ec65a34706138b03b9",
+      "packages/kit/test/legacy-raw-reviewer-no-global-buffer.test.mjs": "f53df427017f911adfede721c354d823b28df73b2d57f404eb656acc3a6b2af4"
+    },
+    "builtWalletHashes": {
+      "esm": "3b5c33b2025ee31529a1a66a97dd309cefa372958d1b964e7d494a60d7c54ccf",
+      "cjsRuntime": "b01a53de87005591e9a2f25da22f8cac284103e9de0209b98d8f3413bc7ad250"
+    }
+  },
+  "candidate97CanonicalOptionalPreview": {
+    "failureReproduced": {
+      "runtime": "React Native Hermes",
+      "error": "JCS rejects undefined",
+      "stage": "review completed; approval binding construction before approval",
+      "approvalCalls": 0,
+      "signerOrNativeCalls": 0,
+      "postCalls": 0
+    },
+    "correction": {
+      "boundary": "raw and associated reviewed preview normalization",
+      "undefinedObjectFields": "omitted recursively before strict JCS",
+      "undefinedArrayEntries": "rejected",
+      "nullOrEmptyStringSubstitution": false,
+      "globalJcsRelaxed": false,
+      "verifiedInputsChanged": false,
+      "recognizedImpactValidationChanged": false
+    },
+    "runtimeEvidence": {
+      "actualDefaultFtUndefinedPath": "preview.transactions[0].groups[0].asset.contractId",
+      "defaultFtPreviewAfterProjectionContainsUndefined": false,
+      "optionalUndefinedNestedFieldsOmitted": true,
+      "approvalBindingConstructed": true,
+      "bindingConsumedBySigner": true,
+      "focusedTestsPassed": 17,
+      "focusedTestsFailed": 0
+    },
+    "sourceHashes": {
+      "packages/kit/src/legacy-generic-capabilities.ts": "2bcf9c4fe7470e1ca1036534c921c0fbbbd35a3a12f815607c972146d77e3f2a",
+      "packages/kit/src/legacy-raw-transaction-reviewer.ts": "c9e269fa15599c853fdfe61feec18ac0f46026ee82aee78774929e1dd5c35792",
+      "packages/kit/test/legacy-generic-capabilities.test.mjs": "4bddd10d823d96cccf2ef87bf481aac350f81cc0bea751cefbf40a2f4b0d780a",
+      "packages/kit/test/legacy-raw-transaction-reviewer.test.mjs": "57373c2e2b8ffca30c0c3dd54af15457a7039023abe9e9ef25a47df43fa67c8a",
+      "packages/kit/scripts/build.mjs": "fa298ea1cbc2fca0bb802a1773f1f358bbdf603995aa33ec65a34706138b03b9",
+      "packages/kit/test/legacy-raw-reviewer-no-global-buffer.test.mjs": "f53df427017f911adfede721c354d823b28df73b2d57f404eb656acc3a6b2af4"
+    },
+    "builtWalletHashes": {
+      "esm": "ec87a647dd302947d7dc58c23a78837013be1b98d881f4ee9c9cb72f42e389f4",
+      "cjsRuntime": "bda6f8394d2d1e5a5b33b250a144184e9c33fa777943301422bd9ad86d2dd1aa"
+    }
+  },
+  "baselineSourceSnapshot": {
+    "root": "/Users/alex/Documents/Codex/2026-09-02/tws-standard-mobile-p0",
+    "files": [
+      {
+        "path": "schemas/integration.schema.json",
+        "sha256": "901325e2765104105a0a9c03268959c0e4e1559c4c30a627745e839b29481a5d"
+      },
+      {
+        "path": "packages/core/src/generated/protocol-types.ts",
+        "sha256": "90387923d9a7ff5e721de0b3d7e626929a0b2d2b766115b76db39e6aeb2113dc"
+      },
+      {
+        "path": "packages/core/src/generated/validators.ts",
+        "sha256": "06d829d5643b3c93a93f9333479890c0336a67e1fcb325ebc3461953037a47b6"
+      },
+      {
+        "path": "packages/core/src/generated/v1-candidate-release.ts",
+        "sha256": "cfe7a8d716a2258cf699af281053e9ebb7bff98540f21be8a271fc2b7e05e218"
+      },
+      {
+        "path": "packages/kit/src/wallet.ts",
+        "sha256": "ebf9b686d89c4581681c3de131b3e6e0efe3896e15dbb80d095896df9f37a595"
+      },
+      {
+        "path": "packages/kit/src/default-network.ts",
+        "sha256": "0230bf35c38605c9eff4fb684c4ec9742aa3476a9ccb62e712f71f9f216f4a3c"
+      },
+      {
+        "path": "packages/kit/src/default-chain-data.ts",
+        "sha256": "43a57113c383cc13cdb6e7ac09e153560fcd68cfe70e91c12ca9b1bac5b77fff"
+      },
+      {
+        "path": "packages/kit/src/pool-material.ts",
+        "sha256": "58eef31c00be6a0cc1ff0312b6b7aa978eb1d69a77f4f15e8a657c80c8586c97"
+      },
+      {
+        "path": "packages/kit/src/approval-material.ts",
+        "sha256": "be9e736e26505a357a80d6b296dc91cf9982f85a177d531929e30b75d26aed28"
+      },
+      {
+        "path": "packages/tbc-engine/rust/crates/tbc-engine-core/src/confirmations.rs",
+        "sha256": "10dc6664b29f63dd4403a7ced353ea02519eed06c24f618d5f2df1f0fc1754c0"
+      },
+      {
+        "path": "packages/tbc-engine/rust/crates/tbc-engine-core/src/model.rs",
+        "sha256": "37cca0b068fd254f31b0067a84bd8b7d8c6c9d746cbab8012af44ba4d7c8fd5f"
+      },
+      {
+        "path": "packages/tbc-engine/rust/crates/tbc-engine-core/src/plan.rs",
+        "sha256": "98520e6ab58f18da0a0f780388542cf7f55b6d0361349fbd70438195fdcd2ee3"
+      },
+      {
+        "path": "packages/tbc-engine/rust/crates/tbc-engine-core/src/ancestry.rs",
+        "sha256": "dbcc316d590ae586ce079147a8c9aa0cc49e154b46f641c26dac638e0bb41c71"
+      },
+      {
+        "path": "packages/tbc-engine/rust/crates/tbc-engine-core/src/funding.rs",
+        "sha256": "95492e18bdfa22c716755f79a76c04b6a98b27d45cf7d3e39a4e253a73dd3ff5"
+      },
+      {
+        "path": "packages/tbc-engine/rust/crates/tbc-engine-core/src/lib.rs",
+        "sha256": "d954ad15fc276ae68a257a76683ebc6580e1a06bfd08846ebb788a74a9d7df03"
+      },
+      {
+        "path": "packages/tbc-engine/rust/crates/tbc-engine-core/src/families/tbc.rs",
+        "sha256": "ec1ab43514ef682b0bebe205ebcfc7d0816e58c9199decdc75d2633c1df3bf21"
+      },
+      {
+        "path": "packages/tbc-engine/rust/crates/tbc-engine-core/src/families/pool.rs",
+        "sha256": "483d41671d3450584bc4126dde7184f3d0611bbc26545996611ce8d4307246ed"
+      },
+      {
+        "path": "packages/tbc-engine/rust/crates/tbc-engine-core/src/families/nft.rs",
+        "sha256": "d9b63daea67139631c359220afe81a55fbc56c30ee9cfbfbcf63e2c9663b4558"
+      }
+    ]
+  },
+  "sourceDelta": {
+    "root": "/Users/alex/Documents/Codex/2026-09-02/tws-standard-mobile-p0",
+    "scope": "Current source hashes for cumulative API/RPC and transport changes since candidate.76.",
+    "files": [
+      {
+        "path": "packages/kit/src/network-transport.ts",
+        "sha256": "e94fa835a4419096fa61fd34dd2d94a8477b41a3b1df3e448e97eb71336c04ae"
+      },
+      {
+        "path": "packages/kit/src/network-bytes.ts",
+        "sha256": "be6ab77c1fb887ec52131a64d38c8872909a6db3141fa82cc9bdbba66e1e58a6"
+      },
+      {
+        "path": "packages/kit/src/official-api.ts",
+        "sha256": "47aed8f3ec18f0e7d1e575c38b3ce2f2089e7c78fb0ef0316f73da73b71268af"
+      },
+      {
+        "path": "packages/kit/src/rpc-catalog.ts",
+        "sha256": "dd2344ddbce20e2642eca00ae57e7d921407a7c3529b74a42eabd74259c2009e"
+      },
+      {
+        "path": "packages/kit/src/official-rpc.ts",
+        "sha256": "f2b10eef57ad8e8e89da559bcf15e2316e5cef14cecd1cb1423216a48738c590"
+      },
+      {
+        "path": "packages/kit/src/api.ts",
+        "sha256": "c4044bf598cd22668f11eb35b57d4c63270893f0adae496953f75e033128b7a1"
+      },
+      {
+        "path": "packages/kit/src/rpc.ts",
+        "sha256": "517dab62b10750870bafdef2fcc3cbcf6ff76fff7534360c6a928a4942e48e05"
+      },
+      {
+        "path": "packages/kit/src/network-client.ts",
+        "sha256": "4991bbfbab1f0600d421be0435513b9a2419a4ec74800a17262611acc89f805f"
+      },
+      {
+        "path": "packages/kit/src/testnet-client.ts",
+        "sha256": "aabf4af8259c8412c1d256803a23aaab240596820afc6bf3b0187c52334a545e"
+      },
+      {
+        "path": "packages/kit/src/pool-signing-loader.ts",
+        "sha256": "a348667b6f29a5af91b177c0b2bd7f7159d5b57cfb3b9563a7146daa581a144b"
+      },
+      {
+        "path": "packages/kit/src/pool-material.ts",
+        "sha256": "f9a8159b74dfe6d3df06ebbbf855f4dec441a42f343cb1ea769917438da95de2"
+      },
+      {
+        "path": "packages/kit/src/legacy-metadata.ts",
+        "sha256": "ec93cf0d8b624ba21f83f3edadb48406ee15373eeb84262322a31ad9d689e6ab"
+      },
+      {
+        "path": "packages/kit/src/testnet-validation.ts",
+        "sha256": "fe9f4e14254d7936891cd57765fbddb0be4d7943ce0ece56ca5f94cd1fc85ae8"
+      },
+      {
+        "path": "packages/kit/src/default-broadcast.ts",
+        "sha256": "dccf5a494d437da883eef85ae6fe9dfd35f49055c156c2cc610663f76000653b"
+      },
+      {
+        "path": "packages/kit/src/default-chain-data.ts",
+        "sha256": "329879309d0535135adbbc92e833f502eee3e6782afee246fa96172584ec0ad7"
+      },
+      {
+        "path": "packages/kit/src/receipt-verification.ts",
+        "sha256": "453cb3d77917bfaa6899058b15c958a3b5b77f0694eff72d1071d124079dd231"
+      },
+      {
+        "path": "packages/kit/scripts/build.mjs",
+        "sha256": "0aac8881fcf1b248a253d38aea9f1813dd617bf4ee81de8e03e394d135d12099"
+      },
+      {
+        "path": "packages/kit/test/official-api-rpc.test.ts",
+        "sha256": "91a3234e52e3b30f03954b9bad2e32ae6fe84cb7d2dc206969857fd7182f7e1b"
+      },
+      {
+        "path": "packages/kit/test/api-rpc-bundle-isolation.test.mjs",
+        "sha256": "83cf74ca8c4d1a0d1caca239d768c68d59dcd5e319016bceb20709a4273461be"
+      },
+      {
+        "path": "packages/kit/test/pool-material-parity.test.ts",
+        "sha256": "41240b090ec2a526fc037702632d2f0c5476528bff5af20081c96ed58861a79c"
+      },
+      {
+        "path": "packages/kit/artifacts/api-rpc-coverage.json",
+        "sha256": "2a63d736ac7e3e3f5f12433c52a81260e615d6cc94c6977f46be67dc81c12400"
+      },
+      {
+        "path": "packages/kit/README.md",
+        "sha256": "a392bddeeab8d1713bff6719cb039c7c129167a7f64f4513d53a813be04243e3"
+      },
+      {
+        "path": "packages/kit/src/read-retry.ts",
+        "sha256": "1386cc58b7323613d578af9c2ddf3c99c8fa4bb23602bc1b1e27325b6a6ee7bf"
+      },
+      {
+        "path": "packages/kit/src/request-ledger.ts",
+        "sha256": "a9237d2f9219f76c879f3d204c01ea3c8cb5163660691775122c0411c7b937bc"
+      },
+      {
+        "path": "packages/kit/test/network-transport.test.ts",
+        "sha256": "336d1ef1e3fdbf60cc670fdbfea05ed5db7d565af49e9805f0dd960b85c1e7cb"
+      },
+      {
+        "path": "packages/kit/test/types/api-rpc-public-consumer.ts",
+        "sha256": "b309c6e529dc19ecf69570eb0717b374b82f6c9034f4790c20603d409c2a9d13"
+      },
+      {
+        "path": "packages/kit/scripts/benchmark-network-transport.mjs",
+        "sha256": "88d5641b56f2bd7bfce2fa3add93a94ba7f54a8d2a6dcc434621024b818cec0c"
+      },
+      {
+        "path": "packages/kit/artifacts/transport-hardening-evidence.json",
+        "sha256": "16af6913d7ff96f15dc165b673753e06fe51004ad076602b94356b71c9641706"
+      }
+    ]
+  },
+  "nftSourceDelta": {
+    "scope": "Candidate.79 public NFT three-step and approval schema delta.",
+    "files": [
+      {
+        "path": "schemas/integration.schema.json",
+        "sha256": "e1e7a5ce2916d8c893b54f01c8ce423c147add6f5f8d527a12e965329b0259fd"
+      },
+      {
+        "path": "packages/kit/src/client.ts",
+        "sha256": "7de1fd020694802bf9068d13cd84d91350885beecc6297ad9d05cafdf1ca43d1"
+      },
+      {
+        "path": "packages/kit/src/default-chain-data.ts",
+        "sha256": "100db86c393c9504424b414533899f47291f287de9f95e83bb689f9217b8f579"
+      },
+      {
+        "path": "packages/kit/src/nft-material.ts",
+        "sha256": "5c00fd34fe8b5bbf8bda129268c30fca98300cd8bf58e8bd2f22a726439f2d28"
+      },
+      {
+        "path": "packages/kit/src/legacy-nft-intent.ts",
+        "sha256": "2a7ca702ab02e7d847ec91d0fd4674b0e69a8053ffc7a2fa66b71ee416b2ebf8"
+      },
+      {
+        "path": "packages/kit/src/legacy-mapper.ts",
+        "sha256": "367381ada53aef78ad15feb5794be886508181c2de2045d80066c848a224fd90"
+      },
+      {
+        "path": "packages/kit/src/prepared-chain-data.ts",
+        "sha256": "9b7cfd59b0bfeda171a6278480f8b4b07b4824b7f468fd1bf9c185765ce72e4b"
+      },
+      {
+        "path": "packages/kit/src/default-network.ts",
+        "sha256": "2768d9db575d9fa5262bb7e45c2082150de7bba5a98dfe695de6c8d7930b9b73"
+      },
+      {
+        "path": "packages/kit/src/public-types.ts",
+        "sha256": "893b93e30a5bfe5c5c2bcb4c8db593e7d92c0f933848feec9e2088f00ff6c44d"
+      },
+      {
+        "path": "packages/kit/src/testnet-client.ts",
+        "sha256": "d778bec4457bc5b1fe65d692149a03f2ff4c6f395de0a35b41e1822a3bcf741c"
+      },
+      {
+        "path": "packages/kit/src/wallet-runtime.ts",
+        "sha256": "f9cd1ba3aef7c00c3ad9980d84c3bda688c44cab858f230b346632f0d54c83c2"
+      },
+      {
+        "path": "packages/kit/test/nft-three-step.test.mjs",
+        "sha256": "2444985e07d3c1a3afed13e5992b80e19ccc61aba28f136e2d903cbc0ed4e6cd"
+      },
+      {
+        "path": "packages/kit/test/legacy-nft-intent.test.mjs",
+        "sha256": "53d6f2769a574199279e383194e4741d984ad579bcf6ec5112a92e5602520755"
+      },
+      {
+        "path": "packages/kit/examples/nft-three-step/run.mjs",
+        "sha256": "57b928ac770d1c9eb4ca49157b2b03a7a409f57dff62cb0c85c77df0426409b0"
+      },
+      {
+        "path": "packages/kit/artifacts/nft-three-step-evidence.json",
+        "sha256": "f34d695a4d839fe382730976ba7322921db4f78b15a58c33ab30883f511b71c3"
+      }
+    ]
+  },
+  "historicalSourcePackage": "@tbc/kit@0.1.0-candidate.70",
+  "historicalSource": {
+    "standardCommit": "0c2c7f5ecd11e17468d468aa08f8c98ceb1113a6",
+    "standardWorkingTreeSnapshot": true,
+    "mobileCommit": "87b9a225caa52ab0a12baa6772201294ee5ff7e5",
+    "mobileWorkingTreeSnapshot": false,
+    "files": [
+      {
+        "kit": "../../schemas/signing.schema.json",
+        "kitSha256": "ea21afbec50159079d57705819792c158ce88f6aa8ae30af12ac6205afbb0df9",
+        "relationship": "candidate.3 standard signing results use tbc-message and tbc-typed-data while preserving version 1.0, envelopes, magic, payload and digest; legacy-bitcoin-message remains distinct and the superseded labels are not accepted"
+      },
+      {
+        "kit": "../../schemas/integration.schema.json",
+        "kitSha256": "a023754d3cacb14fd15f0b5863207fb2179aba58754e97b9f093c3a4e9c7d41f",
+        "relationship": "approval previews use the same new Core-owned scheme discriminants so stored checkpoint identity changes with the protocol release instead of aliasing candidate.2"
+      },
+      {
+        "kit": "../../release/tws-v1-candidate.json",
+        "kitSha256": "ae1dd5e3016acf3c363395d060153db9c876d58d6204bde239975b5a501d97a3",
+        "relationship": "generated candidate.3 release manifest binds schema bundle 4002753316a2cb930a74a85a60f64b0ae3844e91ab33d72b85744de018ab1de7 and unchanged registry bundle 996ef0e70e4b7ec3646c71e49c467552259023572deb2fe595d17f5dd118a4bf"
+      },
+      {
+        "kit": "../core/src/generated/v1-candidate-release.ts",
+        "kitSha256": "91ee44495453d049d8c6f7f07514632c744ad6bc9f8c296b82a312b9303a25d9",
+        "relationship": "generated Core identity exposes candidate.3 fingerprint 4e813ddc033ae009c3f147483c479ee893e2ba45e46d2ab948feb12a841ed946 without a compatibility alias"
+      },
+      {
+        "kit": "../core/test/validation.test.mjs",
+        "kitSha256": "71593722261f40a93ab5355b6a3b8f9a0a8c814efed601f7eff3ddd50587bba4",
+        "relationship": "focused approval-preview proof accepts only tbc-message and tbc-typed-data and publicly rejects the two superseded versioned labels"
+      },
+      {
+        "kit": "../provider/test/validation.test.mjs",
+        "kitSha256": "d1535ac10c4b96994189ea09eb990b3c911b8515ac1194299b486e7b2f1ba39b",
+        "relationship": "focused Provider proof accepts current Standard results and rejects tbc-message-v1 and tbc-typed-data-v1 instead of silently aliasing them"
+      },
+      {
+        "kit": "src/core-runtime.ts",
+        "kitSha256": "2d71d751ee57443e128b504487f5835c181dfa76ddc556b80e9f248053bb681f",
+        "relationship": "the wallet entry exposes the exact current Mobile Core value/type seam and recoverable-signature verifier from the same bundled candidate.3 runtime instead of vendoring the incompatible Core 6.20 declaration identity"
+      },
+      {
+        "kit": "../core/src/recoverable-signature.ts",
+        "kitSha256": "3a4316aa3780c9e5dc9d1cbed4024923a424984e68d3ed02d1bf57b35ea3aa89",
+        "relationship": "one successful exact signature, digest and compressed-public-key verification may be consumed once across the wallet Signer and bundled Core boundary; every mismatch, overwrite, further reuse or restart performs the independent low-S recovery check"
+      },
+      {
+        "kit": "../core/src/reducers/messages.ts",
+        "kitSha256": "66464b18931d468957d3ce18919a7515bdd50ca26386f2d359687aac644707b6",
+        "relationship": "message completion consumes the shared exact verifier and maps every malformed, mismatched or failed signature to the existing PORT_RESULT_INVALID boundary"
+      },
+      {
+        "kit": "../core/test/recoverable-signature.test.mjs",
+        "kitSha256": "5724fb6c98bfc85c8114bc30f7ba8e235212051b192bb2441b5e051af8eac353",
+        "relationship": "focused negative proof covers wrong digest, wrong key, wrong public key, recovery-bit mismatch, high-S, invalid framing, missing header, failed-marker clearing and second reuse"
+      },
+      {
+        "kit": "src/host-runtime.ts",
+        "kitSha256": "c43742519518e5c436f6bb01548009b5d631b8174e85aea819cae57ad620ce8d",
+        "relationship": "the wallet entry exposes the exact nine-Port Host root seam backed by the same candidate.3 Core module and release fingerprint as the Kit wallet and SQLite entries"
+      },
+      {
+        "kit": "scripts/build.mjs",
+        "kitSha256": "1edb57781913915c20c5b4214392e901a2ebc7cca1d9715945ad3f053f5447ab",
+        "relationship": "declaration closure is copied from freshly built current Core and Host sources, rewrites Host references to the vendored Core identity, rejects any remaining private package declaration edge, and emits the Node Engine as a distinct conditional entry"
+      },
+      {
+        "kit": "test/core-host-runtime.test.mjs",
+        "kitSha256": "f02d494940de3d5ec78e386e6b317ddeef6ce49a2dbc8692c1600431d4947f90",
+        "relationship": "focused runtime proof binds wallet and SQLite to candidate.3 fingerprint 4e813ddc033ae009c3f147483c479ee893e2ba45e46d2ab948feb12a841ed946, exact nine Ports and Core/Host factories, then verifies a foreign stored release fails closed as HOST_RELEASE_MISMATCH"
+      },
+      {
+        "kit": "test/types/core-host-public-consumer.ts",
+        "kitSha256": "ad366c1e3e47b0dfc783e7e30feebdc95da5937a3c8045b3901480b03886e330",
+        "relationship": "strict skipLibCheck-false consumer compiles every current Mobile Core, Host root, Host SQLite, recoverable-signature verifier, durable broadcast journal and post-Signer recovery-reader symbol from Kit-only declarations without casts or private package installation"
+      },
+      {
+        "kit": "src/default-chain-data.ts",
+        "kitSha256": "a050f2d0daf831884ced26fc23c4f1d070b4732e758ffa2a22e7d10eb3ed8983",
+        "mobile": "src/tws/ports/chain-data.ts",
+        "mobileSha256": "f8e6c6f4e839048ed9cd35c9e560ab16271252d0ee7c5bc10f202e39adf03141",
+        "relationship": "default wallet Chain Data preserves account authority while overlapping selected FT parent and creation reads, letting LP lock-height index reads complete before funding-parent bytes, and remembering the exact initialize material against the completed snapshot binding and expiry"
+      },
+      {
+        "kit": "src/pool-material.ts",
+        "kitSha256": "6300ddd294545351475f94820baf1e54021bf4b0f789c8db2104d01107a4133c",
+        "mobile": "src/tws/ports/pool-material.ts",
+        "mobileSha256": "78af4018077d6642c1ef18e8db84c472fa108a1cea43595d5c8261060b4eaff6",
+        "relationship": "production implementation plus Pool initialize FT-index overlap, one exact-byte bounded inspector, and exact snapshot/input/expiry readInitialize retention; trusted endpoint and public keyless injection adapted"
+      },
+      {
+        "kit": "src/pool-signing-loader.ts",
+        "kitSha256": "0b58fc47f3f4140f2baa655e5da506ee12094fef55b8891e991541789086d9aa",
+        "mobile": "src/legacy/pool-signing-loader.ts",
+        "mobileSha256": "e73c4e6a39e86646defa4ab8d6e5cd352ae170dbb3cef97cde3efd7011d34afa",
+        "relationship": "production implementation copied; configured trusted origin and public keyless types substituted"
+      },
+      {
+        "kit": "src/keyless.ts",
+        "kitSha256": "a96d7a3ab62cc9cf09a858f10f7ea39dc7e7b34947e39709a6da9450b224c3ec",
+        "relationship": "zero-import WASM loader with configurable browser asset URL and restricted Native adapter; receipt inspection adds no signing or ambient capability"
+      },
+      {
+        "kit": "../tbc-engine/src/wasm.ts",
+        "kitSha256": "4c91bc57a523eb7c13da44bc5991046761120aba1932202462280191af3e36d2",
+        "relationship": "same-source transaction WASM loader preserves lazy package-relative defaults without exposing an eager new-URL asset literal to discovery-only downstream bundles"
+      },
+      {
+        "kit": "src/engine.ts",
+        "kitSha256": "c6e0687c0b541bbba28bcec5dbf94e53989e77ff1e34d9b6d6435428092dac50",
+        "mobile": "src/tws/engine/native-engine.ts",
+        "mobileSha256": "e54b1df9d33e1b94ed39b95cece41e1b21b4dfb5454b796028974779adbbdc6b",
+        "relationship": "portable public Engine implementation retains frozen profiles, Native adapter and explicit fetch while excluding Node builtins and non-literal dynamic imports from browser and React Native graphs"
+      },
+      {
+        "kit": "src/engine-base.ts",
+        "kitSha256": "696a00dfa141b64bb4b32494f11e1f61b213285fd8ad9a58929791c3ced8f7d0",
+        "relationship": "platform-neutral Engine types, adapters and fetch loader are shared without importing the Node file loader"
+      },
+      {
+        "kit": "src/engine.node.ts",
+        "kitSha256": "c5e1814336d5ebc4e94c495d133f39a5104f94b52631c2da72d0b42b4d3dc952",
+        "relationship": "Node-conditioned Engine entry statically imports node:fs/promises and preserves lazy installed file-WASM execution for ESM and CommonJS"
+      },
+      {
+        "kit": "src/node-builtins.d.ts",
+        "kitSha256": "29b33e31159e1906cf5d152bbebaadbe80fb898133086cfdcde632c90e990264",
+        "relationship": "minimal private declaration types only the Node readFile capability used by the isolated Node Engine implementation"
+      },
+      {
+        "kit": "src/prepared.ts",
+        "kitSha256": "b4003e7fa429df0dec7a249ea9905cb25c29c96d3f1f31aaa9000932319cfb30",
+        "relationship": "fixed and parsed deferred DApp proposal plus Prepared Workflow construction from chain data and wallet policy; the default same-source Engine is dynamically loaded only when a proposal helper runs so discovery-only root consumers retain no transaction WASM edge"
+      },
+      {
+        "kit": "src/prepared-chain-data.ts",
+        "kitSha256": "f019a23cf158a2b9b61772cb039947189b76e62b7a292003c8cda01e3adbdace",
+        "relationship": "Kit-private exact chain-data requirement projection shared by prepared proposals and trusted request preparation, including attached native FT funding"
+      },
+      {
+        "kit": "src/sqlite.ts",
+        "kitSha256": "9fe33f58511b398b247b6cf56df5c22e1e5ddc112620bd2317add29f9e9d915a",
+        "relationship": "same-release live-memory and durable SQLite Host Store factories configure the package-private shared Core runtime, export the durable broadcast journal, and expose a detached reader restricted to post-Signer broadcasting/reconciliation recovery candidates"
+      },
+      {
+        "kit": "src/default-network.ts",
+        "kitSha256": "3cd50a2dbfbb21e0ed674667f10db617bcf8599327f5863773fcb444111b4296",
+        "relationship": "default network exposes its Chain Data immutable finalized-byte retention to wallet composition while confirmations remain fresh; durable broadcast and advanced callback boundaries are unchanged"
+      },
+      {
+        "kit": "src/broadcast-journal.ts",
+        "kitSha256": "7c43dc3260e2ba24e4c79f164144f75bb564c7655aaa5980a0946e169b3badcf",
+        "relationship": "Kit-owned SQLite journal binds idempotency key, raw hash and txid across prepared, uncertain, completed and pre-network-aborted states; the legacy-tws-mobile-v1 schema consumes the existing three Mobile tables in place"
+      },
+      {
+        "kit": "src/default-broadcast.ts",
+        "kitSha256": "0bc866d943394431b4b91b7c5a99f986cebef5072f5c4a97bc2f1f63e2e41ac3",
+        "relationship": "ordinary Testnet wallet submit validates the immutable durable Host envelope, marks uncertainty before POST, replays accepted results, and reconciles ambiguous dispatch by status only without blind resend"
+      },
+      {
+        "kit": "src/wallet.ts",
+        "kitSha256": "5cf0ebb7529e35815ee1b8477b7f14e484251acf5cd9064e030688e4c8dd2caf",
+        "relationship": "wallet-bootstrap SHA-256 configuration, same-runtime Core/Host exports including verifyTbcRecoverableSignature, sign-only execution, trusted request preparation, default durable broadcast, Provider/WebView composition, strict Legacy orchestration, associated transaction service, default metadata resolver and generic approval Host envelope evidence reach the wallet entry"
+      },
+      {
+        "kit": "src/wallet-runtime.ts",
+        "kitSha256": "20b8776b44c49eae25b4dfb36c49c0e9cba8d12508b16eb873bf8e5539d38731",
+        "relationship": "wallet composition retains exact request/account/chain/authority-bound preparation and adds exact-operation post-Signer recovery that accepts only broadcasting/reconciliation while rejecting terminal and earlier states"
+      },
+      {
+        "kit": "src/runtime-environment.ts",
+        "kitSha256": "f8a2057ceb990f5aa756096a390cba3f4cba2c0aa070a770f9583fb279e0c760",
+        "relationship": "internal browser Wallet Standard feature detection inspects optional globals only through globalThis properties so Hermes never resolves a bare Event binding"
+      },
+      {
+        "kit": "src/legacy-mapper.ts",
+        "kitSha256": "1c7583a33593b22db4d9d48fa1731c0b0b0d3d493e7b947f34607c063729fff5",
+        "mobile": "src/legacy/bitcoin-message-service.ts",
+        "mobileSha256": "f1fae19ffd5290f1df6c61946cdc217f99b2d30b2d7934ca51ba4f81b39212b2",
+        "relationship": "Legacy facade routes mapped signMessage through the private wallet dispatcher and reuses the strict Pool resolver plus the same FT transfer normalization core instead of maintaining alternate mappings"
+      },
+      {
+        "kit": "src/legacy-ft-transfer-intent.ts",
+        "kitSha256": "7b3a6ae7cee2bdef9323837000987b4b5325104fe691ec17b78476ee1a5451fe",
+        "mobile": "src/legacy/ft-transfer-intent.ts",
+        "mobileSha256": "a35ffb9fca140f88330183dbe4447ab9955b200617750d8a178f6d817a50789c",
+        "relationship": "moves Legacy FT_TRANSFER shape, display-to-atomic amounts, attached TBC and trusted metadata identity into Kit; the default resolver owns bounded reuse while an advanced wallet callback retains a bounded local override cache"
+      },
+      {
+        "kit": "src/legacy-webview-native.ts",
+        "kitSha256": "9ad20c692332e859e8e713a99522ae763053cefa2a04f5d4600ef7bbeed4d746",
+        "mobile": "src/legacy/native-adapter.ts",
+        "mobileSha256": "7aea0b91e51d5dee0d45d6c53ff98664fa89d37104d32b3f6a94ceba3a855794",
+        "relationship": "owns active Legacy FT/Pool/P2PKH orchestration plus bounded associated standalone and associated-to-dependent-txids sequencing, including exact-grant presentation reuse, cancellation, canonical results and first-delivery ACK order; Mobile retains navigation, accounts, grants, approval UI/evidence, private associated native execution, Host dispatch, Vault, Signer, stores and platform channel"
+      },
+      {
+        "kit": "test/legacy-webview-composition.test.mjs",
+        "kitSha256": "06cd0d8b13fcdabbe8c9458a93b48baf2703748d5a34081825fa9a97a716ae0f",
+        "mobile": "src/legacy/ft-transfer-network.ts",
+        "mobileSha256": "48d4cbc84111bb49f4495b2cc7202d4b2caf18ce7f21e6c01854c9b6a1f01a19",
+        "relationship": "focused runtime proof covers FT and Pool routing plus standalone associated and associated-to-dependent-txids result order, first ACK before message, cancellation stopping the second step and no network or broadcast"
+      },
+      {
+        "kit": "test/types/legacy-ft-webview-compatible.ts",
+        "kitSha256": "75a430703505d3ea543767bff22d23411efce611256616c25891e49256eeedb5",
+        "mobile": "app/browser.tsx",
+        "mobileSha256": "5d60a725810f073d679003d8763d660e8df28f000a1d92b11a329838d5ee89ea",
+        "relationship": "strict exactOptionalPropertyTypes consumer composes the controller, default network metadata, associated durable journal service, current-context reader, prefetch handle, consent machine and message preparer with no private package type or cast"
+      },
+      {
+        "kit": "src/legacy-pool-intent.ts",
+        "kitSha256": "d64d6e4cef313a5971d41ad1e6795cc5f2d349c3112cfb34c00e0bef804a4bb0",
+        "mobile": "src/legacy/pool-intent.ts",
+        "mobileSha256": "75a6a1aa50184eef75380daab9e20a79fcb4f9972d8951c69a6e09b3d627c29c",
+        "relationship": "moves pure Legacy Pool mint, initialize, LP add/remove and swap parameter, amount, metadata, minima, expiry and canonical request identity orchestration into Kit and consumes the selected network context's default Pool-to-FT metadata path without transport authority"
+      },
+      {
+        "kit": "src/approval-material.ts",
+        "kitSha256": "c6d7d760e9eb1bb83ec3baa5742051f7cec880875a0b205905f4ecd988b87cca",
+        "mobile": "src/tws/approval/transaction-inputs.ts",
+        "mobileSha256": "90eea797361d4d2079fcd83d35c758925ab753bb75c03cef6b4c2501e70d905b",
+        "relationship": "moves reusable canonical material membership, bounded Pool-remove input/dependency validation, exact approval-scoped single-flight reads, monotonic UTXO comparison and all-input outpoint collection into Kit while the wallet injects loader and clock and retains Host evidence orchestration and final authorization"
+      },
+      {
+        "kit": "src/approval-host-evidence.ts",
+        "kitSha256": "69d0fe0e3414e5a65ba6bb4e906d3d372dcdb571b25d7c260d02756244daf3cb",
+        "mobile": "src/tws/approval/host-evidence-source.ts",
+        "mobileSha256": "b2b0dac0b561dc4e7ec737c8ff0c17f2cd7ec2d5f9f79b4730a8967edd317cf6",
+        "relationship": "moves the generic authoritative approval call, operation, explicit Host release fingerprint, checkpoint state, full pending-call membership and memory binding/preview identity into one detached deeply frozen Kit evidence reader; Candidate141 adds a synchronous wallet-action projection that reuses Core request/account/context/review/plan/binding validation while Mobile retains Host authority, presentation, approval, private execution and policy"
+      },
+      {
+        "kit": "test/approval-host-evidence.test.mjs",
+        "kitSha256": "a111afb2d16ea24de8fb73f7fa60b23365e524d84bd14c527345c587b63c0060",
+        "relationship": "focused positive and fail-closed proof for read/parser errors and unknown record shapes, call/operation/payload/fingerprint identity, canonical full-call membership, binding/preview memory equality, wallet error identity and detached deep immutability"
+      },
+      {
+        "kit": "test/types/approval-host-evidence-compatible.ts",
+        "kitSha256": "a949204c9785f4671e1e708f5015b20d42d502b557773b183890952fd5de2971",
+        "mobile": "src/tws/approval/approval-protocol.ts",
+        "mobileSha256": "bc9f12b87a2aa9b97a1579d7629cd3dfbce9bcd562497603029390aad4d30735",
+        "relationship": "strict self-contained generic inference accepts a Mobile-shaped approval parser and a structurally different Host record union containing tbc_signTypedData_v1, then returns typed generic and wallet-action evidence without casts or private-package declaration leakage"
+      },
+      {
+        "kit": "src/legacy-dependent-batch.ts",
+        "kitSha256": "13e7705c5bfa61fa211f2c218c1e4b117ea51485f960448e2dee68936d7eedfa",
+        "mobile": "src/legacy/native-adapter.ts",
+        "mobileSha256": "a0bd1ad1b557a99af570637880cd2deea90ec2a029ba4546cb3787abd9af48a3",
+        "relationship": "one fixed two-step coordinator validates the template before execution, stops on first error, derives ordered txids from finalized raws, ACKs the first delivery before the dependent message and reports 0/1/2 progress while execution, consent, authority, Host evidence and result mapping remain wallet-injected"
+      },
+      {
+        "kit": "src/legacy-batch-consent.ts",
+        "kitSha256": "1fb89b0367da50ede73232e5cf384c23dabf63f3c13decf3cf82b62a27449108",
+        "mobile": "src/legacy/batch-consent.ts",
+        "mobileSha256": "a1b201ef90a52c53d7051b77dc34e0f00580e4df217fe3a6fa37013f4ec61f09",
+        "relationship": "moves the complete session-only request-list consent state transitions, operation indexes and Host-delivery/raw-txid/dependent-message invariant checks into one injected Kit machine while accepting general Approval Journal records whose non-batch permission payload may omit chainId; runtime batch paths remain exact-chain fail-closed and Mobile retains verified authority, Host identity/evidence, Approval Journal, clock/account, native presentation, error identity, policy, Vault, Signer and preparation lifecycle"
+      },
+      {
+        "kit": "test/legacy-dependent-batch.test.mjs",
+        "kitSha256": "027a302c94a64c1c63cedfba51dfbaf466268b39c23b89c29821170229efff65",
+        "mobile": "test/legacy/native-adapter.test.ts",
+        "mobileSha256": "c45bc84fafcf844e78911bc1d5327ebf78394c58a4697a915797fa5ef57ae493",
+        "relationship": "focused sequence and failure proof for validation-before-start, step-one stop, finalized raw-to-txid order, ACK-before-step-two, second error and non-authoritative progress presentation"
+      },
+      {
+        "kit": "test/legacy-batch-consent.test.mjs",
+        "kitSha256": "ec77b506b91d2b0003110fff4723d45100b9fc583ca07b4983fa53eca045d51d",
+        "mobile": "test/approval/batch-consent.test.ts",
+        "mobileSha256": "cd7bb9ae9140cdb67754172ab633e0c0c2736cbfbe317511217ef377d249526b",
+        "relationship": "focused proof for session-only restart, exact request and fee binding, one rejection, Host delivery to raw txid to dependent message, wallet-private operation aliases, expiry and wallet-specific conflict identity"
+      },
+      {
+        "kit": "test/types/legacy-batch-consent-compatible.ts",
+        "kitSha256": "8b2c4db440b59d6b566c97e15743d57d691b730429733f873be59385e8d6edd0",
+        "mobile": "src/tws/approval/approval-protocol.ts",
+        "mobileSha256": "bc9f12b87a2aa9b97a1579d7629cd3dfbce9bcd562497603029390aad4d30735",
+        "relationship": "strict exactOptionalPropertyTypes consumer assigns the wallet's general approval intent and journal, including a non-batch optional chainId, directly to the self-contained Kit machine interfaces without casts or private-package declaration leakage"
+      },
+      {
+        "kit": "test/approval-material.test.mjs",
+        "kitSha256": "b6e19e11655b34e3f4a16bc5bac16f3b9a315c13be03d15825b99512ce3b828e",
+        "mobile": "test/approval/pool-input-evidence.test.ts",
+        "mobileSha256": "a983bc8bea0fef1a01d6c73428dc30623b89e00e89ab956485592e0480c68c09",
+        "relationship": "focused parity covers exact material, single maintenance topology and output bindings, every input, exact binding and request, pre/post expiry, failed-read eviction and monotonic confirmations without network, approval, signing or broadcast"
+      },
+      {
+        "kit": "src/pool-policy.ts",
+        "kitSha256": "217306d94a34cd07a2118cc8a1c94fece61613379772d9df244c3723ebfca558",
+        "mobile": "src/tws/ports/pool-policy.ts",
+        "mobileSha256": "217306d94a34cd07a2118cc8a1c94fece61613379772d9df244c3723ebfca558",
+        "relationship": "one package-private LP plan to service-fee policy is shared by default policy resolution and Legacy Pool validation"
+      },
+      {
+        "kit": "../core/src/engine.ts",
+        "kitSha256": "bae72940f9046203222eda9d93e19cafd0d7c7a3ad84e30d59af4734de22ba9f",
+        "relationship": "Core supplies trusted Host request identity only to the internal selector, which may decline Legacy semantics without exposing identity to the wallet digest capability"
+      },
+      {
+        "kit": "../core/src/hash.ts",
+        "kitSha256": "bf1a0fe70128221b40e4054af91b8cb1ec810338c050ad219b3bbde0fec1b841",
+        "relationship": "canonical hashes are recomputed from validated canonical bytes on every call; the rejected process-wide canonical-string memoization cache is absent while the trusted wallet SHA-256 backend remains available"
+      },
+      {
+        "kit": "../core/test/hash-backend.test.mjs",
+        "kitSha256": "4f87f55d26e51ed29c95323555612de69eaf0ceff0d0f98e7841aea08c8875c7",
+        "relationship": "known-answer and backend regression proves identical canonical values invoke SHA-256 independently with unchanged digest identity and fail-closed backend semantics"
+      },
+      {
+        "kit": "../core/src/reducers/messages.ts",
+        "kitSha256": "3593aef5effc21f90a923d6a88ad27329675b80cfa0c51c29b8d6f4d5aa025cc",
+        "mobile": "modules/tbc-transaction-engine/rust/src/lib.rs",
+        "mobileSha256": "5ade1adcccba356ecb94753165bfaea100bb2e7d0a25b2769886441754cf823c",
+        "relationship": "Core decodes Standard message bytes, binds explicit Typed Data, recognizes strict Sign-In text, and keeps Legacy selection behind the trusted wallet-local route"
+      },
+      {
+        "kit": "test/legacy-bitcoin-message.test.mjs",
+        "kitSha256": "d33e43b1fa9ee360c8576c72f1310c4738783e0abbb35ab9da4ce5a015481bef",
+        "mobile": "modules/tbc-transaction-engine/rust/tests/legacy_message_port.rs",
+        "mobileSha256": "e7c6216aac51a8ea679a2f13f83bc1bd25d1ec069ba099f6032e7ffe6ac851bd",
+        "relationship": "public legacy-order vector proves ordinary valid-marker requests remain Standard, forged wallet-local identities fail, disabled Legacy fails before approval, and the trusted route binds the exact digest"
+      },
+      {
+        "kit": "../core/test/message-signing.test.mjs",
+        "kitSha256": "8eb73287e81e64c006dd9fc4aac69bd1e89232cacf58b1e929215e408e7cfca2",
+        "relationship": "Core regression coverage proves Standard and Typed Data known answers, representation equivalence, strict Sign-In context, and trusted Legacy selection"
+      },
+      {
+        "kit": "../core/src/sign-in.ts",
+        "kitSha256": "99584a631b87ab425a7d57646086cda6def965cfb59c78c34b4c61cde19bc55c",
+        "relationship": "strict canonical TBC Sign-In serialization, parsing, encoded-message recognition and wallet-trusted origin, chain, account and time validation"
+      },
+      {
+        "kit": "../core/src/signing-artifacts.ts",
+        "kitSha256": "cb31d14690c38da4f2a812927d400d5a41588441d87b2723f272b7ff8b5b682b",
+        "relationship": "Standard messages frame decoded raw bytes while Typed Data frames canonical explicit envelopes before SHA256d"
+      },
+      {
+        "kit": "../core/src/reducers/workflows.ts",
+        "kitSha256": "638923fed78b107984d069dfcfed1d2f4c344865e77957472d061b5ea3de02ce",
+        "relationship": "workflow message tasks reuse the same message and Typed Data semantics without injected nonce, account or timestamps"
+      },
+      {
+        "kit": "src/client.ts",
+        "kitSha256": "f62b9fca0da52d001a11072d4f3a3fe6cec73f31b13f3ad4a3f10a78b3836973",
+        "relationship": "shared DApp client accepts an injected discovery adapter; the RN root supplies a no-DOM empty registry with explicit-Provider support while the browser root supplies live Wallet Standard discovery"
+      },
+      {
+        "kit": "src/client-browser.ts",
+        "kitSha256": "06f277944d8ebf849e1e02a98c4c1480f42601fdebae67302faad7552ca87231",
+        "relationship": "browser-only client composition consumes the same root Wallet Standard adapter exposed to DApps and preserves synchronous discovery and subscription behavior outside the React Native import graph"
+      },
+      {
+        "kit": "src/wallet-standard-common.ts",
+        "kitSha256": "2c863babffc137dc627ba3407ce0d657f98bd0e332b43252383c83d4550cbb57",
+        "relationship": "self-contained TBC wallet, account and feature declarations plus exact provider-feature validation avoid all private-package declaration identities"
+      },
+      {
+        "kit": "src/wallet-standard-browser.ts",
+        "kitSha256": "e576f85e6c3cc7c3251238e70a0625122d1e6e96d8ebdcab2be60bc9c3b4aae6",
+        "relationship": "browser root registration, discovery and subscription delegate to the official same-release Wallet Standard registry without introducing a second protocol"
+      },
+      {
+        "kit": "src/wallet-standard-native.ts",
+        "kitSha256": "55a0bbb8e8864fea46d7a0af7cc5db91a4b1dc84c9b16cf75c02ee58c1ad797b",
+        "relationship": "React Native retains the same public names while validating no-op registration, returning empty discovery and never evaluating the DOM registry"
+      },
+      {
+        "kit": "test/wallet-standard-closure.test.mjs",
+        "kitSha256": "5daddc15e6d00e9dcc8b9bc1d3d72c8fa4b76280abdf4ee2db794c8a2be56bbf",
+        "relationship": "focused proof for official browser registration/discovery/subscription, fail-closed feature metadata, the no-registry React Native surface, and a root static closure without transaction Engine or eager WASM asset edges"
+      },
+      {
+        "kit": "test/types/wallet-standard-public-consumer.ts",
+        "kitSha256": "de46024c36ced576b8b5979e2054dca4913a1c2ba5eadf4db252258e45dd9677",
+        "relationship": "strict exactOptionalPropertyTypes consumer imports registration, discovery, feature guards and structural wallet types only from the Kit root with skipLibCheck disabled"
+      },
+      {
+        "kit": "src/public-types.ts",
+        "kitSha256": "65ba197835515b205227c7cd30595eb00027e32decec66fdcbd83a2cc84b4047",
+        "relationship": "self-contained Kit declarations distinguish catalog metadata, discovered wallet descriptors, and detected/not-detected option states without treating productId as instance identity; the broad injected-engine contract uses method variance while the /engine factory returns the strict Core-compatible facade"
+      },
+      {
+        "kit": "../wallet-standard/src/types.ts",
+        "kitSha256": "37207b62610044bb6bdad8613e5c4a291b5e876d0fafdfabd7395ee871a915c1",
+        "relationship": "existing tbc:provider feature carries optional self-reported productId metadata alongside the concrete Provider without defining another discovery protocol"
+      },
+      {
+        "kit": "../wallet-standard/src/index.ts",
+        "kitSha256": "51e38a5019f2c163ae9fa3025f7d92eea73077c1fd678ea85d197cdd65ebc7c2",
+        "relationship": "Wallet Standard adapter validates bounded product metadata while preserving official registry discovery and subscription semantics"
+      },
+      {
+        "kit": "test/client-and-network.test.mjs",
+        "kitSha256": "1a32adf8b0f1ddea0c8322a4e886318580c8900d9e5b61a7f63c3f313fb4377d",
+        "relationship": "focused coverage proves catalog merge, not-detected guidance, subscription unsubscribe, same-name and same-product multi-instance isolation, and exact Provider routing"
+      },
+      {
+        "kit": "examples/multi-wallet/run.mjs",
+        "kitSha256": "4b6f13e1b0551d97db05f3efee81155af8fd0f55253db0c38fc09b3b9b7d342c",
+        "relationship": "runnable single-package example registers two same-name wallets, merges a three-entry DApp catalog, and connects each exact discovered Provider through normal account approval"
+      },
+      {
+        "kit": "src/sign-in.ts",
+        "kitSha256": "5e6c93e794c26f82f7a91eedfcf90c343e0132a3f395b7de1faee90f75ce059d",
+        "relationship": "single-package Sign-In creation and verification; recovered compressed public key must derive the claimed version-0 TBC P2PKH address before atomic backend challenge consumption"
+      },
+      {
+        "kit": "test/sign-in.test.mjs",
+        "kitSha256": "384490fc51b4e92c214836b217532cd79bdfcb5afd0ab3e13ea1e03765fa8f34",
+        "relationship": "proves exactly one Provider request, trusted relying-party checks, expiry rejection, one-time atomic consumption, and pre-consumption rejection when the recovered key does not own the claimed address"
+      },
+      {
+        "kit": "test/sign-in-example.test.mjs",
+        "kitSha256": "a4b25b9b2eebd4b698ebceeb76a549f1889e1d8687a6c1a9153906da2cda88fb",
+        "relationship": "executes the packaged two-process frontend/backend example and checks both public signing methods, one-request Sign-In, replay rejection, backend session ownership, and the key-address negative path"
+      },
+      {
+        "kit": "src/webview.ts",
+        "kitSha256": "b5745a1f2dc5c643d6c3d762e5c931ba434fd431ca993a30325c48ec0009d3f2",
+        "relationship": "single-package page factory couples the Provider, strict WebView transport, and generated validators from the same Kit candidate"
+      },
+      {
+        "kit": "src/index.ts",
+        "kitSha256": "c821226a2b4828f2c0e5d581511a285ab6494f023141b0e5469bd368c40d3fc4",
+        "relationship": "browser root exports the live-discovery client plus the official registration/discovery seam alongside the Provider factory/transport and exact runtime validation surface"
+      },
+      {
+        "kit": "src/index.native.ts",
+        "kitSha256": "f6f4d6579b78df78d629bc46de85242df8234fee0352927cf3107226ec69bf8d",
+        "relationship": "React Native root preserves the same public Provider, Wallet Standard names and business surface while selecting no-registry adapters and excluding browser Wallet Standard evaluation"
+      },
+      {
+        "kit": "src/provider-transport.ts",
+        "kitSha256": "78c9730597fa1c0ac83b1298dcac98d2354e022a7ba2ee4f23ae860c5ebd5bb4",
+        "relationship": "root and wallet entries expose the Provider factory/transport, JSON-RPC, event/delivery and close-reason declarations plus a known-method typed interface structurally assignable from the same-release Wallet Standard Provider while runtime validation delegates to the exact bundled schema"
+      },
+      {
+        "kit": "src/wallet-webview.ts",
+        "kitSha256": "6e83d4358768392e75a81f99a610f804580197e182e0fc69ad8356a51d14c288",
+        "relationship": "wallet entry delegates to the exact bundled Provider native controller and complete channel/encoder/decoder/digest codec while exposing self-contained structural native transport, verified-navigation and durable-store interfaces"
+      },
+      {
+        "kit": "test/wallet-webview-native.test.mjs",
+        "kitSha256": "4967d35b910575541a00fc11037eccfd2cadd3ec3a6c41d7ccce084893c06519",
+        "relationship": "Kit-only root page and wallet native entries round-trip a request, acknowledge the durable outbox row and terminate the exact bound navigation without a standalone Provider import"
+      },
+      {
+        "kit": "test/provider-transport.test.mjs",
+        "kitSha256": "d717c5f9173ce96151ec8677de3c5c8e6c66a54a7bde95a779572476a99fa9d2",
+        "relationship": "focused runtime coverage proves the root Provider factory/transport and wallet entries share exact request validation and keep delivery validation, detached freezing, canonical WebView encode/decode round-trips, duplicate-key rejection and envelope digest behavior"
+      },
+      {
+        "kit": "test/types/provider-public-consumer.ts",
+        "kitSha256": "6d6fa660d5bcd954139c0ff38c190e368bcdc381992b2ba8928ebce9170f4ede",
+        "relationship": "strict DApp fixture proves the root TbcProvider retains known-method result inference and directly accepts the actual same-release private Provider without casts or declaration-identity coupling"
+      },
+      {
+        "kit": "test/types/provider-transport-consumer.ts",
+        "kitSha256": "a77eb3fed528854ab95612cb3cf8bdb14f8d35514142c0e4cdcc81e49ab29a78",
+        "relationship": "strict exactOptionalPropertyTypes fixture consumes the Provider factory/transport and every WebView channel, encoder, decoder, digest, controller and structural type needed by the current Mobile sources from the single wallet entry without private declaration imports"
+      },
+      {
+        "kit": "test/types/wallet-webview-provider-compatible.ts",
+        "kitSha256": "bfa81d36fe4a2e0c6d4c13b8237cc409fd0fee5b68bd3e7606b7bbe42fcf4d08",
+        "relationship": "assigns the existing Provider native handler/options and a Kit request directly under strict TypeScript without casts"
+      },
+      {
+        "kit": "test/tsconfig.wallet-webview.json",
+        "kitSha256": "2983b111e48a238151830327ad0edeabfad11295393ba41400ba94cf93c71119",
+        "relationship": "focused strict and exactOptionalPropertyTypes compatibility gate with skipLibCheck disabled"
+      },
+      {
+        "kit": "test/webview-page-provider.test.mjs",
+        "kitSha256": "d955e14a521d7463fe1903184a570dbdd681aaee5a3199529cbece3c1e31495e",
+        "relationship": "accepts current no-suffix signing grants, permissionsChanged, and current message results while stale result schemas close fail-closed"
+      },
+      {
+        "kit": "test/webview-cross-artifact.test.mjs",
+        "kitSha256": "c75ca7a01ef6070ce80a3e8711e9f0b84930749a8b1d5f3a463b2b37e39997c3",
+        "relationship": "candidate.32 retains the candidate.23 page encoding that decodes through the bundled Provider native codec for the exact strict tbc_signTypedData key shape"
+      },
+      {
+        "kit": "../provider/src/webview-codec.ts",
+        "kitSha256": "6dbf2c74d81a5b2da3db043c1dcd067df3f4d79defd98ef4389fb707a05d4ec7",
+        "relationship": "standalone native WebView codec imports the same generated strict validators by relative source path instead of a runtime package self-reference"
+      },
+      {
+        "kit": "../provider/test/package-artifact.test.mjs",
+        "kitSha256": "e7dbf8618a5fe0e7023c96397a8e72936a70d02fc9d43d513872b56b9e2a2ec0",
+        "relationship": "packed ESM and CommonJS WebView artifacts prove no runtime Provider self-reference or consumer Core method-registry dependency, including exact Kit typed-data bytes under an older rejecting registry"
+      },
+      {
+        "kit": "../provider/src/validation.ts",
+        "kitSha256": "1b9d260cd52e9b8752e5fe2b9d8d35b7d652b68366137ea4edd33e68a82916f5",
+        "relationship": "known Provider parameter shape is selected only from the bundled generated validator set; missing parameter schemas remain strict no-params methods"
+      },
+      {
+        "kit": "../../package.json",
+        "kitSha256": "25e6fe4121afa7670092f6fc78bdaaaa12d3e923e2fdea29fddf9b66283fb616",
+        "relationship": "Provider build bundles the standalone WebView entry without externalizing its own package name"
+      },
+      {
+        "kit": "../provider/src/webview-native.ts",
+        "kitSha256": "a55ae396a5f890966c666955a68f61740c7f4c5170abcd531535f63b6af326c8",
+        "relationship": "native delivery durably marks sent before Host acknowledgment and page dispatch so a fast page ACK cannot collide with pending state"
+      },
+      {
+        "kit": "../provider/test/webview-native.test.mjs",
+        "kitSha256": "cf0b61bb6d3ea40ea3227fe475722c8ff85adc2572352101cd019fc9088b9c1c",
+        "relationship": "focused coverage proves fast synchronous ACK, mark collision suppression, post-failure sent retention, and one request and delivery dispatch"
+      },
+      {
+        "kit": "../provider/test/webview-outbox.test.mjs",
+        "kitSha256": "10a4ad48a7bdbae997df9737d485a9e85daf91528594262020904a5f519de8df",
+        "relationship": "blocked page post observes durable sent and exact same-session replay bytes before acknowledgment"
+      },
+      {
+        "kit": "examples/sign-in/backend.mjs",
+        "kitSha256": "b93dbdf14bf2b54fe8b813bc00263a7b4c6b8a5edafcb82b763c8c47a64d51ac",
+        "relationship": "non-production backend process issues login-attempt-bound challenges, atomically consumes once, rejects reuse, and creates the session only after verification"
+      },
+      {
+        "kit": "examples/sign-in/frontend.mjs",
+        "kitSha256": "1011f0a0adc355a9f03ec5cd04bebf80e7051d279ae6a152126d326eef738542",
+        "relationship": "real local Kit wallet executes tbc_signMessage, tbc_signTypedData, one-request Sign-In, replay and forged key-address behavior"
+      },
+      {
+        "kit": "examples/sign-in/run.mjs",
+        "kitSha256": "1e0c3a03093972677a67ed401b68e883a103b7339baf90cb123c176f86a68b80",
+        "relationship": "forks the backend to make the frontend/backend process and state boundary executable"
+      },
+      {
+        "kit": "test/wallet-environment.test.mjs",
+        "kitSha256": "a9c93f607399a6ec647033e21db7dc89ace559fe1e4675af08d8bf1f3abf654c",
+        "relationship": "ESM and CJS artifact proof that wallet and SQLite bootstrap configure the same package-private Core backend, plus emitted no-bare-Event validation, no-DOM loading, browser registration metadata and productId independence from the private authority profile"
+      },
+      {
+        "kit": "test/hermes-wallet-import.test.mjs",
+        "kitSha256": "579831aa7a57df37085719670bd7570af769ea7fca368404b30b75b29f441d68",
+        "relationship": "direct @tbc/kit and @tbc/kit/wallet imports under the react-native condition succeed with Event/window/document absent, expose the recoverable-signature verifier, exercise no-registry registration/discovery/feature validation, and the real Hermes runtime separately executes the exact browser detector safely"
+      },
+      {
+        "kit": "test/recoverable-signature-identity.test.mjs",
+        "kitSha256": "b5ee880bff554507a763cf4f77b7bddceed1587b43ed499fde27ec67693311c8",
+        "relationship": "ESM and CommonJS wallet artifacts count one public-key recovery when the wallet Signer verifies and bundled Core consumes the same exact tuple, rejecting a duplicate Core verification regression"
+      },
+      {
+        "kit": "test/sqlite-recovery.test.mjs",
+        "kitSha256": "9f51db86d6babfde6c128d0a376ca445e79ce032564c1f0c6862f5c30e279298",
+        "relationship": "live memory evidence and no-restart-recovery proof alongside durable SQLite physical-reopen recovery, zero durable SQLite Host rows for session-only signing, and exclusion of pre-Signer operations from automatic recovery"
+      },
+      {
+        "kit": "test/default-broadcast.test.mjs",
+        "kitSha256": "d9e40f77d76f9a95c5004972875acf6efd371289078f035e7b45ceefe23d9549",
+        "relationship": "focused durable broadcast proof covers accepted replay with one POST, ambiguous physical reopen with reconcile-only recovery, pre-network abort identity release, and existing Mobile table compatibility"
+      },
+      {
+        "kit": "test/default-broadcast-wallet-lifecycle.test.mjs",
+        "kitSha256": "4621ff1ab5c75311121d662f2913dcebc5c59d09d779d15d551e0664ac809a04",
+        "relationship": "controlled full TBC wallet lifecycle uses Kit Chain Data, approval, isolated Signer, Rust-WASM finalize, one POST with response loss and one status GET to complete without consumer submit/reconcile callbacks"
+      },
+      {
+        "kit": "test/session-execution.test.mjs",
+        "kitSha256": "9c132a8d525cf19ccc75012ab064aba6eb3338c8de6c6c41a000a2da13137e7d",
+        "relationship": "focused coverage proves metadata-derived routing for every supported pure-signing method, default and explicit session-only Host context, replay without duplicate private execution, Legacy binding, missing-Signer rejection, durable fallback, and one exact trusted Host read projected into fail-closed wallet-action approval evidence"
+      },
+      {
+        "kit": "scripts/check-default-success-lifecycles.mjs",
+        "kitSha256": "a472927a6d58cd6162746e0b4aed8f13bd888b4ada8dc66c2fc58966cecc69dd",
+        "relationship": "all nine sign-only business intents plus prepared transaction and workflow execute session-only, while controlled send, broadcast response loss, reconcile, and dependent submissions remain durable"
+      },
+      {
+        "kit": "test/default-chain-data.test.mjs",
+        "kitSha256": "3c2e7b7910405c9922c1e1dcc6be896769b736206de030cb4f524a616cfe620c",
+        "relationship": "held-dependency tests prove FT creation and selected-parent overlap, LP index independence from funding-parent bytes, shared exact-byte inspection, exact initialize retention, and same-request single-flight without conflating logical requests with retryable transport failures"
+      },
+      {
+        "kit": "test/legacy-pool-intent.test.mjs",
+        "kitSha256": "03c20ff777c86b25c753f18395669d5c6f1bcd98b052a24812c72694bc43289f",
+        "mobile": "test/legacy/pool-intent.test.ts",
+        "mobileSha256": "c4899994423696e87b28a947e9be20bcc21a1848b0a6bd2df392b746de208be0",
+        "relationship": "covers every supported Pool flag, display-to-atomic mapping, LP truncation, metadata injection, expiry, sign-only enforcement, hidden-field rejection and LP plan fee policy"
+      },
+      {
+        "kit": "test/legacy-ft-transfer-intent.test.mjs",
+        "kitSha256": "84c88fd398e01876f0dfb94cc24c350f9002d8a02a1e14a77256b779e5239ea3",
+        "mobile": "test/legacy/ft-transfer-intent.test.ts",
+        "mobileSha256": "8c2f7d9147609c69cfe7444fc5ae7bdc2b5c94a380749eab1862f50622af5ef7",
+        "relationship": "covers canonical FT transfer mapping, zero/nonzero attached TBC, metadata identity, failed-read nonretention, immutable bounded reuse, precision and broadcast negatives"
+      },
+      {
+        "kit": "test/pool-material-parity.test.ts",
+        "kitSha256": "c1d648ad7b1673d5362fd2cdbb9f2098c44ef87ab518dd1fbb0d62ec3dcf169b",
+        "relationship": "production Pool material requires a valid decode confirmation count, rejects omitted metadata without mempool inference, and preserves request-local concurrency"
+      },
+      {
+        "kit": "test/request-preparation.test.mjs",
+        "kitSha256": "a6f744c0faaed2a5bd945745d21878c94d3fbcb1787a2ea5e42ed62696550150",
+        "relationship": "focused coverage proves memory-only read preparation, exact consume, normal miss fallback, cancellation, and injected-navigation invalidation without Host, approval, Signer, finalize or broadcast during prefetch"
+      },
+      {
+        "kit": "test/bundle-module-identity.test.mjs",
+        "kitSha256": "30e945a39f200681b603f65ab996206d16bc4878e80175d0d71b4f402576c632",
+        "relationship": "built ESM and CommonJS cross-entry regression proves a SQLite-created store retains wallet-created checkpoint ownership and shared trusted SHA-256 backend identity at the exact 38-call-per-request no-memoization baseline without network, approval, Signer or POST"
+      },
+      {
+        "kit": "src/internal/core/index.ts",
+        "kitSha256": "121ecfb9f02af5430e8982672230d92161793255ce9df1a4658943f766d9f65f",
+        "relationship": "compile-time bridge, including the strict TransactionEngine facade, replaced in the package by the exact same-release Core declaration closure"
+      },
+      {
+        "kit": "../../release/core-6.20-candidate/tbc-wallet-core-1.0.0-draft.6.20.tgz",
+        "kitSha256": "d8ad1da547add5da2bb2b885f258c8a8eb1e202ee0d2b46252f44ad29bdef6ed",
+        "relationship": "immutable Mobile-active Core 6.20 declaration source; only its self-contained declaration closure is vendored so /engine is structurally compatible without a private package import"
+      },
+      {
+        "kit": "scripts/build.mjs",
+        "kitSha256": "1edb57781913915c20c5b4214392e901a2ebc7cca1d9715945ad3f053f5447ab",
+        "relationship": "verifies and vendors the exact immutable Mobile Core 6.20 plus same-release Provider declaration closures, emits portable browser/React Native graphs and a separate Node Engine entry, and preserves bundled WASM URL locations"
+      },
+      {
+        "kit": "../tbc-engine/rust/crates/tbc-keyless-native/src/lib.rs",
+        "kitSha256": "cf8aea8b1e327a8b357844c36d8f6a6ae8b6be242e5c0f4fe6fbabbed33fb80e",
+        "relationship": "owned keyless Native C ABI with reusable header and no signing operation"
+      },
+      {
+        "kit": "../tbc-engine/rust/crates/tbc-keyless-core/src/asset_ancestry.rs",
+        "kitSha256": "a0348cc3b766fc169cbf87f35cf7d10f6889108e6e22dff7905c77b680e3cb6c",
+        "mobile": "modules/tbc-transaction-engine/rust/src/asset_ancestry.rs",
+        "mobileSha256": "a0348cc3b766fc169cbf87f35cf7d10f6889108e6e22dff7905c77b680e3cb6c",
+        "relationship": "byte-identical keyless helper"
+      },
+      {
+        "kit": "../tbc-engine/rust/crates/tbc-keyless-core/src/pool_nft.rs",
+        "kitSha256": "f78e71c376673192e40f0a540b764d623ea341a6a910ef4091da136c947ba340",
+        "mobile": "modules/tbc-transaction-engine/rust/src/pool_nft.rs",
+        "mobileSha256": "f151ce0730b785a427860d6a39b6b8615bde5d0396fc9601d6e0bc31a89866c7",
+        "relationship": "extracted keyless DTO, selection, describe and preview paths; signing/building paths excluded"
+      },
+      {
+        "kit": "../tbc-engine/rust/vendor/tbc-sdk/src/contracts/pool_nft_v2/builder.rs",
+        "kitSha256": "7566b8fa33454897bf38b44547d6b7bf3dc274f424b3d14102a25e3c7d926203",
+        "relationship": "canonical FT authority validation source used by the keyless extraction"
+      },
+      {
+        "kit": "src/api.ts",
+        "kitSha256": "e75f684a894c6656ed3692aa3f3e8308d6412370d63da316a61a2cba2ac8b828",
+        "relationship": "exports the explicit lookup transaction and bounded NFT history result types used by the read-only transfer verifier"
+      },
+      {
+        "kit": "src/testnet-client.ts",
+        "kitSha256": "06ba11abad984b8386d8486dfdd3d32cd4e1da27746730cd368c15b5a0314992",
+        "mobile": "src/tws/testnet/client.ts",
+        "mobileSha256": "7456db03671bcd57ab1786fb7231a59d23465de25f4bacf7613df218bde0034b",
+        "relationship": "production decoder locally rebinds txid, raw bytes, outputs and values and requires an explicit valid non-negative confirmation count; omitted or invalid metadata, not-found and identity mismatch remain fail-closed with no hidden mempool request"
+      },
+      {
+        "kit": "src/network-client.ts",
+        "kitSha256": "fc8fdc7bc62fd575901a144a7bc181dcbc1039da4d87bcef179e1cc9b71a95ea",
+        "relationship": "API GET uses bounded transient retry while POST remains one attempt; generic RPC retry requires explicit idempotent-read opt-in and exact method-plus-params single-flight identity"
+      },
+      {
+        "kit": "src/read-retry.ts",
+        "kitSha256": "7dac7ed047823c4445ebf679bafe357a49e79aceff925bbb8489b2a172f726ad",
+        "relationship": "shared read-only transport policy limits transient network, 429 and retryable 5xx handling to four total attempts with Retry-After or capped exponential backoff"
+      },
+      {
+        "kit": "test/read-retry.test.mjs",
+        "kitSha256": "711dc532edc84f2226d7dba86a662b53ae8a27d9f7784714815a073a6cd73b0d",
+        "relationship": "focused RED-to-GREEN proof covers transport, 429 and 5xx recovery, same-request single-flight, and no retry for parse, 4xx, source mismatch, RPC business error, POST or non-opted-in state-changing RPC"
+      },
+      {
+        "kit": "test/optimized-chain-data.test.mjs",
+        "kitSha256": "bd2450adca7af350c948671186b7a1fde857bb813031eed5b6035c4410b89fe2",
+        "relationship": "a 26-read gate proves all independent tip, native, asset and contract reads start before release with no artificial Kit concurrency ceiling"
+      },
+      {
+        "kit": "src/testnet-validation.ts",
+        "kitSha256": "e093febe217c53f2133b819fef97822c961726fb5148f435048fd59a74ac3b20",
+        "mobile": "src/tws/testnet/validation.ts",
+        "mobileSha256": "7ab7932b888fae5c0ce92ae9a3e95e43481ba532c4512090a883fc1a093a5d21",
+        "relationship": "production validation copied with package-local module paths"
+      },
+      {
+        "kit": "src/legacy-webview-contract.ts",
+        "kitSha256": "e8efd1002b84340153989053a3c7b1d8d2ca098f844d85851d1570992c0808bc",
+        "relationship": "pins the existing Legacy 1.0.4 channel contract and bundle identity without defining new page authority"
+      },
+      {
+        "kit": "src/legacy-webview-protocol.ts",
+        "kitSha256": "1030b36c25038f36b9e92f24457dce6675822368bf0bfe7da2adecfd0b37896b",
+        "mobile": "src/legacy/protocol.ts",
+        "relationship": "same strict Legacy channel shapes, exact keys, size and structure limits, close reasons and event names"
+      },
+      {
+        "kit": "src/legacy-webview-page-runtime.ts",
+        "kitSha256": "28c594bbf5333dbfe2d850e219165deb97e739695e12942ef3a14ddacd1f30f2",
+        "mobile": "src/legacy/page-runtime.ts",
+        "relationship": "same frozen window.Turing facade, unique request correlation, page ACK, stale-session suppression and one-document rebind semantics"
+      },
+      {
+        "kit": "src/legacy-webview-page-bootstrap.ts",
+        "kitSha256": "6793e3e92954767dee2000fd8806c273a5d7169e02b167fcac036e1e819faad3",
+        "relationship": "generated self-contained page bootstrap contains no Host, Engine, key, registration, eval or Function capability"
+      },
+      {
+        "kit": "src/receipt-verification.ts",
+        "kitSha256": "2a8becc85a5479c729963d9aeea6672d21053ff70e655deddfd0b19dbc97d420",
+        "relationship": "root read-only receipt API separates exact decoded content identity from confirmation policy and reports invalid-response without a mempool query when confirmation metadata is omitted"
+      },
+      {
+        "kit": "../tbc-engine/rust/crates/tbc-keyless-core/src/token_receipt.rs",
+        "kitSha256": "a4f1dac85c43051dad1b5584c420f07c08579e0db715fa7d1f3d21943b41815d",
+        "relationship": "keyless local raw parser authenticates FT contract code excluding only its receiver field and NFT immutable collection-slot identity, canonical hold owner and Tape framing"
+      },
+      {
+        "kit": "test/receipt-verification.test.mjs",
+        "kitSha256": "f4e131684de5e524d5fa2f9229c9bf642cf806e6ca344a84bef1d8950877f474",
+        "relationship": "focused proof covers omitted confirmation fail-closed with no mempool GET, explicit zero and positive values, invalid metadata, not-found, wrong identity and construction reads"
+      },
+      {
+        "kit": "src/legacy-associated-transaction.ts",
+        "kitSha256": "6063e87c1fdfd284161df4afbb9a6e0c2e2fb0bad830fb0c7f917cf3393265b2",
+        "relationship": "canonical public request preparation and durable result validation preserve the Mobile 32-child boundary, reject old native secret fields and expose no scalar, native executor or Signer callback"
+      },
+      {
+        "kit": "src/legacy-metadata.ts",
+        "kitSha256": "564d5382c6e583df45c9b4feb91ec122aa4549f807ff2442803e1815d23b0426",
+        "relationship": "one immutable network context drives exact-origin FT metadata and Pool-to-FT identity parsing, shared-ledger single-flight and short bounded source-isolated reuse"
+      },
+      {
+        "kit": "test/legacy-associated-transaction.test.mjs",
+        "kitSha256": "0d5a64a811712eba94f9cba870c6dcdc26aafeab25dfda71b49c28405fb873ec",
+        "relationship": "focused proof covers prepared and completed replay, canonical journal collision rejection, Mobile bounds and runtime rejection of native secret fields"
+      },
+      {
+        "kit": "test/legacy-metadata.test.mjs",
+        "kitSha256": "50d2d4fa673447723a3d0ef6fdee8876074a3a16e9b7604c5e5790498d09daf2",
+        "relationship": "controlled proof covers two sequential cold Pool GETs, concurrent single-flight, warm zero-GET reuse, preloaded FT reuse, TTL refresh, source-change rejection and Mainnet/Testnet isolation"
+      },
+      {
+        "kit": "examples/legacy-associated-metadata/wallet.mjs",
+        "kitSha256": "3fa3ce8d93d70b92914fbb015cbf213e430d5e9cfe8d61ee7b954e95c63aa92b",
+        "relationship": "minimal composition shares one metadata resolver and associated service while the wallet-private approved closure retains native unlock and secret custody"
+      },
+      {
+        "kit": "test/legacy-associated-metadata-example.test.mjs",
+        "kitSha256": "234c6248a9b75d98b9408badb35cb47d85711157ba093bcd68ba63c866d6cab8",
+        "relationship": "package example imports directly and contains no native private-key or scalar input"
+      },
+      {
+        "kit": "examples/independent-wallet/run.mjs",
+        "kitSha256": "a6257842cf7998e00628eb770bdc65cfa847e4ad6fa7421f0a1af50047dd87c6",
+        "relationship": "non-Turing consumer uses only public Kit entries for default Node Engine, default network, TBC sign-only, associated result, ordered txid dependency, ACK-before-message and shared FT/Pool metadata"
+      },
+      {
+        "kit": "examples/independent-wallet/controlled-platform.mjs",
+        "kitSha256": "b74585f67aaa9062a75afb66c6201e8f09a782baee18fb7dbccb7e5247289f81",
+        "relationship": "explicit offline fetch, memory journal and scalar-1 signer fixture keep production custody, durable storage and network authority outside the example"
+      },
+      {
+        "kit": "examples/independent-wallet/README.md",
+        "kitSha256": "ab19250945bd1fee795f0bbfe7fbc2561e262907acb4e670962de4c2a004e2d5",
+        "relationship": "documents the installed-tarball run command and the exact non-production fixture boundaries"
+      },
+      {
+        "kit": "test/engine-network-profile.test.mjs",
+        "kitSha256": "5b845560e32e65f0e56353a71601afc9bfc4dc9620364439a283ddb538b21b55",
+        "relationship": "package-conditioned Node ESM and CommonJS default file-WASM execution plus portable explicit-fetch authority are focused-tested"
+      },
+      {
+        "kit": "test/metro-wallet-parse.test.mjs",
+        "kitSha256": "e3a1c7b2b3996f592cd8a552fb4df91679787710b63634368f7a5e9091312960",
+        "relationship": "recursive built-artifact closure proof rejects any Node builtin or non-literal dynamic import reachable from the React Native wallet export"
+      },
+      {
+        "kit": "test/independent-wallet-example.test.mjs",
+        "kitSha256": "4dcf30eaf14b5cd7e6ef490908a40a587bb63c9712c7ca9f090e6f812b4cf4f5",
+        "relationship": "controlled end-to-end example result and absence of Mobile, Turing and private workspace imports are asserted"
+      },
+      {
+        "kit": "README.md",
+        "kitSha256": "2e4d984835c09ae87f9d2a583ef540dbfc0cf65377f1b38e659a5be53d22f69a",
+        "relationship": "documents Candidate 65 React Native and Node Engine split while retaining Candidate 64 read concurrency and retry boundaries"
+      },
+      {
+        "kit": "SUPPORT.md",
+        "kitSha256": "e10931eda9c8accf234d973cb375855cae00daaa98dbc482767fd726de6016b3",
+        "relationship": "records Candidate 70 exact one-use signature verification semantics and preserves the boundary between package admission, device performance and business-flow acceptance"
+      },
+      {
+        "kit": "../../docs/guides/wallet-integration.md",
+        "kitSha256": "fe18dcdc88641a8d10731f458256731a2227c4c7ee458ffa57a9e093b061c702",
+        "relationship": "replaces the obsolete four-private-package recipe with one public Kit, minimal assembly and wallet-owned custody, platform, store and authority boundaries"
+      },
+      {
+        "kit": "test/types/receipt-public-consumer.ts",
+        "kitSha256": "13a656638f91442a4551a337833409d398b82bcc5692ae5843d829e2c146183b",
+        "relationship": "strict root-only consumer proves fungible exact/minimum amount inputs and rejects an NFT fungible amount field at compile time"
+      }
+    ]
+  }
+}

@@ -1,0 +1,242 @@
+// Historical TS implementation test. Replaced by required Rust and artifact tests;
+// see ../README.md. Retained as migration evidence, not an executable test.
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import { after, before, test } from "node:test";
+import { hashCanonical, sha256Hex } from "@tbc-wallet/core";
+import { loadInternals } from "./build-internals.mjs";
+
+const vectors = JSON.parse(
+  await readFile(new URL("../../../test-vectors/integration.json", import.meta.url), "utf8"),
+);
+const canonical = vectors.canonicalTransfer;
+let internals;
+let cleanup;
+
+before(async () => {
+  ({ runtime: internals, cleanup } = await loadInternals([
+    "bytes",
+    "network",
+    "transaction",
+    "violations",
+    "validate",
+    "engine",
+  ]));
+});
+
+after(() => cleanup?.());
+
+function paramsFor(phase) {
+  return {
+    version: "1.0",
+    phase,
+    request: canonical.request,
+    requestHash: canonical.requestHash,
+    snapshot: canonical.snapshot,
+    policy: canonical.policy,
+    plan: canonical.plan,
+    ...(phase === "plan"
+      ? {}
+      : { binding: canonical.binding, approval: canonical.approval }),
+    ...(phase === "finalized" || phase === "pre-broadcast"
+      ? { signatures: [canonical.signature], bundle: canonical.bundle }
+      : {}),
+  };
+}
+
+function mutate(base, action) {
+  const value = structuredClone(base);
+  action(value);
+  return value;
+}
+
+function rehashPlan(value) {
+  value.plan.planHash = hashCanonical(value.plan.payload);
+}
+
+function rewriteUnsigned(value, action) {
+  const transaction = internals.parseTransaction(
+    value.plan.payload.transactions[0].unsignedTransaction,
+  );
+  const mutable = {
+    ...transaction,
+    inputs: transaction.inputs.map((input) => ({ ...input })),
+    outputs: transaction.outputs.map((output) => ({ ...output })),
+  };
+  action(mutable);
+  const bytes = internals.serializeTransaction(mutable);
+  value.plan.payload.transactions[0].unsignedTransaction = internals.bytesToHex(bytes);
+  value.plan.payload.transactions[0].templateHash = sha256Hex(bytes);
+  rehashPlan(value);
+}
+
+function codes(result) {
+  return result.violations.map(({ code }) => code);
+}
+
+test("accepts each exact workflow phase and returns deeply frozen results", () => {
+  const engine = internals.createTbcTransferEngine();
+  for (const phase of ["plan", "pre-sign", "finalized", "pre-broadcast"]) {
+    const result = engine.validate(paramsFor(phase));
+    assert.deepEqual(result, { valid: true, violations: [] }, phase);
+    assert.equal(Object.isFrozen(result), true);
+    assert.equal(Object.isFrozen(result.violations), true);
+  }
+});
+
+test("collects every frozen violation code from schema-valid single mutations", () => {
+  const engine = internals.createTbcTransferEngine();
+  const plan = paramsFor("plan");
+  const finalized = paramsFor("finalized");
+  const cases = [
+    ["REQUEST_HASH_MISMATCH", mutate(plan, (value) => { value.requestHash = "00".repeat(32); })],
+    ["SNAPSHOT_HASH_MISMATCH", mutate(plan, (value) => { value.snapshot.snapshotHash = "00".repeat(32); })],
+    ["POLICY_HASH_MISMATCH", mutate(plan, (value) => { value.policy.policyHash = "00".repeat(32); })],
+    ["PLAN_HASH_MISMATCH", mutate(plan, (value) => { value.plan.planHash = "00".repeat(32); })],
+    ["APPROVAL_BINDING_MISMATCH", mutate(finalized, (value) => { value.binding.bindingHash = "00".repeat(32); })],
+    ["PLAN_EXPIRED", mutate(plan, (value) => {
+      value.plan.payload.expiresAt = "2026-08-31T12:01:00Z";
+      rehashPlan(value);
+    })],
+    ["SNAPSHOT_EXPIRED", mutate(plan, (value) => {
+      value.snapshot.payload.expiresAt = value.snapshot.payload.capturedAt;
+      value.snapshot.snapshotHash = hashCanonical(value.snapshot.payload);
+    })],
+    ["CHAIN_MISMATCH", mutate(plan, (value) => {
+      value.policy.payload.chainId = "tbc:other";
+      value.policy.policyHash = hashCanonical(value.policy.payload);
+    })],
+    ["ACCOUNT_MISMATCH", mutate(plan, (value) => {
+      value.snapshot.payload.account.address = canonical.request.intent.to;
+      value.snapshot.snapshotHash = hashCanonical(value.snapshot.payload);
+    })],
+    ["INPUT_NOT_IN_SNAPSHOT", mutate(plan, (value) => {
+      value.snapshot.payload.utxos = [];
+      value.snapshot.snapshotHash = hashCanonical(value.snapshot.payload);
+    })],
+    ["INPUT_ALREADY_SPENT", mutate(plan, (value) => {
+      value.snapshot.payload.utxos.push(structuredClone(value.snapshot.payload.utxos[0]));
+      value.snapshot.snapshotHash = hashCanonical(value.snapshot.payload);
+    })],
+    ["ANCESTRY_INVALID", mutate(plan, (value) => {
+      value.snapshot.payload.parents[0].txid = "11".repeat(32);
+      value.snapshot.payload.utxos[0].txid = "11".repeat(32);
+      value.snapshot.snapshotHash = hashCanonical(value.snapshot.payload);
+    })],
+    ["UNSUPPORTED_CONTRACT_VERSION", mutate(plan, (value) => {
+      value.plan.payload.artifacts = { contractId: "22".repeat(32) };
+      rehashPlan(value);
+    })],
+    ["AMOUNT_OUT_OF_RANGE", mutate(plan, (value) => {
+      value.policy.payload.amountLimits[0].maximum = "999";
+      value.policy.policyHash = hashCanonical(value.policy.payload);
+    })],
+    ["BUSINESS_OUTPUT_MISMATCH", mutate(plan, (value) => {
+      rewriteUnsigned(value, (transaction) => {
+        transaction.outputs[0] = { ...transaction.outputs[0], satoshis: 999n };
+      });
+    })],
+    ["MINIMUM_OUTPUT_NOT_MET", mutate(plan, (value) => {
+      rewriteUnsigned(value, (transaction) => {
+        transaction.outputs[1] = { ...transaction.outputs[1], satoshis: 1n };
+      });
+    })],
+    ["CHANGE_NOT_CONTROLLED", mutate(plan, (value) => {
+      rewriteUnsigned(value, (transaction) => {
+        transaction.outputs[1] = {
+          ...transaction.outputs[1],
+          scriptPubKey: transaction.outputs[0].scriptPubKey,
+        };
+      });
+    })],
+    ["FEE_MISMATCH", mutate(plan, (value) => {
+      value.plan.payload.transactions[0].fee = "79";
+      rehashPlan(value);
+    })],
+    ["FEE_LIMIT_EXCEEDED", mutate(plan, (value) => {
+      value.request.constraints = { maxFee: "79" };
+      value.requestHash = hashCanonical(value.request);
+      value.plan.payload.requestHash = value.requestHash;
+      rehashPlan(value);
+    })],
+    ["DEPENDENCY_INVALID", mutate(plan, (value) => {
+      value.plan.payload.transactions[0].dependsOn = ["missing"];
+      rehashPlan(value);
+    })],
+    ["SIGNING_TASK_MISMATCH", mutate(plan, (value) => {
+      value.plan.payload.signingTasks[0].digest = "00".repeat(32);
+      rehashPlan(value);
+    })],
+    ["SIGNATURE_INVALID", mutate(finalized, (value) => {
+      value.signatures[0].signature = `${value.signatures[0].signature.slice(0, -2)}00`;
+    })],
+    ["TXID_MISMATCH", mutate(finalized, (value) => {
+      value.bundle.transactions[0].txid = "00".repeat(32);
+    })],
+    ["ARTIFACT_MISMATCH", mutate(plan, (value) => {
+      value.plan.payload.artifacts = { collectionId: "33".repeat(32) };
+      rehashPlan(value);
+    })],
+    ["BUNDLE_LIMIT_EXCEEDED", mutate(finalized, (value) => {
+      value.bundle.transactions.push(structuredClone(value.bundle.transactions[0]));
+    })],
+  ];
+  const observed = new Set();
+  for (const [expected, input] of cases) {
+    const result = engine.validate(input);
+    assert.equal(result.valid, false, expected);
+    assert.equal(codes(result).includes(expected), true, `${expected}: ${codes(result)}`);
+    for (const code of codes(result)) observed.add(code);
+  }
+  const secretInput = { ...paramsFor("plan"), privateKey: "01".padStart(64, "0") };
+  const secret = internals.collectTransferViolations(secretInput, new Map([
+    [internals.TBC_MAINNET_PROFILE.chainId, internals.TBC_MAINNET_PROFILE],
+  ]));
+  assert.equal(codes(secret).includes("SECRET_FIELD_PRESENT"), true);
+  observed.add("SECRET_FIELD_PRESENT");
+
+  assert.deepEqual([...observed].sort(), [...internals.TBC_VIOLATION_CODES].sort());
+});
+
+test("enforces phase presence and rejects premature artifacts", () => {
+  const engine = internals.createTbcTransferEngine();
+  const premature = mutate(paramsFor("plan"), (value) => {
+    value.binding = canonical.binding;
+    value.approval = canonical.approval;
+    value.signatures = [canonical.signature];
+    value.bundle = canonical.bundle;
+  });
+  const missingApproval = paramsFor("plan");
+  missingApproval.phase = "pre-sign";
+  const missingFinalized = paramsFor("pre-sign");
+  missingFinalized.phase = "finalized";
+
+  assert.equal(engine.validate(premature).valid, false);
+  assert.equal(codes(engine.validate(premature)).includes("APPROVAL_BINDING_MISMATCH"), true);
+  assert.equal(codes(engine.validate(missingApproval)).includes("APPROVAL_BINDING_MISMATCH"), true);
+  assert.equal(codes(engine.validate(missingFinalized)).includes("SIGNATURE_INVALID"), true);
+  assert.equal(codes(engine.validate(missingFinalized)).includes("TXID_MISMATCH"), true);
+});
+
+test("de-duplicates and sorts violations in frozen registry order", () => {
+  const engine = internals.createTbcTransferEngine();
+  const value = mutate(paramsFor("finalized"), (input) => {
+    input.requestHash = "00".repeat(32);
+    input.snapshot.snapshotHash = "00".repeat(32);
+    input.policy.policyHash = "00".repeat(32);
+    input.plan.planHash = "00".repeat(32);
+    input.bundle.transactions[0].txid = "00".repeat(32);
+  });
+  const first = engine.validate(value);
+  const second = engine.validate(value);
+  const order = new Map(internals.TBC_VIOLATION_CODES.map((code, index) => [code, index]));
+
+  assert.deepEqual(first, second);
+  assert.equal(new Set(first.violations.map(JSON.stringify)).size, first.violations.length);
+  for (let index = 1; index < first.violations.length; index += 1) {
+    assert.equal(
+      order.get(first.violations[index - 1].code) <= order.get(first.violations[index].code),
+      true,
+    );
+  }
+});

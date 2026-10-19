@@ -1,0 +1,23 @@
+plugins {
+  id 'com.android.library' version '8.11.0'
+  id 'org.jetbrains.kotlin.android' version '2.1.20'
+}
+android {
+  namespace 'io.tbc.example'
+  compileSdk 36
+  defaultConfig { minSdk 24 }
+  compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+  kotlinOptions { jvmTarget = '17' }
+  testOptions.unitTests.all {
+    systemProperty 'java.library.path', providers.gradleProperty('nativeProbeDirectory').get()
+    systemProperty 'nativeProbeVectors', providers.gradleProperty('nativeProbeVectors').get()
+    testLogging { events 'passed', 'failed'; showStandardStreams = true }
+  }
+}
+dependencies {
+  implementation "io.tbc.local:engine:${providers.gradleProperty('engineVersion').get()}"
+  // The SDK's coroutine runtime is resolved from its POM, not vendored/copied here.
+  testImplementation 'junit:junit:4.13.2'
+  testImplementation 'org.json:json:20240303'
+  testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0'
+}

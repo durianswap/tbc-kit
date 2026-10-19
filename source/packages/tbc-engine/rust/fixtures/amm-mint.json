@@ -1,0 +1,149 @@
+{
+  "upstream": {
+    "commit": "af77616121db340e15bb8b73c197bc2f8d1ee986",
+    "sources": {
+      "lib/util/tbc20/tbc20unlock.js": "b9f6b3bbbec3aa3d8cca8c0c0d15baa9be2c4c8b38af412676ad978b30499269",
+      "lib/contract/tbc20.js": "29bf792764aab6423af3ec5aacccf3be8dc8dd25bd8b99023582a24a56cb6da9",
+      "lib/util/poolnft3/authorization.js": "3d5cdbf74118bd0377ef40f0ff83959c7ff57f8cbe0be1ef6ac54e977e1769a2",
+      "lib/util/poolnft3/artifacts/pool.json": "cb33cb440e611fb68c50f24aedf6168214cd5942ee490fc98e39c7aa39df547d",
+      "lib/util/poolnft3/artifacts/pool_hash_lock.json": "59244df222b013b62d1c754b1e15aa56e3ffd244b8e848cc206f3cde85e3b81d",
+      "lib/util/poolnft3/artifacts/ftlp_tbc20.json": "58b4a58251d365261be9411df711c5f54c7cc758316593fc1c614f418b37f75d",
+      "lib/util/poolnft3/artifacts/ftlp_tbc20_locktime.json": "d908137b0354f87409ce36a8792f4d74745c6e0f21b673b85e62f304cfd970ec",
+      "lib/util/poolnft3/artifacts.js": "4c8f8fdced283e620887b03184f38ff425851c976f79ead8aa8052a4ca0c323a",
+      "lib/contract/ftlpTbc20.js": "a67fa2a7252d6a3842622ab6db188d9220f5ed78a1aeb9aca04f8a0cb293e8a1",
+      "lib/util/poolnft3/ftlpTbc20unlock.js": "a4bbdf0d39d46e81c18990e962b8a48db377133230c3ba8619acc4f6f55642d9",
+      "lib/util/poolnft3/tape.js": "0360b0567110758956e2d0e293d3dca69883aaacfa809ac90f324464e7eda302",
+      "lib/util/poolnft3/fees.js": "447a0c71edbc435a80c3e8e99a16f84ebb1abacb3ee4e9a95ee07b2f78d7298e",
+      "lib/util/poolnft3/math.js": "82b86bd93b9ef8c5915e3a979050bb94c501aa1dfde169b3cdaa94da150ce59d",
+      "lib/util/poolnft3/witness.js": "e399cd5dc3ab45a175322fdb7820d375cc647dfe618c93721ec5cfd1d633d61d",
+      "lib/validator/poolnft3.js": "e28472d9feb6dff84c66993dd1e3fd7018c9f9df811bb4db31f414b84b6d10d8",
+      "lib/util/poolnft3/transaction.js": "d0126078b93c697d2ca469d666923f5dfddce9b2a2322ca9d385d3fcfa70e5c6",
+      "lib/contract/poolNFT3.0.js": "3a492b1966df27b374087b9e4d04d6e86ff452fb6ac29510b716cca61e119aa2"
+    },
+    "publicScalars": [
+      1,
+      2
+    ],
+    "poolFixtureSha256": "b82700d6ea134b9e1778543543c8ac2b01fd56759189010e669c56ea41466b51"
+  },
+  "scope": "Offline synthetic complete mint; no HTTP or broadcast",
+  "vmInputs": 24,
+  "cases": [
+    {
+      "label": "public-plain",
+      "ftGenesisId": "16f5d7c0a529cd7e9f24da5aeae59c24f3cd3b957c5362816381155419414251",
+      "fundingVout": 2,
+      "sourceRaw": "0a0000000151424119541581638162537c953bcdf3249ce5ea5ada249f7ecd29a5c0d7f516020000006a473044022006beeeab29312a652f62446f2d2538686645578255e5011ee4521594549adf4a022021ed18d6780c45071740e1cb46d813f1a4211afee5138c21ab4e837731f7d3fb41210279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798ffffffff0159bf2d00000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+      "sourceFee": 80,
+      "genesisFee": 671,
+      "genesisRawHash": "417695c46bc46693f81deb9a664c97dfe8233aa07efa0483d58f76e3c5585fd3",
+      "genesisTxid": "df5904964cde3def41f01ffbae1eee8d68a44ebd64dfba6c555f53a14e8a9724",
+      "genesisSignature": "3045022100a9da0f0035d38d02442bfdf4e98c9db8a071249cb4751671250d7c29473d11fd022025eb37bb3047bd5b00d63506159e24757622a5c8abcab4f0f2bee09be73fba4941",
+      "firstAddRawHash": "f95107ded7a0b170f91d58d4103753fc628796d9d935a1f7e7f5f5dcc683a0c0",
+      "firstAddTxid": "2dec7abe49d28b49b5f33f3722e954b07ff88933f1ba80487ebe9d6c30503ed7",
+      "firstAddSignatures": [
+        {
+          "vin": 1,
+          "signature": "304402203b39a28c01b5edb16d2afdccdd8ebcac814cc380e4539191be5c7c39d9d1402302202f90f16869698094738e646b198beb69d290ffc5d805568055f8051f4dd2cacf41"
+        },
+        {
+          "vin": 2,
+          "signature": "3045022100e59bfb59a3f0fae3a6fb05bebbcd4d77e5cc250e3dc1eb7d3c3c620eb8285fa3022023edcabc59604a9013698ec8b73163af2a0c99512244e5ee1495dc475f46303041"
+        },
+        {
+          "vin": 3,
+          "signature": "3045022100a43748842a5c9d1c63e04e56f6ca66adfd3303f94ab0ef9c12b383a5bd38b6e60220332488039590ecb62d4ecbf22dcbb4dd374a85df5d797aacdabeb0e7e61287b841"
+        }
+      ]
+    },
+    {
+      "label": "public-locked",
+      "ftGenesisId": "aae5b451d3788146e459297f78e104f65dd702643741dd3363285ac5a02e6698",
+      "fundingVout": 2,
+      "sourceRaw": "0a0000000198662ea0c55a286333dd41376402d75df604e1787f2959e4468178d351b4e5aa020000006b483045022100f9a26cc01d0956868cb679c3d0e513183119e6138b3fa8c90398941dd6c8683c0220497334a15f4710e57b4fab763138bab45d6c951fc3c1004162c067c1a05e0e9341210279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798ffffffff0159bf2d00000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+      "sourceFee": 80,
+      "genesisFee": 671,
+      "genesisRawHash": "592f50d82b6c2ae4ed88c28577620f6bc04b5ed29ba45073c1c0674873416766",
+      "genesisTxid": "4ac0b79d059595ee9aac34323939a0451d8522f6553b5112caadf0504da65f86",
+      "genesisSignature": "304402207f283deef24d777916241621d588d413251abf26825fccb81bfa2bbaf78df62a02202a8a83dc3d1845a4e61b6fb99956fa5a4f16b99b6d9533e821504104f84dd28541",
+      "firstAddRawHash": "0124d3aaca1c0be86c4b7f630ed4f4b0765e5df320f5a4b52b2f3712bdaaf40f",
+      "firstAddTxid": "b03d057833644a726e5676757320d0c3b07ebe5afd33cc92f2b3c8c79d6f738f",
+      "firstAddSignatures": [
+        {
+          "vin": 1,
+          "signature": "30450221008ea095219c769cb5360834b96320e00122bf84044aae3255608dab3601d2db69022078a7bc7e48fdf3c95ef718014eddc5cc6114dfcd7db791033d993b822cbf9e9841"
+        },
+        {
+          "vin": 2,
+          "signature": "3045022100f0bceda52b90d2c317616cb428a8e177847f15e4f1dacb645fa09c40ab8c89460220773446c554ff3a4a5abbce8880d4ed8642c299965140c1acb7c4e13c9ea8052241"
+        },
+        {
+          "vin": 3,
+          "signature": "3045022100abf4032c584100cfd268ef0b7416d8368a63bcf744b5d27640d3c6fc6ad12fb50220425c4053725331b6d775115666a33cade1b3462a259edfbb69e6c4310fd22c3041"
+        }
+      ]
+    },
+    {
+      "label": "controller-plain",
+      "ftGenesisId": "c65ba5bba7172177c64ea3c0dcda016d17ef38f88f1b9023879040206b36df68",
+      "fundingVout": 2,
+      "sourceRaw": "0a0000000168df366b2040908723901b8ff838ef176d01dadcc0a34ec6772117a7bba55bc6020000006b48304502210099b6f25adcc90ba39901e65d62bed50220acc133b7fe1bb8e7b49307175112f502203c84356cd20294e13c7d65288cbbbebb06ddb924f34c9892dbe757d8deb7a07a41210279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798ffffffff0159bf2d00000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+      "sourceFee": 80,
+      "genesisFee": 673,
+      "genesisRawHash": "78d3ebde4fc4005b32171b5336c81061847f108cb29e2eebb84394005b42c7da",
+      "genesisTxid": "95fdfcc903930b324831f7ed0caa35bca82eda5f4df9956055680a24b3ddb53f",
+      "genesisSignature": "3044022041cb22a991457837cbc4020cffb5a43b88120d972ebd62c53f83980d2e1851f402204936b7a935e4f1f220523f8378bee984f4fb46c2057dcf44386f04b5f6ac4e5f41",
+      "firstAddRawHash": "666b6b0d13b59303129f6e6839ab7b3246f5d12c268973a2a6ee0ebe0b9c5f6a",
+      "firstAddTxid": "99acb4f4e05a808e8c3cac9e09992ad3ecb33825b61345b21d25ce87351291b7",
+      "firstAddSignatures": [
+        {
+          "vin": 0,
+          "signature": "3044022008d3f8fd48701d737501fd64eef4f78fa6e9c307de6e46d70bb6bb1cadd615fb02205c627a7bcaf2071d15b51b70953a423246d3a7168a66c81242f2d8f0c123631d41"
+        },
+        {
+          "vin": 1,
+          "signature": "3045022100b61b7f9b8e1d4a3af182467c941a30243df7a71ae7a74f92c50b1f27b1c8e762022066f0541a19edac181b1aa5a8a6ece4ef2b2be2e6ca135e983638ef6a8d874a1c41"
+        },
+        {
+          "vin": 2,
+          "signature": "3045022100c265e527d4a0afd6e7423e97ffc4d58861b08d86335edc1de82a8a01c8fa5a0702205f3c843f5e444d5f38a69273616b44cbb3f49b6b1ba234c8c804f54f50ab7e1041"
+        },
+        {
+          "vin": 3,
+          "signature": "3045022100dc79e2d63c5d3df9c9359ec1a4c10a9bb4f38d65580cd2c75294dc8236d1d031022053416e3995f36afc65042269b5db08b9ab2cb2d2a3431cf7a49e14895a05e12a41"
+        }
+      ]
+    },
+    {
+      "label": "controller-locked",
+      "ftGenesisId": "3665c240d55224bd03044a1d3009dd713f1500edb962bb0c808be009e19c4ce0",
+      "fundingVout": 2,
+      "sourceRaw": "0a00000001e04c9ce109e08b800cbb62b9ed00153f71dd09301d4a0403bd2452d540c26536020000006b48304502210084ba80a96371cb96a6f3509d869294738d23658ecea980d37cbeb21476e848a0022005a44c3a357f3bce01ba80c896cc7fd466cfc9f38232087d1640155a4e0a306041210279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798ffffffff0159bf2d00000000001976a914751e76e8199196d454941c45d1b3a323f1433bd688ac00000000",
+      "sourceFee": 80,
+      "genesisFee": 673,
+      "genesisRawHash": "ee5ddfce2bc9fedddea94846ca5dfed162eb03207cf092a4f1a3d56c9365c361",
+      "genesisTxid": "2e99f8815c329147bec686c390ccb4ad0362448a185f66f09913d68435ba5a38",
+      "genesisSignature": "3045022100cc4559fc2cb04c6d7eb90744d8d737f1f52b39ea917d466fb15bd2c6055a67d502206c7f764f0868c1fa32b42ed28ddb824be8506d851cbcc1a9da1847d1c63f598a41",
+      "firstAddRawHash": "e2cdd26f8e3f4b64a7b6d8bc7987ed0ed2466d4d8a0dda0322be83eed08ebab9",
+      "firstAddTxid": "4fafba39575011ee30ddb8a43967649b7c99447b1bcebfc8dea5a1af8fff0993",
+      "firstAddSignatures": [
+        {
+          "vin": 0,
+          "signature": "304402202f1f0e60fd85e9d5c3261b04fd8cf2a590a868d1669f5e11987d83c40f8e625c02207736fbb5be971574e5465f4c7e2faa06398b0402e22b9198347b0ee1910626be41"
+        },
+        {
+          "vin": 1,
+          "signature": "3045022100a0074fe34292565dd907b429f6cf834b1cb1fcaee52d14f8f76d83c7d476ae0102201aa4556fe6cb3d9fa68c08366f4b861d0fa1f9b8d115f2026775da27c8432a2841"
+        },
+        {
+          "vin": 2,
+          "signature": "3043021f30354c396f6f89be65315f8a1567fdfcb23a5641744a2b6c07824edb7d9fae02206ec987a9381b2f77bbfa095a26332bc727b5950b8311136dc65158dee1861fbf41"
+        },
+        {
+          "vin": 3,
+          "signature": "3045022100b71a9f27b42fe1d81cc250957dabf891c54ab05d74deb8ade0aadc0afbcd27710220654682f4330709437ca927251192a845e99e925a3ce35c60903933d9b8970ece41"
+        }
+      ]
+    }
+  ]
+}

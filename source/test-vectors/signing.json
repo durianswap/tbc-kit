@@ -1,0 +1,90 @@
+{
+  "version": "1.0.0",
+  "testKey": {
+    "id": "secp256k1-scalar-1",
+    "warning": "Public test key only. Never use this scalar for real funds.",
+    "address": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+    "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798"
+  },
+  "vectors": [
+    {
+      "id": "message-utf8-mainnet",
+      "method": "tbc_signMessage",
+      "magic": "TBC Signed Message:\n",
+      "payloadHex": "14544243205369676e6564204d6573736167653a0a0b48656c6c6f2c2054424321",
+      "result": {
+        "version": "1.0",
+        "scheme": "tbc-message",
+        "algorithm": "secp256k1-recoverable-ecdsa-sha256d",
+        "address": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+        "envelope": {
+          "type": "tbc.message",
+          "version": "1.0",
+          "message": {
+            "encoding": "utf8",
+            "data": "Hello, TBC!"
+          }
+        },
+        "canonical": "{\"message\":{\"data\":\"Hello, TBC!\",\"encoding\":\"utf8\"},\"type\":\"tbc.message\",\"version\":\"1.0\"}",
+        "signingPayload": "FFRCQyBTaWduZWQgTWVzc2FnZToKC0hlbGxvLCBUQkMh",
+        "digest": "9452bf3a7862e15fef3720c927acf0be51a6f53513bb1f6f3870fdeead113eb4",
+        "signature": "H3INuTTxOpoagBq4IyhSrMeNraU2rKDAj3+I1XZCkPqsaK0sBvrVrLbvWKISHJ+P+Ztm3RPD5h8wh9myR4ZS+Zo="
+      }
+    },
+    {
+      "id": "typed-data-order-mainnet",
+      "method": "tbc_signTypedData",
+      "magic": "TBC Signed Typed Data:\n",
+      "payloadHex": "17544243205369676e656420547970656420446174613a0afdf6017b22646f6d61696e223a7b22636861696e4964223a227462633a6d61696e6e6574222c226e616d65223a2244757269616e53776170204f72646572222c226f726967696e223a2268747470733a2f2f64757269616e737761702e6f7267222c22766572696679696e67436f6e7472616374223a2231313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131313131222c2276657273696f6e223a2231227d2c226d657373616765223a7b22616d6f756e74223a2231303030303030222c2273696465223a22627579222c227478696473223a5b2232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232323232225d7d2c227072696d61727954797065223a224f72646572222c2274797065223a227462632e747970656444617461222c227479706573223a7b224f72646572223a5b7b226e616d65223a22616d6f756e74222c2274797065223a2275696e74323536227d2c7b226e616d65223a2273696465222c2274797065223a22737472696e67227d2c7b226e616d65223a227478696473222c2274797065223a22627974657333325b5d227d5d7d2c2276657273696f6e223a22312e30227d",
+      "result": {
+        "version": "1.0",
+        "scheme": "tbc-typed-data",
+        "algorithm": "secp256k1-recoverable-ecdsa-sha256d",
+        "address": "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "accountId": "tbc:mainnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "publicKey": "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+        "envelope": {
+          "type": "tbc.typedData",
+          "version": "1.0",
+          "domain": {
+            "name": "DurianSwap Order",
+            "version": "1",
+            "origin": "https://durianswap.org",
+            "chainId": "tbc:mainnet",
+            "verifyingContract": "1111111111111111111111111111111111111111111111111111111111111111"
+          },
+          "types": {
+            "Order": [
+              {
+                "name": "amount",
+                "type": "uint256"
+              },
+              {
+                "name": "side",
+                "type": "string"
+              },
+              {
+                "name": "txids",
+                "type": "bytes32[]"
+              }
+            ]
+          },
+          "primaryType": "Order",
+          "message": {
+            "amount": "1000000",
+            "side": "buy",
+            "txids": [
+              "2222222222222222222222222222222222222222222222222222222222222222"
+            ]
+          }
+        },
+        "canonical": "{\"domain\":{\"chainId\":\"tbc:mainnet\",\"name\":\"DurianSwap Order\",\"origin\":\"https://durianswap.org\",\"verifyingContract\":\"1111111111111111111111111111111111111111111111111111111111111111\",\"version\":\"1\"},\"message\":{\"amount\":\"1000000\",\"side\":\"buy\",\"txids\":[\"2222222222222222222222222222222222222222222222222222222222222222\"]},\"primaryType\":\"Order\",\"type\":\"tbc.typedData\",\"types\":{\"Order\":[{\"name\":\"amount\",\"type\":\"uint256\"},{\"name\":\"side\",\"type\":\"string\"},{\"name\":\"txids\",\"type\":\"bytes32[]\"}]},\"version\":\"1.0\"}",
+        "signingPayload": "F1RCQyBTaWduZWQgVHlwZWQgRGF0YToK/fYBeyJkb21haW4iOnsiY2hhaW5JZCI6InRiYzptYWlubmV0IiwibmFtZSI6IkR1cmlhblN3YXAgT3JkZXIiLCJvcmlnaW4iOiJodHRwczovL2R1cmlhbnN3YXAub3JnIiwidmVyaWZ5aW5nQ29udHJhY3QiOiIxMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExMTExIiwidmVyc2lvbiI6IjEifSwibWVzc2FnZSI6eyJhbW91bnQiOiIxMDAwMDAwIiwic2lkZSI6ImJ1eSIsInR4aWRzIjpbIjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIiXX0sInByaW1hcnlUeXBlIjoiT3JkZXIiLCJ0eXBlIjoidGJjLnR5cGVkRGF0YSIsInR5cGVzIjp7Ik9yZGVyIjpbeyJuYW1lIjoiYW1vdW50IiwidHlwZSI6InVpbnQyNTYifSx7Im5hbWUiOiJzaWRlIiwidHlwZSI6InN0cmluZyJ9LHsibmFtZSI6InR4aWRzIiwidHlwZSI6ImJ5dGVzMzJbXSJ9XX0sInZlcnNpb24iOiIxLjAifQ==",
+        "digest": "f1f7a18c429e124ae6e67c40d611dfb1dcccfdf3160dc77000924c4e1c0945f8",
+        "signature": "H+q5GPSsvcZ4SuB7MsgFCnVgYa2BbwMyo2OMFg+2WyzfJa8osiYud3ChFvo49jGLquXhvp9TeCDp0gN/Q0NIpE0="
+      }
+    }
+  ]
+}

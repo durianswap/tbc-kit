@@ -1,0 +1,468 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://turingbitchain.io/tws/1.0/schemas/provider.schema.json",
+  "title": "TWS Provider wire types",
+  "$defs": {
+    "jsonRpcId": {
+      "$comment": "A JSON-RPC id MUST NOT repeat during one TrustedContext.sessionId Transport Session.",
+      "oneOf": [
+        { "type": "string", "minLength": 1, "maxLength": 128 },
+        { "type": "integer", "minimum": 0, "maximum": 9007199254740991 }
+      ]
+    },
+    "jsonRpcResponseId": {
+      "oneOf": [
+        { "$ref": "#/$defs/jsonRpcId" },
+        { "type": "null" }
+      ]
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["jsonrpc", "id", "method"],
+      "properties": {
+        "jsonrpc": { "const": "2.0" },
+        "id": { "$ref": "#/$defs/jsonRpcId" },
+        "method": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.:-]{0,127}$" },
+        "params": {
+          "oneOf": [
+            { "type": "object" },
+            { "type": "array" }
+          ]
+        }
+      }
+    },
+    "standardErrorCode": {
+      "enum": [
+        4001,
+        4100,
+        4200,
+        4900,
+        4901,
+        -32700,
+        -32600,
+        -32601,
+        -32602,
+        -32603,
+        -32000
+      ]
+    },
+    "executionErrorName": {
+      "enum": [
+        "REQUEST_EXPIRED",
+        "WALLET_LOCKED",
+        "INSUFFICIENT_FUNDS",
+        "FEE_LIMIT_EXCEEDED",
+        "PLANNING_FAILED",
+        "SIMULATION_FAILED",
+        "SIGNING_FAILED",
+        "BROADCAST_FAILED",
+        "CONFLICT",
+        "POLICY_VIOLATION",
+        "UNSUPPORTED_ASSET",
+        "WORKFLOW_FAILED",
+        "INVALID_PROPOSAL",
+        "PROPOSAL_HASH_MISMATCH",
+        "PROPOSAL_SEMANTIC_MISMATCH",
+        "PROPOSAL_STALE"
+      ]
+    },
+    "executionStage": {
+      "enum": [
+        "validation",
+        "planning",
+        "simulation",
+        "approval",
+        "signing",
+        "broadcast",
+        "reconciliation",
+        "workflow"
+      ]
+    },
+    "executionErrorData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "stage", "retryable"],
+      "properties": {
+        "name": { "$ref": "#/$defs/executionErrorName" },
+        "stage": { "$ref": "#/$defs/executionStage" },
+        "retryable": { "type": "boolean" },
+        "details": {
+          "type": "object",
+          "maxProperties": 32,
+          "additionalProperties": true
+        }
+      }
+    },
+    "providerError": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message"],
+      "properties": {
+        "code": { "$ref": "#/$defs/standardErrorCode" },
+        "message": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "data": true
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "code": { "const": -32000 } },
+            "required": ["code"]
+          },
+          "then": {
+            "required": ["data"],
+            "properties": {
+              "data": { "$ref": "#/$defs/executionErrorData" }
+            }
+          }
+        }
+      ]
+    },
+    "disconnectError": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message"],
+      "properties": {
+        "code": { "const": 4900 },
+        "message": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "data": true
+      }
+    },
+    "successResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["jsonrpc", "id", "result"],
+      "properties": {
+        "jsonrpc": { "const": "2.0" },
+        "id": { "$ref": "#/$defs/jsonRpcId" },
+        "result": true
+      }
+    },
+    "errorResponse": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["jsonrpc", "id", "error"],
+      "properties": {
+        "jsonrpc": { "const": "2.0" },
+        "id": { "$ref": "#/$defs/jsonRpcResponseId" },
+        "error": { "$ref": "#/$defs/providerError" }
+      }
+    },
+    "response": {
+      "oneOf": [
+        { "$ref": "#/$defs/successResponse" },
+        { "$ref": "#/$defs/errorResponse" }
+      ]
+    },
+    "addressArray": {
+      "type": "array",
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": { "$ref": "common.schema.json#/$defs/address" }
+    },
+    "nonEmptyAddressArray": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": { "$ref": "common.schema.json#/$defs/address" }
+    },
+    "getAccountParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "address": { "$ref": "common.schema.json#/$defs/address" }
+      }
+    },
+    "getCapabilitiesParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "address": { "$ref": "common.schema.json#/$defs/address" }
+      }
+    },
+    "switchChainParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chainId"],
+      "properties": {
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" }
+      }
+    },
+    "nullResult": {
+      "type": "null"
+    },
+    "connectInfo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chainId"],
+      "properties": {
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" }
+      }
+    },
+    "account": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["address", "accountId", "chainId", "publicKey", "features"],
+      "properties": {
+        "address": { "$ref": "common.schema.json#/$defs/address" },
+        "accountId": { "$ref": "common.schema.json#/$defs/accountId" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "publicKey": { "$ref": "common.schema.json#/$defs/publicKey" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "features": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 128 }
+        }
+      }
+    },
+    "cancellationReason": {
+      "enum": [
+        "USER_REJECTED",
+        "REQUEST_ABORTED",
+        "REQUEST_EXPIRED",
+        "SESSION_REVOKED",
+        "NAVIGATION_CHANGED",
+        "ORIGIN_CHANGED",
+        "CHAIN_CHANGED",
+        "ACCOUNT_CHANGED",
+        "TRANSPORT_CLOSED",
+        "SNAPSHOT_INVALIDATED",
+        "PROTOCOL_RELEASE_CHANGED"
+      ]
+    },
+    "providerCancellationDisposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reason", "terminalState", "delivery", "providerCode", "executionErrorName", "retryable"],
+      "properties": {
+        "reason": { "$ref": "#/$defs/cancellationReason" },
+        "terminalState": { "enum": ["rejected", "failed", "cancelled"] },
+        "delivery": { "enum": ["respond", "suppress"] },
+        "providerCode": { "type": ["integer", "null"] },
+        "executionErrorName": {
+          "oneOf": [
+            { "$ref": "#/$defs/executionErrorName" },
+            { "type": "null" }
+          ]
+        },
+        "retryable": { "type": "boolean" }
+      }
+    },
+    "normalizedProviderOperation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "params"],
+      "properties": {
+        "method": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_.:-]{0,127}$"
+        },
+        "params": {
+          "oneOf": [
+            { "type": "object" },
+            { "type": "array" }
+          ]
+        }
+      }
+    },
+    "providerEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "payload"],
+      "properties": {
+        "name": {
+          "enum": [
+            "connect",
+            "disconnect",
+            "chainChanged",
+            "accountsChanged",
+            "permissionsChanged",
+            "capabilitiesChanged"
+          ]
+        },
+        "payload": true
+      }
+    },
+    "providerCompletionRespond": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["delivery", "response", "events"],
+      "properties": {
+        "delivery": { "const": "respond" },
+        "response": { "$ref": "#/$defs/response" },
+        "events": {
+          "type": "array",
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/providerEvent" }
+        }
+      }
+    },
+    "providerCompletionSuppress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["delivery", "cancellationReason"],
+      "properties": {
+        "delivery": { "const": "suppress" },
+        "cancellationReason": { "$ref": "#/$defs/cancellationReason" }
+      }
+    },
+    "providerCompletion": {
+      "oneOf": [
+        { "$ref": "#/$defs/providerCompletionRespond" },
+        { "$ref": "#/$defs/providerCompletionSuppress" }
+      ]
+    },
+    "providerSessionState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "sessionId", "revision", "connected", "activeChainId", "activeAccountIds"],
+      "properties": {
+        "version": { "const": "1.0" },
+        "sessionId": { "$ref": "common.schema.json#/$defs/opaqueId" },
+        "revision": { "type": "string", "pattern": "^(0|[1-9][0-9]*)$" },
+        "connected": { "type": "boolean" },
+        "activeChainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "activeAccountIds": {
+          "type": "array",
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/accountId" }
+        }
+      }
+    },
+    "providerSessionScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["walletProfile", "sessionId"],
+      "properties": {
+        "walletProfile": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,63}$"
+        },
+        "sessionId": { "$ref": "common.schema.json#/$defs/opaqueId" }
+      }
+    },
+    "providerSessionSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "scope", "state"],
+      "properties": {
+        "version": { "const": "1.0" },
+        "scope": { "$ref": "#/$defs/providerSessionScope" },
+        "state": { "$ref": "#/$defs/providerSessionState" }
+      }
+    },
+    "providerSessionMutationPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "scope", "expectedRevision", "target", "events"],
+      "properties": {
+        "version": { "const": "1.0" },
+        "scope": { "$ref": "#/$defs/providerSessionScope" },
+        "expectedRevision": { "type": "string", "pattern": "^(0|[1-9][0-9]*)$" },
+        "target": { "$ref": "#/$defs/providerSessionState" },
+        "events": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/providerEvent" }
+        }
+      }
+    },
+    "providerSessionMutation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload", "commitId"],
+      "properties": {
+        "payload": { "$ref": "#/$defs/providerSessionMutationPayload" },
+        "commitId": { "$ref": "common.schema.json#/$defs/deterministicId" }
+      }
+    },
+    "providerSessionCommitAck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "commitId", "status", "revision"],
+      "properties": {
+        "version": { "const": "1.0" },
+        "commitId": { "$ref": "common.schema.json#/$defs/deterministicId" },
+        "status": { "const": "committed" },
+        "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" }
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["standard", "provider", "chainId", "methods", "intents", "limits", "profiles"],
+      "properties": {
+        "standard": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "provider": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "methods": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": { "pattern": "^(tbc_|wallet_)[A-Za-z0-9_]+$" },
+          "additionalProperties": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+$" }
+        },
+        "intents": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "not": { "enum": ["tbc.ft.create", "tbc.nft.mint", "tbc.pool.create"] },
+            "anyOf": [
+              { "pattern": "^tbc\\.[A-Za-z][A-Za-z0-9.]*$" },
+              { "enum": ["amm.swap", "amm.addLiquidity", "amm.removeLiquidity",
+                "amm.mergeToken", "tbc20Lp.transfer", "tbc20Lp.lock", "tbc20Lp.unlock", "tbc20Lp.merge", "tbc20Lp.burn",
+                "tbc721.transfer", "tbc20.transfer", "tbc20.merge", "tbc20Stablecoin.transfer", "tbc20Stablecoin.merge",
+                "tbc20-standard-create", "tbc20-standard-transfer", "tbc20-standard-merge",
+                "tbc20-stablecoin-create", "tbc20-stablecoin-transfer", "tbc20-stablecoin-merge",
+                "tbc20-stablecoin-mint", "tbc20-stablecoin-freeze", "tbc20-stablecoin-unfreeze",
+                "tbc20-lp-transfer", "tbc20-lp-merge", "tbc20-lp-lock", "tbc20-lp-unlock",
+                "tbc-timelock-lock", "tbc-timelock-unlock",
+                "tbc-htlc-lock", "tbc-htlc-claim", "tbc-htlc-refund",
+                "tbc-lop-create", "tbc-lop-cancel", "tbc-lop-match",
+                "tbc-amm-create",
+                "tbc-amm-add-liquidity",
+                "tbc-amm-remove-liquidity",
+                "tbc-amm-swap",
+                "tbc721-standard-create-collection", "tbc721-standard-mint", "tbc721-standard-batch-mint", "tbc721-standard-transfer"] }
+            ]
+          },
+          "additionalProperties": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+$" }
+          }
+        },
+        "limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["workflowSteps", "transactionBundleSize"],
+          "properties": {
+            "workflowSteps": { "type": "integer", "minimum": 0, "maximum": 5 },
+            "transactionBundleSize": { "type": "integer", "minimum": 1, "maximum": 32 }
+          }
+        },
+        "profiles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "core",
+              "assets",
+              "defi",
+              "transport:webview",
+              "transport:extension",
+              "transport:remote"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

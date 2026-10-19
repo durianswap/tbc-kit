@@ -1,0 +1,37 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'expo.modules.tbckitengine'
+version = '0.0.0'
+
+def sdkLock = new groovy.json.JsonSlurper().parse(file('../native-sdk-lock.json'))
+// Maven repositories are not inherited from a library by its consumers. Register
+// the pinned local SDK for every Expo project resolving the transitive AAR.
+// Restrict this group to this repository: never fall back to a remote namesake.
+def tbcSdkRepository = file('../platform-sdk/maven-repository')
+rootProject.allprojects { consumer ->
+  consumer.repositories {
+    exclusiveContent {
+      forRepository { maven { url = tbcSdkRepository.toURI() } }
+      filter { includeGroup 'io.tbc.local' }
+    }
+  }
+}
+dependencies { implementation "io.tbc.local:engine:${sdkLock.sdkVersion}" }
+
+android {
+  namespace 'expo.modules.tbckitengine'
+  defaultConfig {
+    minSdkVersion 24
+    versionCode 1
+    versionName '0.0.0'
+  }
+}
+
+def verifyTbcKitNative = tasks.register('verifyTbcKitNative', Exec) {
+  workingDir projectDir.parentFile
+  commandLine (System.getenv('NODE_BINARY') ?: 'node'), 'scripts/sync-native.mjs', '--check', '--platform', 'android'
+}
+tasks.named('preBuild').configure { dependsOn verifyTbcKitNative }

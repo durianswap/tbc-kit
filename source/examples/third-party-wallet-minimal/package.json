@@ -1,0 +1,19 @@
+{
+  "name": "@tbc-wallet/example-third-party-wallet-minimal",
+  "version": "1.0.0-draft.6.11",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@tbc-wallet/core": "1.0.0-draft.6.10",
+    "@tbc-wallet/host": "1.0.0-draft.6.16",
+    "@tbc-wallet/provider": "1.0.0-draft.6.11",
+    "@tbc-wallet/tbc-engine": "1.0.0-draft.6.10.rust7",
+    "@tbc-wallet/wallet-standard": "1.0.0-draft.6.11"
+  },
+  "devDependencies": {
+    "@noble/curves": "1.9.7"
+  }
+}

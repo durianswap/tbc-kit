@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://turingbitchain.io/tws/1.0/schemas/event-registry.schema.json",
+  "title": "TWS event registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "version", "events"],
+  "properties": {
+    "$schema": { "const": "../schemas/event-registry.schema.json" },
+    "version": { "const": "1.0.0" },
+    "events": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": { "$ref": "#/$defs/event" }
+    }
+  },
+  "$defs": {
+    "schemaRef": {
+      "type": "string",
+      "pattern": "^(?:common|provider|permissions)\\.schema\\.json#(?:/[^/]+)+$"
+    },
+    "event": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version", "profile", "trigger", "payload"],
+      "properties": {
+        "name": {
+          "enum": [
+            "connect",
+            "disconnect",
+            "chainChanged",
+            "accountsChanged",
+            "permissionsChanged",
+            "capabilitiesChanged"
+          ]
+        },
+        "version": { "const": "1.0" },
+        "profile": { "const": "core" },
+        "trigger": {
+          "enum": [
+            "provider-connected",
+            "provider-disconnected",
+            "active-chain-changed",
+            "authorized-accounts-changed",
+            "permissions-changed",
+            "capabilities-changed"
+          ]
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["schema"],
+          "properties": {
+            "schema": { "$ref": "#/$defs/schemaRef" }
+          }
+        }
+      }
+    }
+  }
+}

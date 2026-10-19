@@ -1,0 +1,48 @@
+plugins {
+  id 'com.android.library'
+  id 'org.jetbrains.kotlin.android'
+  id 'maven-publish'
+}
+
+// Local staging identity only. No claim to a published Maven coordinate.
+def identity = new groovy.json.JsonSlurper().parse(rootProject.file('identity.json'))
+group = 'io.tbc.local'
+version = identity.sdkVersion
+
+android {
+  namespace 'io.tbc.engine'
+  compileSdk 36
+  ndkVersion '27.1.12297006'
+  defaultConfig {
+    minSdk 24
+    consumerProguardFiles 'consumer-rules.pro'
+    ndk { abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64' }
+    externalNativeBuild { cmake { cppFlags '-std=c++17' } }
+  }
+  externalNativeBuild { cmake { path 'src/main/cpp/CMakeLists.txt'; version '3.22.1' } }
+  compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+  kotlinOptions { jvmTarget = '17' }
+  // Preserve the frozen Rust bytes; otherwise AGP silently strips them and the
+  // AAR no longer matches the source candidate's native provenance hashes.
+  packaging { jniLibs { keepDebugSymbols += ['**/libtbc_engine_native.so'] } }
+  publishing { singleVariant('release') { withSourcesJar() } }
+}
+
+dependencies { implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0' }
+
+afterEvaluate {
+  publishing {
+    publications {
+      release(MavenPublication) {
+        from components.release
+        artifactId = 'engine'
+        pom {
+          name = 'TBC Engine native SDK (local candidate)'
+          description = 'Keyless Engine binding; not the complete Kit wallet runtime'
+          licenses { license { name = 'CC0-1.0'; url = 'https://creativecommons.org/publicdomain/zero/1.0/' } }
+        }
+      }
+    }
+    repositories { maven { name = 'Staging'; url = rootProject.file('../maven-repository').toURI() } }
+  }
+}

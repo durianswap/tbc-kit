@@ -1,0 +1,5 @@
+module TbcSignerKernel {
+  header "tbc_signer_kernel.h"
+  header "tbc_signer_musig.h"
+  export *
+}

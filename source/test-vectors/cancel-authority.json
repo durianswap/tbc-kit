@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "optionalReasons": [
+    "REQUEST_ABORTED",
+    "TRANSPORT_CLOSED",
+    "PROTOCOL_RELEASE_CHANGED"
+  ],
+  "requiredReasons": [
+    "USER_REJECTED",
+    "REQUEST_EXPIRED",
+    "SESSION_REVOKED",
+    "NAVIGATION_CHANGED",
+    "ORIGIN_CHANGED",
+    "CHAIN_CHANGED",
+    "ACCOUNT_CHANGED",
+    "SNAPSHOT_INVALIDATED"
+  ],
+  "pairedAuthority": true
+}

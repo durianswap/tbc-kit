@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://turingbitchain.io/tws/1.0/schemas/method-registry.schema.json",
+  "title": "TWS method registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "version", "methods"],
+  "properties": {
+    "$schema": { "const": "../schemas/method-registry.schema.json" },
+    "version": { "const": "1.0.0" },
+    "methods": {
+      "type": "array",
+      "minItems": 20,
+      "maxItems": 22,
+      "items": { "$ref": "#/$defs/method" }
+    }
+  },
+  "$defs": {
+    "schemaRef": {
+      "type": "string",
+      "pattern": "^(?:common|provider|permissions|prepared-transaction|prepared-workflow|transaction-request|signing|workflow|wallet-actions)\\.schema\\.json#(?:/[^/]+)+$"
+    },
+    "noParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "const": "none" }
+      }
+    },
+    "schemaParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "schema"],
+      "properties": {
+        "kind": { "enum": ["named", "positional"] },
+        "schema": { "$ref": "#/$defs/schemaRef" }
+      }
+    },
+    "params": {
+      "oneOf": [
+        { "$ref": "#/$defs/noParams" },
+        { "$ref": "#/$defs/schemaParams" }
+      ]
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "permissions"],
+      "properties": {
+        "mode": {
+          "enum": [
+            "public",
+            "permission-derived",
+            "requires",
+            "grants",
+            "conditional"
+          ]
+        },
+        "permissions": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "permissions.schema.json#/$defs/permissionName" }
+        },
+        "condition": { "const": "address-param" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "mode": { "const": "public" } },
+            "required": ["mode"]
+          },
+          "then": {
+            "properties": {
+              "permissions": { "type": "array", "maxItems": 0 }
+            }
+          },
+          "else": {
+            "properties": {
+              "permissions": { "type": "array", "minItems": 1 }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "mode": { "const": "conditional" } },
+            "required": ["mode"]
+          },
+          "then": {
+            "type": "object",
+            "required": ["condition"],
+            "properties": { "condition": true }
+          },
+          "else": {
+            "type": "object",
+            "properties": { "condition": false }
+          }
+        }
+      ]
+    },
+    "method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "profile",
+        "authorization",
+        "approval",
+        "operationKind",
+        "effect",
+        "params",
+        "result"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^(?:tbc|wallet)_[A-Za-z0-9_]+$"
+        },
+        "version": { "const": "1.0" },
+        "profile": { "enum": ["core", "defi"] },
+        "authorization": { "$ref": "#/$defs/authorization" },
+        "approval": {
+          "enum": ["none", "permission-prompt", "wallet-policy", "operation"]
+        },
+        "effect": {
+          "enum": [
+            "read",
+            "permission-grant",
+            "wallet-state",
+            "signature",
+            "signed-transaction",
+            "broadcast",
+            "signed-workflow",
+            "private-crypto",
+            "permission-revoke"
+          ]
+        },
+        "operationKind": {
+          "oneOf": [
+            {
+              "enum": [
+                "permission",
+                "switchChain",
+                "transaction",
+                "message",
+                "typedData",
+                "crypto",
+                "workflow"
+              ]
+            },
+            { "type": "null" }
+          ]
+        },
+        "params": { "$ref": "#/$defs/params" },
+        "result": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["schema"],
+          "properties": {
+            "schema": { "$ref": "#/$defs/schemaRef" }
+          }
+        }
+      }
+    }
+  }
+}

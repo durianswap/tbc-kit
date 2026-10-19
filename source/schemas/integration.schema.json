@@ -1,0 +1,3147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://turingbitchain.io/tws/1.0/schemas/integration.schema.json",
+  "title": "TWS wallet integration types",
+  "$defs": {
+    "version": {
+      "const": "1.0"
+    },
+    "revision": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)$"
+    },
+    "chainSwitchProposalPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "fromChainId", "toChainId", "expectedSessionRevision", "expiresAt"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "fromChainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "toChainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "expectedSessionRevision": { "$ref": "#/$defs/revision" },
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" }
+      }
+    },
+    "chainSwitchProposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload", "chainSwitchProposalHash"],
+      "properties": {
+        "payload": { "$ref": "#/$defs/chainSwitchProposalPayload" },
+        "chainSwitchProposalHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "operationName": {
+      "enum": [
+        "accounts.resolve",
+        "chainData.resolve",
+        "policy.resolve",
+        "permissionStore.load",
+        "permissionStore.commit",
+        "approval.request",
+        "signer.sign",
+        "crypto.execute",
+        "reviewedTransaction.review",
+        "reviewedTransaction.execute",
+        "broadcast.submit",
+        "broadcast.submitBatch",
+        "broadcast.reconcile",
+        "clock.now",
+        "entropy.randomBytes"
+      ]
+    },
+    "portErrorName": {
+      "enum": [
+        "INVALID_INPUT",
+        "UNAVAILABLE",
+        "NOT_FOUND",
+        "CONFLICT",
+        "UNAUTHORIZED",
+        "REJECTED",
+        "SIGNATURE_FAILED",
+        "BROADCAST_REJECTED",
+        "INTERNAL_ERROR"
+      ]
+    },
+    "forbiddenFieldName": {
+      "enum": [
+        "privateKey",
+        "privateKeyWif",
+        "wif",
+        "mnemonic",
+        "seed",
+        "password",
+        "vaultToken",
+        "vaultHandle",
+        "sessionHandle",
+        "quickSignGrantHandle",
+        "apiKey",
+        "authorization",
+        "endpoint",
+        "rpcUrl"
+      ]
+    },
+    "portError": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "message", "retryable"],
+      "properties": {
+        "name": { "$ref": "#/$defs/portErrorName" },
+        "message": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "retryable": { "type": "boolean" },
+        "details": {
+          "type": "object",
+          "maxProperties": 16,
+          "additionalProperties": true
+        }
+      }
+    },
+    "portCall": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "callId", "operation", "params"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "callId": { "$ref": "common.schema.json#/$defs/deterministicId" },
+        "operation": { "$ref": "#/$defs/operationName" },
+        "params": true
+      }
+    },
+    "portSuccess": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "callId", "result"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "callId": { "$ref": "common.schema.json#/$defs/deterministicId" },
+        "result": true
+      }
+    },
+    "portFailure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "callId", "error"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "callId": { "$ref": "common.schema.json#/$defs/deterministicId" },
+        "error": { "$ref": "#/$defs/portError" }
+      }
+    },
+    "portResponse": {
+      "oneOf": [
+        { "$ref": "#/$defs/portSuccess" },
+        { "$ref": "#/$defs/portFailure" }
+      ]
+    },
+    "operationState": {
+      "enum": [
+        "initializing",
+        "validating",
+        "authorizing",
+        "resolving",
+        "planning",
+        "approval",
+        "signing",
+        "finalizing",
+        "broadcasting",
+        "reconciliation",
+        "committing",
+        "completed",
+        "rejected",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "initializingCheckpointData": {
+      "type": "object",
+      "additionalProperties": false
+    },
+    "validatingCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trustedTime"],
+      "properties": {
+        "trustedTime": { "$ref": "common.schema.json#/$defs/rfc3339" }
+      }
+    },
+    "authorizingCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["permissionSnapshot"],
+      "properties": {
+        "permissionSnapshot": { "$ref": "permissions.schema.json#/$defs/permissionArray" }
+      }
+    },
+    "resolvingCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resolvedInputs"],
+      "properties": {
+        "resolvedInputs": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "account": { "$ref": "#/$defs/accountIdentity" }
+          }
+        }
+      }
+    },
+    "planningCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requestHash"],
+      "properties": {
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "approvalCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["approvalBinding", "approvalPreview"],
+      "properties": {
+        "approvalBinding": { "$ref": "#/$defs/approvalBinding" },
+        "approvalPreview": { "$ref": "#/$defs/approvalPreview" }
+      }
+    },
+    "signingCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["approvalReceipt", "signingTask"],
+      "properties": {
+        "approvalReceipt": { "$ref": "#/$defs/approvalReceipt" },
+        "signingTask": { "$ref": "#/$defs/secretTask" }
+      }
+    },
+    "finalizingCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signatures"],
+      "properties": {
+        "signatures": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1024,
+          "items": { "$ref": "#/$defs/signerSignResult" }
+        }
+      }
+    },
+    "broadcastingCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["finalizedBundle"],
+      "properties": {
+        "finalizedBundle": { "$ref": "transaction-request.schema.json#/$defs/signedTransactionBundle" }
+      }
+    },
+    "reconciliationCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["submittedTransactionIds"],
+      "properties": {
+        "submittedTransactionIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/transactionId" }
+        }
+      }
+    },
+    "permissionStoreCommittingCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "permissionCommit"],
+      "properties": {
+        "kind": { "const": "permission-store" },
+        "permissionCommit": { "$ref": "#/$defs/permissionCommitArtifact" }
+      }
+    },
+    "providerSessionCommittingCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "providerSessionMutation"],
+      "properties": {
+        "kind": { "const": "provider-session" },
+        "providerSessionMutation": { "$ref": "provider.schema.json#/$defs/providerSessionMutation" }
+      }
+    },
+    "committingCheckpointData": {
+      "oneOf": [
+        { "$ref": "#/$defs/permissionStoreCommittingCheckpointData" },
+        { "$ref": "#/$defs/providerSessionCommittingCheckpointData" }
+      ]
+    },
+    "completedCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["providerCompletion"],
+      "properties": {
+        "providerCompletion": { "$ref": "provider.schema.json#/$defs/providerCompletion" }
+      }
+    },
+    "rejectedCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cancellationReason"],
+      "properties": {
+        "cancellationReason": { "const": "USER_REJECTED" }
+      }
+    },
+    "failedCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["providerError"],
+      "properties": {
+        "providerError": { "$ref": "provider.schema.json#/$defs/providerError" }
+      }
+    },
+    "cancelledCheckpointData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cancellationReason"],
+      "properties": {
+        "cancellationReason": { "$ref": "provider.schema.json#/$defs/cancellationReason" }
+      }
+    },
+    "permissionLoadArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "result"],
+      "properties": {
+        "scope": { "$ref": "#/$defs/permissionScope" },
+        "result": { "$ref": "#/$defs/permissionStoreLoadResult" }
+      }
+    },
+    "accountResolutionArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["params", "result"],
+      "properties": {
+        "params": { "$ref": "#/$defs/accountsResolveParams" },
+        "result": { "$ref": "#/$defs/accountsResolveResult" }
+      }
+    },
+    "permissionCommitArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["params"],
+      "properties": {
+        "params": { "$ref": "#/$defs/permissionStoreCommitParams" },
+        "result": { "$ref": "#/$defs/permissionStoreCommitResult" }
+      }
+    },
+    "broadcastAttempt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["params"],
+      "properties": {
+        "params": { "$ref": "#/$defs/broadcastSubmitParams" },
+        "result": { "$ref": "#/$defs/broadcastSubmitResult" }
+      }
+    },
+    "broadcastProgress": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["attempts", "submittedTransactionIds", "reconciliationAttempts"],
+      "properties": {
+        "attempts": {
+          "type": "array",
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/broadcastAttempt" }
+        },
+        "submittedTransactionIds": {
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/transactionId" }
+        },
+        "nextTransactionId": { "$ref": "common.schema.json#/$defs/localId" },
+        "reconciliationAttempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32
+        },
+        "reconciliation": { "$ref": "#/$defs/broadcastReconcileResult" }
+      }
+    },
+    "operationMemory": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "trustedTime": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "permissionLoads": {
+          "type": "array",
+          "maxItems": 16,
+          "items": { "$ref": "#/$defs/permissionLoadArtifact" }
+        },
+        "accountResolutions": {
+          "type": "array",
+          "maxItems": 16,
+          "items": { "$ref": "#/$defs/accountResolutionArtifact" }
+        },
+        "normalizedTransaction": { "$ref": "#/$defs/normalizeRequestResult" },
+        "preparedTransaction": { "$ref": "prepared-transaction.schema.json#/$defs/preparedTransactionRequest" },
+        "chainSnapshot": { "$ref": "#/$defs/chainSnapshot" },
+        "workflowSnapshots": { "$ref": "#/$defs/workflowChainDataResult" },
+        "executionPolicy": { "$ref": "#/$defs/executionPolicy" },
+        "workflowPolicies": {
+          "type": "array",
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["stepId", "policy"],
+            "properties": {
+              "stepId": { "$ref": "common.schema.json#/$defs/localId" },
+              "policy": { "$ref": "#/$defs/executionPolicy" }
+            }
+          }
+        },
+        "executionPlan": { "$ref": "#/$defs/executionPlan" },
+        "walletActionPlan": { "$ref": "#/$defs/walletActionPlan" },
+        "permissionProposal": { "$ref": "#/$defs/permissionProposal" },
+        "chainSwitchProposal": { "$ref": "#/$defs/chainSwitchProposal" },
+        "messageEnvelope": { "$ref": "signing.schema.json#/$defs/messageEnvelope" },
+        "typedDataEnvelope": { "$ref": "signing.schema.json#/$defs/typedDataEnvelope" },
+        "workflowPlan": { "$ref": "workflow.schema.json#/$defs/workflowPlan" },
+        "reviewedTransactionReviews": {
+          "type": "array",
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/reviewedTransactionReviewArtifact" }
+        },
+        "approvalBinding": { "$ref": "#/$defs/approvalBinding" },
+        "approvalPreview": { "$ref": "#/$defs/approvalPreview" },
+        "approvalReceipt": { "$ref": "#/$defs/approvalReceipt" },
+        "signingTasks": {
+          "type": "array",
+          "maxItems": 1024,
+          "items": { "$ref": "#/$defs/secretTask" }
+        },
+        "signatures": {
+          "type": "array",
+          "maxItems": 1024,
+          "items": { "$ref": "#/$defs/signerSignResult" }
+        },
+        "cryptoResults": {
+          "type": "array",
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/cryptoExecuteResult" }
+        },
+        "reviewedTransactionResults": {
+          "type": "array",
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/reviewedTransactionExecuteResult" }
+        },
+        "finalizationStages": {
+          "type": "array",
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/finalizationStageArtifact" }
+        },
+        "finalizedBundle": { "$ref": "transaction-request.schema.json#/$defs/signedTransactionBundle" },
+        "workflowProgress": { "$ref": "workflow.schema.json#/$defs/workflowProgress" },
+        "workflowResult": { "$ref": "workflow.schema.json#/$defs/result" },
+        "permissionCommit": { "$ref": "#/$defs/permissionCommitArtifact" },
+        "broadcastProgress": { "$ref": "#/$defs/broadcastProgress" },
+        "providerSessionMutation": { "$ref": "provider.schema.json#/$defs/providerSessionMutation" },
+        "providerSessionCommitAck": { "$ref": "provider.schema.json#/$defs/providerSessionCommitAck" },
+        "providerCompletion": { "$ref": "provider.schema.json#/$defs/providerCompletion" }
+      }
+    },
+    "operationCheckpointBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "release",
+        "releaseFingerprint",
+        "operationId",
+        "revision",
+        "state",
+        "requestId",
+        "operation",
+        "context",
+        "contextHash",
+        "session",
+        "pendingCalls",
+        "memory",
+        "data"
+      ],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "release": { "$ref": "#/$defs/protocolRelease" },
+        "releaseFingerprint": { "$ref": "common.schema.json#/$defs/hash32" },
+        "operationId": { "$ref": "common.schema.json#/$defs/deterministicId" },
+        "revision": { "$ref": "#/$defs/revision" },
+        "previousCheckpointHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "state": { "$ref": "#/$defs/operationState" },
+        "requestId": { "$ref": "provider.schema.json#/$defs/jsonRpcId" },
+        "operation": { "$ref": "provider.schema.json#/$defs/normalizedProviderOperation" },
+        "context": { "$ref": "#/$defs/trustedContext" },
+        "contextHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "session": { "$ref": "provider.schema.json#/$defs/providerSessionSnapshot" },
+        "createdAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "updatedAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "pendingCalls": {
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/portCall" }
+        },
+        "memory": { "$ref": "#/$defs/operationMemory" },
+        "data": true
+      }
+    },
+    "trustedCheckpointFields": {
+      "type": "object",
+      "required": ["previousCheckpointHash", "createdAt", "updatedAt", "expiresAt"],
+      "properties": {
+        "previousCheckpointHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "createdAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "updatedAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" }
+      }
+    },
+    "operationCheckpointPayload": {
+      "allOf": [
+        { "$ref": "#/$defs/operationCheckpointBase" },
+        {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "state": { "const": "initializing" },
+                "revision": { "const": "0" },
+                "previousCheckpointHash": false,
+                "pendingCalls": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 1,
+                  "items": {
+                    "allOf": [
+                      { "$ref": "#/$defs/portCall" },
+                      {
+                        "type": "object",
+                        "properties": { "operation": { "const": "clock.now" } }
+                      }
+                    ]
+                  }
+                },
+                "data": { "$ref": "#/$defs/initializingCheckpointData" }
+              }
+            },
+            {
+              "type": "object",
+              "allOf": [{ "$ref": "#/$defs/trustedCheckpointFields" }],
+              "properties": {
+                "state": { "const": "validating" },
+                "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+                "data": { "$ref": "#/$defs/validatingCheckpointData" }
+              }
+            },
+            {
+              "type": "object",
+              "allOf": [{ "$ref": "#/$defs/trustedCheckpointFields" }],
+              "properties": {
+                "state": { "const": "authorizing" },
+                "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+                "data": { "$ref": "#/$defs/authorizingCheckpointData" }
+              }
+            },
+            {
+              "type": "object",
+              "allOf": [{ "$ref": "#/$defs/trustedCheckpointFields" }],
+              "properties": {
+                "state": { "const": "resolving" },
+                "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+                "data": { "$ref": "#/$defs/resolvingCheckpointData" }
+              }
+            },
+            {
+              "type": "object",
+              "allOf": [{ "$ref": "#/$defs/trustedCheckpointFields" }],
+              "properties": {
+                "state": { "const": "planning" },
+                "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+                "data": { "$ref": "#/$defs/planningCheckpointData" }
+              }
+            },
+            {
+              "type": "object",
+              "allOf": [{ "$ref": "#/$defs/trustedCheckpointFields" }],
+              "properties": {
+                "state": { "const": "approval" },
+                "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+                "data": { "$ref": "#/$defs/approvalCheckpointData" }
+              }
+            },
+            {
+              "type": "object",
+              "allOf": [{ "$ref": "#/$defs/trustedCheckpointFields" }],
+              "properties": {
+                "state": { "const": "signing" },
+                "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+                "data": { "$ref": "#/$defs/signingCheckpointData" }
+              }
+            },
+            {
+              "type": "object",
+              "allOf": [{ "$ref": "#/$defs/trustedCheckpointFields" }],
+              "properties": {
+                "state": { "const": "finalizing" },
+                "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+                "data": { "$ref": "#/$defs/finalizingCheckpointData" }
+              }
+            },
+            {
+              "type": "object",
+              "allOf": [{ "$ref": "#/$defs/trustedCheckpointFields" }],
+              "properties": {
+                "state": { "const": "broadcasting" },
+                "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+                "data": { "$ref": "#/$defs/broadcastingCheckpointData" }
+              }
+            },
+            {
+              "type": "object",
+              "allOf": [{ "$ref": "#/$defs/trustedCheckpointFields" }],
+              "properties": {
+                "state": { "const": "reconciliation" },
+                "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+                "data": { "$ref": "#/$defs/reconciliationCheckpointData" }
+              }
+            },
+            {
+              "type": "object",
+              "allOf": [{ "$ref": "#/$defs/trustedCheckpointFields" }],
+              "properties": {
+                "state": { "const": "committing" },
+                "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" }
+              },
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "pendingCalls": {
+                      "type": "array",
+                      "minItems": 1,
+                      "maxItems": 1,
+                      "items": {
+                        "allOf": [
+                          { "$ref": "#/$defs/portCall" },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "operation": {
+                                "enum": ["clock.now", "permissionStore.commit"]
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "data": { "$ref": "#/$defs/permissionStoreCommittingCheckpointData" }
+                  }
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "pendingCalls": {
+                      "type": "array",
+                      "maxItems": 1,
+                      "items": {
+                        "allOf": [
+                          { "$ref": "#/$defs/portCall" },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "operation": { "const": "clock.now" }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "data": { "$ref": "#/$defs/providerSessionCommittingCheckpointData" }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "allOf": [{ "$ref": "#/$defs/trustedCheckpointFields" }],
+              "properties": {
+                "state": { "const": "completed" },
+                "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+                "pendingCalls": { "type": "array", "maxItems": 0 },
+                "data": { "$ref": "#/$defs/completedCheckpointData" }
+              }
+            },
+            {
+              "type": "object",
+              "allOf": [{ "$ref": "#/$defs/trustedCheckpointFields" }],
+              "properties": {
+                "state": { "const": "rejected" },
+                "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" },
+                "pendingCalls": { "type": "array", "maxItems": 0 },
+                "data": { "$ref": "#/$defs/rejectedCheckpointData" }
+              }
+            },
+            {
+              "type": "object",
+              "properties": {
+                "state": { "const": "failed" },
+                "pendingCalls": { "type": "array", "maxItems": 0 },
+                "data": { "$ref": "#/$defs/failedCheckpointData" }
+              },
+              "oneOf": [
+                {
+                  "type": "object",
+                  "required": ["previousCheckpointHash"],
+                  "properties": {
+                    "revision": { "const": "1" },
+                    "createdAt": false,
+                    "updatedAt": false,
+                    "expiresAt": false,
+                    "memory": { "type": "object", "maxProperties": 0 }
+                  }
+                },
+                {
+                  "type": "object",
+                  "allOf": [{ "$ref": "#/$defs/trustedCheckpointFields" }],
+                  "properties": {
+                    "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "state": { "const": "cancelled" },
+                "pendingCalls": { "type": "array", "maxItems": 0 },
+                "data": { "$ref": "#/$defs/cancelledCheckpointData" }
+              },
+              "oneOf": [
+                {
+                  "type": "object",
+                  "required": ["previousCheckpointHash"],
+                  "properties": {
+                    "revision": { "const": "1" },
+                    "createdAt": false,
+                    "updatedAt": false,
+                    "expiresAt": false,
+                    "memory": { "type": "object", "maxProperties": 0 }
+                  }
+                },
+                {
+                  "type": "object",
+                  "allOf": [{ "$ref": "#/$defs/trustedCheckpointFields" }],
+                  "properties": {
+                    "revision": { "type": "string", "pattern": "^[1-9][0-9]*$" }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "operationCheckpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload", "checkpointHash"],
+      "properties": {
+        "payload": { "$ref": "#/$defs/operationCheckpointPayload" },
+        "checkpointHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "startInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "release", "request", "currentContext", "currentSession"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "release": { "$ref": "#/$defs/protocolRelease" },
+        "request": { "$ref": "provider.schema.json#/$defs/request" },
+        "currentContext": { "$ref": "#/$defs/trustedContext" },
+        "currentSession": { "$ref": "provider.schema.json#/$defs/providerSessionSnapshot" }
+      }
+    },
+    "resumeInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "checkpoint", "currentContext", "currentSession"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "checkpoint": { "$ref": "#/$defs/operationCheckpoint" },
+        "response": { "$ref": "#/$defs/portResponse" },
+        "currentContext": { "$ref": "#/$defs/trustedContext" },
+        "currentSession": { "$ref": "provider.schema.json#/$defs/providerSessionSnapshot" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "checkpoint": {
+                "type": "object",
+                "properties": {
+                  "payload": {
+                    "type": "object",
+                    "properties": {
+                      "pendingCalls": { "type": "array", "minItems": 1 }
+                    },
+                    "required": ["pendingCalls"]
+                  }
+                },
+                "required": ["payload"]
+              }
+            },
+            "required": ["checkpoint"]
+          },
+          "then": {
+            "type": "object",
+            "required": ["response"],
+            "properties": { "response": true }
+          },
+          "else": {
+            "type": "object",
+            "properties": { "response": false }
+          }
+        }
+      ]
+    },
+    "coreMethodName": {
+      "enum": ["start", "resume", "acknowledgeCommit", "cancel"]
+    },
+    "lifecycleEffectName": {
+      "enum": ["approval.request", "signer.sign", "transaction.finalize", "broadcast.submit", "broadcast.submitBatch", "broadcast.reconcile"]
+    },
+    "cancelInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "checkpoint", "reason"],
+      "dependentRequired": {
+        "currentContext": ["currentSession"],
+        "currentSession": ["currentContext"]
+      },
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "checkpoint": { "$ref": "#/$defs/operationCheckpoint" },
+        "reason": { "$ref": "provider.schema.json#/$defs/cancellationReason" },
+        "currentContext": { "$ref": "#/$defs/trustedContext" },
+        "currentSession": { "$ref": "provider.schema.json#/$defs/providerSessionSnapshot" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "reason": {
+                "enum": [
+                  "REQUEST_ABORTED",
+                  "TRANSPORT_CLOSED",
+                  "PROTOCOL_RELEASE_CHANGED"
+                ]
+              }
+            },
+            "required": ["reason"]
+          },
+          "then": true,
+          "else": {
+            "required": ["currentContext", "currentSession"],
+            "properties": {
+              "currentContext": true,
+              "currentSession": true
+            }
+          }
+        }
+      ]
+    },
+    "continueTransition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "checkpoint"],
+      "properties": {
+        "kind": { "const": "continue" },
+        "checkpoint": {
+          "allOf": [
+            { "$ref": "#/$defs/operationCheckpoint" },
+            {
+              "type": "object",
+              "properties": {
+                "payload": {
+                  "type": "object",
+                  "properties": {
+                    "state": {
+                      "enum": [
+                        "initializing",
+                        "validating",
+                        "authorizing",
+                        "resolving",
+                        "planning",
+                        "approval",
+                        "signing",
+                        "finalizing",
+                        "broadcasting",
+                        "reconciliation",
+                        "committing"
+                      ]
+                    },
+                    "pendingCalls": { "type": "array", "maxItems": 0 }
+                  },
+                  "required": ["state", "pendingCalls"]
+                }
+              },
+              "required": ["payload"]
+            }
+          ]
+        }
+      }
+    },
+    "waitingTransition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "checkpoint", "calls"],
+      "properties": {
+        "kind": { "const": "waiting" },
+        "checkpoint": { "$ref": "#/$defs/operationCheckpoint" },
+        "calls": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/portCall" }
+        }
+      }
+    },
+    "commitTransition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "checkpoint", "mutation"],
+      "properties": {
+        "kind": { "const": "commit" },
+        "checkpoint": { "$ref": "#/$defs/operationCheckpoint" },
+        "mutation": { "$ref": "provider.schema.json#/$defs/providerSessionMutation" }
+      }
+    },
+    "commitAckInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "checkpoint", "acknowledgment", "currentContext", "currentSession"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "checkpoint": { "$ref": "#/$defs/operationCheckpoint" },
+        "acknowledgment": { "$ref": "provider.schema.json#/$defs/providerSessionCommitAck" },
+        "currentContext": { "$ref": "#/$defs/trustedContext" },
+        "currentSession": { "$ref": "provider.schema.json#/$defs/providerSessionSnapshot" }
+      }
+    },
+    "completeTransition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "checkpoint", "completion"],
+      "properties": {
+        "kind": { "const": "complete" },
+        "checkpoint": { "$ref": "#/$defs/operationCheckpoint" },
+        "completion": { "$ref": "provider.schema.json#/$defs/providerCompletion" }
+      }
+    },
+    "coreTransition": {
+      "oneOf": [
+        { "$ref": "#/$defs/continueTransition" },
+        { "$ref": "#/$defs/waitingTransition" },
+        { "$ref": "#/$defs/commitTransition" },
+        { "$ref": "#/$defs/completeTransition" }
+      ]
+    },
+    "trustedContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sessionId", "transport", "origin", "topOrigin", "frame", "createdAt"],
+      "properties": {
+        "sessionId": { "$ref": "common.schema.json#/$defs/opaqueId" },
+        "transport": { "enum": ["webview", "extension", "remote"] },
+        "origin": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^[a-z][a-z0-9+.-]*://[^/?#]+$",
+          "maxLength": 2048
+        },
+        "topOrigin": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^[a-z][a-z0-9+.-]*://[^/?#]+$",
+          "maxLength": 2048
+        },
+        "frame": { "enum": ["top", "child"] },
+        "navigationId": { "$ref": "common.schema.json#/$defs/opaqueId" },
+        "createdAt": { "$ref": "common.schema.json#/$defs/rfc3339" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "transport": { "enum": ["webview", "extension"] } },
+            "required": ["transport"]
+          },
+          "then": {
+            "required": ["navigationId"],
+            "properties": { "navigationId": true }
+          },
+          "else": {
+            "not": { "required": ["navigationId"] }
+          }
+        }
+      ]
+    },
+    "protocolRelease": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "schemaBundleSha256", "registryBundleSha256"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+-(?:candidate|draft)\\.[0-9]+$",
+          "maxLength": 64
+        },
+        "schemaBundleSha256": { "$ref": "common.schema.json#/$defs/hash32" },
+        "registryBundleSha256": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "approvalRequester": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["transport", "origin", "topOrigin", "frame"],
+      "properties": {
+        "transport": { "enum": ["webview", "extension", "remote"] },
+        "origin": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^[a-z][a-z0-9+.-]*://[^/?#]+$",
+          "maxLength": 2048
+        },
+        "topOrigin": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^[a-z][a-z0-9+.-]*://[^/?#]+$",
+          "maxLength": 2048
+        },
+        "frame": { "enum": ["top", "child"] }
+      }
+    },
+    "accountIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["address", "accountId", "chainId", "publicKey"],
+      "properties": {
+        "address": { "$ref": "common.schema.json#/$defs/address" },
+        "accountId": { "$ref": "common.schema.json#/$defs/accountId" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "publicKey": { "$ref": "common.schema.json#/$defs/publicKey" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 128 }
+      }
+    },
+    "accountsResolveParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "chainId", "mode"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "mode": { "enum": ["available", "active", "by-id"] },
+        "accountIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/accountId" }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "mode": { "const": "by-id" } },
+            "required": ["mode"]
+          },
+          "then": {
+            "required": ["accountIds"],
+            "properties": { "accountIds": true }
+          },
+          "else": { "properties": { "accountIds": false } }
+        }
+      ]
+    },
+    "accountsResolveResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["accounts"],
+      "properties": {
+        "accounts": {
+          "type": "array",
+          "maxItems": 16,
+          "items": { "$ref": "#/$defs/accountIdentity" }
+        }
+      }
+    },
+    "intentType": {
+      "enum": [
+        "amm.swap", "amm.addLiquidity", "amm.removeLiquidity",
+        "amm.mergeToken", "tbc20Lp.transfer", "tbc20Lp.lock", "tbc20Lp.unlock", "tbc20Lp.merge", "tbc20Lp.burn",
+        "tbc721.transfer",
+        "tbc20.transfer",
+        "tbc20.merge",
+        "tbc20Stablecoin.transfer",
+        "tbc20Stablecoin.merge",
+        "tbc.transfer",
+        "tbc.maintenance.merge",
+        "tbc.collection.create",
+        "tbc.nft.mint",
+        "tbc.nft.transfer",
+        "tbc.ft.create",
+        "tbc.ft.transfer",
+        "tbc.ft.merge",
+        "tbc20-standard-create",
+        "tbc20-standard-transfer",
+        "tbc20-standard-merge",
+        "tbc20-stablecoin-create",
+        "tbc20-stablecoin-mint",
+        "tbc20-stablecoin-freeze",
+        "tbc20-stablecoin-unfreeze",
+        "tbc20-stablecoin-transfer",
+        "tbc20-stablecoin-merge",
+        "tbc20-lp-transfer",
+        "tbc20-lp-merge",
+        "tbc20-lp-lock",
+        "tbc20-lp-unlock",
+        "tbc-timelock-lock",
+        "tbc-timelock-unlock",
+        "tbc-htlc-lock",
+        "tbc-htlc-claim",
+        "tbc-htlc-refund",
+        "tbc-lop-create",
+        "tbc-lop-cancel",
+        "tbc-lop-match",
+        "tbc-amm-create",
+        "tbc-amm-add-liquidity",
+        "tbc-amm-remove-liquidity",
+        "tbc-amm-swap",
+        "tbc721-standard-create-collection",
+        "tbc721-standard-mint",
+        "tbc721-standard-batch-mint",
+        "tbc721-standard-transfer",
+        "tbc.stablecoin.transfer",
+        "tbc.stablecoin.merge",
+        "tbc.pool.create",
+        "tbc.pool.liquidity.add",
+        "tbc.pool.liquidity.remove",
+        "tbc.pool.liquidity.close",
+        "tbc.pool.ft.merge",
+        "tbc.pool.ftlp.merge",
+        "tbc.pool.ftlp.burn",
+        "tbc.pool.swap.exactTbcForToken",
+        "tbc.pool.swap.exactTokenForTbc"
+      ]
+    },
+    "contractDependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relation", "contractId"],
+      "properties": {
+        "relation": { "enum": ["pool-ft", "pool-lp"] },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" }
+      }
+    },
+    "assetRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["native", "collection", "nft", "ft", "stablecoin", "pool", "ftlp", "timelock", "htlc", "lop"] },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "contractDependency": { "$ref": "#/$defs/contractDependency" },
+        "minimumAmount": { "$ref": "common.schema.json#/$defs/atomicAmount" }
+      }
+    },
+    "chainDataRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["intentType", "includeAncestry", "assets"],
+      "properties": {
+        "intentType": { "$ref": "#/$defs/intentType" },
+        "includeAncestry": { "type": "boolean" },
+        "contractIds": {
+          "type": "array",
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/contractId" }
+        },
+        "nativeAmount": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "lopAssets": {
+          "$comment": "LOP creation read plan, A then B. Identity purpose never requires an account balance scan. Engine authenticates all IDs and Code from bound material; this list cannot authorize spending.",
+          "type": "array", "minItems": 1, "maxItems": 2, "uniqueItems": true,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["standard", "contractId", "purpose"],
+            "properties": { "standard": { "enum": ["tbc20-standard", "tbc20-stablecoin"] },
+              "contractId": { "$ref": "common.schema.json#/$defs/hash32" }, "purpose": { "enum": ["identity", "escrow"] } }
+          }
+        },
+        "collectionSlots": {
+          "$comment": "Exact selected slots for new NFT mint or batch-mint; the Engine still verifies each against collection raw and available inputs.",
+          "type": "array", "minItems": 1, "maxItems": 32, "uniqueItems": true,
+          "items": { "type": "integer", "minimum": 1, "maximum": 4294967295 }
+        },
+        "targetOutpoints": {
+          "type": "array", "minItems": 1, "maxItems": 5, "uniqueItems": true,
+          "items": { "$ref": "transaction-request.schema.json#/$defs/coinTargetOutpoint" }
+        },
+        "certificateOutpoint": { "$ref": "transaction-request.schema.json#/$defs/coinTargetOutpoint" },
+        "inputOutpoints": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 128,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["txid", "vout"],
+            "properties": {
+              "txid": { "$ref": "common.schema.json#/$defs/hash32" },
+              "vout": { "type": "integer", "minimum": 0, "maximum": 4294967295 }
+            }
+          }
+        },
+        "assets": {
+          "type": "array",
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/assetRequirement" }
+        }
+      }
+    },
+    "chainDataResolveParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "chainId", "accountId", "requirement"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "accountId": { "$ref": "common.schema.json#/$defs/accountId" },
+        "requirement": { "$ref": "#/$defs/chainDataRequirement" },
+        "signingRoles": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "transaction-request.schema.json#/$defs/signingRole" } },
+        "signingAccounts": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "#/$defs/accountIdentity" } },
+        "workflowSteps": {
+          "type": "array", "minItems": 1, "maxItems": 5,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["stepId", "requirement"],
+            "properties": {
+              "stepId": { "$ref": "common.schema.json#/$defs/localId" },
+              "requirement": { "$ref": "#/$defs/chainDataRequirement" },
+              "signingRoles": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "transaction-request.schema.json#/$defs/signingRole" } },
+              "signingAccounts": { "type": "array", "minItems": 1, "maxItems": 1, "items": { "$ref": "#/$defs/accountIdentity" } }
+            }
+          }
+        }
+      },
+      "allOf": [{ "if": { "properties": { "workflowSteps": {} }, "required": ["workflowSteps"] }, "then": {
+        "properties": { "signingRoles": false, "signingAccounts": false }
+      } }]
+    },
+    "blockRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["height", "hash"],
+      "properties": {
+        "height": { "$ref": "common.schema.json#/$defs/uint32String" },
+        "hash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "medianTimePast": { "$comment": "Trusted node chain median time at this block, decimal Unix seconds; never a client/device clock. Optional unless required by a timestamp-locked Coin input.", "$ref": "common.schema.json#/$defs/uint32String" }
+      }
+    },
+    "utxo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["txid", "vout", "satoshis", "scriptPubKey", "classification"],
+      "properties": {
+        "txid": { "$ref": "common.schema.json#/$defs/transactionId" },
+        "vout": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+        "satoshis": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" },
+        "scriptPubKey": { "$ref": "common.schema.json#/$defs/rawTransaction" },
+        "confirmations": {
+          "$ref": "common.schema.json#/$defs/uint32String",
+          "$comment": "Absent means unobserved, never zero. Engine MUST reject absence when the effective policy minimum is positive, and validate every present count even when the minimum is zero."
+        },
+        "classification": { "enum": ["native", "collection-slot", "nft", "ft", "stablecoin", "pool", "pool-ft", "pool-source", "ftlp", "timelock", "htlc", "lop"] },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" }
+      }
+    },
+    "parentTransaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["txid", "rawTransaction"],
+      "properties": {
+        "txid": { "$ref": "common.schema.json#/$defs/transactionId" },
+        "rawTransaction": { "$ref": "common.schema.json#/$defs/rawTransaction" }
+      }
+    },
+    "contractRecord": {
+      "$comment": "Wallet-owned Chain Data binds asset identity to its configured trusted API. Engine checks exact Code templates and current inputs locally. indexedFungible replaces historical issuance audits for historical FT/stablecoin; it must not be copied from DApp claims. All fields are covered by snapshotHash and approval binding. Records without index material retain explicit historical-proof validation.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contractId", "family", "protocolVersion", "creationTxid", "currentOutpoint"],
+      "properties": {
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "family": { "enum": ["collection", "nft", "ft", "stablecoin", "pool"] },
+        "protocolVersion": { "type": "string", "pattern": "^(?:[0-9]+\\.[0-9]+|tbc20|tbc721|coin|pool3)$" },
+        "standardId": { "enum": ["tbc20-standard", "tbc721-standard", "tbc20-stablecoin", "tbc-amm"] },
+        "templateRevision": { "$ref": "common.schema.json#/$defs/hash32" },
+        "genesisOutpoint": {
+          "$comment": "Asset anchor output, not Code.OriginalUTXO36. Coin uses issuance certificate SOURCE output 0 (official stablecoin_id), not the SDK mutable first-mint txid/output 3. Engine binds txid to contractId/creationTxid and checks raw identity; Schema cannot prove it.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["txid", "vout"],
+          "properties": {
+            "txid": { "$ref": "common.schema.json#/$defs/transactionId" },
+            "vout": { "const": 0 }
+          }
+        },
+        "creationTxid": { "$ref": "common.schema.json#/$defs/transactionId" },
+        "indexedPool": {
+          "$comment": "Configured trusted index binds pool ID/currentOutpoint and underlying FT scripts. Current Pool Code/Tape still determines and locally validates all immutable configuration, fees and reserves; this is not a genesis-funding audit.",
+          "type": "object", "additionalProperties": false,
+          "required": ["ftCodeScript", "ftTapeScript"],
+          "properties": {
+            "ftCodeScript": { "type": "string", "minLength": 2, "maxLength": 131072, "pattern": "^(?:[a-f0-9]{2})+$" },
+            "ftTapeScript": { "type": "string", "minLength": 2, "maxLength": 131072, "pattern": "^(?:[a-f0-9]{2})+$" }
+          }
+        },
+        "indexedFungible": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["codeScript", "tapeScript", "totalSupply"],
+          "properties": {
+            "codeScript": { "type": "string", "minLength": 2, "maxLength": 131072, "pattern": "^(?:[a-f0-9]{2})+$" },
+            "tapeScript": { "type": "string", "minLength": 2, "maxLength": 131072, "pattern": "^(?:[a-f0-9]{2})+$" },
+            "totalSupply": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" }
+          }
+        },
+        "currentOutpoint": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["txid", "vout"],
+          "properties": {
+            "txid": { "$ref": "common.schema.json#/$defs/transactionId" },
+            "vout": { "type": "integer", "minimum": 0, "maximum": 4294967295 }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": { "type": "object", "required": ["standardId"], "properties": { "standardId": true } },
+          "then": {
+            "type": "object",
+            "required": ["templateRevision", "genesisOutpoint"],
+            "properties": { "templateRevision": true, "genesisOutpoint": true },
+            "oneOf": [
+              { "type": "object", "properties": {
+                "standardId": { "const": "tbc20-standard" }, "family": { "const": "ft" },
+                "protocolVersion": { "const": "tbc20" },
+                "genesisOutpoint": { "type": "object", "properties": { "vout": { "const": 0 } } },
+                "templateRevision": { "const": "0f5db33bb46e4517963cbd383518f74283b5c2c4efb0a733522a1fbc0d4a9f84" }
+              } },
+              { "type": "object", "properties": {
+                "standardId": { "const": "tbc721-standard" }, "family": { "enum": ["collection", "nft"] },
+                "protocolVersion": { "const": "tbc721" },
+                "genesisOutpoint": { "type": "object", "properties": { "vout": { "const": 0 } } },
+                "templateRevision": { "const": "a97688ec62777b01e93c8486e0505b56701f48dc8cf7947637ece57fe88df104" }
+              } },
+              { "type": "object", "properties": {
+                "standardId": { "const": "tbc20-stablecoin" }, "family": { "const": "stablecoin" },
+                "protocolVersion": { "const": "coin" },
+                "genesisOutpoint": { "type": "object", "properties": { "vout": { "const": 0 } } },
+                "templateRevision": { "const": "c686fc271f0ee8116325bf541d87c4d2e6ad839896a9d9dd21dcf2ac847660e3" }
+              } },
+              { "type": "object", "properties": {
+                "standardId": { "const": "tbc-amm" }, "family": { "const": "pool" },
+                "protocolVersion": { "const": "pool3" },
+                "templateRevision": { "enum": ["c98ecae0a22452ce37bcaf24be0c836521d3de3a75aa8f16cef587b8b6f031b2", "cf7f95c0483b56ad24825591acbce6e82e37890aa0047fc63183d3fb7a7a4ffc", "a821abdb280268430ad7ea7a9421068a719a8e959b84c11265d4456e8d740db7", "834610c0726fa0829c50aaa75c3a0b58c046105248f0b023257437a22f8aca22"] }
+              } }
+            ]
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "protocolVersion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+$" },
+              "templateRevision": false,
+              "genesisOutpoint": false
+            }
+          }
+        }
+      ]
+    },
+    "chainSnapshotPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "snapshotId", "chainId", "capturedAt", "expiresAt", "account", "utxos", "parents", "contracts"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "snapshotId": { "$ref": "common.schema.json#/$defs/opaqueId" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "block": { "$ref": "#/$defs/blockRef", "$comment": "Absent means unqueried, not zero height. Time/height-locked operations require fresh context; zero-confirmation untimed operations do not require an extra nodeinfo query." },
+        "capturedAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "account": { "$ref": "#/$defs/accountIdentity" },
+        "signingAccounts": {
+          "type": "array", "minItems": 1, "maxItems": 1,
+          "items": { "$ref": "#/$defs/accountIdentity" },
+          "description": "Exactly the additional accounts selected by transaction signingRoles. This keyless material does not grant wallet signing permission; Host must bind trusted resolution and per-account authorization."
+        },
+        "utxos": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": { "$ref": "#/$defs/utxo" }
+        },
+        "parents": {
+          "type": "array",
+          "maxItems": 10000,
+          "items": { "$ref": "#/$defs/parentTransaction" }
+        },
+        "contracts": {
+          "type": "array",
+          "maxItems": 1024,
+          "items": { "$ref": "#/$defs/contractRecord" }
+        }
+      }
+    },
+    "chainSnapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload", "snapshotHash"],
+      "properties": {
+        "payload": { "$ref": "#/$defs/chainSnapshotPayload" },
+        "snapshotHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "chainDataResolveResult": {
+      "oneOf": [{ "$ref": "#/$defs/chainSnapshot" }, { "$ref": "#/$defs/workflowChainDataResult" }]
+    },
+    "workflowChainDataResult": {
+      "type": "object", "additionalProperties": false, "required": ["version", "steps"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "steps": {
+          "type": "array", "minItems": 1, "maxItems": 5,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["stepId", "snapshot"],
+            "properties": {
+              "stepId": { "$ref": "common.schema.json#/$defs/localId" },
+              "snapshot": { "$ref": "#/$defs/chainSnapshot" }
+            }
+          }
+        }
+      }
+    },
+    "amountLimit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "maximum"],
+      "properties": {
+        "scope": { "enum": ["native", "ft-total", "ft-slot", "stablecoin-total", "stablecoin-slot", "lp-total", "lp-slot", "pool-state"] },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "protocolVersion": { "type": "string", "pattern": "^(?:[0-9]+\\.[0-9]+|tbc20|coin|pool3)$" },
+        "maximum": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "required": ["protocolVersion"],
+            "properties": { "protocolVersion": { "const": "tbc20" } }
+          },
+          "then": {
+            "type": "object",
+            "properties": { "scope": { "enum": ["ft-total", "ft-slot"] } }
+          }
+        },
+        {
+          "if": { "type": "object", "required": ["protocolVersion"], "properties": { "protocolVersion": { "const": "coin" } } },
+          "then": { "type": "object", "properties": { "scope": { "enum": ["stablecoin-total", "stablecoin-slot"] } } }
+        },
+        {
+          "if": { "type": "object", "required": ["protocolVersion"], "properties": { "protocolVersion": { "const": "pool3" } } },
+          "then": { "type": "object", "properties": { "scope": { "enum": ["lp-total", "lp-slot", "pool-state"] } } }
+        }
+      ]
+    },
+    "contractPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["family", "allowedVersions"],
+      "properties": {
+        "family": { "enum": ["collection", "nft", "ft", "stablecoin", "pool"] },
+        "allowedVersions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^(?:[0-9]+\\.[0-9]+|tbc20|tbc721|coin|pool3)$" }
+        },
+        "createVersion": { "type": "string", "pattern": "^(?:[0-9]+\\.[0-9]+|tbc20|tbc721|coin|pool3)$" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "anyOf": [
+              {
+                "required": ["createVersion"],
+                "properties": { "createVersion": { "const": "tbc20" } }
+              },
+              {
+                "required": ["allowedVersions"],
+                "properties": { "allowedVersions": { "type": "array", "contains": { "const": "tbc20" } } }
+              }
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": { "family": { "const": "ft" } }
+          }
+        },
+        {
+          "if": { "type": "object", "anyOf": [
+            { "required": ["createVersion"], "properties": { "createVersion": { "const": "tbc721" } } },
+            { "required": ["allowedVersions"], "properties": { "allowedVersions": { "type": "array", "contains": { "const": "tbc721" } } } }
+          ] },
+          "then": { "type": "object", "properties": { "family": { "enum": ["collection", "nft"] } } }
+        },
+        {
+          "if": { "type": "object", "anyOf": [
+            { "required": ["createVersion"], "properties": { "createVersion": { "const": "coin" } } },
+            { "required": ["allowedVersions"], "properties": { "allowedVersions": { "type": "array", "contains": { "const": "coin" } } } }
+          ] },
+          "then": { "type": "object", "properties": { "family": { "const": "stablecoin" } } }
+        },
+        {
+          "if": { "type": "object", "anyOf": [
+            { "required": ["createVersion"], "properties": { "createVersion": { "const": "pool3" } } },
+            { "required": ["allowedVersions"], "properties": { "allowedVersions": { "type": "array", "contains": { "const": "pool3" } } } }
+          ] },
+          "then": { "type": "object", "properties": { "family": { "const": "pool" } } }
+        }
+      ]
+    },
+    "resolvedPoolPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lpPlan", "serviceProviderTag", "serviceFeeRate"],
+      "properties": {
+        "lpPlan": { "type": "integer", "minimum": 1, "maximum": 6 },
+        "serviceProviderTag": { "type": "string", "pattern": "^[ -~]{1,64}$" },
+        "serviceFeeRate": { "type": "integer", "minimum": 0, "maximum": 65535 }
+      }
+    },
+    "executionPolicyPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "policyId",
+        "revision",
+        "chainId",
+        "feeRateSatPerKb",
+        "dustThreshold",
+        "minConfirmations",
+        "maxBundleTransactions",
+        "sighashType",
+        "contractPolicies",
+        "amountLimits",
+        "expiresAt"
+      ],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "policyId": { "$ref": "common.schema.json#/$defs/opaqueId" },
+        "revision": { "$ref": "#/$defs/revision" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "feeRateSatPerKb": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" },
+        "dustThreshold": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "minConfirmations": { "$ref": "common.schema.json#/$defs/uint32String" },
+        "maxBundleTransactions": { "type": "integer", "minimum": 1, "maximum": 32 },
+        "sighashType": { "const": 65 },
+        "contractPolicies": {
+          "type": "array",
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/contractPolicy" }
+        },
+        "amountLimits": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/amountLimit" }
+        },
+        "pool": { "$ref": "#/$defs/resolvedPoolPolicy" },
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" }
+      }
+    },
+    "executionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload", "policyHash"],
+      "properties": {
+        "payload": { "$ref": "#/$defs/executionPolicyPayload" },
+        "policyHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "policyResolveParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "requestHash", "request", "snapshotHash"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "request": { "$ref": "transaction-request.schema.json#/$defs/transactionRequest" },
+        "snapshotHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "policyResolveResult": {
+      "$ref": "#/$defs/executionPolicy"
+    },
+    "permissionScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin", "chainId"],
+      "properties": {
+        "origin": { "type": "string", "format": "uri", "maxLength": 2048 },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" }
+      }
+    },
+    "permissionStoreLoadParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "scope"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "scope": { "$ref": "#/$defs/permissionScope" }
+      }
+    },
+    "permissionStoreLoadResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revision", "permissions"],
+      "properties": {
+        "revision": { "$ref": "#/$defs/revision" },
+        "permissions": { "$ref": "permissions.schema.json#/$defs/permissionArray" }
+      }
+    },
+    "permissionStoreCommitParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "changes"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "changes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/permissionStoreChange" }
+        }
+      }
+    },
+    "permissionStoreCommitResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revisions"],
+      "properties": {
+        "revisions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/permissionStoreRevision" }
+        }
+      }
+    },
+    "permissionStoreChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "expectedRevision", "permissions"],
+      "properties": {
+        "scope": { "$ref": "#/$defs/permissionScope" },
+        "expectedRevision": { "$ref": "#/$defs/revision" },
+        "permissions": { "$ref": "permissions.schema.json#/$defs/permissionArray" }
+      }
+    },
+    "permissionStoreRevision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "revision"],
+      "properties": {
+        "scope": { "$ref": "#/$defs/permissionScope" },
+        "revision": { "$ref": "#/$defs/revision" }
+      }
+    },
+    "permissionProposalPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "origin", "requested", "changes", "decisions", "createdAt", "expiresAt"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "origin": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^[a-z][a-z0-9+.-]*://[^/?#]+$",
+          "maxLength": 2048
+        },
+        "requested": { "$ref": "permissions.schema.json#/$defs/requestPermissionsParams" },
+        "changes": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/permissionStoreChange" }
+        },
+        "decisions": {
+          "type": "array",
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/permissionDecision" }
+        },
+        "createdAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" }
+      }
+    },
+    "permissionProposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload", "permissionProposalHash"],
+      "properties": {
+        "payload": { "$ref": "#/$defs/permissionProposalPayload" },
+        "permissionProposalHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "assetFlow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "direction", "amount"],
+      "properties": {
+        "kind": { "enum": ["native", "collection", "ft", "stablecoin", "nft", "lp", "pool"] },
+        "direction": { "enum": ["send", "receive", "mint", "create", "burn", "lock", "unlock", "merge", "fee", "contract"] },
+        "amount": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "from": { "$ref": "common.schema.json#/$defs/address" },
+        "to": { "$ref": "common.schema.json#/$defs/address" }
+      }
+    },
+    "previewWarning": {
+      "enum": [
+        "EXTERNAL_CONTENT",
+        "NEW_CONTRACT",
+        "UNVERIFIED_CONTRACT",
+        "PRICE_IMPACT",
+        "LOCKED_ASSET",
+        "IRREVERSIBLE_BURN",
+        "MULTI_TRANSACTION",
+        "MAINTENANCE_TRANSACTION",
+        "PARTIAL_BROADCAST_POSSIBLE",
+        "MESSAGE_DOMAIN_UNVERIFIED",
+        "TYPED_DATA_COMPLEX",
+        "PERMISSION_NARROWED",
+        "PERMISSION_REJECTED",
+        "CHAIN_SWITCH",
+        "DYNAMIC_BINDING",
+        "FT_MINT_V4",
+        "HTLC_CLAIM_SIGNED_BYTES_DISCLOSE_PREIMAGE"
+      ]
+    },
+    "warningArray": {
+      "type": "array",
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/previewWarning" }
+    },
+    "lopReviewToken": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "contractId", "partialHash"],
+      "properties": {
+        "kind": { "const": "token" },
+        "contractId": { "$ref": "common.schema.json#/$defs/hash32" },
+        "partialHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "lopReviewTerms": {
+      "type": "object", "additionalProperties": false,
+      "required": ["standardId", "side", "market", "ownerHash", "feeRecipientHash", "saleVolume", "unitPrice", "feeRate", "priceScale", "feeScale", "baseAsset", "quoteAsset"],
+      "properties": {
+        "standardId": { "const": "tbc-lop" },
+        "side": { "enum": ["buy", "sell"] },
+        "market": { "enum": ["native-token", "token-token"] },
+        "ownerHash": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "feeRecipientHash": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "saleVolume": { "type": "string", "pattern": "^(0|[1-9][0-9]{0,19})$" },
+        "unitPrice": { "type": "string", "pattern": "^(0|[1-9][0-9]{0,19})$" },
+        "feeRate": { "type": "string", "pattern": "^(0|[1-9][0-9]{0,19})$" },
+        "priceScale": { "const": "1000000" },
+        "feeScale": { "const": "1000000" },
+        "baseAsset": { "oneOf": [
+          { "type": "object", "additionalProperties": false, "required": ["kind"], "properties": { "kind": { "const": "native" } } },
+          { "$ref": "#/$defs/lopReviewToken" }
+        ] },
+        "quoteAsset": { "$ref": "#/$defs/lopReviewToken" }
+      },
+      "allOf": [{
+        "if": { "properties": { "market": { "const": "native-token" } } },
+        "then": { "properties": { "baseAsset": { "type": "object", "properties": { "kind": { "const": "native" } } } } },
+        "else": { "properties": { "baseAsset": { "$ref": "#/$defs/lopReviewToken" } } }
+      }]
+    },
+    "lopReviewPosition": {
+      "type": "object", "additionalProperties": false, "required": ["index", "terms"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 0, "maximum": 65535 },
+        "terms": { "$ref": "#/$defs/lopReviewTerms" }
+      }
+    },
+    "lopReviewOrders": {
+      "type": "object", "additionalProperties": false,
+      "required": ["transactionIndex", "verification", "assetIdentityVerified", "inputs", "outputs"],
+      "properties": {
+        "transactionIndex": { "type": "integer", "minimum": 0, "maximum": 31 },
+        "verification": { "const": "exact-template" },
+        "assetIdentityVerified": { "const": false },
+        "inputs": { "type": "array", "maxItems": 256, "items": { "$ref": "#/$defs/lopReviewPosition" } },
+        "outputs": { "type": "array", "maxItems": 256, "items": { "$ref": "#/$defs/lopReviewPosition" } }
+      },
+      "anyOf": [
+        { "properties": { "inputs": { "type": "array", "minItems": 1 } } },
+        { "properties": { "outputs": { "type": "array", "minItems": 1 } } }
+      ]
+    },
+    "reviewedCoinLock": {
+      "type": "object", "additionalProperties": false,
+      "required": ["transactionIndex", "position", "index", "contractId", "amount", "lockTime", "domain", "transactionLockTime", "scriptLockChecked", "chainMaturityChecked"],
+      "description": "Exactly one address owner or Code-committed contract controller. A contract hash is not a wallet address or proof that the controller covenant was executed.",
+      "properties": {
+        "authorization": { "const": "administrator", "description": "Code-authenticated administrator branch. Not proof of holder lock maturity or permission by itself." },
+        "transactionIndex": { "type": "integer", "minimum": 0, "maximum": 31 },
+        "position": { "enum": ["input", "output"] },
+        "index": { "type": "integer", "minimum": 0, "maximum": 65535 },
+        "contractId": { "$ref": "common.schema.json#/$defs/hash32" },
+        "amount": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "owner": { "$ref": "common.schema.json#/$defs/address" },
+        "controller": {
+          "type": "object", "additionalProperties": false, "required": ["type", "hash"],
+          "properties": { "type": { "const": "contract" }, "hash": { "type": "string", "pattern": "^[0-9a-f]{40}$" } }
+        },
+        "lockTime": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+        "domain": { "enum": ["none", "height", "timestamp"] },
+        "transactionLockTime": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+        "sequence": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+        "scriptLockChecked": { "type": "boolean" },
+        "chainMaturityChecked": { "const": false }
+      },
+      "allOf": [
+        { "oneOf": [
+          { "required": ["owner"], "properties": { "owner": {}, "controller": false } },
+          { "required": ["controller"], "properties": { "controller": {}, "owner": false } }
+        ] },
+        { "if": { "properties": { "position": { "const": "input" } } },
+          "then": { "required": ["sequence"], "properties": { "sequence": {} },
+            "if": { "required": ["authorization"], "properties": { "authorization": { "const": "administrator" } } },
+            "then": { "properties": { "scriptLockChecked": { "const": false } } },
+            "else": { "properties": { "scriptLockChecked": { "const": true } } } },
+          "else": { "not": { "required": ["sequence"], "properties": { "sequence": {} } }, "properties": { "scriptLockChecked": { "const": false } } } },
+        { "if": { "properties": { "position": { "const": "input" }, "lockTime": { "type": "integer", "minimum": 1 } },
+            "not": { "required": ["authorization"], "properties": { "authorization": {} } } },
+          "then": { "properties": { "sequence": { "type": "integer", "maximum": 4294967294 } } } },
+        { "if": { "required": ["authorization"], "properties": { "authorization": {} } },
+          "then": { "properties": { "position": { "const": "input" } } } },
+        { "if": { "properties": { "domain": { "const": "none" } } }, "then": { "properties": { "lockTime": { "const": 0 } } } },
+        { "if": { "properties": { "domain": { "const": "height" } } }, "then": { "properties": { "lockTime": { "type": "integer", "minimum": 1, "maximum": 499999999 } } } },
+        { "if": { "properties": { "domain": { "const": "timestamp" } } }, "then": { "properties": { "lockTime": { "type": "integer", "minimum": 500000000 } } } }
+      ]
+    },
+    "reviewedTimeLock": {
+      "type": "object", "additionalProperties": false,
+      "required": ["transactionIndex", "position", "index", "owner", "amount", "lockHeight", "domain", "transactionLockTime", "verification", "scriptLockChecked", "chainMaturityChecked", "scriptExecutionVerified"],
+      "properties": {
+        "transactionIndex": { "type": "integer", "minimum": 0, "maximum": 31 },
+        "position": { "enum": ["input", "output"] },
+        "index": { "type": "integer", "minimum": 0, "maximum": 65535 },
+        "owner": { "$ref": "common.schema.json#/$defs/address" },
+        "amount": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "lockHeight": { "type": "integer", "minimum": 0, "maximum": 499999999 },
+        "domain": { "const": "height" },
+        "transactionLockTime": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+        "sequence": { "type": "integer", "minimum": 0, "maximum": 4294967294 },
+        "verification": { "const": "exact-template" },
+        "scriptLockChecked": { "type": "boolean" },
+        "chainMaturityChecked": { "const": false },
+        "scriptExecutionVerified": { "const": false }
+      },
+      "if": { "properties": { "position": { "const": "input" } } },
+      "then": { "required": ["sequence"], "properties": { "sequence": {}, "scriptLockChecked": { "const": true }, "transactionLockTime": { "type": "integer", "maximum": 499999999 } } },
+      "else": { "not": { "required": ["sequence"], "properties": { "sequence": {} } }, "properties": { "scriptLockChecked": { "const": false } } }
+    },
+    "reviewedHtlcEscrowToken": {
+      "type": "object", "additionalProperties": false,
+      "required": ["index", "standardId", "contractId", "amount"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 0, "maximum": 65535 },
+        "standardId": { "enum": ["tbc20-standard", "tbc20-stablecoin"] },
+        "contractId": { "$ref": "common.schema.json#/$defs/hash32" },
+        "amount": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "coinLockTime": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+        "coinInputLockChecked": { "type": "boolean" }
+      },
+      "if": { "properties": { "standardId": { "const": "tbc20-stablecoin" } } },
+      "then": { "required": ["coinLockTime", "coinInputLockChecked"], "properties": { "coinLockTime": {}, "coinInputLockChecked": {} } },
+      "else": { "not": { "anyOf": [
+        { "required": ["coinLockTime"], "properties": { "coinLockTime": {} } },
+        { "required": ["coinInputLockChecked"], "properties": { "coinInputLockChecked": {} } }
+      ] } }
+    },
+    "reviewedHtlcLock": {
+      "type": "object", "additionalProperties": false,
+      "required": ["transactionIndex", "position", "index", "amount", "hashlock", "sender", "receiver", "lockTime", "domain", "transactionLockTime", "verification", "branch", "preimageVerified", "chainMaturityChecked", "scriptExecutionVerified"],
+      "properties": {
+        "transactionIndex": { "type": "integer", "minimum": 0, "maximum": 31 },
+        "position": { "enum": ["input", "output"] },
+        "index": { "type": "integer", "minimum": 0, "maximum": 65535 },
+        "amount": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "hashlock": { "$ref": "common.schema.json#/$defs/hash32" },
+        "sender": { "$ref": "common.schema.json#/$defs/address" },
+        "receiver": { "$ref": "common.schema.json#/$defs/address" },
+        "lockTime": { "type": "integer", "minimum": 1, "maximum": 2147483647 },
+        "domain": { "enum": ["height", "timestamp"] },
+        "transactionLockTime": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+        "sequence": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+        "verification": { "const": "exact-template" },
+        "branch": { "enum": ["unresolved", "claim", "refund"] },
+        "preimageVerified": { "type": "boolean" },
+        "chainMaturityChecked": { "const": false },
+        "scriptExecutionVerified": { "const": false },
+        "escrowToken": { "$ref": "#/$defs/reviewedHtlcEscrowToken" }
+      },
+      "allOf": [
+        { "if": { "properties": { "branch": { "const": "claim" } } },
+          "then": { "properties": { "position": { "const": "input" }, "preimageVerified": { "const": true } } },
+          "else": { "properties": { "preimageVerified": { "const": false } } } },
+        { "if": { "properties": { "branch": { "const": "refund" } } },
+          "then": { "properties": { "position": { "const": "input" }, "sequence": { "type": "integer", "maximum": 4294967294 }, "transactionLockTime": { "type": "integer", "minimum": 1, "maximum": 2147483647 } },
+            "allOf": [{ "if": { "properties": { "domain": { "const": "height" } } },
+              "then": { "properties": { "transactionLockTime": { "type": "integer", "maximum": 499999999 } } },
+              "else": { "properties": { "transactionLockTime": { "type": "integer", "minimum": 500000000 } } } }] } },
+        { "if": { "properties": { "position": { "const": "input" } } },
+          "then": { "required": ["sequence"], "properties": { "sequence": {} } },
+          "else": { "not": { "required": ["sequence"], "properties": { "sequence": {} } } } },
+        { "if": { "properties": { "domain": { "const": "height" } } },
+          "then": { "properties": { "lockTime": { "type": "integer", "maximum": 499999999 } } },
+          "else": { "properties": { "lockTime": { "type": "integer", "minimum": 500000000 } } } },
+        { "if": { "required": ["escrowToken"], "properties": { "escrowToken": { "type": "object",
+            "required": ["standardId"], "properties": { "standardId": { "const": "tbc20-stablecoin" } } } } },
+          "then": { "if": { "properties": { "position": { "const": "input" } } },
+            "then": { "properties": { "escrowToken": { "type": "object", "properties": { "coinInputLockChecked": { "const": true } } } } },
+            "else": { "properties": { "escrowToken": { "type": "object", "properties": { "coinInputLockChecked": { "const": false } } } } } } }
+      ]
+    },
+    "contractExecution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["businessType", "implementation", "generation"],
+      "description": "Actual implementation selected by a successful unified Engine plan; bound into its approval hash. Not an API label or proof of spendability.",
+      "properties": {
+        "businessType": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z][a-zA-Z0-9.-]*$" },
+        "implementation": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z][a-zA-Z0-9.-]*$" },
+        "generation": { "enum": ["current", "historical"] }
+      }
+    },
+    "resolvedTransactionSigningRoles": {
+      "type": "array", "minItems": 1, "maxItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["role", "account"],
+        "properties": { "role": { "enum": ["pool-controller", "coin-admin"] }, "account": { "$ref": "#/$defs/accountIdentity" } }
+      }
+    },
+    "transactionPreview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operationKind", "assetFlows", "totalFee", "transactionCount", "warnings", "irreversible"],
+      "properties": {
+        "operationKind": { "const": "transaction" },
+        "contractExecution": { "$ref": "#/$defs/contractExecution" },
+        "lopOrders": { "type": "array", "minItems": 1, "maxItems": 32, "items": { "$ref": "#/$defs/lopReviewOrders" } },
+        "coinLocks": { "type": "array", "minItems": 1, "maxItems": 256, "items": { "$ref": "#/$defs/reviewedCoinLock" } },
+        "htlcLocks": { "type": "array", "minItems": 1, "maxItems": 256, "items": { "$ref": "#/$defs/reviewedHtlcLock" } },
+        "timeLocks": { "type": "array", "minItems": 1, "maxItems": 256, "items": { "$ref": "#/$defs/reviewedTimeLock" } },
+        "assetFlows": {
+          "type": "array",
+          "maxItems": 256,
+          "items": { "$ref": "#/$defs/assetFlow" }
+        },
+        "totalFee": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "transactionCount": { "type": "integer", "minimum": 0, "maximum": 32 },
+        "signingTaskCount": { "type": "integer", "minimum": 0, "maximum": 4096, "description": "Exact total external signature tasks across all stages, not just initially available digests. Omitted when the bound plan cannot determine the total yet." },
+        "signingRoles": { "$ref": "#/$defs/resolvedTransactionSigningRoles" },
+        "contractIds": {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/contractId" }
+        },
+        "artifactIds": {
+          "type": "array",
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/hash32" }
+        },
+        "warnings": { "$ref": "#/$defs/warningArray" },
+        "irreversible": { "type": "boolean" }
+      },
+      "allOf": [{
+        "if": { "required": ["htlcLocks"], "properties": { "htlcLocks": { "type": "array", "contains": { "type": "object", "required": ["branch"], "properties": { "branch": { "const": "claim" } } } } } },
+        "then": { "properties": { "warnings": { "type": "array", "contains": { "const": "HTLC_CLAIM_SIGNED_BYTES_DISCLOSE_PREIMAGE" } } } }
+      }, {
+        "if": { "required": ["coinLocks"], "properties": { "coinLocks": { "type": "array", "contains": { "type": "object", "required": ["authorization"], "properties": { "authorization": { "const": "administrator" } } } } } },
+        "then": { "required": ["signingRoles"], "properties": { "signingRoles": { "type": "array", "items": { "type": "object", "properties": { "role": { "const": "coin-admin" } } } } } }
+      }]
+    },
+    "messagePreview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operationKind", "scheme", "message", "digest", "warnings"],
+      "properties": {
+        "operationKind": { "const": "message" },
+        "scheme": { "const": "tbc-message" },
+        "message": { "$ref": "signing.schema.json#/$defs/encodedMessage" },
+        "digest": { "$ref": "common.schema.json#/$defs/hash32" },
+        "warnings": { "$ref": "#/$defs/warningArray" },
+        "signIn": { "$ref": "signing.schema.json#/$defs/signInDetails" }
+      }
+    },
+    "typedDataPreview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operationKind", "scheme", "domain", "types", "primaryType", "message", "digest", "warnings"],
+      "properties": {
+        "operationKind": { "const": "typedData" },
+        "scheme": { "const": "tbc-typed-data" },
+        "domain": { "$ref": "signing.schema.json#/$defs/dappTypedDomain" },
+        "types": { "$ref": "signing.schema.json#/$defs/typeMap" },
+        "primaryType": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_]{0,63}$"
+        },
+        "message": { "$ref": "signing.schema.json#/$defs/typedMessage" },
+        "digest": { "$ref": "common.schema.json#/$defs/hash32" },
+        "warnings": { "$ref": "#/$defs/warningArray" }
+      }
+    },
+    "permissionDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capability", "status", "reason"],
+      "properties": {
+        "capability": { "$ref": "permissions.schema.json#/$defs/permissionName" },
+        "status": { "enum": ["granted", "narrowed", "rejected"] },
+        "reason": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*$",
+          "maxLength": 64
+        }
+      }
+    },
+    "permissionGrantPreview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capability", "chainId", "accountIds", "methods"],
+      "properties": {
+        "capability": { "$ref": "permissions.schema.json#/$defs/permissionName" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "accountIds": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/accountId" }
+        },
+        "methods": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true,
+          "items": { "$ref": "permissions.schema.json#/$defs/permissionName" }
+        },
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" }
+      }
+    },
+    "permissionPreview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operationKind", "requested", "granted", "decisions", "warnings"],
+      "properties": {
+        "operationKind": { "const": "permission" },
+        "requested": { "$ref": "permissions.schema.json#/$defs/requestPermissionsParams" },
+        "granted": {
+          "type": "array",
+          "maxItems": 64,
+          "items": { "$ref": "#/$defs/permissionGrantPreview" }
+        },
+        "decisions": {
+          "type": "array",
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/permissionDecision" }
+        },
+        "warnings": { "$ref": "#/$defs/warningArray" }
+      }
+    },
+    "networkDisplay": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "nativeCurrencySymbol"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "nativeCurrencySymbol": { "type": "string", "pattern": "^[A-Z0-9]{2,12}$" }
+      }
+    },
+    "switchChainPreview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operationKind", "fromChainId", "toChainId", "network", "warnings"],
+      "properties": {
+        "operationKind": { "const": "switchChain" },
+        "fromChainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "toChainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "network": { "$ref": "#/$defs/networkDisplay" },
+        "warnings": { "$ref": "#/$defs/warningArray" }
+      }
+    },
+    "workflowPreviewStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "dependsOn"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "kind": { "enum": ["transaction", "preparedTransaction", "reviewedTransaction", "message", "typedData", "encrypt", "decrypt"] },
+        "dependsOn": {
+          "type": "array",
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/localId" }
+        },
+        "assetFlows": {
+          "type": "array",
+          "maxItems": 256,
+          "items": { "$ref": "#/$defs/assetFlow" }
+        },
+        "message": { "$ref": "signing.schema.json#/$defs/encodedMessage" },
+        "algorithm": { "$ref": "signing.schema.json#/$defs/messageCryptoAlgorithm" },
+        "ciphertext": { "$ref": "signing.schema.json#/$defs/encryptedMessage" },
+        "typedData": { "$ref": "signing.schema.json#/$defs/typedData" }
+        ,"reviewedTransactionPreview": { "$ref": "#/$defs/transactionPreview" }
+      }
+    },
+    "workflowPreviewBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceStepId", "sourceOutput", "target", "targetType"],
+      "properties": {
+        "sourceStepId": { "$ref": "common.schema.json#/$defs/localId" },
+        "sourceOutput": {
+          "enum": [
+            "transactionIds",
+            "primaryTransactionId",
+            "artifacts.collectionId",
+            "artifacts.contractId",
+            "artifacts.poolContractId"
+          ]
+        },
+        "target": {
+          "type": "string",
+          "pattern": "^/message/[A-Za-z0-9_/-]+$",
+          "maxLength": 256
+        },
+        "targetType": { "enum": ["bytes32", "bytes32[]", "json-string-array"] }
+      }
+    },
+    "workflowPreview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operationKind", "failureMode", "steps", "bindings", "totalFee", "warnings"],
+      "properties": {
+        "operationKind": { "const": "workflow" },
+        "signingRoles": {
+          "type": "array", "minItems": 1, "maxItems": 5,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["stepId", "role", "account"],
+            "properties": {
+              "stepId": { "$ref": "common.schema.json#/$defs/localId" },
+              "role": { "enum": ["pool-controller", "coin-admin"] },
+              "account": { "$ref": "#/$defs/accountIdentity" }
+            }
+          }
+        },
+        "failureMode": { "enum": ["atomic", "continue-independent"] },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 5,
+          "items": { "$ref": "#/$defs/workflowPreviewStep" }
+        },
+        "bindings": {
+          "type": "array",
+          "maxItems": 8,
+          "items": { "$ref": "#/$defs/workflowPreviewBinding" }
+        },
+        "totalFee": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "warnings": { "$ref": "#/$defs/warningArray" }
+      }
+    },
+    "cryptoPreview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operationKind", "purpose", "algorithm", "warnings"],
+      "properties": {
+        "operationKind": { "const": "crypto" },
+        "purpose": { "enum": ["encrypt", "decrypt"] },
+        "algorithm": { "$ref": "signing.schema.json#/$defs/messageCryptoAlgorithm" },
+        "message": { "$ref": "signing.schema.json#/$defs/encodedMessage" },
+        "ciphertext": { "$ref": "signing.schema.json#/$defs/encryptedMessage" },
+        "warnings": { "type": "array", "maxItems": 0 }
+      },
+      "allOf": [{
+        "if": { "properties": { "purpose": { "const": "encrypt" } }, "required": ["purpose"] },
+        "then": { "required": ["message"], "properties": { "message": true, "ciphertext": false } },
+        "else": { "required": ["ciphertext"], "properties": { "ciphertext": true, "message": false } }
+      }]
+    },
+    "walletActionPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload", "planHash"],
+      "properties": {
+        "planHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["requestHash", "contextHash", "chainId", "accountId", "expiresAt", "task", "preview"],
+          "properties": {
+            "requestHash": { "$ref": "common.schema.json#/$defs/hash32" },
+            "contextHash": { "$ref": "common.schema.json#/$defs/hash32" },
+            "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+            "accountId": { "$ref": "common.schema.json#/$defs/accountId" },
+            "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+            "task": { "oneOf": [{ "$ref": "#/$defs/cryptoTask" }, { "$ref": "#/$defs/reviewedTransactionTask" }] },
+            "preview": { "oneOf": [{ "$ref": "#/$defs/cryptoPreview" }, { "$ref": "#/$defs/transactionPreview" }] },
+            "review": { "$ref": "#/$defs/reviewedTransactionReviewResult" }
+          }
+        }
+      }
+    },
+    "approvalPreview": {
+      "oneOf": [
+        { "$ref": "#/$defs/transactionPreview" },
+        { "$ref": "#/$defs/messagePreview" },
+        { "$ref": "#/$defs/typedDataPreview" },
+        { "$ref": "#/$defs/permissionPreview" },
+        { "$ref": "#/$defs/switchChainPreview" },
+        { "$ref": "#/$defs/workflowPreview" },
+        { "$ref": "#/$defs/cryptoPreview" }
+      ]
+    },
+    "transactionTemplate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "role", "dependsOn", "unsignedTransaction", "templateHash", "fee"],
+      "properties": {
+        "id": { "$ref": "common.schema.json#/$defs/localId" },
+        "role": { "enum": ["primary", "prerequisite", "maintenance"] },
+        "dependsOn": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/localId" }
+        },
+        "unsignedTransaction": { "$ref": "common.schema.json#/$defs/rawTransaction" },
+        "deferredInputs": {
+          "$comment": "Exact edges when multiple deferred inputs spend outputs of the same planned transaction. No byte offsets or inferred parent assignment.",
+          "type": "array", "minItems": 1, "maxItems": 128, "uniqueItems": true,
+          "items": { "$ref": "prepared-transaction.schema.json#/$defs/deferredInput" }
+        },
+        "templateHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "fee": { "$ref": "common.schema.json#/$defs/atomicAmount" }
+      }
+    },
+    "transactionSigningTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskId",
+        "purpose",
+        "algorithm",
+        "digest",
+        "signatureEncoding",
+        "transactionTemplateId",
+        "inputIndex",
+        "accountId",
+        "publicKey",
+        "sighashType"
+      ],
+      "properties": {
+        "taskId": { "$ref": "common.schema.json#/$defs/localId" },
+        "purpose": { "const": "transaction" },
+        "algorithm": { "enum": ["secp256k1-ecdsa-sha256d", "secp256k1-schnorr-bip340"] },
+        "digest": { "$ref": "common.schema.json#/$defs/hash32" },
+        "signatureEncoding": { "enum": ["compact64", "schnorr64"] },
+        "transactionTemplateId": { "$ref": "common.schema.json#/$defs/localId" },
+        "inputIndex": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+        "accountId": { "$ref": "common.schema.json#/$defs/accountId" },
+        "publicKey": { "type": "string", "pattern": "^(?:[0-9a-f]{64}|0[23][0-9a-f]{64})$" },
+        "sighashType": { "const": 65 }
+      },
+      "allOf": [{ "oneOf": [
+        { "properties": {
+          "algorithm": { "const": "secp256k1-ecdsa-sha256d" },
+          "signatureEncoding": { "const": "compact64" },
+          "publicKey": { "$ref": "common.schema.json#/$defs/publicKey" }
+        } },
+        { "properties": {
+          "algorithm": { "const": "secp256k1-schnorr-bip340" },
+          "signatureEncoding": { "const": "schnorr64" },
+          "publicKey": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+        } }
+      ] }]
+    },
+    "recoverableSigningTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["taskId", "purpose", "algorithm", "digest", "signatureEncoding", "origin", "accountId", "publicKey"],
+      "properties": {
+        "taskId": { "$ref": "common.schema.json#/$defs/localId" },
+        "purpose": { "enum": ["message", "typedData"] },
+        "algorithm": { "const": "secp256k1-recoverable-ecdsa-sha256d" },
+        "digest": { "$ref": "common.schema.json#/$defs/hash32" },
+        "signatureEncoding": { "const": "compact65-recoverable" },
+        "origin": { "type": "string", "format": "uri", "maxLength": 2048 },
+        "accountId": { "$ref": "common.schema.json#/$defs/accountId" },
+        "publicKey": { "$ref": "common.schema.json#/$defs/publicKey" }
+      }
+    },
+    "signingTask": {
+      "oneOf": [
+        { "$ref": "#/$defs/transactionSigningTask" },
+        { "$ref": "#/$defs/recoverableSigningTask" }
+      ]
+    },
+    "cryptoTask": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["taskId", "purpose", "algorithm", "origin", "accountId", "publicKey", "message"],
+          "properties": {
+            "taskId": { "$ref": "common.schema.json#/$defs/localId" },
+            "purpose": { "const": "encrypt" },
+            "algorithm": { "$ref": "signing.schema.json#/$defs/messageCryptoAlgorithm" },
+            "origin": { "type": "string", "format": "uri", "maxLength": 2048 },
+            "accountId": { "$ref": "common.schema.json#/$defs/accountId" },
+            "publicKey": { "$ref": "common.schema.json#/$defs/publicKey" },
+            "message": { "$ref": "signing.schema.json#/$defs/encodedMessage" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["taskId", "purpose", "algorithm", "origin", "accountId", "publicKey", "ciphertext"],
+          "properties": {
+            "taskId": { "$ref": "common.schema.json#/$defs/localId" },
+            "purpose": { "const": "decrypt" },
+            "algorithm": { "$ref": "signing.schema.json#/$defs/messageCryptoAlgorithm" },
+            "origin": { "type": "string", "format": "uri", "maxLength": 2048 },
+            "accountId": { "$ref": "common.schema.json#/$defs/accountId" },
+            "publicKey": { "$ref": "common.schema.json#/$defs/publicKey" },
+            "ciphertext": { "$ref": "signing.schema.json#/$defs/encryptedMessage" }
+          }
+        }
+      ]
+    },
+    "secretTask": {
+      "oneOf": [
+        { "$ref": "#/$defs/signingTask" },
+        { "$ref": "#/$defs/cryptoTask" },
+        { "$ref": "#/$defs/reviewedTransactionTask" }
+      ]
+    },
+    "reviewedTransactionTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["taskId", "purpose", "contextHash", "requestHash", "reviewHash", "chainId", "accountId", "publicKey", "request", "policyMaterial"],
+      "properties": {
+        "signingRoles": { "$ref": "#/$defs/resolvedTransactionSigningRoles" },
+        "taskId": { "$ref": "common.schema.json#/$defs/localId" },
+        "purpose": { "const": "reviewedTransaction" },
+        "contextHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "reviewHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "policyMaterial": { "$ref": "#/$defs/reviewedTransactionPolicyMaterial" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "accountId": { "$ref": "common.schema.json#/$defs/accountId" },
+        "publicKey": { "$ref": "common.schema.json#/$defs/publicKey" },
+        "request": { "$ref": "reviewed-transaction.schema.json#/$defs/request" }
+      }
+    },
+    "reviewedTransactionReviewParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "taskId", "contextHash", "origin", "sessionId", "chainId", "accountId", "publicKey", "requestHash", "request"],
+      "properties": {
+        "signingRoles": { "$ref": "#/$defs/resolvedTransactionSigningRoles" },
+        "version": { "$ref": "#/$defs/version" },
+        "taskId": { "$ref": "common.schema.json#/$defs/localId" },
+        "contextHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "origin": { "type": "string", "format": "uri", "maxLength": 2048 },
+        "sessionId": { "$ref": "common.schema.json#/$defs/opaqueId" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "accountId": { "$ref": "common.schema.json#/$defs/accountId" },
+        "publicKey": { "$ref": "common.schema.json#/$defs/publicKey" },
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "request": { "$ref": "reviewed-transaction.schema.json#/$defs/request" }
+      }
+    },
+    "reviewedTransactionPolicyMaterial": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["resolvedOutputs"],
+      "properties": {
+        "resolvedOutputs": {
+          "type": "array", "maxItems": 10000,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["txid", "vout", "satoshis", "scriptPubKey"],
+            "properties": {
+              "txid": { "$ref": "common.schema.json#/$defs/hash32" },
+              "vout": { "type": "integer", "minimum": 0, "maximum": 4294967295 },
+              "satoshis": { "type": "string", "pattern": "^(0|[1-9][0-9]{0,19})$" },
+              "scriptPubKey": { "type": "string", "maxLength": 131072, "pattern": "^([0-9a-f]{2})*$" }
+            }
+          }
+        }
+      }
+    },
+    "reviewedTransactionReviewPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["preview", "totalFee", "expiresAt", "policyMaterial"],
+      "properties": {
+        "preview": { "$ref": "#/$defs/transactionPreview" },
+        "policyMaterial": { "$ref": "#/$defs/reviewedTransactionPolicyMaterial" },
+        "totalFee": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" }
+      }
+    },
+    "reviewedTransactionReviewArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stepId", "payload", "reviewHash"],
+      "properties": {
+        "stepId": { "$ref": "common.schema.json#/$defs/localId" },
+        "payload": { "$ref": "#/$defs/reviewedTransactionReviewPayload" },
+        "reviewHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "reviewedTransactionReviewResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload", "reviewHash"],
+      "properties": {
+        "payload": { "$ref": "#/$defs/reviewedTransactionReviewPayload" },
+        "reviewHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "reviewedTransactionExecuteParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "approval", "task"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "approval": { "$ref": "#/$defs/approvalReceipt" },
+        "task": { "$ref": "#/$defs/reviewedTransactionTask" }
+      }
+    },
+    "reviewedTransactionExecuteResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["taskId", "reviewHash", "bundle"],
+      "properties": {
+        "taskId": { "$ref": "common.schema.json#/$defs/localId" },
+        "reviewHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "bundle": { "$ref": "transaction-request.schema.json#/$defs/signedTransactionBundle" }
+      }
+    },
+    "cryptoExecuteParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "approval", "task"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "approval": { "$ref": "#/$defs/approvalReceipt" },
+        "task": { "$ref": "#/$defs/cryptoTask" }
+      }
+    },
+    "cryptoExecuteResult": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["taskId", "algorithm", "ciphertext"],
+          "properties": {
+            "taskId": { "$ref": "common.schema.json#/$defs/localId" },
+            "algorithm": { "$ref": "signing.schema.json#/$defs/messageCryptoAlgorithm" },
+            "ciphertext": { "$ref": "signing.schema.json#/$defs/encryptedMessage" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["taskId", "algorithm", "message"],
+          "properties": {
+            "taskId": { "$ref": "common.schema.json#/$defs/localId" },
+            "algorithm": { "$ref": "signing.schema.json#/$defs/messageCryptoAlgorithm" },
+            "message": { "$ref": "signing.schema.json#/$defs/encodedMessage" }
+          }
+        }
+      ]
+    },
+    "executionPlanPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "requestHash",
+        "snapshotHash",
+        "policyHash",
+        "chainId",
+        "accountId",
+        "expiresAt",
+        "transactions",
+        "signingTasks",
+        "preview"
+      ],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "snapshotHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "policyHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "accountId": { "$ref": "common.schema.json#/$defs/accountId" },
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "transactions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/transactionTemplate" }
+        },
+        "signingTasks": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1024,
+          "items": { "$ref": "#/$defs/signingTask" }
+        },
+        "preview": { "$ref": "#/$defs/approvalPreview" },
+        "artifacts": { "$ref": "transaction-request.schema.json#/$defs/artifacts" }
+      }
+    },
+    "executionPlan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload", "planHash"],
+      "properties": {
+        "payload": { "$ref": "#/$defs/executionPlanPayload" },
+        "planHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "approvedProviderMethod": {
+      "enum": [
+        "tbc_signReviewedTransaction",
+        "tbc_encrypt",
+        "tbc_decrypt",
+        "tbc_requestAccounts",
+        "wallet_requestPermissions",
+        "tbc_switchChain",
+        "tbc_signMessage",
+        "tbc_signTypedData",
+        "tbc_signTransaction",
+        "tbc_signPreparedTransaction",
+        "tbc_sendTransaction",
+        "tbc_sendPreparedTransaction",
+        "tbc_signWorkflow",
+        "tbc_signPreparedWorkflow",
+        "tbc_sendWorkflow",
+        "tbc_sendPreparedWorkflow"
+      ]
+    },
+    "approvalOperationKind": {
+      "enum": ["permission", "switchChain", "transaction", "message", "typedData", "workflow", "crypto"]
+    },
+    "approvalChainIds": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": { "$ref": "common.schema.json#/$defs/chainId" }
+    },
+    "approvalBindingPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "method", "operationKind", "contextHash", "origin", "sessionId", "requestHash", "operationHash", "expiresAt"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "method": { "$ref": "#/$defs/approvedProviderMethod" },
+        "operationKind": { "$ref": "#/$defs/approvalOperationKind" },
+        "contextHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "origin": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^[a-z][a-z0-9+.-]*://[^/?#]+$",
+          "maxLength": 2048
+        },
+        "sessionId": { "$ref": "common.schema.json#/$defs/opaqueId" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "chainIds": { "$ref": "#/$defs/approvalChainIds" },
+        "accountId": { "$ref": "common.schema.json#/$defs/accountId" },
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "operationHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "method": {
+                "enum": ["tbc_requestAccounts", "wallet_requestPermissions"]
+              }
+            },
+            "required": ["method"]
+          },
+          "then": {
+            "properties": { "operationKind": { "const": "permission" } }
+          }
+        },
+        {
+          "if": {
+            "properties": { "method": { "const": "tbc_switchChain" } },
+            "required": ["method"]
+          },
+          "then": {
+            "properties": { "operationKind": { "const": "switchChain" } }
+          }
+        },
+        {
+          "if": {
+            "properties": { "method": { "const": "tbc_signMessage" } },
+            "required": ["method"]
+          },
+          "then": {
+            "properties": { "operationKind": { "const": "message" } }
+          }
+        },
+        {
+          "if": {
+            "properties": { "method": { "const": "tbc_signTypedData" } },
+            "required": ["method"]
+          },
+          "then": {
+            "properties": { "operationKind": { "const": "typedData" } }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "method": {
+                "enum": [
+                  "tbc_signTransaction",
+                  "tbc_signPreparedTransaction",
+                  "tbc_signReviewedTransaction",
+                  "tbc_sendTransaction",
+                  "tbc_sendPreparedTransaction"
+                ]
+              }
+            },
+            "required": ["method"]
+          },
+          "then": {
+            "properties": { "operationKind": { "const": "transaction" } }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "method": {
+                "enum": ["tbc_signWorkflow", "tbc_signPreparedWorkflow", "tbc_sendWorkflow", "tbc_sendPreparedWorkflow"]
+              }
+            },
+            "required": ["method"]
+          },
+          "then": {
+            "properties": { "operationKind": { "const": "workflow" } }
+          }
+        },
+        {
+          "if": { "properties": { "method": { "enum": ["tbc_encrypt", "tbc_decrypt"] } }, "required": ["method"] },
+          "then": { "properties": { "operationKind": { "const": "crypto" } } }
+        },
+        {
+          "if": {
+            "properties": {
+              "operationKind": { "enum": ["transaction", "message", "typedData", "workflow", "crypto"] }
+            },
+            "required": ["operationKind"]
+          },
+          "then": {
+            "required": ["accountId"],
+            "properties": { "accountId": true }
+          },
+          "else": {
+            "properties": { "accountId": false }
+          }
+        },
+        {
+          "if": {
+            "properties": { "operationKind": { "const": "permission" } },
+            "required": ["operationKind"]
+          },
+          "then": {
+            "required": ["chainIds"],
+            "properties": { "chainIds": true, "chainId": false }
+          },
+          "else": {
+            "required": ["chainId"],
+            "properties": { "chainId": true, "chainIds": false }
+          }
+        }
+      ]
+    },
+    "approvalBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload", "bindingHash"],
+      "properties": {
+        "payload": { "$ref": "#/$defs/approvalBindingPayload" },
+        "bindingHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "approvalRequestParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "binding", "requester", "preview"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "binding": { "$ref": "#/$defs/approvalBinding" },
+        "requester": { "$ref": "#/$defs/approvalRequester" },
+        "preview": { "$ref": "#/$defs/approvalPreview" }
+      }
+    },
+    "approvalReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "approvalId", "approvalToken", "bindingHash", "approvedAt", "expiresAt"],
+      "properties": {
+        "status": { "const": "approved" },
+        "approvalId": { "$ref": "common.schema.json#/$defs/opaqueId" },
+        "approvalToken": { "$ref": "common.schema.json#/$defs/opaqueId" },
+        "bindingHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "approvedAt": { "$ref": "common.schema.json#/$defs/rfc3339" },
+        "expiresAt": { "$ref": "common.schema.json#/$defs/rfc3339" }
+      }
+    },
+    "approvalRejected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "bindingHash", "rejectedAt"],
+      "properties": {
+        "status": { "const": "rejected" },
+        "bindingHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "rejectedAt": { "$ref": "common.schema.json#/$defs/rfc3339" }
+      }
+    },
+    "approvalRequestResult": {
+      "oneOf": [
+        { "$ref": "#/$defs/approvalReceipt" },
+        { "$ref": "#/$defs/approvalRejected" }
+      ]
+    },
+    "signerSignParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "approval", "task"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "approval": { "$ref": "#/$defs/approvalReceipt" },
+        "task": { "$ref": "#/$defs/signingTask" }
+      }
+    },
+    "transactionSignatureResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["taskId", "signatureEncoding", "signature"],
+      "properties": {
+        "taskId": { "$ref": "common.schema.json#/$defs/localId" },
+        "signatureEncoding": { "enum": ["compact64", "schnorr64"] },
+        "signature": { "type": "string", "pattern": "^[0-9a-f]{128}$" }
+      }
+    },
+    "recoverableSignatureResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["taskId", "signatureEncoding", "signature"],
+      "properties": {
+        "taskId": { "$ref": "common.schema.json#/$defs/localId" },
+        "signatureEncoding": { "const": "compact65-recoverable" },
+        "signature": { "type": "string", "pattern": "^(?:1f|20|21|22)[0-9a-f]{128}$" }
+      }
+    },
+    "signerSignResult": {
+      "oneOf": [
+        { "$ref": "#/$defs/transactionSignatureResult" },
+        { "$ref": "#/$defs/recoverableSignatureResult" }
+      ]
+    },
+    "broadcastSubmitParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "chainId", "transaction", "idempotencyKey"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "transaction": { "$ref": "transaction-request.schema.json#/$defs/signedTransaction" },
+        "idempotencyKey": { "$ref": "common.schema.json#/$defs/opaqueId" }
+      }
+    },
+    "broadcastSubmitResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["txid", "status"],
+      "properties": {
+        "txid": { "$ref": "common.schema.json#/$defs/transactionId" },
+        "status": { "enum": ["accepted", "known", "rejected"] },
+        "reason": { "type": "string", "minLength": 1, "maxLength": 512 }
+      }
+    },
+    "broadcastSubmitBatchParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "chainId", "transactions", "idempotencyKey"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "transactions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "transaction-request.schema.json#/$defs/signedTransaction" }
+        },
+        "idempotencyKey": { "$ref": "common.schema.json#/$defs/opaqueId" }
+      }
+    },
+    "broadcastBatchItemResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["txid", "status"],
+      "properties": {
+        "txid": { "$ref": "common.schema.json#/$defs/transactionId" },
+        "status": { "enum": ["accepted", "known", "rejected", "unknown"] },
+        "reason": { "type": "string", "minLength": 1, "maxLength": 512 }
+      }
+    },
+    "broadcastSubmitBatchResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["transactions"],
+      "properties": {
+        "transactions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/broadcastBatchItemResult" }
+        }
+      }
+    },
+    "broadcastReconcileParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "chainId", "txids"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "chainId": { "$ref": "common.schema.json#/$defs/chainId" },
+        "txids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "uniqueItems": true,
+          "items": { "$ref": "common.schema.json#/$defs/transactionId" }
+        }
+      }
+    },
+    "broadcastTransactionStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["txid", "status"],
+      "properties": {
+        "txid": { "$ref": "common.schema.json#/$defs/transactionId" },
+        "status": { "enum": ["unknown", "mempool", "confirmed", "rejected"] },
+        "confirmations": { "$ref": "common.schema.json#/$defs/uint32String" }
+      }
+    },
+    "broadcastReconcileResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["transactions"],
+      "properties": {
+        "transactions": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": { "$ref": "#/$defs/broadcastTransactionStatus" }
+        }
+      }
+    },
+    "clockNowParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" }
+      }
+    },
+    "clockNowResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["now"],
+      "properties": {
+        "now": { "$ref": "common.schema.json#/$defs/rfc3339" }
+      }
+    },
+    "entropyRandomBytesParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "length"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "length": { "type": "integer", "minimum": 16, "maximum": 64 }
+      }
+    },
+    "entropyRandomBytesResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bytes"],
+      "properties": {
+        "bytes": { "$ref": "common.schema.json#/$defs/base64urlNoPadding" }
+      }
+    },
+    "normalizeRequestParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "request"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "request": { "$ref": "transaction-request.schema.json#/$defs/transactionRequest" }
+      }
+    },
+    "normalizeRequestResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["request", "requestHash"],
+      "properties": {
+        "request": { "$ref": "transaction-request.schema.json#/$defs/transactionRequest" },
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" }
+      }
+    },
+    "planParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "request", "requestHash", "snapshot", "policy"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "request": { "$ref": "transaction-request.schema.json#/$defs/transactionRequest" },
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "snapshot": { "$ref": "#/$defs/chainSnapshot" },
+        "policy": { "$ref": "#/$defs/executionPolicy" }
+      }
+    },
+    "planResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["plan"],
+      "properties": {
+        "plan": { "$ref": "#/$defs/executionPlan" }
+      }
+    },
+    "validationPhase": {
+      "enum": ["plan", "pre-sign", "finalized", "pre-broadcast"]
+    },
+    "violationCode": {
+      "enum": [
+        "REQUEST_HASH_MISMATCH",
+        "SNAPSHOT_HASH_MISMATCH",
+        "POLICY_HASH_MISMATCH",
+        "PLAN_HASH_MISMATCH",
+        "APPROVAL_BINDING_MISMATCH",
+        "PLAN_EXPIRED",
+        "SNAPSHOT_EXPIRED",
+        "CHAIN_MISMATCH",
+        "ACCOUNT_MISMATCH",
+        "INPUT_NOT_IN_SNAPSHOT",
+        "INPUT_ALREADY_SPENT",
+        "ANCESTRY_INVALID",
+        "UNSUPPORTED_CONTRACT_VERSION",
+        "AMOUNT_OUT_OF_RANGE",
+        "BUSINESS_OUTPUT_MISMATCH",
+        "MINIMUM_OUTPUT_NOT_MET",
+        "CHANGE_NOT_CONTROLLED",
+        "FEE_MISMATCH",
+        "FEE_LIMIT_EXCEEDED",
+        "DEPENDENCY_INVALID",
+        "SIGNING_TASK_MISMATCH",
+        "SIGNATURE_INVALID",
+        "TXID_MISMATCH",
+        "ARTIFACT_MISMATCH",
+        "BUNDLE_LIMIT_EXCEEDED",
+        "SECRET_FIELD_PRESENT"
+      ]
+    },
+    "validationViolation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code"],
+      "properties": {
+        "code": { "$ref": "#/$defs/violationCode" },
+        "path": { "type": "string", "pattern": "^(?:|/(?:[^~/]|~0|~1)*)$", "maxLength": 2048 },
+        "transactionTemplateId": { "$ref": "common.schema.json#/$defs/localId" },
+        "taskId": { "$ref": "common.schema.json#/$defs/localId" }
+      }
+    },
+    "validationResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["valid", "violations"],
+      "properties": {
+        "valid": { "type": "boolean" },
+        "violations": {
+          "type": "array",
+          "maxItems": 256,
+          "items": { "$ref": "#/$defs/validationViolation" }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "valid": { "const": true } },
+            "required": ["valid"]
+          },
+          "then": {
+            "properties": { "violations": { "type": "array", "maxItems": 0 } }
+          },
+          "else": {
+            "properties": { "violations": { "type": "array", "minItems": 1 } }
+          }
+        }
+      ]
+    },
+    "validateParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "phase", "request", "requestHash", "snapshot", "policy", "plan"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "phase": { "$ref": "#/$defs/validationPhase" },
+        "request": { "$ref": "transaction-request.schema.json#/$defs/transactionRequest" },
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "snapshot": { "$ref": "#/$defs/chainSnapshot" },
+        "policy": { "$ref": "#/$defs/executionPolicy" },
+        "plan": { "$ref": "#/$defs/executionPlan" },
+        "binding": { "$ref": "#/$defs/approvalBinding" },
+        "approval": { "$ref": "#/$defs/approvalReceipt" },
+        "signatures": {
+          "type": "array",
+          "maxItems": 1024,
+          "items": { "$ref": "#/$defs/signerSignResult" }
+        },
+        "bundle": { "$ref": "transaction-request.schema.json#/$defs/signedTransactionBundle" },
+        "pending": { "$ref": "#/$defs/pendingFinalizeResult" },
+        "continuation": { "$ref": "#/$defs/finalizeContinuation" }
+      }
+    },
+    "finalizeParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "request", "requestHash", "snapshot", "policy", "plan", "binding", "approval", "signatures"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "request": { "$ref": "transaction-request.schema.json#/$defs/transactionRequest" },
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "snapshot": { "$ref": "#/$defs/chainSnapshot" },
+        "policy": { "$ref": "#/$defs/executionPolicy" },
+        "plan": { "$ref": "#/$defs/executionPlan" },
+        "binding": { "$ref": "#/$defs/approvalBinding" },
+        "approval": { "$ref": "#/$defs/approvalReceipt" },
+        "signatures": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1024,
+          "items": { "$ref": "#/$defs/signerSignResult" }
+        },
+        "continuation": { "$ref": "#/$defs/finalizeContinuation" }
+      }
+    },
+    "finalizeContinuation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "method", "family", "requestHash", "planHash", "bindingHash", "approvalId", "sessionId", "stage", "stageCommitment", "signingStage"],
+      "properties": {
+        "version": { "$ref": "#/$defs/version" },
+        "method": { "const": "finalize" },
+        "family": { "enum": ["ft", "pool", "stablecoin", "collection", "nft"] },
+        "requestHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "planHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "bindingHash": { "$ref": "common.schema.json#/$defs/hash32" },
+        "approvalId": { "$ref": "common.schema.json#/$defs/opaqueId" },
+        "sessionId": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "stage": { "type": "integer", "minimum": 1, "maximum": 32 },
+        "stageCommitment": { "$ref": "common.schema.json#/$defs/hash32" },
+        "signingStage": { "type": "object" }
+      }
+    },
+    "completeFinalizeResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bundle", "validation"],
+      "properties": {
+        "bundle": { "$ref": "transaction-request.schema.json#/$defs/signedTransactionBundle" },
+        "validation": { "$ref": "#/$defs/validationResult" }
+      }
+    },
+    "finalizationStageArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["continuation", "signatureStart"],
+      "properties": {
+        "continuation": { "$ref": "#/$defs/finalizeContinuation" },
+        "signatureStart": { "type": "integer", "minimum": 1, "maximum": 1024 }
+      }
+    },
+    "pendingFinalizeResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "continuation", "signingRequests"],
+      "properties": {
+        "status": { "const": "pending" },
+        "continuation": { "$ref": "#/$defs/finalizeContinuation" },
+        "signingRequests": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1024,
+          "items": { "$ref": "#/$defs/transactionSigningTask" }
+        }
+      }
+    },
+    "finalizeResult": {
+      "oneOf": [
+        { "$ref": "#/$defs/completeFinalizeResult" },
+        { "$ref": "#/$defs/pendingFinalizeResult" }
+      ]
+    }
+  }
+}

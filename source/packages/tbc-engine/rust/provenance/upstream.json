@@ -1,0 +1,488 @@
+{
+  "repository": "git@github.com:LoongYearMeta/turing-wallet.git",
+  "walletCommit": "923497e8b2473c0e179fa0b86dbb32a2f188d25a",
+  "subtree": "modules/tbc-transaction-engine/rust/vendor/tbc-sdk",
+  "crate": {
+    "name": "tbc-sdk",
+    "version": "0.3.0",
+    "license": "MIT",
+    "repository": "https://github.com/LoongYearMeta/tbc-rust-sdk"
+  },
+  "files": [
+    {
+      "path": ".cargo_vcs_info.json",
+      "sha256": "8e85f362186cc26cf92685257d05644971db686c03175b8cdeae542cdde1280e",
+      "status": "unchanged"
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "25728dfd537b075a624af68014601e1b7d4621e7e2399f884d5f198eead68a22",
+      "status": "unchanged"
+    },
+    {
+      "path": "Cargo.lock",
+      "sha256": "a64c2e2d018a487196b049aedfcba48a89fb295d4b9fdfeea1a5906c564f404a",
+      "status": "unchanged"
+    },
+    {
+      "path": "Cargo.toml",
+      "sha256": "00ccf18bf3cab38c73b6cf0b3a69db4565587ae0ba6c35c201fbb677482b5954",
+      "status": "unchanged"
+    },
+    {
+      "path": "Cargo.toml.orig",
+      "sha256": "7c179fdf668a0ad2fe28c97b99a0ae34103af0a6f76491334aa483d2cf55e5fa",
+      "status": "unchanged"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "2b60aa93bf43a4f9a7c0b356f4003679dffe6e89f86570376a343fbdfd52a191",
+      "status": "unchanged"
+    },
+    {
+      "path": "README.md",
+      "sha256": "cbee798761ea54407d9b92e14af2773281d99dd7c863092f8a4f8688053e48b2",
+      "status": "unchanged"
+    },
+    {
+      "path": "docs/pool-nft-v2-api.md",
+      "sha256": "cb14b3c89cf25fa12aeb3c66e777cb38626409bc03608c31b3e170220cfabc32",
+      "status": "unchanged"
+    },
+    {
+      "path": "docs/tbc20-api.md",
+      "sha256": "7e82222740c1cf5e15dee2a8008cc1bae47e98d094d442b7c2edc6dbac035ff3",
+      "status": "unchanged"
+    },
+    {
+      "path": "docs/token-validator-api.md",
+      "sha256": "a3cb66b8a4172df2a3356ec778f5a0915b6f259766995f21d53a611b5f30f495",
+      "status": "unchanged"
+    },
+    {
+      "path": "docs/verification/2026-07-31-rust-0.1.2-supported-contract-matrix.md",
+      "sha256": "330dfb425a3ba75ec6f30f31bb19e0f1e3b4feee3147f17f23b0d40e1bd33806",
+      "status": "unchanged"
+    },
+    {
+      "path": "docs/verification/2026-08-01-rust-multisig-testnet.md",
+      "sha256": "0e4759d9733d71685dfc49ce1a93127577b47581121dc0941d52370c7a013f28",
+      "status": "unchanged"
+    },
+    {
+      "path": "docs/verification/2026-08-01-rust-pool-nft-v2-testnet.md",
+      "sha256": "2a189e4aaf550755867c55caa2a71204fbe414ab950838e7467daa9917f7c3ec",
+      "status": "unchanged"
+    },
+    {
+      "path": "docs/verification/2026-08-19-rust-js-1.6.6-testnet.md",
+      "sha256": "bdaa07d6c84172a563241b1d2ea01741400a1258cde6967c2039672d2ce058ac",
+      "status": "unchanged"
+    },
+    {
+      "path": "scripts/generate-multisig-js-fixtures.js",
+      "sha256": "39ee8e0bc94741fb6612abe0deca0cc35db27175e988971ebc56f6aaaac3cf90",
+      "status": "unchanged"
+    },
+    {
+      "path": "scripts/generate-pool-v2-js-fixtures.js",
+      "sha256": "dbdb9ac10a50e09d132ea227fdd3568512c93d0872529a43f0270ee3c9e4805f",
+      "status": "unchanged"
+    },
+    {
+      "path": "scripts/generate-pool-v2-unlock-fixtures.js",
+      "sha256": "c4290d12d283ac4a46d84a8668365c74c55ab7685bc019f933451452bf181f9c",
+      "status": "unchanged"
+    },
+    {
+      "path": "scripts/multisig-js-165-dependencies.js",
+      "sha256": "68a9e6ec0cdcabec2a5b8ecd0333e38398bb5fd5ec04df60988fa10eae969030",
+      "status": "unchanged"
+    },
+    {
+      "path": "scripts/pool-v2-js-165-dependencies.js",
+      "sha256": "1db57011bd469e7384cdde1bcdd632ff598982c1edb5e5521957a0d397a2d374",
+      "status": "unchanged"
+    },
+    {
+      "path": "scripts/test-pool-v2-js-165-dependencies.js",
+      "sha256": "21e8810bdecf2d2a3e2a1b9bd18fba3645b2b3f4df97cd703914b3237c07bbe4",
+      "status": "unchanged"
+    },
+    {
+      "path": "scripts/test-pool-v2-unlock-fixture-portability.js",
+      "sha256": "3c5fd90ba3ff4c233d60ec28a84612e24e2cf0baa848a99f5f758be805aac4cc",
+      "status": "unchanged"
+    },
+    {
+      "path": "scripts/test-verify-multisig-inputs.js",
+      "sha256": "fe5d9f2d0908f64a90976e4affa17575d8e6fb1012ea187f85bb51446d5c69f8",
+      "status": "unchanged"
+    },
+    {
+      "path": "scripts/verify-multisig-inputs.js",
+      "sha256": "590eb01fb5b6e4bf6cd8aa6a288be0e5e7a00b5438d70142c85af6bc2f357a77",
+      "status": "unchanged"
+    },
+    {
+      "path": "scripts/verify-pool-v2-inputs.js",
+      "sha256": "8e359f5bad4b577e8f6b3cf6a02d377bc3a6389b1cef2c1675066b3e9fd54b2e",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/address.rs",
+      "sha256": "9cca41d2cee89a2e81ffe40b6b70ba4836acbbb20a2db75e822b539cddb5d2cf",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/api.rs",
+      "sha256": "4ccceffd2a0716304771781205f30db2dc63af793bbe57872a2aef788af2323c",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/builder.rs",
+      "sha256": "1b25cd647db26d862e6502d269ed6fa5928940616b77bd9a17ea88ac6fa5d779",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/ft/amount.rs",
+      "sha256": "6709fb8c633ccfaaed6d26202398f197d5c711af4db4a59ae60c51411b9bfd0a",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/ft/builder.rs",
+      "sha256": "23d9aaa831ad8df39434b5d2ffd93a8df6ca4d1b7104f94392ac4059704fd88c",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/ft/data.rs",
+      "sha256": "aabcf702bf5bcd90045a36f1315ea9a28bf708ed0ce7d6e3a2c096579646a1aa",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/ft/mint_code_template.asm",
+      "sha256": "badae8841150fd84ccc3a194a5f644b66194af3491aa2609a0002a06f2e54266",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/ft/mint_code_v3_template.asm",
+      "sha256": "920fe7290e77cde824659fb282bf4004fc661a601a0233f986d3435450ca2996",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/ft/mod.rs",
+      "sha256": "f373ab1ca58559bdd5b997032ed10f9548e25c41beb6b1a59cfdd02652a733af",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/ft/partial_sha256.rs",
+      "sha256": "cdfdbb2c5212267df66b6c2ed16e0a1a9799141da46a8db848c5e2b0a6d2c947",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/ft/scripts.rs",
+      "sha256": "8a2b33ac367148a56327eb18ada58afd0e82581afb1d2a53d0765e5c1ff557ee",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/ft/unlock.rs",
+      "sha256": "609e15e9d0f34afe537c65a768cd7554c14c025c801028ed757ef9d321d303c3",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/mod.rs",
+      "sha256": "a9f9c9a70baefa185b0310179e10e72003a741db983742d31e0c549649ef4f9f",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/multisig/address.rs",
+      "sha256": "648f093c10d2aa3e817c93eadfe6e1931f9b8be4b984a462e31eb0e736d41d8f",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/multisig/builder.rs",
+      "sha256": "948fed377cdb10b10674b98479acd15b5536b0f1de1040694e4cd9f037ed1674",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/multisig/data.rs",
+      "sha256": "5546b6a5befad182b471e77b03b62824c7d283536de4fa65c154f33887df6f83",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/multisig/mod.rs",
+      "sha256": "06fb2420d6e8fc2a29fcbaa58b15884396c16435370f1b801f7f2379fda19835",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/multisig/scripts.rs",
+      "sha256": "dc3f2fe1d52157852d78fb893291a8003bd91a9915a68006653cab237544fc0d",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/nft/builder.rs",
+      "sha256": "634064698566eac1b2495587a56b99945cb3f7bbe1f81b6fd33bee0abfa2fd81",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/nft/data.rs",
+      "sha256": "89ae76f64d8bd50d92a326a7da15f408dc16f68f811242619e1601aa374820f2",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/nft/mod.rs",
+      "sha256": "678eb760bb6966e57e44299bb62108c6d98880ffba44c67f279e84a60931e19a",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/nft/scripts.rs",
+      "sha256": "5cc9e016bad4dcc71a542ecabb1c9ea9d8d0837f2057a6a3a04d5db4d777dea1",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/nft/templates/nft_code_v1.asm",
+      "sha256": "101e6ec4f663ec8502218f5956790738c425d6650d28c0997e323ecaceff912e",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/nft/templates/nft_code_v2.asm",
+      "sha256": "a52069b7ab1857830442591a64087d2504c91b071211825f879bcd2d4b9277f7",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/nft/unlock.rs",
+      "sha256": "b9e64e33c70d1ece21803f348067b96d33b80fa24d6ee49e44c3bac7894d55b2",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/orderbook/builder.rs",
+      "sha256": "999629b57dda1cb185f442f632c4b8a153d4315aaf20585b43fe35c414d635da",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/orderbook/data.rs",
+      "sha256": "f38f5fb7caedf1eabb2c05591641759c0b01cd7c7bf4e924d275f7da0d93b3be",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/orderbook/mod.rs",
+      "sha256": "e1cc650d2a3abdf5e816dd8884c9a6a6387bbd95255d3e3144a67576c6b1152b",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/orderbook/scripts.rs",
+      "sha256": "a9362e0fad0ed9ebf79e1ac845ac924f29d97dc2a9c6418323c1ed2e2b5057aa",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/pool_nft_v2/builder.rs",
+      "sha256": "cde898cc395ecc2d08fdf009d1a6c0e5924cb17d21be5a9afe8aacc2de4e6ab2",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/pool_nft_v2/data.rs",
+      "sha256": "267e17854dedb3260eb1123be385c3265c40d7f1554f21eabdedf358f8354186",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/pool_nft_v2/math.rs",
+      "sha256": "b89618809aac250d745846b268a88363584b7c5fcba627b35a8e949ee3400638",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/pool_nft_v2/mod.rs",
+      "sha256": "fcec056f185ffa73c599554a504b2a651d9e45d5b1d083702241e78a0e49658e",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/pool_nft_v2/scripts.rs",
+      "sha256": "bf4b2300526b58654553b72fb4f1f1e76311136fe969a89decc8d689bda44933",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/pool_nft_v2/templates/SOURCES.md",
+      "sha256": "2e02ecf8ec711f880e3da017f7ca6621f7f4d9187c6fafc5afc9d33b56ae9c63",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/pool_nft_v2/templates/ftlp_code.asm",
+      "sha256": "7c5a63ea1fcbd2e9697a5684d9aac17047c7847993420ad4a7f71d3d33b26537",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/pool_nft_v2/templates/ftlp_code_lock_time.asm",
+      "sha256": "830bbe47e66963d1413a1e425e0d1aef75bce92199639d9b862e76cc7fb3c48d",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/pool_nft_v2/templates/ftlp_code_v3.asm",
+      "sha256": "18478f9753f655df20cbffc74c05ca335a708a600c3c5787299af9976643f44b",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/pool_nft_v2/templates/ftlp_code_v3_lock_time.asm",
+      "sha256": "c9eadf3a9d6984f19b957fe52f84f2d01e72e3cdc0769d1d9d42e212c03cc6bf",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/pool_nft_v2/templates/pool_code.asm",
+      "sha256": "e3eff2ce7d165c5d4075ddbfad5409847ea5b455f3c400ccd184a6c21595a6d5",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/pool_nft_v2/templates/pool_code_locked_last.asm",
+      "sha256": "6be990e5a704e91718210cdb80ca2805f3ddaae2c2492b122d1099254c3fca1e",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/pool_nft_v2/templates/pool_code_locked_pre.asm",
+      "sha256": "d3753d0be337879ad668a2cb001e4c3edb29766a18b479c90fdf59bda6db06ca",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/pool_nft_v2/unlock.rs",
+      "sha256": "c7c4bfab94fcdc0874278bf33421731204f3013b9912bfc7282c3d63dc790374",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/stable_coin/builder.rs",
+      "sha256": "2af932e784bb34c70b8f252df4091ced4478c27adf83894c0f05b67c08b904f9",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/stable_coin/coin_mint_code_template.asm",
+      "sha256": "cc34c8b877846ace43faa038e87518a7be80f53405fd9032e7daf0d791e0cbeb",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/stable_coin/coin_mint_code_v3_template.asm",
+      "sha256": "a5eb68d6c7b70441540e422e30f6b0b0cbd82fb62dc1ad083c5663d328a32606",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/stable_coin/data.rs",
+      "sha256": "c5c1ab8dcc0c5b144c2274a727f4eef130ebcaf6ad1ed75f96fa3b1a5a620a88",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/stable_coin/mod.rs",
+      "sha256": "0c682656043271f05882ea8d6cf711a98baade276b2a477705d6e4a869894e48",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/stable_coin/scripts.rs",
+      "sha256": "b9cd97c0a90ccf30ff45a5b2c85137870cfb5e6302cc1f5f01ed2b2065af1353",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/tbc20/builder.rs",
+      "sha256": "f57c00d8f7ab0b7081c1ea972e8f8dc45d8ab3472723c7ed79f7956f1082a44f",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/tbc20/mod.rs",
+      "sha256": "8a666307973b25de31c3056ca4e835b0b8f92ca993e74d665bca85cb382c9cdc",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/tbc20/tbc20_lock.hex",
+      "sha256": "1a64f0017055eb8f3a63f320e5bc725e70b7f3283e416dbef1b272330000d850",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/contracts/tbc20/unlock.rs",
+      "sha256": "b18e2b16077d6ee7e407c60518ebab915d227804eab8ac52d21fcf58153b1923",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/encoding.rs",
+      "sha256": "b698102f2f4a29db2272dd94089798eb7c417f73827b29622880caec85631a9a",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/error.rs",
+      "sha256": "d69239490d58bc0e2686a9b6a3f7a75bedeccf37fedf0ec05a500f65598000e4",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/hash.rs",
+      "sha256": "9cb77bfe1b1e7e989d0da551bbc9ae15bf64602e48eecf1274af58014bf3b90b",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/hd.rs",
+      "sha256": "a8ba709eb8c9756fce0eb428ef9fedab28e9d985c04d5a9fed068c0b6ade4425",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/keys.rs",
+      "sha256": "42d9dc0f0004ea64e3c42e5e3c3466d18aa37e49adb281e0d8f4a5599e8118cb",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/lib.rs",
+      "sha256": "44f26fee572fe465510539ac7d1811e54fcd3b679887dc7c773c4da392c67697",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/script.rs",
+      "sha256": "f094e63955c1566b9834ed2ef43a29d5dbc1c4f3140e6d98407f93c7268c04ed",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/sighash.rs",
+      "sha256": "70c80a0c576e561f162966b195855f628f5e14259bd7bc1007053292f5e28c41",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/transaction.rs",
+      "sha256": "1eb27780788021febb90c9be35448d542e15e041ac4ff764d2633e8aef506ac7",
+      "status": "unchanged"
+    },
+    {
+      "path": "src/validator.rs",
+      "sha256": "21e9f7b79c287bec20780e8e5b7aa6fd345ab448ed7fca4c998b9d3ad1cc2bfc",
+      "status": "unchanged"
+    },
+    {
+      "path": "tests/fixtures/js-166/scripts.json",
+      "sha256": "71805bcf725977e0e18d96409adf52e87af55171d2dad4674ef4223168cb605c",
+      "status": "unchanged"
+    },
+    {
+      "path": "tests/fixtures/js-166/tbc20.json",
+      "sha256": "896047b4eedde22f29e43ab223c6832c1b7087eb4dca6a28ab1f4c9b937ebc0e",
+      "status": "unchanged"
+    },
+    {
+      "path": "tests/fixtures/js-166/validator.json",
+      "sha256": "eee243dc4fc7a4430e45eb607536ed941804e874a4980cdf6f69866875d2c3a7",
+      "status": "unchanged"
+    },
+    {
+      "path": "tests/fixtures/multisig-js-165.json",
+      "sha256": "c5cb7277d4d13cf4a577606d96628a517ddffbefc5613ddee9cd693ec875a7b2",
+      "status": "unchanged"
+    },
+    {
+      "path": "tests/fixtures/pool-v2-js-165.json",
+      "sha256": "dde92991c8495ac60585507a9815ad6be6925eb501ae18230dee9870179ba6d0",
+      "status": "unchanged"
+    },
+    {
+      "path": "tests/fixtures/pool-v2-source-authority.json",
+      "sha256": "3bb8ba4a11571d5994ee0ca6539e92d55c19d6c8d3e356be4cf44a291d15a214",
+      "status": "unchanged"
+    },
+    {
+      "path": "tests/fixtures/pool-v2-unlock-js-165.json",
+      "sha256": "23f8f85e7d1623b98777c0dbcd85393bc18c154a9cd69858f085b671afc63b6c",
+      "status": "unchanged"
+    },
+    {
+      "path": "tests/js_166_parity.rs",
+      "sha256": "44824ee357134fe532234821b3649fff9976597d3b3d0a3fd5b0848dc48cb567",
+      "status": "unchanged"
+    }
+  ]
+}
