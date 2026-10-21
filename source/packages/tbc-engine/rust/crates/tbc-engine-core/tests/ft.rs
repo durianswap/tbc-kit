@@ -19,6 +19,28 @@ fn unified_historical_ft_signing_rounds_match_concrete() {
 }
 
 #[test]
+fn staged_ft_output_review_binds_each_transaction_balance_and_destination() {
+    let p=transfer_plan_input("mergeRequired");
+    let plan=call_ok(EngineMethod::Plan,&p)["plan"].clone();
+    let txs=plan["payload"]["transactions"].as_array().unwrap();assert!(txs.len()>1);
+    for t in txs {
+        let raw=Transaction::from_hex(t["unsignedTransaction"].as_str().unwrap()).unwrap();
+        let rows=t["outputReview"].as_array().unwrap();
+        assert_eq!(rows.iter().flat_map(|r|r["outputIndices"].as_array().unwrap()).map(|i|i.as_u64().unwrap()).collect::<Vec<_>>(),(0..raw.outputs.len() as u64).collect::<Vec<_>>());
+        assert!(rows.iter().all(|r|r["kind"]!="unrecognized"),"{}",t["id"]);
+        let tokens=rows.iter().filter(|r|r["kind"].as_str().unwrap().starts_with("historical-ft"));
+        if t["role"]=="maintenance" {for row in tokens {assert_eq!(row["recipient"],p["request"]["from"]);}}
+        else {assert!(tokens.into_iter().any(|r|r["recipient"]==p["request"]["intent"]["to"] && r["amountAtomic"]==p["request"]["intent"]["amount"]));}
+    }
+    for field in ["amountAtomic","recipient","assetIdentity"] {
+        let mut altered=plan.clone();altered["payload"]["transactions"][0]["outputReview"][0][field]=json!(if field=="amountAtomic" {"999999"} else {"forged"});
+        altered["planHash"]=json!(canonical_hash(&altered["payload"]));
+        let mut check=p.clone();check["phase"]=json!("plan");check["plan"]=altered;
+        assert_eq!(call_ok(EngineMethod::Validate,&check)["valid"],false,"rehashing a false {field} must not authorize it");
+    }
+}
+
+#[test]
 fn optional_confirmations_ft_thresholds_and_hash_binding() {
     for input in [transfer_plan_input("direct"), transfer_plan_input("mergeRequired")] {
         optional_confirmations::exercise(input);
@@ -364,7 +386,11 @@ fn ft_transfer_inserts_merge_only_when_selected_inputs_require_it() {
         merged["plan"]["payload"]["transactions"][1]["dependsOn"],
         json!([merged["plan"]["payload"]["transactions"][0]["id"].clone()])
     );
-    assert_eq!(direct["plan"]["planHash"], vector("ft-transfer.json")["direct"]["expected"]["planHash"]);
+    // Keep the old vector immutable. The new local display projection is the
+    // only added field; transaction bytes/fees/digests must still be identical.
+    let mut direct_historical=direct["plan"]["payload"].clone();
+    for t in direct_historical["transactions"].as_array_mut().unwrap(){t.as_object_mut().unwrap().remove("outputReview");}
+    assert_eq!(canonical_hash(&direct_historical), vector("ft-transfer.json")["direct"]["expected"]["planHash"]);
     assert_eq!(
         merged["plan"]["payload"]["transactions"]
             .as_array().unwrap().iter()
@@ -397,8 +423,9 @@ fn ft_transfer_inserts_merge_only_when_selected_inputs_require_it() {
     historical_payload["preview"].as_object_mut().unwrap().remove("signingTaskCount");
     for transaction in historical_payload["transactions"].as_array_mut().unwrap() {
         transaction.as_object_mut().unwrap().remove("deferredInputs");
+        transaction.as_object_mut().unwrap().remove("outputReview");
     }
-    assert_eq!(canonical_hash(&historical_payload), vector("ft-transfer.json")["mergeRequired"]["expected"]["planHash"], "only complete signing count and explicit deferred-input edges may change the historical hash");
+    assert_eq!(canonical_hash(&historical_payload), vector("ft-transfer.json")["mergeRequired"]["expected"]["planHash"], "only signing count, deferred-input edges and bound output disclosure may change the historical hash");
     assert_eq!(merged["plan"]["planHash"], canonical_hash(&merged["plan"]["payload"]));
 }
 

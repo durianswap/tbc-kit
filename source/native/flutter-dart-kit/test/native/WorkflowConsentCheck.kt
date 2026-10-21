@@ -19,6 +19,8 @@ private class Store:NativePermissionBackend{
  override fun commit(origin:String,expected:Long,records:List<Map<String,Any?>>,callId:String,meaning:String,fence:()->Unit):PermissionCommitResult{fence();check((values[origin]?.revision?:0)==expected);val v=PermissionSnapshot(expected+1,records);values[origin]=v;writes++;return PermissionCommitResult(v.revision,v)}
 }
 private class UI:NativeApprovalPresenter{
+ val updates=mutableListOf<NativeReview>();var onUpdate:((NativeReview)->Unit)?=null
+ override fun update(review:NativeReview){updates+=review;onUpdate?.invoke(review)}
  var shown=0;val reviews=mutableMapOf<String,NativeReview>();val pending=mutableMapOf<String,(Boolean)->Unit>()
  override fun present(review:NativeReview,complete:(Boolean)->Unit):()->Unit{shown++;reviews[review.operationId]=review;pending[review.operationId]=complete;return {pending.remove(review.operationId);Unit}}
  fun choose(id:String,yes:Boolean=true){pending.remove(id)!!(yes)}
@@ -74,8 +76,11 @@ fun main(args:Array<String>){
   if(h.accounts.signingAccounts.size>1){val resolved=h.c.resolveSigningAccounts("v",h.scope,"op",h.request,h.context);yes(resolved.size==h.accounts.signingAccounts.size-1)}
   h.consent();yes(h.ui.shown==2&&h.answer==null&&h.store.writes==1)
   val text=h.ui.reviews.getValue("op").description
+  val display=h.ui.reviews.getValue("op")
+  yes(display.phase=="intent-bounded"&&display.steps.size==(h.request["steps"] as List<*>).size)
+  yes(display.steps.all{it.description.isNotEmpty()})
   for(value in h.request["steps"] as List<*>){val step=map(value);yes(text.contains(step["id"] as String));((step["intent"] as? Map<*,*>)?.get("preimage") as? String)?.let{yes(!text.contains(it))}}
-  (sample["mustNotRender"] as? String)?.let{yes(!text.contains(it))}
+  (sample["mustNotRender"] as? String)?.let{secret->yes(!text.contains(secret));yes(display.steps.all{!it.description.contains(secret)});yes(display.steps.any{it.warnings.any{it.startsWith("HTLC_CLAIM_SIGNED_BYTES_DISCLOSE_PREIMAGE")}})}
   h.ui.choose("op");yes(h.answer!!.getOrThrow());rejects{h.consent()};h.noAuthority()
  }
  val sample=cases.first{it["name"]=="native-message"}
@@ -97,12 +102,53 @@ fun main(args:Array<String>){
    rejects{h.bind()};yes(h.key.computes==1&&h.key.signs==0);h.c.close("v",h.scope,"op");yes(!h.c.mayDeliverSignature("v",h.scope,"op"));continue
   }
   val receipt=h.bind();receipts++
+  yes(h.ui.updates.size==1&&h.ui.updates[0].operationId=="op"&&h.ui.updates[0].phase=="binding-verified")
+  val steps=h.ui.updates[0].steps
+  for(value in map(map(sample["plan"])["payload"])["transactionPlans"] as List<*>){
+   val entry=map(value);val preview=map(map(map(entry["plan"])["payload"])["preview"]);val step=steps.single{it.id==entry["stepId"]}
+   for((index,v) in ((preview["assetFlows"] as? List<*>)?:emptyList<Any>()).withIndex()){val flow=map(v)
+    val expected=(flow["to"] as? String)?:if(sample["name"]=="controller-message"&&flow["direction"]=="send")"pool:6900f716a99ff553d67d25d13fe7deec626935efe5d8c25a1efc8807cca3dafd" else null
+    yes(step.assets[index].amountAtomic==flow["amount"]&&step.assets[index].recipient==expected&&step.assets[index].amountRule=="bound-plan")
+   }
+   yes(step.actualFeeAtomic==preview["totalFee"])
+   val txs=(map(map(entry["plan"])["payload"])["transactions"] as List<*>).map{map(it)}
+   yes(step.transactionsStatus=="available"&&step.transactions.size==txs.size)
+   for((index,tx) in txs.withIndex()){val actual=step.transactions[index]
+    yes(actual.id==tx["id"]&&actual.role==tx["role"]&&actual.dependsOn==tx["dependsOn"])
+    yes(actual.templateHash==tx["templateHash"]&&actual.feeAtomic==tx["fee"])
+    yes(actual.assetsStatus==if(txs.size==1)"available" else "step-summary-only")
+    if(tx["outputReview"] is List<*>){val outputs=(tx["outputReview"] as List<*>).map{map(it)}
+     yes(actual.outputs.size==outputs.size&&actual.outputsStatus!="not-available")
+     for((j,o) in outputs.withIndex()){val row=actual.outputs[j]
+      yes(row.outputIndices==(o["outputIndices"] as List<*>).map{(it as Number).toInt()})
+      yes(row.kind==o["kind"]&&row.amountAtomic==o["amountAtomic"]&&row.recipient==o["recipient"])
+      yes(row.assetIdentity==o["assetIdentity"]&&row.nativeValueAtomic==o["nativeValueAtomic"])
+      yes(row.warnings==o["warnings"]);yes(actual.text.contains(row.nativeValueAtomic))
+     }
+     if(txs.size>1)yes(actual.assets.isEmpty()&&!actual.warnings.contains("PER_TRANSACTION_ASSET_DETAILS_UNAVAILABLE"))
+    }else if(txs.size>1)yes(actual.assets.isEmpty()&&actual.warnings==listOf("PER_TRANSACTION_ASSET_DETAILS_UNAVAILABLE"))
+   }
+  }
   yes(receipt["status"]=="approved"&&receipt["bindingHash"]==map(sample["binding"])["bindingHash"])
   yes(h.ui.shown==2&&h.key.signs==0&&h.key.computes==0&&h.store.writes==1)
   rejects{h.bind()}
   val first=map((map(map(sample["plan"])["payload"])["immediateSigningTasks"] as List<*>).first())
   rejects{h.c.sign("v",h.scope,"op",receipt,map(first["task"])) {}}
   h.c.close("v",h.scope,"op");yes(!h.c.mayDeliverSignature("v",h.scope,"op"));yes(h.key.signs==0)
+ }
+ run{val h=Harness(sample);h.grant();h.begin();h.consent();h.ui.choose("op");h.ui.onUpdate={h.accounts.unlocked=false};rejects{h.bind()};yes(h.key.signs==0&&h.ui.shown==2)}
+ run{
+  val huge="9876543210123456789";val owner=map(sample["account"])["address"] as String
+  val rows=NativeApprovalDisplay.intent(mapOf("intent" to mapOf("type" to "tbc20.transfer","contractId" to "asset-id","receivers" to listOf(mapOf("amount" to huge,"to" to "recipient-A"),mapOf("amount" to "2","to" to "recipient-B")))),owner)
+  yes(rows.size==2&&rows[0].amountAtomic==huge&&rows[1].recipient=="recipient-B")
+  val merge=NativeApprovalDisplay.intent(mapOf("intent" to mapOf("type" to "tbc20.merge","contractId" to "asset-id")),owner)
+  yes(merge[0].amountAtomic==null&&merge[0].recipient==owner&&merge[0].amountRule=="selected-balance")
+  yes(NativeApprovalDisplay.warnings(mapOf("intent" to mapOf("type" to "tbc20Lp.burn"))).any{it.startsWith("ASSET_DESTRUCTION")})
+  yes(NativeApprovalDisplay.warnings(mapOf("intent" to mapOf("type" to "tbc-lop-create"))).isEmpty())
+  val request=mapOf("intent" to mapOf("type" to "tbc-amm-swap","poolContractId" to "a".repeat(64)))
+  val explicit=NativeApprovalDisplay.bound(mapOf("assetFlows" to listOf(mapOf("kind" to "native","direction" to "send","amount" to "1","to" to "recipient-A"),mapOf("kind" to "native","direction" to "fee","amount" to "2"))),request)
+  yes(explicit[0].recipient=="recipient-A"&&explicit[1].recipient==null)
+  yes(NativeApprovalDisplay.bound(mapOf("assetFlows" to listOf(mapOf("kind" to "ft","direction" to "send","amount" to "1"))),mapOf("intent" to mapOf("type" to "tbc.transfer","poolContractId" to "a".repeat(64))))[0].recipient==null)
  }
  for(change in listOf("plan","fee","reject","locked")){
   val h=Harness(sample);h.grant();h.begin();val plan=map(sample["plan"]);val p=map(plan["payload"])

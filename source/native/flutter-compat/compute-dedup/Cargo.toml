@@ -1,0 +1,15 @@
+[package]
+name = "tbc-compute-native"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[lib]
+crate-type = ["cdylib", "staticlib", "rlib"]
+
+[dependencies]
+serde_json.workspace = true
+tbc-engine-core = { path = "../tbc-engine-core" }
+tbc-keyless-core = { path = "../tbc-keyless-core" }
+tbc-wallet-private-core = { path = "../tbc-wallet-private-core" }

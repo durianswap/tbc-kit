@@ -32,6 +32,25 @@ function retainedSpecializedDetails(model) {
   return Object.freeze(details);
 }
 
+function transaction(value) {
+  return Object.freeze({
+    id: value.id,
+    role: field(value.role),
+    dependsOn: Object.freeze([...value.dependsOn]),
+    templateHash: field(value.templateHash),
+    feeAtomic: field(value.feeAtomic),
+    assets: Object.freeze(value.assets.map(asset)),
+    assetsStatus: value.assetsStatus,
+    warnings: Object.freeze([...value.warnings]),
+    outputsStatus: value.outputsStatus,
+    outputs: Object.freeze(value.outputs.map(o => Object.freeze({
+      outputIndices: Object.freeze([...o.outputIndices]), kind: o.kind,
+      assetIdentity: field(o.assetIdentity), amountAtomic: field(o.amountAtomic), recipient: field(o.recipient),
+      nativeValueAtomic: o.nativeValueAtomic, lockTime: field(o.lockTime), warnings: Object.freeze([...o.warnings]),
+    }))),
+  });
+}
+
 /**
  * Example wallet renderer. It keeps unknown values explicit and renders
  * workflow ownership from steps[]; top-level assets are summary-only.
@@ -60,6 +79,8 @@ export function renderApprovalPresentation(model) {
       signingTasks: field(model.counts.signingTasks),
     }),
     summaryAssets: Object.freeze(model.assets.map(asset)),
+    transactions: Object.freeze(model.transactions.map(transaction)),
+    transactionsStatus: model.transactionsStatus,
     steps: Object.freeze(model.steps.map((step) => Object.freeze({
       id: step.id,
       kind: step.kind,
@@ -70,6 +91,9 @@ export function renderApprovalPresentation(model) {
       actualFeeAtomic: field(step.actualFeeAtomic),
       signingTaskCount: field(step.signingTaskCount),
       assets: Object.freeze(step.assets.map(asset)),
+      transactions: Object.freeze(step.transactions.map(transaction)),
+      transactionsStatus: step.transactionsStatus,
+      warnings: Object.freeze([...step.warnings]),
     }))),
     warnings: Object.freeze([...model.warnings]),
     binding: model.binding,

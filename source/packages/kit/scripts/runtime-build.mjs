@@ -62,7 +62,8 @@ export async function buildKitRuntime({ root, packageRoot, minifyWhitespace = fa
   // Optional multisig does not join the default/shared CJS runtime or partner
   // page. Loading the wallet/root entry never imports this module.
   for (const [format, extension] of [["esm", "js"], ["cjs", "cjs"]]) {
-    await build({ ...common, format, platform: "neutral", entryPoints: [resolve(sourceRoot, "src/multisig.ts")],
+    await build({ ...common, format, platform: "neutral", plugins: sourceOverrides.size ? [overrides] : [],
+      entryPoints: [resolve(sourceRoot, "src/multisig.ts")],
       outfile: resolve(packageRoot, `dist/${format}/multisig.${extension}`) });
   }
   const cjs = { ...common, format: "cjs", platform: "node", target: "es2022", plugins: [...plugins("cjs"), nodeAssets] };

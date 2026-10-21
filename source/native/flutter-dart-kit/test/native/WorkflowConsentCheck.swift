@@ -21,6 +21,8 @@ private func hash(_ v:Any)throws->String{SHA256.hash(data:Data(try PermissionJSO
 }
 @MainActor private final class UI:NativeApprovalPresenter{
  var shown=0,reviews=[String:NativeReview](),pending=[String:@MainActor (Bool)->Void]()
+ var updates=[NativeReview](),onUpdate:(@MainActor (NativeReview)->Void)?
+ func update(_ review:NativeReview){updates.append(review);onUpdate?(review)}
  func present(_ review:NativeReview,complete:@escaping @MainActor (Bool)->Void)->@MainActor ()->Void{shown+=1;reviews[review.operationId]=review;pending[review.operationId]=complete;return {self.pending.removeValue(forKey:review.operationId)}}
  func choose(_ id:String,_ yes:Bool=true){let f=pending.removeValue(forKey:id)!;f(yes)}
 }
@@ -84,8 +86,11 @@ private func hash(_ v:Any)throws->String{SHA256.hash(data:Data(try PermissionJSO
    if h.accounts.signingAccounts.count>1{let resolved=try h.c.resolveSigningAccounts(owner:"v",scope:h.scope,id:"op",request:h.request,context:h.context);yes(resolved.count==h.accounts.signingAccounts.count-1)}
    try h.consent();yes(h.ui.shown==2 && h.answer==nil && h.store.writes==1)
    let text=h.ui.reviews["op"]!.description
+   let display=h.ui.reviews["op"]!
+   yes(display.phase=="intent-bounded" && display.steps.count==(h.request["steps"] as! [Any]).count)
+   yes(display.steps.allSatisfy{!$0.description.isEmpty})
    for step in h.request["steps"] as! [[String:Any]]{yes(text.contains("\(step["id"]!)"));if let secret=(step["intent"] as? [String:Any])?["preimage"] as? String{yes(!text.contains(secret))}}
-   if let secret=sample["mustNotRender"] as? String{yes(!text.contains(secret))}
+   if let secret=sample["mustNotRender"] as? String{yes(!text.contains(secret));yes(display.steps.allSatisfy{!$0.description.contains(secret)});yes(display.steps.contains{$0.warnings.contains{$0.hasPrefix("HTLC_CLAIM_SIGNED_BYTES_DISCLOSE_PREIMAGE")}})}
    h.ui.choose("op");yes(try h.answer!.get());rejects{try h.consent()};try h.noAuthority()
   }
   let sample=cases.first{$0["name"] as? String=="native-message"}!
@@ -107,12 +112,55 @@ private func hash(_ v:Any)throws->String{SHA256.hash(data:Data(try PermissionJSO
     rejects{_ = try h.bind()};yes(h.key.computes==1 && h.key.signs==0);try h.c.close(owner:"v",scope:h.scope,id:"op");yes(!h.c.mayDeliverSignature(owner:"v",scope:h.scope,id:"op"));continue
    }
    let receipt=try h.bind();receipts+=1
+   yes(h.ui.updates.count==1 && h.ui.updates[0].operationId=="op" && h.ui.updates[0].phase=="binding-verified")
+   let steps=h.ui.updates[0].steps
+   for entry in map(map(sample["plan"])["payload"])["transactionPlans"] as! [[String:Any]]{
+    let preview=map(map(map(entry["plan"])["payload"])["preview"]),step=steps.first{$0.id==entry["stepId"] as? String}!
+    for (index,flow) in ((preview["assetFlows"] as? [[String:Any]]) ?? []).enumerated(){
+     let expected=(flow["to"] as? String) ?? (sample["name"] as? String=="controller-message" && flow["direction"] as? String=="send" ? "pool:6900f716a99ff553d67d25d13fe7deec626935efe5d8c25a1efc8807cca3dafd":nil)
+     yes(step.assets[index].amountAtomic==flow["amount"] as? String && step.assets[index].recipient==expected && step.assets[index].amountRule=="bound-plan")
+    }
+    yes(step.actualFeeAtomic==preview["totalFee"] as? String)
+    let txs=map(map(entry["plan"])["payload"])["transactions"] as! [[String:Any]]
+    yes(step.transactionsStatus=="available" && step.transactions.count==txs.count)
+    for (index,tx) in txs.enumerated(){let actual=step.transactions[index]
+     yes(actual.id==tx["id"] as? String && actual.role==tx["role"] as? String && actual.dependsOn==tx["dependsOn"] as? [String])
+     yes(actual.templateHash==tx["templateHash"] as? String && actual.feeAtomic==tx["fee"] as? String)
+     yes(actual.assetsStatus==(txs.count==1 ? "available":"step-summary-only"))
+     if let outputs=tx["outputReview"] as? [[String:Any]]{
+      yes(actual.outputs.count==outputs.count && actual.outputsStatus != "not-available")
+      for (j,o) in outputs.enumerated(){let row=actual.outputs[j]
+       yes(row.outputIndices==(o["outputIndices"] as! [NSNumber]).map{$0.intValue})
+       yes(row.kind==o["kind"] as? String && row.amountAtomic==o["amountAtomic"] as? String && row.recipient==o["recipient"] as? String)
+       yes(row.assetIdentity==o["assetIdentity"] as? String && row.nativeValueAtomic==o["nativeValueAtomic"] as? String)
+       yes(row.warnings==o["warnings"] as? [String]);yes(actual.text.contains(row.nativeValueAtomic))
+      }
+      if txs.count>1{yes(actual.assets.isEmpty && !actual.warnings.contains("PER_TRANSACTION_ASSET_DETAILS_UNAVAILABLE"))}
+     }else if txs.count>1{yes(actual.assets.isEmpty && actual.warnings==["PER_TRANSACTION_ASSET_DETAILS_UNAVAILABLE"])}
+    }
+   }
    yes(receipt["status"] as? String=="approved" && receipt["bindingHash"] as? String==map(sample["binding"])["bindingHash"] as? String)
    yes(h.ui.shown==2 && h.key.signs==0 && h.key.computes==0 && h.store.writes==1)
    rejects{_ = try h.bind()}
    let first=(map(map(sample["plan"])["payload"])["immediateSigningTasks"] as! [[String:Any]]).first!
    rejects{try h.c.sign(owner:"v",scope:h.scope,id:"op",receipt:receipt,task:map(first["task"])){_ in}}
    try h.c.close(owner:"v",scope:h.scope,id:"op");yes(!h.c.mayDeliverSignature(owner:"v",scope:h.scope,id:"op"));yes(h.key.signs==0)
+  }
+  // An informational UI callback cannot bypass a newly changed account/lock.
+  do{let h=try Harness(sample);try h.grant();try h.begin();try h.consent();h.ui.choose("op");h.ui.onUpdate={_ in h.accounts.unlocked=false};rejects{_ = try h.bind()};yes(h.key.signs==0 && h.ui.shown==2)}
+  // Display values stay exact and do not turn missing amounts into zero.
+  do{
+   let huge="9876543210123456789",owner=map(sample["account"])["address"] as! String
+   let rows=NativeApprovalDisplay.intent(["intent":["type":"tbc20.transfer","contractId":"asset-id","receivers":[["amount":huge,"to":"recipient-A"],["amount":"2","to":"recipient-B"]]]],owner:owner)
+   yes(rows.count==2 && rows[0].amountAtomic==huge && rows[1].recipient=="recipient-B")
+   let merge=NativeApprovalDisplay.intent(["intent":["type":"tbc20.merge","contractId":"asset-id"]],owner:owner)
+   yes(merge[0].amountAtomic==nil && merge[0].recipient==owner && merge[0].amountRule=="selected-balance")
+   yes(NativeApprovalDisplay.warnings(["intent":["type":"tbc20Lp.burn"]]).contains{$0.hasPrefix("ASSET_DESTRUCTION")})
+   yes(NativeApprovalDisplay.warnings(["intent":["type":"tbc-lop-create"]]).isEmpty)
+   let request:[String:Any]=["intent":["type":"tbc-amm-swap","poolContractId":String(repeating:"a",count:64)]]
+   let explicit=NativeApprovalDisplay.bound(["assetFlows":[["kind":"native","direction":"send","amount":"1","to":"recipient-A"],["kind":"native","direction":"fee","amount":"2"]]],request:request)
+   yes(explicit[0].recipient=="recipient-A" && explicit[1].recipient==nil)
+   yes(NativeApprovalDisplay.bound(["assetFlows":[["kind":"ft","direction":"send","amount":"1"]]],request:["intent":["type":"tbc.transfer","poolContractId":String(repeating:"a",count:64)]])[0].recipient==nil)
   }
   // A prepared commitment shown at consent is binding even if the outer fee
   // cap was already supplied. Neither metadata nor approval can be substituted.

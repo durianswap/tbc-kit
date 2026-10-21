@@ -176,7 +176,7 @@ const bundleSource = `${banner}${generated.trim()}\n`;
 const bindings = Object.keys(validatorReferences)
   .map((name) => `export const ${name} = bind(${JSON.stringify(name)});`)
   .join("\n");
-const source = `${banner}import validateBundle from "./validators/bundle.js";\n\ntype GeneratedValidator = ((value: unknown) => boolean) & { readonly errors?: unknown };\n\nfunction bind(selector: string): GeneratedValidator {\n  const validate = ((value: unknown) => validateBundle({ selector, value })) as GeneratedValidator;\n  Object.defineProperty(validate, "errors", { get: () => validateBundle.errors });\n  return validate;\n}\n\n${bindings}\n\nexport const TWS_PROVIDER_EXECUTION_ERROR_STAGES = Object.freeze(${JSON.stringify(executionStages, null, 2)});\n`;
+const source = `${banner}import { validate as validateBundle } from "./validators/bundle.js";\n\ntype GeneratedValidator = ((value: unknown) => boolean) & { readonly errors?: unknown };\n\nfunction bind(selector: string): GeneratedValidator {\n  const validate = ((value: unknown) => validateBundle({ selector, value })) as GeneratedValidator;\n  Object.defineProperty(validate, "errors", { get: () => validateBundle.errors });\n  return validate;\n}\n\n${bindings}\n\nexport const TWS_PROVIDER_EXECUTION_ERROR_STAGES = Object.freeze(${JSON.stringify(executionStages, null, 2)});\n`;
 
 async function verify(pathname, expected) {
   const current = await readFile(pathname, "utf8").catch(() => undefined);

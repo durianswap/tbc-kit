@@ -12,6 +12,7 @@ mod funding_fallback;
 mod model;
 mod normalize;
 mod plan;
+mod output_review;
 pub mod protocols;
 pub mod signing;
 mod signing_wire;

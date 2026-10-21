@@ -5,7 +5,7 @@
   "compatibilityBaseline": "legacy-window-turing-only",
   "providerMethodCount": 22,
   "providerEventCount": 6,
-  "schemaBundleSha256": "93fb6e69052f4e05de5d69fd8cb8d5cc66aa019090c24cf4d1c36f82a0ea24b8",
+  "schemaBundleSha256": "a5974d669990eb04a76d1a6a62571421dfd6f0dbaf59326fe264b040f3bfb2f8",
   "registryBundleSha256": "a2cc11861c50a6e38212bbd971a24d0f4f0349309f24e6ccd777fd98dc9ee92b",
   "schemaFiles": [
     {
@@ -34,7 +34,7 @@
     },
     {
       "path": "schemas/integration.schema.json",
-      "sha256": "6838c9ddaec2af8c1c6d88ea307b222b327c394cad0933d0dd9269b33116e933"
+      "sha256": "27148de63e0e5c5edc4f96035554cead0fb526d75a42a636e0541763cdef2646"
     },
     {
       "path": "schemas/method-registry.schema.json",

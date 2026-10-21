@@ -239,6 +239,7 @@ pub(crate) fn plan_tbc_transfer(
             deferred_inputs: None,
             template_hash: hex(&Sha256::digest(unsigned_bytes)),
             fee: paid_fee.to_string(),
+            output_review: crate::output_review::outputs(&unsigned_transaction),
         }],
         signing_tasks,
         preview: TransactionPreview {
@@ -454,6 +455,7 @@ pub(crate) fn plan_tbc_merge(
             deferred_inputs: None,
             template_hash: hex(&Sha256::digest(unsigned_transaction.serialize())),
             fee: paid_fee.to_string(),
+            output_review: crate::output_review::outputs(&unsigned_transaction),
         }],
         signing_tasks,
         preview: TransactionPreview {

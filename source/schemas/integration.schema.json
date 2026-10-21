@@ -2243,6 +2243,21 @@
         { "$ref": "#/$defs/cryptoPreview" }
       ]
     },
+    "transactionOutputReview": {
+      "$comment": "Engine-derived local output disclosure. Bound by planHash; not remote metadata, a payment total, a txid, or origin/spendability proof. No raw scripts/witnesses/secrets.",
+      "type": "object", "additionalProperties": false,
+      "required": ["outputIndices", "kind", "nativeValueAtomic", "warnings"],
+      "properties": {
+        "outputIndices": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "integer", "minimum": 0, "maximum": 4294967295 } },
+        "kind": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "assetIdentity": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "amountAtomic": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "recipient": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "nativeValueAtomic": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "warnings": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1, "maxLength": 160 } },
+        "lockTime": { "type": "integer", "minimum": 0, "maximum": 4294967295 }
+      }
+    },
     "transactionTemplate": {
       "type": "object",
       "additionalProperties": false,
@@ -2262,7 +2277,8 @@
           "items": { "$ref": "prepared-transaction.schema.json#/$defs/deferredInput" }
         },
         "templateHash": { "$ref": "common.schema.json#/$defs/hash32" },
-        "fee": { "$ref": "common.schema.json#/$defs/atomicAmount" }
+        "fee": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "outputReview": { "type": "array", "minItems": 1, "maxItems": 10000, "items": { "$ref": "#/$defs/transactionOutputReview" } }
       }
     },
     "transactionSigningTask": {

@@ -12,18 +12,125 @@ struct NativeWorkflowStepUnavailable:Error {fileprivate init(){}}
 struct NativeWorkflowCryptoUnavailable:Error {fileprivate init(){}}
 public struct NativeReview {
  public let operationId:String,origin:String,chainId:String,accountAddress:String,title:String,description:String
+ public var phase:String = "intent-bounded"
+ public var steps:[NativeApprovalStep] = []
+}
+/// Display-only values. A nil amount is unknown, never zero. Integer strings
+/// retain atomic units and must not be parsed through floating point numbers.
+public struct NativeApprovalAsset {
+ public let asset:String,assetId:String?,amountAtomic:String?,amountRule:String,recipient:String?,direction:String
+ public var text:String {"\(asset)\(assetId.map{" [\($0)]"} ?? ""): \(amountAtomic ?? "unknown") atomic (\(amountRule)); \(direction); recipient: \(recipient ?? (direction=="fee" ? "network fee (no recipient output)":"unknown / contract script"))."}
+}
+public struct NativeApprovalStep {
+ public let id:String,kind:String,description:String
+ public let assets:[NativeApprovalAsset],warnings:[String]
+ public var actualFeeAtomic:String? = nil
+ public var transactions:[NativeApprovalTransaction] = []
+ public var transactionsStatus:String = "not-bound"
+}
+/// Per-chain-transaction metadata from an already verified plan. A template
+/// commitment is not a broadcast txid. Aggregate asset flows are never copied
+/// into multiple transactions when the Engine does not attribute them.
+public struct NativeApprovalTransaction {
+ public let id:String,role:String?,dependsOn:[String],templateHash:String?,feeAtomic:String?
+ public let assets:[NativeApprovalAsset],assetsStatus:String,warnings:[String]
+ public var outputs:[NativeApprovalOutput] = []
+ public var outputsStatus:String = "not-available"
+ public var text:String {
+  "Transaction \(id) [\(role ?? "unknown")]; depends on: \(dependsOn.isEmpty ? "none":dependsOn.joined(separator:", ")); network fee: \(feeAtomic ?? "unknown") atomic.\nTemplate commitment (not txid): \(templateHash ?? "unknown")\n" + (outputsStatus != "not-available" ? "Output balances (include self/change/intermediate/pool outputs; not net user payment):\n"+outputs.map{$0.text}.joined(separator:"\n"):assetsStatus == "available" ? assets.map{$0.text}.joined(separator:"\n"):"Per-transaction assets are unavailable; see the step summary, not a per-transaction allocation.")
+ }
+}
+public struct NativeApprovalOutput {
+ public let outputIndices:[Int],kind:String,assetIdentity:String?,amountAtomic:String?,recipient:String?,nativeValueAtomic:String,lockTime:UInt32?,warnings:[String]
+ public var text:String {"Output \(outputIndices.map{String($0)}.joined(separator:",")): \(kind)\(assetIdentity.map{" [\($0)]"} ?? ""); amount \(amountAtomic ?? "unknown") atomic; destination \(recipient ?? "unknown"); native value \(nativeValueAtomic) atomic."+(lockTime.map{" Lock: \($0)."} ?? "")+(warnings.isEmpty ? "":" "+warnings.joined(separator:", "))}
+}
+// Same pure projection for every native wallet and every workflow child. It
+// consumes existing normalized intent or already-bound preview, never HTTP,
+// metadata, raw witnesses, a Vault, a new Engine plan or an approval receipt.
+enum NativeApprovalDisplay {
+ static func warnings(_ request:[String:Any])->[String]{
+  let type=(request["intent"] as? [String:Any])?["type"] as? String ?? ""
+  var out=[String]()
+  if type.hasSuffix(".burn") || type.hasSuffix("-burn"){out.append("ASSET_DESTRUCTION_NO_WITHDRAWAL: Tokens are destroyed; no pool reserves are returned.")}
+  if type.hasSuffix(".lock") || type.hasSuffix("-lock"){out.append("ASSET_LOCKED_UNTIL_CONDITIONS_MET: Spending is restricted until the contract conditions are met.")}
+  if type=="tbc-htlc-claim"{out.append("HTLC_CLAIM_SIGNED_BYTES_DISCLOSE_PREIMAGE: Signed claim bytes disclose the preimage to the requester, even before broadcast. The preimage is never shown here.")}
+  return out
+ }
+ static func intent(_ r:[String:Any],owner:String)->[NativeApprovalAsset]{
+  guard let i=r["intent"] as? [String:Any],let type=i["type"] as? String else{return []}
+  let pool=i["poolContractId"] as? String,id=(i["contractId"] as? String) ?? pool.map{"pool:"+$0}
+  let to=(i["to"] as? String) ?? (i["receiver"] as? String) ?? owner
+  func row(_ asset:String,_ value:Any?,_ rule:String="exact-intent",_ recipient:String?=nil,_ direction:String="send",_ identity:String?=nil)->NativeApprovalAsset{
+   NativeApprovalAsset(asset:asset,assetId:identity ?? (asset=="TBC" ? nil:id),amountAtomic:value as? String,amountRule:rule,recipient:recipient != nil && recipient==pool ? "pool:"+recipient!:recipient ?? to,direction:direction)
+  }
+  var rows=[NativeApprovalAsset]()
+  switch type {
+  case "tbc.transfer": rows=[row("TBC",i["amount"])]
+  case "tbc20.transfer","tbc20Stablecoin.transfer":
+   let family=type=="tbc20.transfer" ? "FT":"Stablecoin"
+   rows=((i["receivers"] as? [[String:Any]]) ?? [["to":to,"amount":i["amount"] as Any]]).map{row(family,$0["amount"],"exact-intent",$0["to"] as? String)}
+  case "tbc721.transfer": rows=[row("NFT","1")]
+  case "tbc20-standard-create":rows=[row("FT",i["initialSupply"],"exact-intent",to,"mint")]
+  case "tbc721-standard-create-collection":rows=[row("NFT collection",i["supply"],"collection-capacity",to,"create")]
+  case "tbc721-standard-mint","tbc721-standard-batch-mint":
+   rows=(type=="tbc721-standard-mint" ? [i]:i["items"] as? [[String:Any]] ?? []).map{row("NFT","1","exact-intent",$0["to"] as? String ?? owner,"mint",i["collectionId"] as? String)}
+  case "tbc.pool.ft.merge","amm.mergeToken":rows=[row("FT",nil,"selected-balance",pool,"pool-self")]
+  case "tbc20-lp-transfer","tbc20Lp.transfer","tbc20-lp-lock","tbc20Lp.lock":rows=[row("LP",i["amount"],"exact-intent",type.hasSuffix("lock") ? owner:to)]
+  case "tbc20-lp-unlock","tbc20Lp.unlock","tbc20-lp-merge","tbc20Lp.merge","tbc.pool.ftlp.merge":rows=[row("LP",nil,"selected-balance",owner,"self")]
+  case "tbc.pool.ftlp.burn","tbc20Lp.burn":rows=[row("LP",nil,"selected-balance","burn (no recipient)","burn")]
+  case "tbc20.merge","tbc20Stablecoin.merge","tbc.maintenance.merge":rows=[row(type=="tbc20.merge" ? "FT":type=="tbc20Stablecoin.merge" ? "Stablecoin":"TBC",nil,"selected-balance",owner,"self")]
+  case "tbc-htlc-lock","tbc-timelock-lock":rows=[row((i["assetStandard"] as? String) ?? "TBC",i["amount"],"exact-intent",to,"lock")]
+  case "tbc-htlc-claim","tbc-htlc-refund","tbc-timelock-unlock":rows=[row((i["assetStandard"] as? String) ?? "TBC",nil,"selected-balance",owner,"receive")]
+  case "tbc-amm-swap","amm.swap":
+   let buying=i["direction"] as? String=="tbc-to-ft"
+   rows=[row(buying ? "TBC":"FT",i["amount"],"exact-intent",pool,"send"),row(buying ? "FT":"TBC",i["minimumOutput"],"minimum",to,"receive")]
+  case "tbc.pool.swap.exactTbcForToken":rows=[row("TBC",i["tbcAmount"],"exact-intent",pool),row("FT",i["minimumFtAmount"],"minimum",to,"receive")]
+  case "tbc.pool.swap.exactTokenForTbc":rows=[row("FT",i["ftAmount"],"exact-intent",pool),row("TBC",i["minimumTbcAmount"],"minimum",to,"receive")]
+  case "tbc-amm-add-liquidity","amm.addLiquidity","tbc.pool.liquidity.add":
+   let native=(i["budgetAsset"] as? String ?? "tbc")=="tbc"
+   rows=[row(native ? "TBC":"FT",i["amount"] ?? i["tbcAmount"],"budget",pool),row(native ? "FT":"TBC",i[native ? "maximumFtAmount":"maximumTbcAmount"],"maximum-or-unknown",pool),row("LP",i["minimumLpAmount"],"minimum",to,"receive")]
+  case "tbc-amm-remove-liquidity","amm.removeLiquidity","tbc.pool.liquidity.remove":rows=[row("LP",i["lpAmount"],"exact-intent",pool),row("TBC",i["minimumTbcAmount"],"minimum",to,"receive"),row("FT",i["minimumFtAmount"],"minimum",to,"receive")]
+  default:break // Specialized descriptions remain present; no inferred amount.
+  }
+  if let p=i["payment"] as? [String:Any]{rows.append(row("TBC",p["amount"],"exact-intent",p["to"] as? String))}
+  return rows
+ }
+ private static let poolTypes:Set<String> = ["tbc-amm-add-liquidity","amm.addLiquidity","tbc-amm-remove-liquidity","amm.removeLiquidity","tbc-amm-swap","amm.swap","tbc.pool.swap.exactTbcForToken","tbc.pool.swap.exactTokenForTbc","tbc.pool.liquidity.add","tbc.pool.liquidity.remove","tbc.pool.ft.merge","amm.mergeToken"]
+ static func bound(_ preview:[String:Any],request:[String:Any]?=nil)->[NativeApprovalAsset]{
+  let intent=request?["intent"] as? [String:Any],pool=intent?["poolContractId"] as? String
+  let poolReference=poolTypes.contains(intent?["type"] as? String ?? "") && pool?.range(of:"^[0-9a-f]{64}$",options:.regularExpression) != nil ? pool.map{"pool:"+$0}:nil
+  return
+  ((preview["assetFlows"] as? [[String:Any]]) ?? []).map{f in
+   NativeApprovalAsset(asset:f["kind"] as? String ?? "unknown",assetId:f["contractId"] as? String,
+    amountAtomic:f["amount"] as? String,amountRule:"bound-plan",recipient:(f["to"] as? String) ?? (f["direction"] as? String=="send" ? poolReference:nil),direction:f["direction"] as? String ?? "unknown")
+  }
+ }
+ static func transactions(_ payload:[String:Any]?,assets:[NativeApprovalAsset],warnings:[String])->[NativeApprovalTransaction]{
+  guard let rows=payload?["transactions"] as? [[String:Any]] else{return []}
+  return rows.map{t in
+   let outputs=(t["outputReview"] as? [[String:Any]])?.map{o in NativeApprovalOutput(outputIndices:(o["outputIndices"] as? [NSNumber])?.map{$0.intValue} ?? [],kind:o["kind"] as? String ?? "unrecognized",assetIdentity:o["assetIdentity"] as? String,amountAtomic:o["amountAtomic"] as? String,recipient:o["recipient"] as? String,nativeValueAtomic:o["nativeValueAtomic"] as? String ?? "unknown",lockTime:(o["lockTime"] as? NSNumber)?.uint32Value,warnings:o["warnings"] as? [String] ?? [])}
+   return NativeApprovalTransaction(id:t["id"] as? String ?? "unknown",role:t["role"] as? String,dependsOn:t["dependsOn"] as? [String] ?? [],templateHash:t["templateHash"] as? String,feeAtomic:t["fee"] as? String,assets:rows.count==1 ? assets:[],assetsStatus:rows.count==1 ? "available":"step-summary-only",warnings:rows.count==1 ? warnings:outputs == nil ? ["PER_TRANSACTION_ASSET_DETAILS_UNAVAILABLE"]:[],outputs:outputs ?? [],outputsStatus:outputs == nil ? "not-available":outputs!.contains{$0.kind=="unrecognized"} ? "partial":"available")
+  }
+ }
+ static func text(_ steps:[NativeApprovalStep])->String{
+  steps.map{s in "Step \(s.id) [\(s.kind)]\n"+s.assets.map{$0.text}.joined(separator:"\n")+(s.actualFeeAtomic.map{"\nActual network fee: \($0) native atomic."} ?? "")+(s.warnings.isEmpty ? "":"\n"+s.warnings.joined(separator:"\n"))+"\nChain transaction details: \(s.transactionsStatus)"+(s.transactions.isEmpty ? "":"\n"+s.transactions.map{$0.text}.joined(separator:"\n"))}.joined(separator:"\n\n")
+ }
 }
 extension NativeWalletProtocol {
  func approvalReview(_ review:NativeReview)->NativeReview{
   guard self == .legacy else{return review}
   return NativeReview(operationId:PermissionJSON.id(rawValue,"review",review.operationId),origin:review.origin,
-   chainId:review.chainId,accountAddress:review.accountAddress,title:"Legacy · "+review.title,description:review.description)
+   chainId:review.chainId,accountAddress:review.accountAddress,title:"Legacy · "+review.title,description:review.description,phase:review.phase,steps:review.steps)
  }
 }
 @MainActor public protocol NativeApprovalPresenter:AnyObject {
  // Trusted UI only. No default approval. Return an idempotent dismissal handle.
  func present(_ review:NativeReview,complete:@escaping @MainActor (Bool)->Void)->@MainActor ()->Void
+ // Informational update of the SAME operation, not another decision. Retain
+ // this in a progress/details view after early consent; never re-open approval.
+ func update(_ review:NativeReview)
 }
+public extension NativeApprovalPresenter {func update(_ review:NativeReview){}}
 @MainActor public protocol NativeDigestSigner:AnyObject {
  // Keys stay in the wallet. Recheck immediately at actual key use, including
  // after an asynchronous unlock. No retry of a consumed task. Reply on MainActor.
@@ -73,6 +180,8 @@ struct NativeCustodyNetworkAuthority {
   weak var workflowParent:Operation?
   var workflowEnvelope:[String:Any]?,signedResults=[String:[String:Any]]()
   var signerUnavailable=false
+  var displayReview:NativeReview?,displayAssets:[NativeApprovalAsset]?,displayWarnings=[String](),displayFee:String?,displayDescription=""
+  var displayTransactions=[NativeApprovalTransaction](),displayTransactionsStatus="not-applicable"
   var cryptoUnavailable=false
   var cryptoResultHash:String?
   // Send-only metadata; signing-only operations allocate no broadcast state.
@@ -524,12 +633,13 @@ struct NativeCustodyNetworkAuthority {
     try need(bindings.count<=1,"NATIVE_WORKFLOW_BINDING")
     for binding in bindings{let source=try map(binding["source"]),parent=try string(source["stepId"]);try need(depends.contains(parent),"NATIVE_WORKFLOW_SOURCE");links.append("After verified completion of \(parent), copy \(try string(source["output"])) to \(try string(binding["target"])).")}
    }
-   descriptions.append("Step \(index+1): \(id). Depends on: \(depends.isEmpty ? "none":depends.joined(separator:", ")).\n"+description+(links.isEmpty ? "":"\n"+links.joined(separator:"\n")))
+   child.displayDescription="Depends on: \(depends.isEmpty ? "none":depends.joined(separator:", ")).\n"+description+(links.isEmpty ? "":"\n"+links.joined(separator:"\n"))
+   descriptions.append("Step \(index+1): \(id). "+child.displayDescription)
   }
   let mode=try string(r["failureMode"] ?? "atomic");try need(["atomic","continue-independent"].contains(mode),"NATIVE_WORKFLOW_MODE")
   o.request=r;o.requestHash=workflow.requestHash
   let execution=NativePrepared.sends(method) ? "The wallet will submit the completed transaction steps as one batch. Unknown submissions are not retried.":"No broadcast; abort cannot undo signatures already returned to this operation."
-  return "Approve one bounded batch of \(workflow.children.count) steps. Total fee at most \(cap) native atomic. Failure mode: \(mode).\n"+execution+"\n\n"+descriptions.joined(separator:"\n\n")
+  return "Approve one bounded batch of \(workflow.children.count) steps. Total fee at most \(cap) native atomic. Failure mode: \(mode).\nOne approval does not guarantee all-or-nothing on-chain execution.\n"+execution+"\n\n"+descriptions.joined(separator:"\n\n")
  }
  // Reusable family validation/projection, without presenting or approving.
  // A workflow can reuse this with privately owned child state; only the outer
@@ -600,7 +710,7 @@ struct NativeCustodyNetworkAuthority {
    _ = try NativeSigningEnvelope.workflow(["kind":"message","message":message],chain:chain,from:o.account.address,origin:o.session.scope["origin"]!)
    description="Ordinary TBC message (\(try string(message["encoding"]))):\n\(try string(message["data"]))"
   }
-  o.request=r
+  o.request=r;o.displayDescription=description
   return description
  }
  func consent(owner:String,scope:[String:String],id:String,method:String,request:[String:Any],context:[String:Any],review:[String:Any]?=nil,
@@ -609,7 +719,21 @@ struct NativeCustodyNetworkAuthority {
   if o.maintenance != nil{try need(hash(request)==o.maintenanceRequestHash,"NATIVE_MERGE_REQUEST")}
   let description=try NativeWorkflow.methods.contains(method) ? describeWorkflow(o,method:method,request:request,context:context,review:review):describeConsent(o,method:method,request:request,context:context,review:review)
   if o.maintenance != nil{try current(o);o.approved=true;complete(.success(true));return}
-  decision(o.session,id,NativeReview(operationId:id,origin:o.session.scope["origin"]!,chainId:chain,accountAddress:o.account.address,title:"Approve request",description:description),finish:{yes in
+  let children=o.workflow?.children ?? [o]
+  let steps=children.enumerated().map{index,child -> NativeApprovalStep in
+   let request=child.request ?? [:],kind=child.method
+   var warnings=NativeApprovalDisplay.warnings(request)
+   if kind=="tbc_signMessage" || kind=="tbc_signTypedData"{warnings.append("SIGNATURE_MAY_AUTHORIZE_ACTIONS: A signature may authorize actions even without a wallet broadcast.")}
+   if kind==NativeReviewed.method{warnings.append("REVIEW_ALL_TRANSACTION_OUTPUTS: Review every output, including scripts without a known address.")}
+   let reviewed=(child.reviewedConsent?["payload"] as? [String:Any])?["preview"] as? [String:Any]
+   return NativeApprovalStep(id:o.workflow?.steps[index]["id"] as? String ?? "1",kind:kind,description:child.displayDescription,
+    assets:reviewed.map{NativeApprovalDisplay.bound($0)} ?? NativeApprovalDisplay.intent(request,owner:child.account.address),
+    warnings:warnings+(reviewed?["warnings"] as? [String] ?? []),actualFeeAtomic:reviewed?["totalFee"] as? String,
+    transactionsStatus:NativePrepared.transaction(kind) || kind==NativeReviewed.method ? "not-bound":"not-applicable")
+  }
+  let display=NativeReview(operationId:id,origin:o.session.scope["origin"]!,chainId:chain,accountAddress:o.account.address,title:"Approve request",description:description+"\n\n"+NativeApprovalDisplay.text(steps)+"\nUnknown amounts are not zero. Bounded intent is checked against the completed plan before signing.",steps:steps)
+  o.displayReview=display
+  decision(o.session,id,display,finish:{yes in
    try self.current(o);o.approved=yes;return yes
   },complete:complete)
  }
@@ -676,7 +800,26 @@ struct NativeCustodyNetworkAuthority {
    try need(["compact64","compact65-recoverable"].contains(encoding) && task["algorithm"] as? String==(encoding=="compact64" ? "secp256k1-ecdsa-sha256d":"secp256k1-recoverable-ecdsa-sha256d"),"NATIVE_TASK_ENCODING")
    try need(!taskId.isEmpty && validated[taskId]==nil,"NATIVE_TASK_DUPLICATE");validated[taskId]=try immutable(task)
   }
+  o.displayAssets=NativeApprovalDisplay.bound(review,request:o.request);o.displayWarnings=review["warnings"] as? [String] ?? [];o.displayFee=review["totalFee"] as? String
+  let displayPayload=plan?["payload"] as? [String:Any]
+  o.displayTransactions=NativeApprovalDisplay.transactions(displayPayload,assets:o.displayAssets ?? [],warnings:o.displayWarnings)
+  o.displayTransactionsStatus=displayPayload?["transactions"] is [[String:Any]] ? "available":(NativePrepared.transaction(o.method) || o.method==NativeReviewed.method ? "not-available":"not-applicable")
   o.expectedTasks=total;o.tasks=validated;return b
+ }
+ private func publishBoundReview(_ o:Operation){
+  guard var display=o.displayReview else{return}
+  let children=o.workflow?.children ?? [o]
+  display.steps=display.steps.enumerated().map{index,step in
+   let child=children[index]
+   return NativeApprovalStep(id:step.id,kind:step.kind,description:step.description,
+    assets:child.displayAssets.flatMap{$0.isEmpty ? nil:$0} ?? step.assets,
+    warnings:Array(Set(step.warnings+child.displayWarnings)).sorted(),actualFeeAtomic:child.displayFee ?? step.actualFeeAtomic,
+    transactions:child.displayTransactions,transactionsStatus:child.displayTransactionsStatus)
+  }
+  display.phase="binding-verified"
+  let updated=NativeReview(operationId:display.operationId,origin:display.origin,chainId:display.chainId,accountAddress:display.accountAddress,title:display.title,
+   description:display.description+"\n\nVerified plan details (not a second approval):\n"+NativeApprovalDisplay.text(display.steps),phase:display.phase,steps:display.steps)
+  approval.update(walletProtocol.approvalReview(updated))
  }
  func bind(owner:String,scope:[String:String],id:String,binding:[String:Any],preview:[String:Any],
   plan:[String:Any]?,envelope:[String:Any]?)throws->[String:Any]{
@@ -684,7 +827,7 @@ struct NativeCustodyNetworkAuthority {
   try need(!NativeWorkflow.methods.contains(o.method),"NATIVE_WORKFLOW_EXECUTION_NOT_INSTALLED")
   let b=try installBoundTasks(o,binding:binding,preview:preview,plan:plan,envelope:envelope),p=try map(b["payload"])
   let receipt=try immutable(["status":"approved","approvalId":UUID().uuidString,"approvalToken":UUID().uuidString,"bindingHash":b["bindingHash"]!,"approvedAt":wireNow(),"expiresAt":p["expiresAt"]!])
-  o.receipt=receipt;return try immutable(receipt)
+  o.receipt=receipt;publishBoundReview(o);try current(o);return try immutable(receipt)
  }
  private func childBinding(_ child:Operation,parent:[String:Any],kind:String,operationHash:String)throws->[String:Any]{
   var p=try map(parent["payload"]);p["method"]=child.method;p["operationKind"]=kind;p["operationHash"]=operationHash;p["requestHash"]=child.requestHash
@@ -748,7 +891,7 @@ struct NativeCustodyNetworkAuthority {
     }else{
      try self.need(Date()<expiry,"NATIVE_EXPIRED")
      let receipt=try self.immutable(["status":"approved","approvalId":UUID().uuidString,"approvalToken":UUID().uuidString,"bindingHash":b["bindingHash"]!,"approvedAt":self.wireNow(),"expiresAt":p["expiresAt"]!])
-     workflow.bound=bound;o.receipt=receipt;for child in workflow.children{child.receipt=receipt};result(.success(try self.immutable(receipt)))
+     workflow.bound=bound;o.receipt=receipt;for child in workflow.children{child.receipt=receipt};self.publishBoundReview(o);try self.current(o);result(.success(try self.immutable(receipt)))
     }
    }catch{result(.failure(error))}
   }
@@ -1189,15 +1332,15 @@ struct NativeCustodyNetworkAuthority {
    let volume=try amount(o["saleVolume"]),price=try amount(o["unitPrice"]),rate=try amount(o["feeRate"])
    try need(volume>0 && price>0 && [volume,price,rate].allSatisfy{$0<=9223372036854775807},"LOP_AMOUNT")
    let escrow=side=="sell" ? "\(volume) base atomic":"floor(\(volume) * \(price) / 1000000) quote atomic"
-   let deposits=(side=="sell" && market=="native-token") ? "":"\nToken escrow also uses native contract deposits (300 order atomic and 500 per token holding), separate from network fees."
-   return "Create LOP \(side) order (\(market)).\nOwner: \(owner).\nBase: \(base).\nQuote: \(quote).\nVolume: \(volume) base atomic; unit price: \(price) / 1000000 quote atomic per base atomic.\nEscrow: \(escrow).\nSettlement fee rate: \(rate) / 1000000; fee recipient: \(try string(o["feeRecipient"])).\nOrder terms are committed on chain; a later match may partially fill this order. Only the owner can cancel remaining escrow."+deposits
+   let deposits=(side=="sell" && market=="native-token") ? "":"\nToken orders also use native contract deposits (300 order atomic and 500 per token holding), separate from network fees."
+   return "Create LOP \(side) order (\(market)).\nOwner: \(owner).\nBase: \(base).\nQuote: \(quote).\nVolume: \(volume) base atomic; unit price: \(price) / 1000000 quote atomic per base atomic.\nOrder amount: \(escrow).\nSettlement fee rate: \(rate) / 1000000; fee recipient: \(try string(o["feeRecipient"])).\nOnly the owner can cancel the remaining order."+deposits
   }
   let cancel=i["type"] as? String=="tbc-lop-cancel"
   guard let points=i["targetOutpoints"] as? [[String:Any]] else{throw NativeCustodyFailure(code:"LOP_SELECTION")}
   try need(points.count==(cancel ? 1:2),"LOP_SELECTION")
   let labels=try points.map{p in let id=try string(p["txid"]),vout=try integer(p["vout"]);_ = try digest(id);try need(vout>=0 && vout<=4294967295,"LOP_SELECTION");return "\(id):\(vout)"}
   try need(Set(labels).count==labels.count,"LOP_SELECTION")
-  let detail=cancel ? "Cancel only this exact order and return remaining escrow to the same owner: \(owner).":"Match only these exact orders in buy/sell order. Matcher and network fee payer: \(owner). Committed order owners, assets, price, settlement fees and any remaining order are validated; they cannot be overridden. The matcher must differ from both order owners."
+  let detail=cancel ? "Cancel only this exact order and return its remaining assets to the same owner: \(owner).":"Match only these exact orders in buy/sell order. Matcher and network fee payer: \(owner). Committed order owners, assets, price, settlement fees and any remaining order are validated; they cannot be overridden. The matcher must differ from both order owners."
   return "LOP\n\(detail)\n\(labels.joined(separator:"\n"))\nFresh order and paired asset availability are checked before signing. No other orders are swept."
  }
  private func htlcDescription(_ i:[String:Any],_ r:[String:Any],_ owner:String)throws->String{

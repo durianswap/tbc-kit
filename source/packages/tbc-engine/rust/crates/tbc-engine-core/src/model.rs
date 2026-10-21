@@ -470,6 +470,10 @@ pub(crate) struct TransactionTemplate {
     pub deferred_inputs: Option<Vec<DeferredTransactionInput>>,
     pub template_hash: String,
     pub fee: String,
+    /// Local output projection, committed by plan_hash. No remote metadata or
+    /// origin/spendability claim; the planner/finalizer retain their checks.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub output_review: Vec<crate::output_review::OutputReview>,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]

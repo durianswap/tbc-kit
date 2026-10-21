@@ -415,6 +415,8 @@ export {
   type TbcApprovalPresentationField,
   type TbcApprovalPresentationSource,
   type TbcApprovalPresentationStep,
+  type TbcApprovalPresentationTransaction,
+  type TbcApprovalPresentationOutput,
 } from "./approval-presentation.js";
 export {
   createLegacyFtCreateIntentResolver,

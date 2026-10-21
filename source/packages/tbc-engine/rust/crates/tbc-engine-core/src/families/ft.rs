@@ -1653,6 +1653,7 @@ pub(crate) fn finish_profile_plan(
             },
             template_hash: hex(&Sha256::digest(preview.serialize())),
             fee: fee.to_string(),
+            output_review: crate::output_review::outputs(preview),
         })
         .collect::<Vec<_>>();
     let signing_tasks = signing_accounts.tasks(&signing_stage)?;

@@ -1187,6 +1187,17 @@ type IntegrationSwitchChainPreview = ({
   readonly "warnings": IntegrationWarningArray;
 });
 
+type IntegrationTransactionOutputReview = ({
+  readonly "amountAtomic"?: CommonAtomicAmount;
+  readonly "assetIdentity"?: (string);
+  readonly "kind": (string);
+  readonly "lockTime"?: (number);
+  readonly "nativeValueAtomic": CommonAtomicAmount;
+  readonly "outputIndices": (readonly ((number))[]);
+  readonly "recipient"?: (string);
+  readonly "warnings": (readonly ((string))[]);
+});
+
 type IntegrationTransactionPreview = (unknown) & (unknown) & ({
   readonly "artifactIds"?: (readonly (CommonHash32)[]);
   readonly "assetFlows": (readonly (IntegrationAssetFlow)[]);
@@ -1239,6 +1250,7 @@ type IntegrationTransactionTemplate = ({
   readonly "dependsOn": (readonly (CommonLocalId)[]);
   readonly "fee": CommonAtomicAmount;
   readonly "id": CommonLocalId;
+  readonly "outputReview"?: (readonly (IntegrationTransactionOutputReview)[]);
   readonly "role": "primary" | "prerequisite" | "maintenance";
   readonly "templateHash": CommonHash32;
   readonly "unsignedTransaction": CommonRawTransaction;

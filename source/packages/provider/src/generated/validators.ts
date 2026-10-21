@@ -3,7 +3,7 @@
 // Candidate: 1.0.0-candidate.3
 // Schema bundle: 93fb6e69052f4e05de5d69fd8cb8d5cc66aa019090c24cf4d1c36f82a0ea24b8
 // Registry bundle: a2cc11861c50a6e38212bbd971a24d0f4f0349309f24e6ccd777fd98dc9ee92b
-import validateBundle from "./validators/bundle.js";
+import { validate as validateBundle } from "./validators/bundle.js";
 
 type GeneratedValidator = ((value: unknown) => boolean) & { readonly errors?: unknown };
 

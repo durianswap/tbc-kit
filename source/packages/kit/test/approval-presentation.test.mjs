@@ -472,7 +472,7 @@ test("formal Prepared workflow presentation preserves one batch, per-step fees, 
   assert.equal(model.assets[1].symbol.status, "unknown");
   assert.deepEqual(model.steps[0].businessTerms.value, request.steps[0].intent);
   assert.deepEqual(model.steps[1].businessTerms.value, request.steps[1].intent);
-  assert.deepEqual(model.warnings, ["MULTI_TRANSACTION"]);
+  assert.deepEqual(model.warnings, ["MULTI_TRANSACTION", "BATCH_NOT_ATOMIC"]);
   for (const exact of [true, false]) {
     const multi = structuredClone(planPayload);
     const create = multi.transactionPlans[0].plan.payload;
@@ -627,6 +627,45 @@ test("early preparation projection remains explicitly non-authorizing and does n
   assert.ok(model.unknown.includes("assets"));
 });
 
+test("early mixed batch keeps every bound intent and step risk without inventing asset flows", () => {
+  const request = { chainId: CHAIN_ID, from: FROM, maxTotalFee: "200", steps: [
+    {id:"transfer",kind:"transaction",dependsOn:[],intent:{version:"1.0",type:"tbc.transfer",to:TO,amount:"123"}},
+    {id:"burn",kind:"transaction",dependsOn:[],intent:{version:"1.0",type:"tbc20Lp.burn",poolContractId:"ab".repeat(32)}},
+    {id:"message",kind:"message",dependsOn:[],message:{encoding:"utf8",data:"Only this message"}},
+  ]};
+  const model=projectTbcApprovalPreparation({method:"tbc_signWorkflow",operationKind:"workflow",requestHash:hashCanonical(request),request,warningScope:[],expiresAt:Date.parse(EXPIRES)});
+  assert.equal(model.steps.length,3);
+  assert.equal(model.counts.steps.value,3);
+  assert.equal(model.steps[0].businessTerms.value.to,TO);
+  assert.equal(model.steps[0].businessTerms.value.amount,"123");
+  assert.deepEqual(model.steps[0].assets,[]);
+  assert.ok(model.steps[1].warnings.includes("ASSET_DESTRUCTION_NO_WITHDRAWAL"));
+  assert.ok(model.steps[2].warnings.includes("SIGNATURE_MAY_AUTHORIZE_ACTIONS"));
+  assert.ok(!model.steps[0].warnings.includes("ASSET_DESTRUCTION_NO_WITHDRAWAL"));
+  assert.equal(model.steps[0].actualFeeAtomic.status,"unknown");
+  assert.throws(()=>model.steps[0].businessTerms.value.amount="999",TypeError);
+});
+
+test("reviewed batch assets, recipients, fee and warnings come from the exact bound child preview",()=>{
+  const rawRequest={txraws:["00000000"],utxos_satoshis:[[1]],script_pubkeys:[["51"]]};
+  const request={chainId:CHAIN_ID,from:FROM,steps:[{id:"raw",kind:"reviewedTransaction",dependsOn:[],request:rawRequest}]};
+  const child={operationKind:"transaction",totalFee:"80",transactionCount:1,warnings:["LOCKED_ASSET"],irreversible:true,
+    assetFlows:[{kind:"ft",direction:"send",amount:"9876543210123456789",contractId:"ab".repeat(32),from:FROM,to:TO}]};
+  const preview={operationKind:"workflow",failureMode:"atomic",bindings:[],totalFee:"80",warnings:["LOCKED_ASSET"],steps:[{id:"raw",kind:"reviewedTransaction",dependsOn:[],reviewedTransactionPreview:child}]};
+  const evidence=formalEvidence({method:"tbc_signWorkflow",operationKind:"workflow",request,preview,
+    planPayload:{requestHash:hashCanonical(request),preview,transactionPlans:[],reviewedTransactionTasks:[{requestHash:hashCanonical(rawRequest)}]},planKey:"workflowPlanHash"});
+  const model=projectTbcApprovalPresentation(evidence),step=model.steps[0];
+  assert.equal(step.assets[0].amount.atomic,"9876543210123456789");
+  assert.equal(step.assets[0].to.value,TO);
+  assert.equal(step.assets[0].contractId.value,"ab".repeat(32));
+  assert.equal(step.actualFeeAtomic.value,"80");
+  assert.ok(step.warnings.includes("LOCKED_ASSET"));
+  assert.equal(model.assets.length,1);
+  assert.deepEqual(renderApprovalPresentation(model).steps[0].warnings,step.warnings);
+  const changed=structuredClone(evidence);changed.params.preview.steps[0].reviewedTransactionPreview.assetFlows[0].to=FROM;
+  assert.throws(()=>projectTbcApprovalPresentation(changed),ApprovalHostEvidenceConflictError);
+});
+
 test("business terms preserve exact bound swap, liquidity, NFT and FT approval clauses", () => {
   const intents = [
     { version: "1.0", type: "tbc.pool.swap.tbcForToken", poolContractId: "11".repeat(32), tbcAmount: "1000", minimumTokenAmount: "900", receiver: TO },
@@ -655,4 +694,100 @@ test("formal projection consumes the real Host-reader envelope shape, not a fabr
   assert.equal(evidence.operation.method, undefined);
   assert.equal(evidence.payload.operation.method, "tbc_signTransaction");
   assert.equal(projectTbcApprovalPresentation(evidence).businessType.value, "tbc.transfer");
+});
+
+test("chain transaction rows retain commitments and fees without duplicating aggregate assets", () => {
+  const request={version:"1.0",chainId:CHAIN_ID,from:FROM,intent:{version:"1.0",type:"tbc20.transfer",contractId:"ab".repeat(32),receivers:[{to:TO,amount:"6016"}]}};
+  const preview={operationKind:"transaction",assetFlows:[{kind:"ft",direction:"send",amount:"6016",to:TO}],totalFee:"2092",transactionCount:2,warnings:[],irreversible:true};
+  const transactions=[
+    {id:"maintenance",role:"maintenance",dependsOn:[],templateHash:"01".repeat(32),fee:"800"},
+    {id:"primary",role:"primary",dependsOn:["maintenance"],templateHash:"02".repeat(32),fee:"1292"},
+  ];
+  const evidence=formalEvidence({method:"tbc_signTransaction",operationKind:"transaction",request,preview,
+    planPayload:{requestHash:hashCanonical(request),preview,transactions,signingTasks:[]},planKey:"planHash"});
+  const model=projectTbcApprovalPresentation(evidence),rendered=renderApprovalPresentation(model);
+  assert.equal(model.transactionsStatus,"available");
+  assert.equal(model.transactions.length,2);
+  assert.equal(model.assets[0].amount.atomic,"6016");
+  model.transactions.forEach((row,index)=>{
+    assert.equal(row.id,transactions[index].id);
+    assert.equal(row.role.value,transactions[index].role);
+    assert.deepEqual(row.dependsOn,transactions[index].dependsOn);
+    assert.equal(row.templateHash.value,transactions[index].templateHash);
+    assert.equal(row.feeAtomic.value,transactions[index].fee);
+    assert.equal(row.assetsStatus,"step-summary-only");
+    assert.deepEqual(row.assets,[]);
+    assert.deepEqual(row.warnings,["PER_TRANSACTION_ASSET_DETAILS_UNAVAILABLE"]);
+  });
+  assert.equal(rendered.transactions[1].feeAtomic.value,"1292");
+  assert.throws(()=>model.transactions[0].dependsOn.push("changed"),TypeError);
+  const changed=structuredClone(evidence);changed.memory.executionPlan.payload.transactions[1].fee="0";
+  assert.throws(()=>projectTbcApprovalPresentation(changed),ApprovalHostEvidenceConflictError);
+});
+
+test("AMM destination fallback uses only the bound pool and does not replace recipients or network fees",()=>{
+  const pool="ab".repeat(32);
+  for(const type of ["tbc-amm-add-liquidity","tbc-amm-remove-liquidity","tbc-amm-swap","tbc.transfer"]){
+    const request={version:"1.0",chainId:CHAIN_ID,from:FROM,intent:{version:"1.0",type,poolContractId:pool}};
+    const preview={operationKind:"transaction",assetFlows:[
+      {kind:"native",direction:"send",amount:"100"},
+      {kind:"ft",direction:"send",amount:"200",to:TO},
+      {kind:"native",direction:"fee",amount:"80"},
+      {kind:"ft",direction:"receive",amount:"2"},
+    ],totalFee:"80",transactionCount:1,warnings:[],irreversible:true};
+    const model=projectTbcApprovalPresentation(formalEvidence({method:"tbc_signTransaction",operationKind:"transaction",request,preview,
+      planPayload:{requestHash:hashCanonical(request),preview,transactions:[{id:"primary",fee:"80",dependsOn:[]}],signingTasks:[]},planKey:"planHash"}));
+    if(type==="tbc.transfer")assert.equal(model.assets[0].to.status,"unknown");
+    else assert.deepEqual(model.assets[0].to,{status:"known",value:`pool:${pool}`,source:"bound-request"});
+    assert.equal(model.assets[1].to.value,TO);
+    assert.equal(model.assets[2].to.status,"unknown");
+    assert.equal(model.assets[3].to.status,"unknown");
+    assert.equal(model.transactions[0].assetsStatus,"available");
+    assert.deepEqual(model.transactions[0].assets,model.assets);
+  }
+});
+
+test("preparation distinguishes unknown transaction details and retains only required risks",()=>{
+  const request={chainId:CHAIN_ID,from:FROM,steps:[
+    {id:"order",kind:"transaction",dependsOn:[],intent:{type:"tbc-lop-create"}},
+    {id:"lock",kind:"transaction",dependsOn:[],intent:{type:"tbc20Lp.lock"}},
+    {id:"message",kind:"message",dependsOn:[],message:{encoding:"utf8",data:"hello"}},
+  ]};
+  const model=projectTbcApprovalPreparation({method:"tbc_signWorkflow",operationKind:"workflow",requestHash:hashCanonical(request),request,warningScope:[],expiresAt:Date.parse(EXPIRES)});
+  assert.equal(model.steps[0].transactionsStatus,"not-bound");
+  assert.deepEqual(model.steps[0].transactions,[]);
+  assert.deepEqual(model.steps[0].warnings,[]);
+  assert.ok(model.steps[1].warnings.includes("ASSET_LOCKED_UNTIL_CONDITIONS_MET"));
+  assert.ok(model.steps[2].warnings.includes("SIGNATURE_MAY_AUTHORIZE_ACTIONS"));
+  assert.equal(model.steps[2].transactionsStatus,"not-applicable");
+  assert.ok(model.warnings.includes("BATCH_NOT_ATOMIC"));
+});
+
+test("each chain transaction discloses bound output balances without duplicating user debits",()=>{
+ const request={version:'1.0',chainId:CHAIN_ID,from:FROM,intent:{type:'tbc.ft.transfer',to:TO,amount:'123'}};
+ const preview={operationKind:'transaction',assetFlows:[],totalFee:'100',transactionCount:2,warnings:[],irreversible:true};
+ const output=(indices,amount,recipient)=>({outputIndices:indices,kind:'tbc20-standard',assetIdentity:'code-identity:'+ 'ab'.repeat(32),amountAtomic:amount,recipient,nativeValueAtomic:'500',warnings:[]});
+ const transactions=[{id:'merge',dependsOn:[],fee:'50',outputReview:[output([0,1],'9007199254740993123',FROM)]},
+  {id:'primary',dependsOn:['merge'],fee:'50',outputReview:[output([0,1],'123',TO),output([2,3],'9007199254740993000',FROM)]}];
+ const payload={requestHash:hashCanonical(request),preview,transactions,signingTasks:[]};
+ const evidence=formalEvidence({method:'tbc_signTransaction',operationKind:'transaction',request,preview,planPayload:payload,planKey:'planHash'});
+ const model=projectTbcApprovalPresentation(evidence);
+ assert.equal(model.transactions[0].outputsStatus,'available');
+ assert.equal(model.transactions[0].outputs[0].amountAtomic.value,'9007199254740993123');
+ assert.equal(model.transactions[1].outputs[0].recipient.value,TO);
+ assert.equal(model.transactions[1].outputs[1].recipient.value,FROM);
+ assert.deepEqual(model.transactions[1].assets,[]);
+ assert.deepEqual(renderApprovalPresentation(model).transactions[1].outputs,model.transactions[1].outputs);
+ assert.throws(()=>model.transactions[0].outputs[0].outputIndices.push(3),TypeError);
+ for(const field of ['amountAtomic','recipient','assetIdentity']){
+  const changed=structuredClone(evidence);changed.memory.executionPlan.payload.transactions[1].outputReview[0][field]='changed';
+  assert.throws(()=>projectTbcApprovalPresentation(changed),ApprovalHostEvidenceConflictError);
+ }
+ const partial=structuredClone(payload);partial.transactions[0].outputReview=[{outputIndices:[0],kind:'unrecognized',nativeValueAtomic:'42',warnings:['OUTPUT_ASSET_DETAILS_UNAVAILABLE']}];
+ const p=projectTbcApprovalPresentation(formalEvidence({method:'tbc_signTransaction',operationKind:'transaction',request,preview,planPayload:partial,planKey:'planHash'}));
+ assert.equal(p.transactions[0].outputsStatus,'partial');assert.equal(p.transactions[0].outputs[0].amountAtomic.status,'unknown');assert.equal(p.transactions[0].outputs[0].nativeValueAtomic,'42');
+ for(const indices of [[1],[0,0],[0,2]]){
+  const malformed=structuredClone(payload);malformed.transactions[0].outputReview[0].outputIndices=indices;
+  assert.throws(()=>projectTbcApprovalPresentation(formalEvidence({method:'tbc_signTransaction',operationKind:'transaction',request,preview,planPayload:malformed,planKey:'planHash'})),ApprovalHostEvidenceConflictError);
+ }
 });

@@ -1,0 +1,20 @@
+import {readFile,mkdir,copyFile,writeFile} from 'node:fs/promises';
+import {execFile} from 'node:child_process';
+import {promisify} from 'node:util';
+import {resolve,join} from 'node:path';
+import {homedir} from 'node:os';
+import {writeWorkflowFixture} from './approval_display_fixture.mjs';
+const run=promisify(execFile),root=resolve(process.argv[2]),variant=process.argv[3]??'candidate';
+if(!['candidate','baseline'].includes(variant))throw Error('Bad variant');
+const b=JSON.parse(await readFile(join(root,variant,'build.json'))),ios='C2C010B8-4071-4888-9E25-D91BF88EB461',serial='emulator-5556',adb=join(homedir(),'Library/Android/sdk/platform-tools/adb');
+const opts={timeout:60000,maxBuffer:500000},android=args=>run(adb,['-s',serial,...args],opts);
+await Promise.all([run('xcrun',['simctl','install',ios,b.app],opts),android(['install','-r',b.apk])]);
+const container=(await run('xcrun',['simctl','get_app_container',ios,b.bundleId,'data'],opts)).stdout.trim();
+const fixture=join(root,variant,'workflow.json');await writeWorkflowFixture(fixture);
+await mkdir(join(container,'Documents'),{recursive:true});await copyFile(fixture,join(container,'Documents/workflow.json'));
+await android(['push',fixture,'/data/local/tmp/approval-display-fixture.json']);await android(['shell','run-as',b.androidId,'mkdir','-p','files']);await android(['shell','run-as',b.androidId,'cp','/data/local/tmp/approval-display-fixture.json','files/workflow.json']);
+try{await run('xcrun',['simctl','terminate',ios,b.bundleId],opts);}catch{}
+await android(['shell','am','force-stop',b.androidId]);
+await Promise.all([run('xcrun',['simctl','launch',ios,b.bundleId],opts),android(['shell','am','start','-W','-n',b.androidId+'/io.tbc.kit.dart.DisplayActivity'])]);
+await writeFile(join(root,variant,'devices.json'),JSON.stringify({ios,serial,container,iosReport:join(container,'Documents/report.json'),androidPackage:b.androidId},null,2));
+console.log(JSON.stringify({variant,ios,serial,container}));

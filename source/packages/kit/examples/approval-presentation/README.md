@@ -13,7 +13,8 @@ pattern and must not be copied to fabricate a Host envelope:
 
 - `projectTbcApprovalPreparation(...)` renders the exact early intent scope
   without waiting for Chain Data or planning. It is explicitly non-authorizing
-  and leaves actual fee, asset flows, step count and signing count unknown.
+  and lists requested steps and risk notices. Actual fee, asset flows and
+  signing count remain unknown; requested step count is already known.
 - `projectTbcApprovalPresentation(...)` consumes the exact formal Host evidence
   returned by `createApprovalHostEvidenceReader(...).read(callId, bindingHash)`.
   It verifies Core binding, request, plan and preview hashes before returning a
@@ -35,6 +36,30 @@ mixed workflows can render their actual message, typed-data, binding and raw
 transaction details without another read. `renderer.mjs` renders workflow
 ownership from `steps[]`; its top-level `summaryAssets` is intentionally only
 an aggregate.
+
+Render each step's `warnings` rather than only the batch warning list. The
+reviewed-transaction step includes its own bound outputs; it must not disappear
+from a mixed batch's asset summary. Use scrollable details for all recipients
+and full asset identifiers, without silently truncating the last steps.
+
+Render `transactions` within each transaction step (or at the root for a single
+transaction request). These are chain-transaction rows, not workflow steps:
+show the ID, role, dependencies, network fee and template commitment. A template
+commitment is **not a txid**. `transactionsStatus` distinguishes not-yet-bound,
+available, unavailable and non-transaction operations.
+
+The Engine's aggregate `assetFlows` remain `assetsStatus = step-summary-only`
+for a multi-transaction step. Separate `outputs` now disclose each transaction's
+output groups, balances, destination references, locks and warnings. These
+include change, intermediate funding and pool reserves: do not sum them as user
+debits. `outputsStatus = partial` means some script details remain unknown;
+retain that warning and the known native value. Never repeat step totals on
+every transaction or pretend unfamiliar scripts are fully classified.
+Keep the step asset summary and specialized review visible. Single-transaction
+steps can attribute that summary to their one transaction. For known AMM/Pool
+operations, a missing send destination retains `pool:<poolContractId>` from the
+verified bound request; explicit destinations and network-fee rows are unchanged.
+The pool reference is not an address. These projections add no API reads.
 
 The unified model does not replace specialized permission, message,
 typed-data, dynamic-binding, reviewed-raw-transaction, associated-input or

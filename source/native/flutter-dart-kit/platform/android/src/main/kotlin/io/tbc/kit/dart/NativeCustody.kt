@@ -16,8 +16,83 @@ class NativeWorkflowStepUnavailable internal constructor():Exception()
 class NativeWorkflowCryptoUnavailable internal constructor():Exception()
 data class NativeReview(
  val operationId:String,val origin:String,val chainId:String,val accountAddress:String,
- val title:String,val description:String
+ val title:String,val description:String,val phase:String="intent-bounded",val steps:List<NativeApprovalStep> = emptyList()
 )
+/** Display-only atomic integer strings; null is unknown, never zero. */
+data class NativeApprovalAsset(val asset:String,val assetId:String?,val amountAtomic:String?,val amountRule:String,val recipient:String?,val direction:String){
+ val text:String get()="$asset${assetId?.let{" [$it]"}?:""}: ${amountAtomic?:"unknown"} atomic ($amountRule); $direction; recipient: ${recipient?:if(direction=="fee")"network fee (no recipient output)" else "unknown / contract script"}."
+}
+data class NativeApprovalStep(val id:String,val kind:String,val description:String,val assets:List<NativeApprovalAsset>,val warnings:List<String>,val actualFeeAtomic:String?=null,
+ val transactions:List<NativeApprovalTransaction> = emptyList(),val transactionsStatus:String="not-bound")
+/** Verified plan metadata; templateHash is not a broadcast txid. */
+data class NativeApprovalTransaction(val id:String,val role:String?,val dependsOn:List<String>,val templateHash:String?,val feeAtomic:String?,val assets:List<NativeApprovalAsset>,val assetsStatus:String,val warnings:List<String>,val outputs:List<NativeApprovalOutput> = emptyList(),val outputsStatus:String="not-available"){
+ val text:String get()="Transaction $id [${role?:"unknown"}]; depends on: ${if(dependsOn.isEmpty())"none" else dependsOn.joinToString(", ")}; network fee: ${feeAtomic?:"unknown"} atomic.\nTemplate commitment (not txid): ${templateHash?:"unknown"}\n"+(if(outputsStatus!="not-available")"Output balances (include self/change/intermediate/pool outputs; not net user payment):\n"+outputs.joinToString("\n"){it.text}else if(assetsStatus=="available")assets.joinToString("\n"){it.text}else "Per-transaction assets are unavailable; see the step summary, not a per-transaction allocation.")
+}
+data class NativeApprovalOutput(val outputIndices:List<Int>,val kind:String,val assetIdentity:String?,val amountAtomic:String?,val recipient:String?,val nativeValueAtomic:String,val lockTime:Long?,val warnings:List<String>){
+ val text:String get()="Output ${outputIndices.joinToString(",")}: $kind${assetIdentity?.let{" [$it]"}?:""}; amount ${amountAtomic?:"unknown"} atomic; destination ${recipient?:"unknown"}; native value $nativeValueAtomic atomic."+(lockTime?.let{" Lock: $it."}?:"")+(if(warnings.isEmpty())"" else " "+warnings.joinToString(", "))
+}
+// Pure package projection. No HTTP, metadata, witnesses, Vault, planning or receipt.
+internal object NativeApprovalDisplay {
+ fun warnings(request:Map<String,Any?>):List<String>{
+  val type=(request["intent"] as? Map<*,*>)?.get("type") as? String?:""
+  val out=mutableListOf<String>()
+  if(type.endsWith(".burn")||type.endsWith("-burn"))out+="ASSET_DESTRUCTION_NO_WITHDRAWAL: Tokens are destroyed; no pool reserves are returned."
+  if(type.endsWith(".lock")||type.endsWith("-lock"))out+="ASSET_LOCKED_UNTIL_CONDITIONS_MET: Spending is restricted until the contract conditions are met."
+  if(type=="tbc-htlc-claim")out+="HTLC_CLAIM_SIGNED_BYTES_DISCLOSE_PREIMAGE: Signed claim bytes disclose the preimage to the requester, even before broadcast. The preimage is never shown here."
+  return out.toList()
+ }
+ fun intent(r:Map<String,Any?>,owner:String):List<NativeApprovalAsset>{
+  val i=r["intent"] as? Map<*,*>?:return emptyList();val type=i["type"] as? String?:return emptyList()
+  val pool=i["poolContractId"] as? String;val id=(i["contractId"] as? String)?:pool?.let{"pool:$it"}
+  val to=(i["to"] as? String)?:(i["receiver"] as? String)?:owner
+  fun row(asset:String,value:Any?,rule:String="exact-intent",recipient:String?=null,direction:String="send")=
+   NativeApprovalAsset(asset,if(asset=="TBC")null else id,value as? String,rule,if(recipient!=null&&recipient==pool)"pool:$recipient" else recipient?:to,direction)
+  val result=when(type){
+   "tbc.transfer"->listOf(row("TBC",i["amount"]))
+   "tbc20.transfer","tbc20Stablecoin.transfer"->{
+    val family=if(type=="tbc20.transfer")"FT" else "Stablecoin"
+    ((i["receivers"] as? List<*>)?:listOf(mapOf("to" to to,"amount" to i["amount"]))).map{val r=it as Map<*,*>;row(family,r["amount"],"exact-intent",r["to"] as? String)}
+   }
+   "tbc721.transfer"->listOf(row("NFT","1"))
+   "tbc20-standard-create"->listOf(row("FT",i["initialSupply"],"exact-intent",to,"mint"))
+   "tbc721-standard-create-collection"->listOf(row("NFT collection",i["supply"],"collection-capacity",to,"create"))
+   "tbc721-standard-mint","tbc721-standard-batch-mint"->(if(type=="tbc721-standard-mint")listOf(i)else (i["items"] as? List<*>)?:emptyList<Any>()).map{val item=it as Map<*,*>;row("NFT","1","exact-intent",item["to"] as? String?:owner,"mint").copy(assetId=i["collectionId"] as? String)}
+   "tbc.pool.ft.merge","amm.mergeToken"->listOf(row("FT",null,"selected-balance",pool,"pool-self"))
+   "tbc20-lp-transfer","tbc20Lp.transfer","tbc20-lp-lock","tbc20Lp.lock"->listOf(row("LP",i["amount"],"exact-intent",if(type.endsWith("lock"))owner else to))
+   "tbc20-lp-unlock","tbc20Lp.unlock","tbc20-lp-merge","tbc20Lp.merge","tbc.pool.ftlp.merge"->listOf(row("LP",null,"selected-balance",owner,"self"))
+   "tbc.pool.ftlp.burn","tbc20Lp.burn"->listOf(row("LP",null,"selected-balance","burn (no recipient)","burn"))
+   "tbc20.merge","tbc20Stablecoin.merge","tbc.maintenance.merge"->listOf(row(if(type=="tbc20.merge")"FT" else if(type=="tbc20Stablecoin.merge")"Stablecoin" else "TBC",null,"selected-balance",owner,"self"))
+   "tbc-htlc-lock","tbc-timelock-lock"->listOf(row((i["assetStandard"] as? String)?:"TBC",i["amount"],"exact-intent",to,"lock"))
+   "tbc-htlc-claim","tbc-htlc-refund","tbc-timelock-unlock"->listOf(row((i["assetStandard"] as? String)?:"TBC",null,"selected-balance",owner,"receive"))
+   "tbc-amm-swap","amm.swap"->{val buying=i["direction"]=="tbc-to-ft";listOf(row(if(buying)"TBC" else "FT",i["amount"],"exact-intent",pool),row(if(buying)"FT" else "TBC",i["minimumOutput"],"minimum",to,"receive"))}
+   "tbc.pool.swap.exactTbcForToken"->listOf(row("TBC",i["tbcAmount"],"exact-intent",pool),row("FT",i["minimumFtAmount"],"minimum",to,"receive"))
+   "tbc.pool.swap.exactTokenForTbc"->listOf(row("FT",i["ftAmount"],"exact-intent",pool),row("TBC",i["minimumTbcAmount"],"minimum",to,"receive"))
+   "tbc-amm-add-liquidity","amm.addLiquidity","tbc.pool.liquidity.add"->{
+    val native=(i["budgetAsset"]?:"tbc")=="tbc"
+    listOf(row(if(native)"TBC" else "FT",i["amount"]?:i["tbcAmount"],"budget",pool),row(if(native)"FT" else "TBC",i[if(native)"maximumFtAmount" else "maximumTbcAmount"],"maximum-or-unknown",pool),row("LP",i["minimumLpAmount"],"minimum",to,"receive"))
+   }
+   "tbc-amm-remove-liquidity","amm.removeLiquidity","tbc.pool.liquidity.remove"->listOf(row("LP",i["lpAmount"],"exact-intent",pool),row("TBC",i["minimumTbcAmount"],"minimum",to,"receive"),row("FT",i["minimumFtAmount"],"minimum",to,"receive"))
+   else->emptyList() // Specialized descriptions remain; never infer a quantity.
+  }
+  val payment=(i["payment"] as? Map<*,*>)?.let{listOf(row("TBC",it["amount"],"exact-intent",it["to"] as? String))}?:emptyList()
+  return java.util.Collections.unmodifiableList(result+payment)
+ }
+ private val poolTypes=setOf("tbc-amm-add-liquidity","amm.addLiquidity","tbc-amm-remove-liquidity","amm.removeLiquidity","tbc-amm-swap","amm.swap","tbc.pool.swap.exactTbcForToken","tbc.pool.swap.exactTokenForTbc","tbc.pool.liquidity.add","tbc.pool.liquidity.remove","tbc.pool.ft.merge","amm.mergeToken")
+ fun bound(preview:Map<String,Any?>,request:Map<String,Any?>?=null):List<NativeApprovalAsset>{
+  val intent=request?.get("intent") as? Map<*,*>;val pool=intent?.get("poolContractId") as? String
+  val poolReference=if(intent?.get("type") in poolTypes&&pool?.matches(Regex("^[0-9a-f]{64}$"))==true)"pool:$pool" else null
+  return java.util.Collections.unmodifiableList(((preview["assetFlows"] as? List<*>)?:emptyList<Any>()).map{
+   val f=it as Map<*,*>;NativeApprovalAsset(f["kind"] as? String?:"unknown",f["contractId"] as? String,f["amount"] as? String,"bound-plan",(f["to"] as? String)?:if(f["direction"]=="send")poolReference else null,f["direction"] as? String?:"unknown")
+  })
+ }
+ fun transactions(payload:Map<*,*>?,assets:List<NativeApprovalAsset>,warnings:List<String>):List<NativeApprovalTransaction>{
+  val rows=payload?.get("transactions") as? List<*>?:return emptyList()
+  return java.util.Collections.unmodifiableList(rows.map{value->val t=value as Map<*,*>
+   val outputs=(t["outputReview"] as? List<*>)?.map{v->val o=v as Map<*,*>;NativeApprovalOutput(java.util.Collections.unmodifiableList((o["outputIndices"] as? List<*>)?.map{(it as Number).toInt()}?:emptyList()),o["kind"] as? String?:"unrecognized",o["assetIdentity"] as? String,o["amountAtomic"] as? String,o["recipient"] as? String,o["nativeValueAtomic"] as? String?:"unknown",(o["lockTime"] as? Number)?.toLong(),java.util.Collections.unmodifiableList((o["warnings"] as? List<*>)?.map{it as String}?:emptyList()))}
+   NativeApprovalTransaction(t["id"] as? String?:"unknown",t["role"] as? String,java.util.Collections.unmodifiableList((t["dependsOn"] as? List<*>)?.map{it as String}?:emptyList()),t["templateHash"] as? String,t["fee"] as? String,if(rows.size==1)assets else emptyList(),if(rows.size==1)"available" else "step-summary-only",if(rows.size==1)warnings else if(outputs==null)listOf("PER_TRANSACTION_ASSET_DETAILS_UNAVAILABLE") else emptyList(),java.util.Collections.unmodifiableList(outputs?:emptyList()),if(outputs==null)"not-available" else if(outputs.any{it.kind=="unrecognized"})"partial" else "available")})
+ }
+ fun text(steps:List<NativeApprovalStep>)=steps.joinToString("\n\n"){s->"Step ${s.id} [${s.kind}]\n"+s.assets.joinToString("\n"){it.text}+(s.actualFeeAtomic?.let{"\nActual network fee: $it native atomic."}?:"")+(if(s.warnings.isEmpty())"" else "\n"+s.warnings.joinToString("\n"))+"\nChain transaction details: ${s.transactionsStatus}"+(if(s.transactions.isEmpty())"" else "\n"+s.transactions.joinToString("\n"){it.text})}
+}
 fun NativeWalletProtocol.approvalReview(review:NativeReview):NativeReview =
  if(this==NativeWalletProtocol.STANDARD)review else review.copy(
   operationId=PermissionJson.id(namespace,"review",review.operationId),title="Legacy · ${review.title}")
@@ -25,6 +100,8 @@ interface NativeApprovalPresenter {
  // Must show the package projection in trusted wallet UI. No default approval.
  // Return an idempotent dismissal handle; callbacks run on the owner thread.
  fun present(review:NativeReview,complete:(Boolean)->Unit):()->Unit
+ // Informational update of this operation, never a second decision or prompt.
+ fun update(review:NativeReview) {}
 }
 interface NativeDigestSigner {
  // The wallet keeps its keys. Invoke requireCurrent immediately before actual
@@ -92,6 +169,8 @@ class NativeCustody(
   var workflowParent:Operation?=null;var workflowEnvelope:Map<String,Any?>?=null
   val signedResults=mutableMapOf<String,Map<String,Any?>>()
   var signerUnavailable=false
+  var displayReview:NativeReview?=null;var displayAssets:List<NativeApprovalAsset>?=null;var displayWarnings=emptyList<String>();var displayFee:String?=null;var displayDescription=""
+  var displayTransactions=emptyList<NativeApprovalTransaction>();var displayTransactionsStatus="not-applicable"
   var cryptoResultHash:String?=null
   var cryptoUnavailable=false
   // Allocated for send-only commitments, never for the sign-only hot path.
@@ -490,12 +569,13 @@ class NativeCustody(
     need(bindings.size<=1,"NATIVE_WORKFLOW_BINDING")
     for(value in bindings){val binding=map(value);val source=map(binding["source"]);val parent=source["stepId"] as String;need(parent in depends,"NATIVE_WORKFLOW_SOURCE");links+="After verified completion of $parent, copy ${source["output"] as String} to ${binding["target"] as String}."}
    }
-   "Step ${index+1}: $id. Depends on: ${if(depends.isEmpty())"none" else depends.joinToString(", ")}.\n"+description+(if(links.isEmpty())"" else "\n"+links.joinToString("\n"))
+   child.displayDescription="Depends on: ${if(depends.isEmpty())"none" else depends.joinToString(", ")}.\n"+description+(if(links.isEmpty())"" else "\n"+links.joinToString("\n"))
+   "Step ${index+1}: $id. "+child.displayDescription
   }
   val mode=r["failureMode"]?:"atomic";need(mode in setOf("atomic","continue-independent"),"NATIVE_WORKFLOW_MODE")
   o.request=r;o.requestHash=workflow.requestHash
   val execution=if(NativePrepared.sends(method))"The wallet will submit the completed transaction steps as one batch. Unknown submissions are not retried." else "No broadcast; abort cannot undo signatures already returned to this operation."
-  return "Approve one bounded batch of ${workflow.children.size} steps. Total fee at most $cap native atomic. Failure mode: $mode.\n$execution\n\n"+descriptions.joinToString("\n\n")
+  return "Approve one bounded batch of ${workflow.children.size} steps. Total fee at most $cap native atomic. Failure mode: $mode.\nOne approval does not guarantee all-or-nothing on-chain execution.\n$execution\n\n"+descriptions.joinToString("\n\n")
  }
  fun consent(owner:String,scope:Map<String,String>,id:String,method:String,
   request:Map<String,Any?>,context:Map<String,Any?>,complete:(Result<Boolean>)->Unit){
@@ -565,7 +645,7 @@ class NativeCustody(
    val message=map(r["message"]);NativeSigningEnvelope.workflow(mapOf("kind" to "message","message" to message),chain,o.account.address,o.session.scope.getValue("origin"))
    "Ordinary TBC message (${message["encoding"]}):\n${message["data"]}"
   }
-  o.request=r
+  o.request=r;o.displayDescription=description
   return description
  }
  fun consentReviewed(owner:String,scope:Map<String,String>,id:String,method:String,
@@ -574,7 +654,16 @@ class NativeCustody(
   if(o.maintenance!=null)need(hash(request)==o.maintenanceRequestHash,"NATIVE_MERGE_REQUEST")
   val description=if(method in NativeWorkflow.methods)describeWorkflow(o,method,request,context,review)else describeConsent(o,method,request,context,review)
   if(o.maintenance!=null){current(o);o.approved=true;complete(Result.success(true));return}
-  decision(o.session,id,NativeReview(id,o.session.scope.getValue("origin"),chain,o.account.address,"Approve request",description),{yes->
+  val children=o.workflow?.children?:listOf(o)
+  val steps=children.mapIndexed{index,child->
+   val request=child.request?:emptyMap();val kind=child.method
+   val warnings=NativeApprovalDisplay.warnings(request)+(if(kind in setOf("tbc_signMessage","tbc_signTypedData"))listOf("SIGNATURE_MAY_AUTHORIZE_ACTIONS: A signature may authorize actions even without a wallet broadcast.")else emptyList())+(if(kind==NativeReviewed.method)listOf("REVIEW_ALL_TRANSACTION_OUTPUTS: Review every output, including scripts without a known address.")else emptyList())
+   val reviewed=(child.reviewedConsent?.get("payload") as? Map<*,*>)?.get("preview") as? Map<String,Any?>
+   NativeApprovalStep(o.workflow?.steps?.get(index)?.get("id") as? String?:"1",kind,child.displayDescription,reviewed?.let{NativeApprovalDisplay.bound(it)}?:NativeApprovalDisplay.intent(request,child.account.address),java.util.Collections.unmodifiableList(warnings+((reviewed?.get("warnings") as? List<*>)?.map{it as String}?:emptyList())),reviewed?.get("totalFee") as? String,transactionsStatus=if(NativePrepared.transaction(kind)||kind==NativeReviewed.method)"not-bound" else "not-applicable")
+  }
+  val display=NativeReview(id,o.session.scope.getValue("origin"),chain,o.account.address,"Approve request",description+"\n\n"+NativeApprovalDisplay.text(steps)+"\nUnknown amounts are not zero. Bounded intent is checked against the completed plan before signing.",steps=java.util.Collections.unmodifiableList(steps))
+  o.displayReview=display
+  decision(o.session,id,display,{yes->
    current(o);o.approved=yes;yes
   },complete)
  }
@@ -640,7 +729,18 @@ class NativeCustody(
    need(encoding in setOf("compact64","compact65-recoverable")&&task["algorithm"]==if(encoding=="compact64")"secp256k1-ecdsa-sha256d" else "secp256k1-recoverable-ecdsa-sha256d","NATIVE_TASK_ENCODING")
    need(taskId.isNotEmpty()&&validated.put(taskId,immutable(task))==null,"NATIVE_TASK_DUPLICATE")
   }
+  o.displayAssets=NativeApprovalDisplay.bound(review,o.request);o.displayWarnings=(review["warnings"] as? List<*>)?.map{it as String}?:emptyList();o.displayFee=review["totalFee"] as? String
+  val displayPayload=plan?.get("payload") as? Map<*,*>
+  o.displayTransactions=NativeApprovalDisplay.transactions(displayPayload,o.displayAssets?:emptyList(),o.displayWarnings)
+  o.displayTransactionsStatus=if(displayPayload?.get("transactions") is List<*>)"available" else if(NativePrepared.transaction(o.method)||o.method==NativeReviewed.method)"not-available" else "not-applicable"
   o.expectedTasks=total;o.tasks.putAll(validated);return b
+ }
+ private fun publishBoundReview(o:Operation){
+  val display=o.displayReview?:return;val children=o.workflow?.children?:listOf(o)
+  val steps=display.steps.mapIndexed{index,step->val child=children[index];step.copy(
+   assets=child.displayAssets?.takeIf{it.isNotEmpty()}?:step.assets,warnings=java.util.Collections.unmodifiableList((step.warnings+child.displayWarnings).distinct().sorted()),actualFeeAtomic=child.displayFee?:step.actualFeeAtomic,transactions=child.displayTransactions,transactionsStatus=child.displayTransactionsStatus)}
+  approval.update(walletProtocol.approvalReview(display.copy(phase="binding-verified",steps=java.util.Collections.unmodifiableList(steps),
+   description=display.description+"\n\nVerified plan details (not a second approval):\n"+NativeApprovalDisplay.text(steps))))
  }
  fun bind(owner:String,scope:Map<String,String>,id:String,binding:Map<String,Any?>,
   preview:Map<String,Any?>,plan:Map<String,Any?>?,envelope:Map<String,Any?>?):Map<String,Any?>{
@@ -648,7 +748,7 @@ class NativeCustody(
   need(o.method !in NativeWorkflow.methods,"NATIVE_WORKFLOW_EXECUTION_NOT_INSTALLED")
   val b=installBoundTasks(o,binding,preview,plan,envelope);val p=map(b["payload"])
   val receipt=immutable(mapOf("status" to "approved","approvalId" to UUID.randomUUID().toString(),"approvalToken" to UUID.randomUUID().toString(),"bindingHash" to b["bindingHash"],"approvedAt" to Instant.ofEpochMilli(System.currentTimeMillis()).toString(),"expiresAt" to p["expiresAt"]))
-  o.receipt=receipt;return immutable(receipt)
+  o.receipt=receipt;publishBoundReview(o);current(o);return immutable(receipt)
  }
  private fun childBinding(child:Operation,parent:Map<String,Any?>,kind:String,operationHash:String):Map<String,Any?>{
   val p=map(parent["payload"])+mapOf("method" to child.method,"operationKind" to kind,"operationHash" to operationHash,"requestHash" to child.requestHash)
@@ -709,7 +809,7 @@ class NativeCustody(
     }else{
      need(Instant.now().isBefore(expiry),"NATIVE_EXPIRED")
      val receipt=immutable(mapOf("status" to "approved","approvalId" to UUID.randomUUID().toString(),"approvalToken" to UUID.randomUUID().toString(),"bindingHash" to b["bindingHash"],"approvedAt" to Instant.ofEpochMilli(System.currentTimeMillis()).toString(),"expiresAt" to p["expiresAt"]))
-     workflow.bound=bound;o.receipt=receipt;workflow.children.forEach{it.receipt=receipt};result(Result.success(immutable(receipt)))
+     workflow.bound=bound;o.receipt=receipt;workflow.children.forEach{it.receipt=receipt};publishBoundReview(o);current(o);result(Result.success(immutable(receipt)))
     }
    }catch(e:Exception){result(Result.failure(e))}
   }
@@ -1120,15 +1220,15 @@ class NativeCustody(
    val volume=amount(o["saleVolume"]);val price=amount(o["unitPrice"]);val rate=amount(o["feeRate"])
    need(volume>java.math.BigInteger.ZERO&&price>java.math.BigInteger.ZERO&&listOf(volume,price,rate).all{it<=java.math.BigInteger("9223372036854775807")},"LOP_AMOUNT")
    val escrow=if(side=="sell")"$volume base atomic" else "floor($volume * $price / 1000000) quote atomic"
-   val deposits=if(side=="sell"&&market=="native-token")"" else "\nToken escrow also uses native contract deposits (300 order atomic and 500 per token holding), separate from network fees."
-   return "Create LOP $side order ($market).\nOwner: $owner.\nBase: $base.\nQuote: $quote.\nVolume: $volume base atomic; unit price: $price / 1000000 quote atomic per base atomic.\nEscrow: $escrow.\nSettlement fee rate: $rate / 1000000; fee recipient: ${o["feeRecipient"] as String}.\nOrder terms are committed on chain; a later match may partially fill this order. Only the owner can cancel remaining escrow.$deposits"
+   val deposits=if(side=="sell"&&market=="native-token")"" else "\nToken orders also use native contract deposits (300 order atomic and 500 per token holding), separate from network fees."
+   return "Create LOP $side order ($market).\nOwner: $owner.\nBase: $base.\nQuote: $quote.\nVolume: $volume base atomic; unit price: $price / 1000000 quote atomic per base atomic.\nOrder amount: $escrow.\nSettlement fee rate: $rate / 1000000; fee recipient: ${o["feeRecipient"] as String}.\nOnly the owner can cancel the remaining order.$deposits"
   }
   val cancel=i["type"]=="tbc-lop-cancel"
   val points=i["targetOutpoints"] as? List<*>?:throw NativeCustodyFailure("LOP_SELECTION")
   need(points.size==if(cancel)1 else 2,"LOP_SELECTION")
   val labels=points.map{v->val p=map(v);val id=p["txid"] as String;digest(id);val index=amount(p["vout"]?.toString());need(index<=java.math.BigInteger("4294967295"),"LOP_SELECTION");"$id:$index"}
   need(labels.toSet().size==labels.size,"LOP_SELECTION")
-  val detail=if(cancel)"Cancel only this exact order and return remaining escrow to the same owner: $owner." else "Match only these exact orders in buy/sell order. Matcher and network fee payer: $owner. Committed order owners, assets, price, settlement fees and any remaining order are validated; they cannot be overridden. The matcher must differ from both order owners."
+  val detail=if(cancel)"Cancel only this exact order and return its remaining assets to the same owner: $owner." else "Match only these exact orders in buy/sell order. Matcher and network fee payer: $owner. Committed order owners, assets, price, settlement fees and any remaining order are validated; they cannot be overridden. The matcher must differ from both order owners."
   return "LOP\n$detail\n${labels.joinToString("\n")}\nFresh order and paired asset availability are checked before signing. No other orders are swept."
  }
  private fun htlcDescription(i:Map<String,Any?>,r:Map<String,Any?>,owner:String):String{

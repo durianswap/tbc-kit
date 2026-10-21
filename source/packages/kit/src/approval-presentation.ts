@@ -61,6 +61,39 @@ export interface TbcApprovalPresentationStep {
   readonly assets: readonly TbcApprovalPresentationAsset[];
   readonly actualFeeAtomic: TbcApprovalPresentationField<string>;
   readonly signingTaskCount: TbcApprovalPresentationField<number>;
+  /** Step-local warnings. Never attribute a flattened batch warning to every step. */
+  readonly warnings: readonly string[];
+  /** Chain transactions, not workflow steps. Never duplicate aggregate flows. */
+  readonly transactions: readonly TbcApprovalPresentationTransaction[];
+  readonly transactionsStatus: "not-bound" | "available" | "not-available" | "not-applicable";
+}
+
+export interface TbcApprovalPresentationTransaction {
+  readonly id: string;
+  readonly role: TbcApprovalPresentationField<string>;
+  readonly dependsOn: readonly string[];
+  /** A template commitment, never presented as a broadcast txid. */
+  readonly templateHash: TbcApprovalPresentationField<string>;
+  readonly feeAtomic: TbcApprovalPresentationField<string>;
+  readonly assets: readonly TbcApprovalPresentationAsset[];
+  readonly assetsStatus: "available" | "step-summary-only";
+  readonly warnings: readonly string[];
+  /** Exact output balances, NOT net user debits. Includes change/internal/pool
+   * outputs; do not sum with the business summary or with network fees. */
+  readonly outputs: readonly TbcApprovalPresentationOutput[];
+  readonly outputsStatus: "available" | "partial" | "not-available";
+}
+
+export interface TbcApprovalPresentationOutput {
+  readonly outputIndices: readonly number[];
+  readonly kind: string;
+  /** Code identity / NFT origin, not an invented API contract ID. */
+  readonly assetIdentity: TbcApprovalPresentationField<string>;
+  readonly amountAtomic: TbcApprovalPresentationField<string>;
+  readonly recipient: TbcApprovalPresentationField<string>;
+  readonly nativeValueAtomic: string;
+  readonly lockTime: TbcApprovalPresentationField<number>;
+  readonly warnings: readonly string[];
 }
 
 export interface TbcApprovalPresentation {
@@ -97,6 +130,8 @@ export interface TbcApprovalPresentation {
   }>;
   readonly assets: readonly TbcApprovalPresentationAsset[];
   readonly steps: readonly TbcApprovalPresentationStep[];
+  readonly transactions: readonly TbcApprovalPresentationTransaction[];
+  readonly transactionsStatus: TbcApprovalPresentationStep["transactionsStatus"];
   readonly warnings: readonly string[];
   readonly binding: Readonly<{
     status: "not-created" | "verified";
@@ -302,10 +337,69 @@ function assetsFromFlows(
         : unknown<string>("NOT_AVAILABLE"),
       to: typeof flow.to === "string"
         ? known(flow.to, "engine-preview")
-        : unknown<string>("NOT_AVAILABLE"),
+        : poolDestination(flow, intent),
       source: "engine-preview" as const,
     });
   }));
+}
+
+const POOL_DESTINATION_TYPES = new Set([
+  "tbc-amm-add-liquidity", "amm.addLiquidity", "tbc-amm-remove-liquidity", "amm.removeLiquidity",
+  "tbc-amm-swap", "amm.swap", "tbc.pool.swap.exactTbcForToken", "tbc.pool.swap.exactTokenForTbc",
+  "tbc.pool.liquidity.add", "tbc.pool.liquidity.remove", "tbc.pool.ft.merge", "amm.mergeToken",
+]);
+
+function poolDestination(flow: Readonly<Record<string, unknown>>, intent?: Readonly<Record<string, unknown>>): TbcApprovalPresentationField<string> {
+  const pool = intent?.poolContractId;
+  return flow.direction === "send" && POOL_DESTINATION_TYPES.has(String(intent?.type)) &&
+      typeof pool === "string" && HASH32.test(pool)
+    ? known(`pool:${pool}`, "bound-request") : unknown("NOT_AVAILABLE");
+}
+
+function chainTransactions(payload: Readonly<Record<string, unknown>> | undefined,
+  assets: readonly TbcApprovalPresentationAsset[], warnings: readonly string[],
+): readonly TbcApprovalPresentationTransaction[] {
+  if (!Array.isArray(payload?.transactions)) return Object.freeze([]);
+  const rows = records(payload.transactions);
+  return Object.freeze(rows.map(tx => {
+    const seen = new Set<number>();
+    const outputs = Object.freeze(tx.outputReview === undefined ? [] : records(tx.outputReview).map(o => {
+      if (!Array.isArray(o.outputIndices) || o.outputIndices.length === 0) return conflict();
+      const indices = o.outputIndices.map(v => { const n = integer(v);
+        if (seen.has(n) || n !== seen.size) return conflict(); seen.add(n); return n; });
+      return Object.freeze({
+        outputIndices: Object.freeze(indices), kind: text(o.kind),
+        assetIdentity: o.assetIdentity === undefined ? unknown<string>("NOT_AVAILABLE") : known(text(o.assetIdentity), "engine-plan"),
+        amountAtomic: o.amountAtomic === undefined ? unknown<string>("NOT_AVAILABLE") : known(decimal(o.amountAtomic), "engine-plan"),
+        recipient: o.recipient === undefined ? unknown<string>("NOT_AVAILABLE") : known(text(o.recipient), "engine-plan"),
+        nativeValueAtomic: decimal(o.nativeValueAtomic),
+        lockTime: o.lockTime === undefined ? unknown<number>("NOT_AVAILABLE") : known(integer(o.lockTime), "engine-plan"),
+        warnings: Object.freeze(strings(o.warnings)),
+      });
+    }));
+    return Object.freeze({
+    id: text(tx.id), role: typeof tx.role === "string" ? known(tx.role, "engine-plan") : unknown<string>("NOT_AVAILABLE"),
+    dependsOn: Object.freeze(tx.dependsOn === undefined ? [] : strings(tx.dependsOn)),
+    templateHash: typeof tx.templateHash === "string" && HASH32.test(tx.templateHash)
+      ? known(tx.templateHash, "engine-plan") : unknown<string>("NOT_AVAILABLE"),
+    feeAtomic: tx.fee === undefined ? unknown<string>("NOT_AVAILABLE") : known(decimal(tx.fee), "engine-plan"),
+    // The current Engine exposes step-level assetFlows. Attribution is exact
+    // only for a single transaction; never label all flows as every child.
+    assets: rows.length === 1 ? assets : Object.freeze([]),
+    assetsStatus: rows.length === 1 ? "available" as const : "step-summary-only" as const,
+    warnings: Object.freeze(rows.length === 1 ? [...warnings] : outputs.length ? [] : ["PER_TRANSACTION_ASSET_DETAILS_UNAVAILABLE"]),
+    outputs,
+    outputsStatus: tx.outputReview === undefined ? "not-available" as const
+      : outputs.some(o => o.kind === "unrecognized") ? "partial" as const : "available" as const,
+  });}));
+}
+
+function transactionDetailsStatus(kind: string, payload: Readonly<Record<string, unknown>> | undefined,
+  phase: "preparation" | "formal",
+): TbcApprovalPresentationStep["transactionsStatus"] {
+  if (!["transaction", "preparedTransaction", "reviewedTransaction"].includes(kind)) return "not-applicable";
+  if (phase === "preparation") return "not-bound";
+  return Array.isArray(payload?.transactions) ? "available" : "not-available";
 }
 
 function maximumFee(
@@ -437,10 +531,17 @@ function workflowSteps(
     const stepPlanPayload = planEntry === undefined
       ? undefined
       : record(record(planEntry.plan).payload);
-    const stepFee = stepPlanPayload?.preview === undefined
+    const stepPreview = step.kind === "reviewedTransaction" && step.reviewedTransactionPreview !== undefined
+      ? record(step.reviewedTransactionPreview)
+      : stepPlanPayload?.preview === undefined ? step : record(stepPlanPayload.preview);
+    const stepFee = stepPreview.totalFee === undefined
       ? unknown<string>("NOT_AVAILABLE")
-      : known(decimal(record(stepPlanPayload.preview).totalFee), "engine-plan");
+      : known(decimal(stepPreview.totalFee), "engine-preview");
     const stepSigning = workflowStepSigningCount(id, requestStep, stepPlanPayload, planPayload);
+    const assets = Array.isArray(stepPreview.assetFlows)
+      ? assetsFromFlows(stepPreview.assetFlows, requestStep === undefined ? undefined : requestIntent(requestStep))
+      : Array.isArray(step.assetFlows) ? assetsFromFlows(step.assetFlows, requestStep === undefined ? undefined : requestIntent(requestStep)) : Object.freeze([]);
+    const warnings = approvalWarnings(requestStep ?? {}, stepPreview.warnings);
     return Object.freeze({
       id,
       kind: text(step.kind),
@@ -453,13 +554,30 @@ function workflowSteps(
         ? unknown<Readonly<Record<string, unknown>>>("NOT_AVAILABLE")
         : businessTerms(requestStep, step.kind === "reviewedTransaction" && step.reviewedTransactionPreview !== undefined
           ? record(step.reviewedTransactionPreview) : undefined),
-      assets: Array.isArray(step.assetFlows)
-        ? assetsFromFlows(step.assetFlows, requestStep === undefined ? undefined : requestIntent(requestStep))
-        : Object.freeze([]),
+      assets,
       actualFeeAtomic: stepFee,
       signingTaskCount: stepSigning,
+      warnings,
+      transactions: chainTransactions(stepPlanPayload, assets, warnings),
+      transactionsStatus: transactionDetailsStatus(text(step.kind), stepPlanPayload, "formal"),
     });
   }));
+}
+
+// Display-only risk classification; not an authorization policy. These labels
+// never replace Engine warnings, change bindings or require another data read.
+function approvalWarnings(request: Readonly<Record<string, unknown>>, warnings?: unknown, operationKind?: string): readonly string[] {
+  const type = String(requestIntent(request)?.type ?? "");
+  const kind = request.kind ?? operationKind;
+  return Object.freeze([...new Set([
+    ...(Array.isArray(warnings) ? warnings.map(text) : []),
+    ...htlcClaimDisclosureWarnings(request),
+    ...(/(?:[.-]burn)$/.test(type) ? ["ASSET_DESTRUCTION_NO_WITHDRAWAL"] : []),
+    ...(/(?:[.-]lock)$/.test(type) ? ["ASSET_LOCKED_UNTIL_CONDITIONS_MET"] : []),
+    ...(kind === "message" || kind === "typedData" ? ["SIGNATURE_MAY_AUTHORIZE_ACTIONS"] : []),
+    ...(kind === "reviewedTransaction" ? ["REVIEW_ALL_TRANSACTION_OUTPUTS"] : []),
+    ...(operationKind === "workflow" ? ["BATCH_NOT_ATOMIC"] : []),
+  ])]);
 }
 
 /**
@@ -614,7 +732,9 @@ export function projectTbcApprovalPresentation(
     }),
     assets,
     steps,
-    warnings: Object.freeze([...new Set([...warnings, ...htlcClaimDisclosureWarnings(boundRequest)])]),
+    transactions: operationKind === "transaction" ? chainTransactions(planPayload, transactionAssets, approvalWarnings(boundRequest, warnings, operationKind)) : Object.freeze([]),
+    transactionsStatus: operationKind === "workflow" ? "not-applicable" : transactionDetailsStatus(operationKind, planPayload, "formal"),
+    warnings: approvalWarnings(boundRequest, warnings, operationKind),
     binding: Object.freeze({
       status: "verified",
       requestHash: expectedRequestHash,
@@ -666,6 +786,20 @@ export function projectTbcApprovalPreparation(
     return conflict("Approval preparation request hash mismatch");
   }
   const type = requestIntent(request)?.type;
+  const earlySteps: readonly TbcApprovalPresentationStep[] = input.operationKind === "workflow"
+    ? records(request.steps).map(step => Object.freeze({
+      id: text(step.id), kind: text(step.kind),
+      dependsOn: Object.freeze(strings(step.dependsOn)),
+      businessType: businessType("transaction", step),
+      contractExecution: unknown<TbcApprovalContractExecution>(),
+      businessTerms: requestIntent(step) === undefined
+        ? unknown<Readonly<Record<string, unknown>>>()
+        : known(displayIntent(requestIntent(step)!), "preparation-scope"),
+      // Intent amounts/limits are in businessTerms, not invented Engine flows.
+      assets: Object.freeze([]), actualFeeAtomic: unknown<string>(),
+      signingTaskCount: unknown<number>(), warnings: approvalWarnings(step),
+      transactions: Object.freeze([]), transactionsStatus: transactionDetailsStatus(text(step.kind), undefined, "preparation"),
+    })) : Object.freeze([]);
   let signingRoles: TbcApprovalPresentation["signingRoles"];
   if (request.signingRoles !== undefined) {
     assertValidTws(preparedMethod(input.method) ? "preparedTransactionRequest" : "transactionRequest", request);
@@ -703,27 +837,35 @@ export function projectTbcApprovalPreparation(
       actualAtomic: unknown<string>(),
     }),
     counts: Object.freeze({
-      steps: unknown<number>(),
+      steps: input.operationKind === "workflow" ? known(earlySteps.length, "preparation-scope") : known(1, "preparation-scope"),
       transactions: unknown<number>(),
       signingTasks: unknown<number>(),
     }),
     assets: Object.freeze([]),
-    steps: Object.freeze([]),
-    warnings: Object.freeze([...new Set([...input.warningScope.map(text), ...htlcClaimDisclosureWarnings(request)])]),
+    steps: earlySteps,
+    transactions: Object.freeze([]), transactionsStatus: transactionDetailsStatus(input.operationKind, undefined, "preparation"),
+    warnings: approvalWarnings(request, input.warningScope, input.operationKind),
     binding: Object.freeze({ status: "not-created", requestHash: input.requestHash }),
     evidence: Object.freeze({ sources: Object.freeze(["preparation-scope"] as const) }),
     unknown: Object.freeze([
       "requester",
       "contractExecution",
       "fees.actualAtomic",
-      "counts.steps",
       "counts.transactions",
       "counts.signingTasks",
       "assets",
-      "steps",
+      ...earlySteps.flatMap((step, index) => [
+        `steps.${index}.assets`, `steps.${index}.actualFeeAtomic`, `steps.${index}.signingTaskCount`,
+        ...(step.businessTerms.status === "unknown" ? [`steps.${index}.businessTerms`] : []),
+      ]),
       ...(requestIntent(request) === undefined ? ["businessTerms"] : []),
       ...(input.suggestedFeeCapAtomic === undefined ? ["fees.maximumAtomic"] : []),
     ]),
   };
   return freeze(result);
+}
+
+function strings(value: unknown): string[] {
+  if (!Array.isArray(value)) return conflict();
+  return value.map(text);
 }
