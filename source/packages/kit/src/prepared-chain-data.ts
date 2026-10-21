@@ -78,7 +78,11 @@ export function preparedChainDataRequirement(request: KitTransactionRequest<KitS
         assets: Object.freeze([native(intent.amount)]),
       });
     case "tbc.maintenance.merge":
-      return Object.freeze({ intentType: intent.type, includeAncestry: false, assets: Object.freeze([native()]) });
+      return Object.freeze({ intentType: intent.type, includeAncestry: false, assets: Object.freeze([native()]),
+        ...(request.constraints?.inputOutpoints === undefined ? {} : {
+          inputOutpoints: Object.freeze(request.constraints.inputOutpoints.map(point => Object.freeze({ ...point }))),
+        }),
+      });
     case "tbc.collection.create":
     case "tbc.ft.create":
       return Object.freeze({ intentType: intent.type, includeAncestry: false, assets: Object.freeze([native()]) });
@@ -124,7 +128,10 @@ export function preparedChainDataRequirement(request: KitTransactionRequest<KitS
         includeAncestry: true,
         contractIds: Object.freeze([intent.contractId]),
         ...(nativeAmount === undefined ? {} : { nativeAmount }),
-        assets: Object.freeze([native(nativeAmount), direct(intent.type === "tbc.ft.transfer" ? "ft" : "stablecoin", intent.contractId, intent.amount)]),
+        assets: Object.freeze([native(nativeAmount), direct(intent.type === "tbc.ft.transfer" ? "ft" : "stablecoin", intent.contractId,
+          intent.type === "tbc.ft.transfer" && intent.receivers !== undefined
+            ? intent.receivers.reduce((total, receiver) => total + BigInt(receiver.amount), 0n).toString()
+            : required(intent.amount, "amount"))]),
       });
     }
     case "tbc20-standard-transfer":
@@ -132,7 +139,7 @@ export function preparedChainDataRequirement(request: KitTransactionRequest<KitS
       const coin = intent.type === "tbc20-stablecoin-transfer";
       let amount = intent.amount;
       if (intent.receivers !== undefined) {
-        if (intent.to !== undefined || intent.amount !== undefined || intent.receivers.length < 1 || intent.receivers.length > (coin ? 7 : 8)) {
+        if (intent.to !== undefined || intent.amount !== undefined || intent.receivers.length < 1 || intent.receivers.length > (coin || intent.payment !== undefined ? 7 : 8)) {
           throw new TypeError("invalid mutually exclusive TBC20 receivers");
         }
         let total = 0n;
@@ -143,7 +150,7 @@ export function preparedChainDataRequirement(request: KitTransactionRequest<KitS
         if (total > 36n * ((1n << 63n) - 1n)) throw new TypeError("TBC20 receivers exceed the allocation bound");
         amount = total.toString();
       }
-      const nativeAmount = coin ? intent.payment?.amount : undefined;
+      const nativeAmount = intent.payment?.amount;
       return Object.freeze({
         intentType: intent.type,
         ...newStandardInputs,

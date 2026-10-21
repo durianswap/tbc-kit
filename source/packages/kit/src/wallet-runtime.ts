@@ -2269,6 +2269,10 @@ export function createTbcWallet(options: KitWalletOptions): KitWalletRuntime {
       return createTwsHost({
         core,
         ports: createPorts(executionType),
+        // A supported 500-input merge requires a freshness checkpoint and
+        // signature transition per input, plus planning/approval/finalization.
+        // This is a finite work ceiling, not extra work for smaller requests.
+        maxSteps: 2_048,
         store,
         authority: authoritySource,
         ownerId: `${profile}:${sessionId}:${executionType}`,
@@ -2822,6 +2826,11 @@ export function createTbcWallet(options: KitWalletOptions): KitWalletRuntime {
               expiresAt,
               maxFee: remainingFee,
               feePreference: "standard" as const,
+              // The public merge may select up to 500 inputs. A bounded
+              // multi-round approval still owns this exact smaller selection.
+              ...(scope.asset.kind === "tbc" ? { inputOutpoints: selected.map(row => ({
+                txid: String(Reflect.get(row, "txid")), vout: Number(Reflect.get(row, "vout")),
+              })) } : {}),
             },
           });
           return immutable({

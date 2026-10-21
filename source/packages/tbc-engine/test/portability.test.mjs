@@ -13,6 +13,7 @@ import test, { after, before } from "node:test";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import vm from "node:vm";
 import { build } from "esbuild";
+import { withOutputReview } from "../../../scripts/lib/reviewed-transfer-fixture.mjs";
 import { createWasmTbcEngineBackend } from "../dist/esm/wasm.js";
 
 const require = createRequire(import.meta.url);
@@ -24,11 +25,11 @@ const actualOutputs = [
   path.join(packageDirectory, "dist/cjs/index.cjs"),
 ];
 const fixture = JSON.parse(readFileSync(new URL("../rust/fixtures/tbc-transfer.json", import.meta.url), "utf8"));
-const canonical = {
+const canonical = withOutputReview({
   ...fixture.finalizeInput,
   signature: fixture.finalizeInput.signatures[0],
   bundle: fixture.finalized.bundle,
-};
+});
 // A platform supplies a backend. Use the actual locked WASM, never a mock or
 // the browser-only lazy fetch loader for a Node file URL.
 const backend = await createWasmTbcEngineBackend(

@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import test from "node:test";
@@ -17,21 +16,11 @@ function evaluate(code, core) {
   );
   return module.exports;
 }
-function predecessor(name, version, core) {
-  const archive = `${root}release/${name}-${version}-candidate/tbc-wallet-${name}-1.0.0-draft.${version}.tgz`;
-  let source = execFileSync("tar", ["-xOf", archive, "package/dist/cjs/index.cjs"], {
-    encoding: "utf8", maxBuffer: 12 * 1024 * 1024,
-  });
-  // Compare the ownership optimization under the SAME current Chain ID grammar.
-  // The immutable predecessor archive remains unchanged; this is not a claim
-  // that its original public protocol accepts the new official names.
-  if (name === "core") source = source.replaceAll("^tbc:[0-9a-f]{32}", "^tbc:[a-z0-9_-]{1,32}");
-  return evaluate(source, core);
-}
-
 test("owned checkpoint schemas are reused without trusting transition bodies or external objects", async () => {
   let full = 0;
+  let referenceOwnershipChecks = 0;
   globalThis.__twsCountCheckpointSchema = () => full++;
+  globalThis.__twsReferenceOwnershipCheck = () => referenceOwnershipChecks++;
   try {
     const compiled = await build({
       entryPoints: [`${root}packages/core/src/index.ts`], bundle: true,
@@ -54,39 +43,38 @@ test("owned checkpoint schemas are reused without trusting transition bodies or 
       } }],
     });
     const core = evaluate(compiled.outputFiles[0].text);
-    const oldCore = predecessor("core", "6.19");
-    const explicitAdditions = [
-      "parseProtocolTimestamp",
-      "formatProtocolTimestamp",
-      "assertTbcSignInWalletContext",
-      "assertWalletActionApprovalEvidence",
-      "assertWorkflowDeferredSigningTask",
-      "base64Decode",
-      "base64Encode",
-      "canonicalSigningEnvelope",
-      "decodeSigningMessage",
-      "inspectTbcSignInMessage",
-      "parseTbcSignInMessage",
-      "serializeTbcSignInMessage",
-      "signingEnvelopeDigest",
-      "signingPayload",
-      "utf8Decode",
-      "verifyTwsRecoverableSignature",
-    ];
-    assert.deepEqual(
-      Object.keys(core).sort(),
-      [...Object.keys(oldCore), ...explicitAdditions].sort(),
-      "only the explicit public capabilities added since the archived predecessor are exported",
-    );
+    // Reference uses the same current schemas but ALWAYS takes the full schema
+    // path. No archived package, stale protocol or weakened validator is used.
+    let referenceModules = 0;
+    const reference = await build({
+      entryPoints: [`${root}packages/core/src/index.ts`], bundle: true,
+      platform: "node", format: "cjs", write: false,
+      plugins: [{ name: "no-ownership-shortcut", setup(builder) {
+        builder.onLoad({ filter: /checkpoint-ownership\.ts$/ }, () => {
+          referenceModules++;
+          return {
+            contents: "export const verifiedCheckpoints = { add() {}, has() { globalThis.__twsReferenceOwnershipCheck(); return false; } };",
+            loader: "ts",
+          };
+        });
+      } }],
+    });
+    assert.equal(referenceModules, 1, "reference must actually disable ownership reuse");
+    const oldCore = evaluate(reference.outputFiles[0].text);
+    assert.deepEqual(Object.keys(core).sort(), Object.keys(oldCore).sort());
     const vectors = JSON.parse(await readFile(`${root}test-vectors/checkpoints.json`, "utf8"));
     const checkpoints = materializeCheckpoints(vectors);
     const planning = checkpoints.find(entry => entry.id === "planning").checkpoint;
     full = 0;
     const owned = core.createCheckpoint(planning.payload);
     assert.equal(full, 1, "new checkpoint is fully validated before ownership is recorded");
+    const referenceOwned = oldCore.createCheckpoint(planning.payload);
+    referenceOwnershipChecks = 0;
+    for (let i = 0; i < 3; i++) oldCore.assertValidTws("coreTransition", { kind: "continue", checkpoint: referenceOwned });
+    assert.ok(referenceOwnershipChecks >= 3, "reference cannot reuse owned-checkpoint validation");
     full = 0;
     for (let i = 0; i < 3; i++) core.assertValidTws("coreTransition", { kind: "continue", checkpoint: owned });
-    assert.equal(full, 0, "RED predecessor: these boundaries perform 12 subtree validations");
+    assert.equal(full, 0, "owned checkpoints avoid repeated subtree validation");
     assert.equal(core.isValidTws("operationCheckpoint", owned), true);
     assert.equal(full, 0);
 
@@ -129,7 +117,7 @@ test("owned checkpoint schemas are reused without trusting transition bodies or 
     const hostBuild = await build({ entryPoints: [`${root}packages/host/src/index.ts`],
       bundle: true, platform: "node", format: "cjs", write: false, external: ["@tbc-wallet/core"] });
     const host = evaluate(hostBuild.outputFiles[0].text, core);
-    const oldHost = predecessor("host", "6.20", oldCore);
+    const oldHost = evaluate(hostBuild.outputFiles[0].text, oldCore);
     const stores = [host, oldHost].map(api => api.createMemoryTwsHostStore({ now: () => Date.parse("2026-08-31T12:00:00Z") }));
     const payload = structuredClone(planning.payload);
     // Schema-valid public hex only; this is not a real transaction/Engine benchmark.
@@ -166,8 +154,9 @@ test("owned checkpoint schemas are reused without trusting transition bodies or 
       assert.deepEqual(states[0], states[1], "identical checkpoint/hash bytes across revisions");
       assert.deepEqual(results[0], results[1], "identical Host records, identities, calls and CAS output");
     }
-    console.log("owned-checkpoint schema: 12 repeated traversals -> 0; 5 large-material commits byte-equivalent");
+    console.log("owned-checkpoint schema: zero repeated traversals; 5 large-material commits byte-equivalent to full-validation reference");
   } finally {
     delete globalThis.__twsCountCheckpointSchema;
+    delete globalThis.__twsReferenceOwnershipCheck;
   }
 });

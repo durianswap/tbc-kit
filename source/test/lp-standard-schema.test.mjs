@@ -39,14 +39,17 @@ test("LP exact intents retain atomic quantities and isolate lock/maintenance fie
 });
 
 test("AMM create binds explicit configuration and keeps initial liquidity a separate intent", () => {
-  const intent = { type: "tbc-amm-create", version: "1.0", ftContractId: id, lpPlan: 1, lpTimelock: false };
+  const intent = { type: "tbc-amm-create", version: "1.0", ftContractId: id,
+    feePolicy: { lpFeeRate: 25, taxFeeRate: 5, serviceProviderFeeRate: 0, protocolFeeRate: 0, feeAddress: address }, lpTimelock: false };
   for (const chainId of ["tbc:mainnet", "tbc:testnet"]) {
-    for (const config of [intent, { ...intent, lpTimelock: true, controllers: ["22".repeat(20)], serviceFeeRate: 35 }])
+    for (const config of [intent, { ...intent, lpTimelock: true, controllers: ["22".repeat(20)] },
+      ...[0, 9999].map(bps => ({ ...intent, feePolicy: { ...intent.feePolicy, lpFeeRate: bps, taxFeeRate: 0 } }))])
       valid(request, { version: "1.0", chainId, from: address, intent: config });
   }
   for (const patch of [{ controllers: [] }, { controllers: ["22".repeat(20), "22".repeat(20)] },
     { controllers: [address] }, { lpPlan: 7 }, { lpTimelock: "false" }, { initialLiquidity: { tbcAmount: "100", ftAmount: "100" } },
-    { serviceFeeRate: 65535 }, { to: address }, { amount: "100" }])
+    { serviceFeeRate: 35 }, { to: address }, { amount: "100" },
+    ...[10000, -1, 1.5].map(lpFeeRate => ({ feePolicy: { ...intent.feePolicy, lpFeeRate } }))])
     assert.equal(request({ version: "1.0", chainId: "tbc:testnet", from: address, intent: { ...intent, ...patch } }), false);
   const { lpTimelock, ...missingMode } = intent;
   assert.equal(request({ version: "1.0", chainId: "tbc:testnet", from: address, intent: missingMode }), false);

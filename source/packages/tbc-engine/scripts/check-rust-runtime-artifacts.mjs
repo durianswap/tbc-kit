@@ -1,12 +1,13 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import * as tws from "@tbc-wallet/core";
+import { withOutputReview } from "../../../scripts/lib/reviewed-transfer-fixture.mjs";
 import {
   createMemoryTwsHostStore,
   createTwsHost,
@@ -16,7 +17,9 @@ import { createWasmTbcEngineBackend } from "../dist/esm/wasm.js";
 
 const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const repoRoot = resolve(packageRoot, "../..");
-const nativeArtifact = process.env.TBC_ENGINE_NATIVE_ARTIFACT ?? join(packageRoot, "artifacts", "native", "aarch64-apple-darwin", "libtbc_engine_native.dylib");
+const nativeTarget = execFileSync("rustc", ["-vV"], { encoding: "utf8" }).match(/^host: (.+)$/m)?.[1];
+assert.ok(nativeTarget?.endsWith("apple-darwin"), "Native dylib runtime gate requires a macOS host");
+const nativeArtifact = process.env.TBC_ENGINE_NATIVE_ARTIFACT ?? join(packageRoot, "artifacts", "native", nativeTarget, "libtbc_engine_native.dylib");
 const wasmArtifact = process.env.TBC_ENGINE_WASM_ARTIFACT ?? join(packageRoot, "artifacts", "wasm", "tbc_engine_wasm.wasm");
 const temp = mkdtempSync(join(tmpdir(), "tbc-engine-runtime-"));
 const runner = join(temp, "native-artifact-runner");
@@ -337,6 +340,9 @@ try {
   };
 
   const tbc = JSON.parse(readFileSync(join(packageRoot, "rust", "fixtures", "tbc-transfer.json"), "utf8"));
+  const reviewed = withOutputReview(tbc.finalizeInput);
+  tbc.finalizeInput = reviewed;
+  tbc.validateInput.plan = reviewed.plan;
   const checks = [];
   for (const [method, input, label] of [
     ["plan", tbc.planInput, "tbc.transfer plan"],
@@ -375,7 +381,7 @@ try {
   );
   assert.deepEqual(
     ftCreatePlan.envelope.result.plan.payload.preview.warnings,
-    ["FT_MINT_V4"],
+    [],
   );
   const ftCreateStages = [];
   for (const [index, input] of generatedFt.ft.create.finalizeInputs.entries()) {
@@ -642,83 +648,14 @@ try {
     ].join("\n")),
   });
 
-  for (const [label, planInput, classification] of [
-    ["tbc.pool.create", generatedFt.pool.createPlanInput, "pool-source"],
-  ]) {
-    tws.assertValidTws("planParams", planInput);
-    tws.assertValidTws("chainDataResolveResult", planInput.snapshot);
-    assert.ok(
-      planInput.snapshot.payload.utxos.some(
-        (utxo) => utxo.classification === classification,
-      ),
-      `${label} fixture is missing ${classification}`,
-    );
-    const planned = await parityCall(
-      "plan",
-      JSON.stringify(planInput),
-      `${label} plan`,
-    );
-    assert.equal(planned.envelope.ok, true, `${label} plan failed`);
-    tws.assertValidTws("planResult", planned.envelope.result);
-    tws.assertValidTws(
-      "approvalPreview",
-      planned.envelope.result.plan.payload.preview,
-    );
-    assert.ok(
-      planned.envelope.result.plan.payload.preview.assetFlows.some(
-        (flow) => flow.kind === "pool" && flow.direction === "contract",
-      ),
-      `${label} preview is missing explicit Pool contract flow semantics`,
-    );
-    checks.push({
-      label: `${label} public classification, plan, and approval preview`,
-      method: "plan",
-      classification,
-      transactions: planned.envelope.result.plan.payload.transactions.length,
-      resultSha256: sha256(planned.raw),
-    });
-  }
-
-  for (const [label, vector, expectedIds] of [
-    ["tbc.pool.create mint", generatedFt.pool.createMint, ["pool-mint-source", "pool-mint"]],
-    ["tbc.pool.create initialize", generatedFt.pool.createInitialize, ["pool-init"]],
-  ]) {
-    const normalized = await parityCall(
-      "normalizeRequest",
-      JSON.stringify({ version: "1.0", request: vector.planInput.request }),
-      `${label} normalize`,
-    );
-    assert.equal(normalized.envelope.ok, true);
-    const planned = await parityCall("plan", JSON.stringify(vector.planInput), `${label} plan`);
-    assert.equal(planned.envelope.ok, true);
-    assert.deepEqual(planned.envelope.result.plan.payload.transactions.map(({ id }) => id), expectedIds);
-    const checked = await parityCall(
-      "validate",
-      JSON.stringify({
-        ...structuredClone(vector.planInput),
-        phase: "plan",
-        plan: structuredClone(planned.envelope.result.plan),
-      }),
-      `${label} plan validation`,
-    );
-    assert.deepEqual(checked.envelope.result, { valid: true, violations: [] });
-    const stages = [];
-    for (const [index, input] of vector.finalizeInputs.entries()) {
-      const stage = await parityCall(
-        "finalize",
-        JSON.stringify(input),
-        `${label} finalize stage ${index}`,
-      );
-      assert.equal(stage.envelope.ok, true);
-      stages.push(stage.raw);
-    }
-    checks.push({
-      label: `${label} native/WASM external-signature lifecycle`,
-      method: "normalizeRequest/plan/validate/finalize",
-      stages: vector.finalizeInputs.length,
-      transactions: vector.complete.bundle.transactions.length,
-      resultSha256: sha256([normalized.raw, planned.raw, checked.raw, ...stages].join("\n")),
-    });
+  // Retained historical creation inputs must fail at the public boundary,
+  // not be relabelled as successful current-standard issuance.
+  for (const input of [generatedFt.pool.createPlanInput,
+      generatedFt.pool.createMintInput, generatedFt.pool.createInitializeInput]) {
+    const rejected = await parityCall("plan", JSON.stringify(input), "disabled Pool2 creation");
+    assert.equal(rejected.envelope.ok, false);
+    assert.equal(rejected.envelope.error.code, "UNSUPPORTED_INTENT");
+    checks.push({ label: "historical Pool2 issuance rejected", method: "plan", resultSha256: sha256(rejected.raw) });
   }
 
   const unknownPoolClassification = structuredClone(
@@ -762,7 +699,7 @@ try {
     vector: generatedFt.ft.create,
     label: "ft-create",
     expectedRequirement: {
-      intentType: "tbc.ft.create",
+      intentType: "tbc20-standard-create",
       includeAncestry: false,
       assets: [{ kind: "native" }],
     },
@@ -782,7 +719,7 @@ try {
     vector: generatedFt.ft.create,
     label: "ft-create-recovery",
     expectedRequirement: {
-      intentType: "tbc.ft.create",
+      intentType: "tbc20-standard-create",
       includeAncestry: false,
       assets: [{ kind: "native" }],
     },
@@ -808,7 +745,7 @@ try {
     vector: generatedFt.ft.create,
     label: "ft-create-reject",
     expectedRequirement: {
-      intentType: "tbc.ft.create",
+      intentType: "tbc20-standard-create",
       includeAncestry: false,
       assets: [{ kind: "native" }],
     },
@@ -866,33 +803,6 @@ try {
   });
 
   for (const [label, vector, expectedRequirement] of [
-    ["pool-create-mint", generatedFt.pool.createMint, {
-      intentType: "tbc.pool.create",
-      includeAncestry: true,
-      contractIds: [generatedFt.pool.createMint.planInput.request.intent.ftContractId],
-      assets: [
-        { kind: "native" },
-        { kind: "ft", contractId: generatedFt.pool.createMint.planInput.request.intent.ftContractId },
-      ],
-    }],
-    ["pool-create-initialize", generatedFt.pool.createInitialize, {
-      intentType: "tbc.pool.create",
-      includeAncestry: true,
-      contractIds: [generatedFt.pool.createInitialize.planInput.request.intent.poolContractId],
-      nativeAmount: generatedFt.pool.createInitialize.planInput.request.intent.initialLiquidity.tbcAmount,
-      assets: [
-        { kind: "native", minimumAmount: generatedFt.pool.createInitialize.planInput.request.intent.initialLiquidity.tbcAmount },
-        { kind: "pool", contractId: generatedFt.pool.createInitialize.planInput.request.intent.poolContractId },
-        {
-          kind: "ft",
-          contractDependency: {
-            relation: "pool-ft",
-            contractId: generatedFt.pool.createInitialize.planInput.request.intent.poolContractId,
-          },
-          minimumAmount: generatedFt.pool.createInitialize.planInput.request.intent.initialLiquidity.ftAmount,
-        },
-      ],
-    }],
     ["pool-ftlp-burn", generatedFt.pool.ftlpBurn, {
       intentType: "tbc.pool.ftlp.burn",
       includeAncestry: true,
@@ -1091,7 +1001,7 @@ try {
   const report = {
     version: "1.0",
     actualArtifactExecution: {
-      native: "aarch64-apple-darwin dylib loaded by a compiled C ABI consumer",
+      native: `${nativeTarget} dylib loaded by a compiled C ABI consumer`,
       wasm: "wasm32-unknown-unknown module instantiated with zero imports through the shipped TypeScript adapter",
     },
     checks,
@@ -1106,9 +1016,11 @@ try {
       wasmImports: WebAssembly.Module.imports(new WebAssembly.Module(wasmBytes)),
     },
   };
+  const reportPath = process.env.TBC_ENGINE_RUNTIME_REPORT
+    ?? join(packageRoot, "evidence", "runtime-artifact-report.json");
+  mkdirSync(dirname(reportPath), { recursive: true });
   writeFileSync(
-    process.env.TBC_ENGINE_RUNTIME_REPORT
-      ?? join(packageRoot, "evidence", "runtime-artifact-report.json"),
+    reportPath,
     `${JSON.stringify(report, null, 2)}\n`,
   );
   console.log(`actual native/WASM artifact runtime parity passed (${checks.length} checks)`);

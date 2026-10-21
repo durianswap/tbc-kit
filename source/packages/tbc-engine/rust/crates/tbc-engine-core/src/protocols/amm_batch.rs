@@ -81,7 +81,7 @@ pub fn build_batch_plan(options:BatchOptions<'_>)->Result<BatchPlan,EngineError>
         let parents:Vec<_>=users.iter().map(|u|tbc20_material::inspect_parent(&u.parent.serialize(),&OutPoint{txid:u.parent.txid(),vout:u.vout},None)).collect::<Result<_,_>>()?;
         let linked:Vec<_>=parents.iter().zip(&refs).map(|(parent,raws)|tbc20_material::link_ancestors(parent,raws)).collect::<Result<_,_>>()?;
         let inputs:Vec<_>=parents.iter().zip(&linked).map(|(parent,ancestors)|tbc20_transfer::TokenInput{parent,ancestors,public_key:key}).collect();
-        let b=tbc20_batch::build_batch_merge_plan(tbc20_batch::BatchOptions{transfer:tbc20_transfer::TransferOptions{inputs:&inputs,fee_inputs:&[fee],receivers:&[],expected_identity:parents[0].identity(),token_change_controller:owner,native_change_hash:o.change_hash,max_fee:o.max_fee},max_transactions:options.max_transactions-1})?;
+        let b=tbc20_batch::build_batch_merge_plan(tbc20_batch::BatchOptions{transfer:tbc20_transfer::TransferOptions{payment:None,inputs:&inputs,fee_inputs:&[fee],receivers:&[],expected_identity:parents[0].identity(),token_change_controller:owner,native_change_hash:o.change_hash,max_fee:o.max_fee},max_transactions:options.max_transactions-1})?;
         (b.unsigned_plan,b.fees)
     };
     for p in &mut plan.transactions{p.role="maintenance".into();}

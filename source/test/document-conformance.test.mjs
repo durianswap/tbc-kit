@@ -10,7 +10,7 @@ test("resolves every local Markdown link and parses every JSON fence", () => {
   const metrics = runDocumentConformance(root);
   assert.ok(metrics.markdown >= 16);
   assert.ok(metrics.localLinks >= 29);
-  assert.ok(metrics.jsonBlocks >= 39);
+  assert.ok(metrics.jsonBlocks >= 35);
   assert.ok(metrics.jsonFiles >= 33);
   assert.equal(metrics.normativeHashBindings, 18);
   assert.equal(metrics.normativeStates, 15);

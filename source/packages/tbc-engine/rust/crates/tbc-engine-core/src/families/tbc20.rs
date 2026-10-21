@@ -302,18 +302,24 @@ pub(crate) fn plan_tbc20(request:&CanonicalRequest,material:&WalletMaterial<'_>,
         let fees=indices.iter().zip(&outputs).map(|(&i,output)|Ok(FeeInput{
             outpoint:OutPoint{txid:funding[i].txid.parse().map_err(|_|invalid("invalid funding ID"))?,vout:funding[i].vout},
             output,public_key:&public})).collect::<Result<Vec<_>,EngineError>>()?;
-        let options=TransferOptions{inputs:&inputs,fee_inputs:&fees,receivers:&receivers,expected_identity:genesis.identity(),
+        let payment=request.intent.payment.as_ref().map(|payment| Ok(crate::protocols::tbc20_transfer::NativePayment {
+            recipient_hash: tbc_sdk::Address::from_string(&payment.to).map_err(|_|invalid("invalid native payment address"))?.hash160(),
+            amount: crate::normalize::parse_decimal_u64(&payment.amount,"request.intent.payment.amount")?,
+        })).transpose()?;
+        let options=TransferOptions{inputs:&inputs,fee_inputs:&fees,receivers:&receivers,payment,expected_identity:genesis.identity(),
             token_change_controller:owner,native_change_hash:public.hash160(),max_fee:maximum_fee};
         let batch=BatchOptions{transfer:options,max_transactions:policy.max_bundle_transactions as usize};
         let built=if is_merge {build_batch_merge_plan(batch)}else{build_batch_transfer_plan(batch)};
         let built=match built {Ok(v)=>v,Err(e) if e.code==ErrorCode::InsufficientFunds=>return Ok(None),
             Err(e) if e.code==ErrorCode::FeeCapExceeded=>{fee_cap_failure=Some(e);return Ok(None);},Err(e)=>return Err(e)};
         for output in &built.token_outputs {check_amounts(&limits,output.amount,output.amounts_by_input)?;}
-        let flows=if is_merge {vec![AssetFlow{kind:"ft".into(),direction:"merge".into(),amount:total.to_string(),
+        let mut flows:Vec<AssetFlow>=if is_merge {vec![AssetFlow{kind:"ft".into(),direction:"merge".into(),amount:total.to_string(),
             contract_id:Some(contract.into()),from:request.from.clone(),to:Some(request.from.clone())}]} else {
             destinations.iter().map(|recipient|AssetFlow{kind:"ft".into(),direction:"send".into(),amount:recipient.amount.to_string(),
                 contract_id:Some(contract.into()),from:request.from.clone(),to:Some(recipient.to.into())}).collect()
         };
+        if let Some(payment)=&request.intent.payment { flows.push(AssetFlow{kind:"native".into(),direction:"send".into(),
+            amount:payment.amount.clone(),contract_id:None,from:request.from.clone(),to:Some(payment.to.clone())}); }
         finish(request,material,built.unsigned_plan,built.fees,flows).map(Some)
     };
     let remaining=if inputs.len()>=6 {1}else{6-inputs.len()};

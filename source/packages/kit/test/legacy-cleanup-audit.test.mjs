@@ -33,7 +33,8 @@ test("deletion gate removes migrated Legacy fallbacks and keeps canonical replac
   assert.match(runtime, /readonly beginApprovalPreparation:/);
   assert.doesNotMatch(runtime, /readonly beginWorkflowPreparation:/);
   assert.doesNotMatch(runtime, /adaptWorkflowPreparationPresentation/);
-  assert.match(runtime, /const genericPresentation = approvalPreparation/);
+  assert.match(runtime, /const genericPresentation = unsupportedRole/);
+  assert.match(runtime, /\? undefined : approvalPreparation/);
   assert.doesNotMatch(runtime, /entry\.presentation === "workflow"/);
   assert.doesNotMatch(workflow, /beginWorkflowPreparation/);
   assert.match(poolMaterial, /createPoolMaterialLoader/);

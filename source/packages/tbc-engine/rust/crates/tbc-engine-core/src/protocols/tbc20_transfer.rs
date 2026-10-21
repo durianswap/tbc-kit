@@ -46,12 +46,20 @@ pub struct TransferOptions<'a> {
     pub inputs: &'a [TokenInput<'a>],
     pub fee_inputs: &'a [FeeInput<'a>],
     pub receivers: &'a [Receiver],
+    /// A separate, fixed native output. Never interpreted as automatic change.
+    pub payment: Option<NativePayment>,
     /// Must be bound to the selected network and independently trusted asset.
     /// An identity copied from the same untrusted input is not authentication.
     pub expected_identity: &'a [u8],
     pub token_change_controller: [u8; 21],
     pub native_change_hash: [u8; 20],
     pub max_fee: u64,
+}
+
+#[derive(Clone, Copy)]
+pub struct NativePayment {
+    pub recipient_hash: [u8; 20],
+    pub amount: u64,
 }
 
 #[derive(Debug)]
@@ -170,8 +178,19 @@ pub fn build_transfer_plan(options: TransferOptions<'_>) -> Result<TransferPlan,
         tx.outputs.push(TxOut { satoshis: 0, script_pubkey: Script::from_bytes(
             build_tape(output.amounts_by_input, &first.tape().extension).map_err(|_| invalid("invalid TBC20 output Tape"))?) });
     }
-    let available = native_total.checked_sub(500 * token_outputs.len() as u64)
+    let mut available = native_total.checked_sub(500 * token_outputs.len() as u64)
         .ok_or_else(|| insufficient("TBC20 funding cannot pay Code outputs"))?;
+    if let Some(payment) = options.payment {
+        if !(42..=9_007_199_254_740_991).contains(&payment.amount) {
+            return Err(invalid("TBC20 payment must be non-dust and within the SDK safe amount range"));
+        }
+        if groups.len() >= 8 { return Err(invalid("TBC20 has no output group left for native payment")); }
+        available = available.checked_sub(payment.amount)
+            .ok_or_else(|| insufficient("TBC20 funding cannot pay the attached native amount"))?;
+        groups.push(OutputGroup { code_vout: tx.outputs.len(), tape_vout: None });
+        tx.outputs.push(TxOut { satoshis: payment.amount,
+            script_pubkey: Script::p2pkh(&payment.recipient_hash) });
+    }
     let change_script = Script::p2pkh(&options.native_change_hash);
     let estimate = |tx: &Transaction, groups: &[OutputGroup]| -> Result<usize, EngineError> {
         let mut sized = tx.clone();
@@ -250,6 +269,7 @@ pub fn build_transfer_plan(options: TransferOptions<'_>) -> Result<TransferPlan,
 /// Merge is the same allocation/proof/fee path with the complete balance as one
 /// recipient request. Very large balances may still require several legal groups.
 pub fn build_merge_plan(options: TransferOptions<'_>, controller: [u8; 21]) -> Result<TransferPlan, EngineError> {
+    if options.payment.is_some() { return Err(invalid("TBC20 merge does not accept a native payment")); }
     if options.inputs.is_empty() || options.inputs.len() > 6
         || options.fee_inputs.len() > 6 - options.inputs.len()
     { return Err(invalid("TBC20 merge requires one to six total selected inputs")); }

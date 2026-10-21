@@ -764,7 +764,7 @@ test("verification rejects declaration-shaped SDK source decoys", async () => {
   const mappedPath = `${sdkSourcePrefix}${sourcePath}`;
   const builder = mapping.sources.find((source) => source.path === mappedPath);
   assert.ok(builder, "exact Pool builder source is required");
-  const builderFile = path.join(testPackage, "rust/vendor/tbc-sdk", sourcePath);
+  const builderFile = path.join(testPackage, "rust/provenance/originals", sourcePath);
   const source = await readFile(builderFile, "utf8");
   const declaration = "    pub fn merge_ftlp(";
   assert.equal(source.split(declaration).length - 1, 1, "one real merge_ftlp declaration is required");

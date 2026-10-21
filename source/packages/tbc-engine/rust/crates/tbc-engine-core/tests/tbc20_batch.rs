@@ -50,7 +50,7 @@ fn fragmented(count:usize)->Material {
         let fees=[FeeInput{outpoint:fee_point.clone(),output:&fee_tx.outputs[fee_point.vout as usize],public_key:&key}];
         let mut receivers=vec![Receiver{controller:controller(&key),amount:1000};output_count-1];
         receivers.push(Receiver{controller:controller(&key),amount:parent.tape().balance-1000*(output_count as u128-1)});
-        let plan=build_transfer_plan(TransferOptions{inputs:&inputs,fee_inputs:&fees,receivers:&receivers,
+        let plan=build_transfer_plan(TransferOptions{payment:None,inputs:&inputs,fee_inputs:&fees,receivers:&receivers,
             expected_identity:parent.identity(),token_change_controller:controller(&key),native_change_hash:key.hash160(),max_fee:10000}).unwrap();
         let signed=signed(&plan.unsigned_plan);let tx=Transaction::from_bytes(&bytes(&signed.transactions[0].raw_transaction)).unwrap();
         for (vout,output) in tx.outputs.iter().enumerate(){
@@ -77,7 +77,7 @@ fn tbc20_batch_seven_and_ten_fragments_sign_actual_planned_dependencies_without_
         let inputs:Vec<_>=m.parents.iter().zip(&m.ancestors).map(|(parent,ancestors)|TokenInput{parent,ancestors,public_key:&m.key}).collect();
         let fees:Vec<_>=with_fee.then_some(FeeInput{outpoint:m.fee_point.clone(),output:&m.fee_output,public_key:&m.key}).into_iter().collect();
         let receivers=[Receiver{controller:controller(&m.key),amount:1000}];
-        let options=BatchOptions{transfer:TransferOptions{inputs:&inputs,fee_inputs:&fees,receivers:&receivers,
+        let options=BatchOptions{transfer:TransferOptions{payment:None,inputs:&inputs,fee_inputs:&fees,receivers:&receivers,
             expected_identity:m.parents[0].identity(),token_change_controller:controller(&m.key),native_change_hash:m.key.hash160(),max_fee:10000},max_transactions:8};
         let batch=if merge{build_batch_merge_plan(options)}else{build_batch_transfer_plan(options)}.unwrap();
         assert!(batch.unsigned_plan.transactions.len()>1);
@@ -109,9 +109,24 @@ fn tbc20_batch_bounds_global_fees_duplicate_inputs_and_signing_binding(){
     let inputs:Vec<_>=m.parents.iter().zip(&m.ancestors).map(|(parent,ancestors)|TokenInput{parent,ancestors,public_key:&m.key}).collect();
     let fees=[FeeInput{outpoint:m.fee_point.clone(),output:&m.fee_output,public_key:&m.key}];
     let receivers=[Receiver{controller:controller(&m.key),amount:1000}];
-    let options=|inputs|BatchOptions{transfer:TransferOptions{inputs,fee_inputs:&fees,receivers:&receivers,
+    let options=|inputs|BatchOptions{transfer:TransferOptions{payment:None,inputs,fee_inputs:&fees,receivers:&receivers,
         expected_identity:m.parents[0].identity(),token_change_controller:controller(&m.key),native_change_hash:m.key.hash160(),max_fee:10000},max_transactions:8};
     let good=build_batch_transfer_plan(options(&inputs)).unwrap();
+    let mut with_payment=options(&inputs);
+    with_payment.transfer.payment=Some(tbc_engine_core::protocols::tbc20_transfer::NativePayment {
+        recipient_hash:[7;20], amount:42,
+    });
+    let paid=build_batch_transfer_plan(with_payment).unwrap();
+    let payment_script=tbc_sdk::script::Script::p2pkh(&[7;20]);
+    let paid_bundle=signed(&paid.unsigned_plan);
+    for (index, item) in paid_bundle.transactions.iter().enumerate() {
+        let tx=Transaction::from_bytes(&bytes(&item.raw_transaction)).unwrap();
+        assert_eq!(tx.outputs.iter().filter(|output| output.script_pubkey==payment_script && output.satoshis==42).count(),
+            usize::from(index+1==paid_bundle.transactions.len()),"payment occurs only in the final business transaction");
+    }
+    let mut merge_payment=options(&inputs);
+    merge_payment.transfer.payment=Some(tbc_engine_core::protocols::tbc20_transfer::NativePayment {recipient_hash:[7;20],amount:42});
+    assert!(build_batch_merge_plan(merge_payment).unwrap_err().message.contains("cannot include"));
     let mut capped=options(&inputs);capped.max_transactions=1;
     assert!(build_batch_transfer_plan(capped).unwrap_err().message.contains("bundle"));
     let mut capped=options(&inputs);capped.transfer.max_fee=good.fees.iter().sum::<u64>()-1;
@@ -133,7 +148,7 @@ fn tbc20_batch_small_plan_is_byte_identical_and_cannot_loop_without_reduction(){
     let inputs=[TokenInput{parent:&m.parents[0],ancestors:&m.ancestors[0],public_key:&m.key}];
     let fees=[FeeInput{outpoint:m.fee_point.clone(),output:&m.fee_output,public_key:&m.key}];
     let receivers=[Receiver{controller:controller(&m.key),amount:1000}];
-    let options=||TransferOptions{inputs:&inputs,fee_inputs:&fees,receivers:&receivers,
+    let options=||TransferOptions{payment:None,inputs:&inputs,fee_inputs:&fees,receivers:&receivers,
         expected_identity:m.parents[0].identity(),token_change_controller:controller(&m.key),native_change_hash:m.key.hash160(),max_fee:10000};
     let original=build_transfer_plan(options()).unwrap();
     let batch=build_batch_transfer_plan(BatchOptions{transfer:options(),max_transactions:1}).unwrap();

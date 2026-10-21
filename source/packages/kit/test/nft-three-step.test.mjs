@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-import { hashCanonical } from "@tbc-wallet/core";
+import { hashCanonical, chainDataRequirement } from "@tbc-wallet/core";
 import { createTbcOfficialApi } from "../dist/esm/api.js";
 import { createTbcEngine, createWasmTbcEngineBackend } from "../dist/esm/engine.js";
 import { createDefaultTbcChainDataResolver } from "../dist/esm/wallet.js";
@@ -34,6 +34,7 @@ const native = ["11", "12", "13"].map((tag) => {
 });
 
 function requirement(intent) {
+  if (intent.type.startsWith('tbc721-standard-')) return chainDataRequirement({intent});
   if (intent.type === "tbc.collection.create") return {
     intentType: intent.type, assets: [{ kind: "native" }], includeAncestry: false,
   };
@@ -50,7 +51,7 @@ function requirement(intent) {
 function policy() {
   const payload = Object.freeze({
     version: "1.0", policyId: "nft-three-step", revision: "1", chainId: CHAIN_ID,
-    feeRateSatPerKb: "80", dustThreshold: "24", minConfirmations: "0",
+    feeRateSatPerKb: "80", dustThreshold: "42", minConfirmations: "0",
     maxBundleTransactions: 32, sighashType: 65, contractPolicies: Object.freeze([]),
     amountLimits: Object.freeze([{ scope: "native", maximum: "2100000000000000" }]),
     expiresAt: "2026-09-20T00:05:00Z",
@@ -160,13 +161,13 @@ test("collection create -> NFT mint -> NFT transfer shares exact retained bytes 
   });
 
   const collectionIntent = {
-    type: "tbc.collection.create", version: "1.0", name: "Kit Collection",
+    type: "tbc721-standard-create-collection", version: "1.0", name: "Kit Collection",
     description: "Controlled three-step collection", supply: "2",
     media: { kind: "uri", uri: "ipfs://kit-collection" },
   };
   const collection = await planIntent(engine, resolver, collectionIntent, "collection");
   assert.equal(collection.plan.payload.transactions.length, 1);
-  assert.equal(collection.plan.payload.transactions[0].id, "collection-create-1");
+  assert.equal(collection.plan.payload.transactions[0].id, "tbc721-standard-create-collection");
   assert.equal(collection.plan.payload.signingTasks.length, 1);
   assert.deepEqual(collection.plan.payload.preview.assetFlows.map(({ kind, direction, amount }) => ({ kind, direction, amount })), [
     { kind: "collection", direction: "create", amount: "2" },
@@ -179,17 +180,16 @@ test("collection create -> NFT mint -> NFT transfer shares exact retained bytes 
 
   state.phase = 1;
   const mint = await planIntent(engine, resolver, {
-    type: "tbc.nft.mint", version: "1.0", collectionId: state.collectionId,
+    type: "tbc721-standard-mint", version: "1.0", collectionId: state.collectionId, slot: 1,
     name: "Kit NFT", symbol: "KNFT", description: "Controlled NFT",
     attributes: [{ traitType: "rarity", value: "genesis" }],
     media: { kind: "base64", mediaType: "image/png", data: "AQIDBA==", sha256: "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a" },
   }, "mint");
   assert.equal(mint.snapshot.payload.utxos.filter((item) => item.classification === "collection-slot").length, 1);
-  assert.deepEqual(mint.snapshot.payload.contracts, [{
-    contractId: state.collectionId, family: "collection", protocolVersion: "2.0",
-    creationTxid: state.collectionId, currentOutpoint: { txid: state.collectionId, vout: 1 },
-  }]);
-  assert.equal(mint.plan.payload.transactions[0].id, "nft-mint-1");
+  assert.equal(mint.snapshot.payload.contracts[0].contractId, state.collectionId);
+  assert.equal(mint.snapshot.payload.contracts[0].standardId, 'tbc721-standard');
+  assert.deepEqual(mint.snapshot.payload.contracts[0].currentOutpoint, {txid:state.collectionId,vout:1});
+  assert.equal(mint.plan.payload.transactions[0].id, "tbc721-standard-mint-0");
   assert.equal(mint.plan.payload.signingTasks.length, 2);
   const mintRaw = mint.plan.payload.transactions[0].unsignedTransaction;
   state.mintId = turingTransactionId(mintRaw);
@@ -198,20 +198,19 @@ test("collection create -> NFT mint -> NFT transfer shares exact retained bytes 
 
   state.phase = 2;
   const transfer = await planIntent(engine, resolver, {
-    type: "tbc.nft.transfer", version: "1.0", contractId: state.mintId, to: RECIPIENT,
+    type: "tbc721-standard-transfer", version: "1.0", contractId: state.mintId, to: RECIPIENT,
   }, "transfer");
   assert.equal(transfer.snapshot.payload.utxos.filter((item) => item.classification === "nft").length, 2);
-  assert.deepEqual(transfer.snapshot.payload.contracts, [{
-    contractId: state.mintId, family: "nft", protocolVersion: "2.0",
-    creationTxid: state.mintId, currentOutpoint: { txid: state.mintId, vout: 0 },
-  }]);
-  assert.equal(transfer.plan.payload.transactions[0].id, "nft-transfer-1");
+  assert.equal(transfer.snapshot.payload.contracts[0].contractId, state.mintId);
+  assert.equal(transfer.snapshot.payload.contracts[0].standardId, 'tbc721-standard');
+  assert.deepEqual(transfer.snapshot.payload.contracts[0].currentOutpoint, {txid:state.mintId,vout:0});
+  assert.equal(transfer.plan.payload.transactions[0].id, "tbc721-standard-transfer");
   assert.equal(transfer.plan.payload.signingTasks.length, 3);
   assert.deepEqual(transfer.plan.payload.preview.assetFlows.map(({ kind, direction, amount, to }) => ({ kind, direction, amount, ...(to === undefined ? {} : { to }) })), [
     { kind: "nft", direction: "send", amount: "1", to: RECIPIENT },
     { kind: "native", direction: "fee", amount: transfer.plan.payload.preview.totalFee },
   ]);
-  assert.deepEqual(calls, { collectionIndex: 1, nftIndex: 1, txoStatus: 1, raw: 0, decoded: 0 },
+  assert.deepEqual(calls, { collectionIndex: 1, nftIndex: 1, txoStatus: 0, raw: 0, decoded: 0 },
     "zero-floor immediate successor path reuses retained bytes and performs no confirmation decode");
 });
 

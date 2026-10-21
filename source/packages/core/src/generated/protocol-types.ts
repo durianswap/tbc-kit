@@ -2045,14 +2045,29 @@ type TransactionFtMergeIntent = ({
   readonly "version": "1.0";
 });
 
-type TransactionFtTransferIntent = (TransactionFungibleTransferFields) & (({
-  readonly "amount"?: unknown;
-  readonly "attachedTbcAmount"?: unknown;
-  readonly "contractId"?: unknown;
-  readonly "to"?: unknown;
-  readonly "type"?: "tbc.ft.transfer";
-  readonly "version"?: unknown;
-}));
+type TransactionFtTransferIntent = (({
+  readonly "amount": unknown;
+  readonly "receivers"?: never;
+  readonly "to": unknown;
+  readonly [key: string]: unknown;
+}) | ({
+  readonly "amount"?: never;
+  readonly "attachedTbcAmount"?: never;
+  readonly "receivers": unknown;
+  readonly "to"?: never;
+  readonly [key: string]: unknown;
+})) & ({
+  readonly "amount"?: CommonPositiveAtomicAmount;
+  readonly "attachedTbcAmount"?: CommonAtomicAmount;
+  readonly "contractId": CommonContractId;
+  readonly "receivers"?: (readonly (({
+  readonly "amount": CommonPositiveAtomicAmount;
+  readonly "to": CommonAddress;
+}))[]);
+  readonly "to"?: CommonAddress;
+  readonly "type": "tbc.ft.transfer";
+  readonly "version": "1.0";
+});
 
 type TransactionFungibleTransferFields = ({
   readonly "amount": CommonPositiveAtomicAmount;
@@ -2352,6 +2367,7 @@ type TransactionTbc20StandardTransferIntent = (({
 })) & ({
   readonly "amount"?: (string);
   readonly "contractId": CommonContractId;
+  readonly "payment"?: TransactionNativePayment;
   readonly "receivers"?: (readonly (({
   readonly "amount": (string);
   readonly "to": CommonAddress;

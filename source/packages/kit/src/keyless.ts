@@ -18,6 +18,7 @@ export const TBC_KEYLESS_OPERATIONS = Object.freeze([
   "decodeMultisigAddress",
   "prepareMultisig",
   "inspectMultisig",
+  "reviewMultisig",
   "verifyMultisigSignatures",
   "finalizeMultisig",
 ] as const);

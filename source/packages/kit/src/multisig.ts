@@ -69,6 +69,35 @@ export interface MultisigProposal {
   readonly fee: string;
   readonly tasks: readonly MultisigSigningTask[];
 }
+/** Rebuilt transaction outputs, including change, never an untrusted DApp label. */
+export interface MultisigReview {
+  readonly proposalId: string;
+  readonly chainId: "tbc:mainnet" | "tbc:testnet";
+  readonly groupAddress: string;
+  readonly requiredSignatures: number;
+  readonly publicKeys: readonly string[];
+  readonly operation: MultisigAction["type"];
+  readonly feeAtomic: string;
+  readonly maxFeeAtomic: string;
+  readonly includesChange: true;
+  /** A script fingerprint, not the API's origin transaction/contract ID. */
+  readonly assetIdentityKind: "locking-code-fingerprint";
+  readonly outputs: readonly Readonly<{
+    vouts: readonly number[];
+    kind: "native" | "token" | "member-hold" | "metadata";
+    assetFamily: "TBC" | "FT" | "STABLE_COIN";
+    assetVersion?: number;
+    assetIdentity: string;
+    amountAtomic: string;
+    recipient: string | null;
+    nativeValueAtomic: string;
+    memberPublicKey?: string;
+  }>[];
+}
+export interface ReviewedMultisigProposal {
+  readonly proposal: MultisigProposal;
+  readonly review: MultisigReview;
+}
 export interface MultisigSignature {
   readonly proposalId: string;
   readonly inputIndex: number;
@@ -90,13 +119,13 @@ export interface FinalizedMultisig {
 export interface MultisigSigner {
   readonly publicKey: string;
   /** UI approval or explicit backend policy; called once for the whole proposal. */
-  approve(proposal: MultisigProposal): Promise<boolean>;
+  approve(proposal: MultisigProposal, review: MultisigReview): Promise<boolean>;
   /** Sign digest32 directly, without a message prefix or another hash. */
   signDigest(task: Readonly<{ proposalId: string; inputIndex: number; digest: string; sighashType: 65 }>):
     Promise<Readonly<{ signature: string; encoding: "der-sighash" | "compact64" }>>;
 }
 export interface MultisigBatchSigner extends Omit<MultisigSigner, "approve"> {
-  approve(proposals: readonly MultisigProposal[]): Promise<boolean>;
+  approve(proposals: readonly MultisigProposal[], reviews: readonly MultisigReview[]): Promise<boolean>;
 }
 
 function snapshot<T>(v: T): T { return JSON.parse(JSON.stringify(v)) as T; }
@@ -145,6 +174,7 @@ export function createMultisigClient(engine: MultisigEngine) {
     return freeze(result);
   };
   const inspect = (proposal: MultisigProposal): Promise<MultisigProposal> => invoke("inspectMultisig", proposal);
+  const review = (proposal: MultisigProposal): Promise<ReviewedMultisigProposal> => invoke("reviewMultisig", proposal);
   const verify = (proposal: MultisigProposal, signatures: readonly MultisigSignature[]): Promise<MultisigProgress> =>
     invoke("verifyMultisigSignatures", { proposal, signatures });
   return Object.freeze({
@@ -157,6 +187,7 @@ export function createMultisigClient(engine: MultisigEngine) {
     },
     prepare: (request: MultisigRequest): Promise<MultisigProposal> => invoke("prepareMultisig", request),
     inspect,
+    review,
     verify,
     async exportProposal(proposal: MultisigProposal): Promise<string> { return JSON.stringify(await inspect(proposal)); },
     async importProposal(serialized: string): Promise<MultisigProposal> {
@@ -165,14 +196,15 @@ export function createMultisigClient(engine: MultisigEngine) {
     },
     async sign(proposal: MultisigProposal, signer: MultisigSigner): Promise<readonly MultisigSignature[]> {
       // Own an immutable copy across the approval/async signer boundary.
-      const verified = await inspect(snapshot(proposal));
+      const {proposal: verified, review: summary} = await review(snapshot(proposal));
       const publicKey = signer.publicKey;
+      const signDigest = signer.signDigest.bind(signer);
       const tasks = verified.tasks.filter(task => task.publicKeys.includes(publicKey));
       if (!tasks.length) throw new Error("Signer has no role in this proposal");
-      if (!await signer.approve(verified)) throw new Error("Multisig approval rejected");
+      if (!await signer.approve(verified, summary)) throw new Error("Multisig approval rejected");
       const signatures: MultisigSignature[] = [];
       for (const task of tasks) {
-        const result = await signer.signDigest(Object.freeze({ proposalId: verified.proposalId,
+        const result = await signDigest(Object.freeze({ proposalId: verified.proposalId,
           inputIndex: task.inputIndex, digest: task.digest, sighashType: 65 as const }));
         signatures.push({ proposalId: verified.proposalId, inputIndex: task.inputIndex,
           publicKey, signature: wire(result.signature, result.encoding) });
@@ -193,18 +225,21 @@ export function createMultisigClient(engine: MultisigEngine) {
     },
     async signBatch(proposals: readonly MultisigProposal[], signer: MultisigBatchSigner): Promise<readonly (readonly MultisigSignature[])[]> {
       if (!proposals.length || proposals.length > 32) throw new RangeError("Invalid multisig batch size");
-      const checked = freeze(await Promise.all(proposals.map(p => inspect(snapshot(p)))));
+      const reviewed = await Promise.all(proposals.map(p => review(snapshot(p))));
+      const checked = freeze(reviewed.map(p => p.proposal));
+      const summaries = freeze(reviewed.map(p => p.review));
       validateBatch(checked);
       const publicKey = signer.publicKey;
+      const signDigest = signer.signDigest.bind(signer);
       for (const p of checked) {
         if (!p.tasks.some(t => t.publicKeys.includes(publicKey))) throw new Error("Signer has no role in batch item");
       }
-      if (!await signer.approve(checked)) throw new Error("Multisig batch approval rejected");
+      if (!await signer.approve(checked, summaries)) throw new Error("Multisig batch approval rejected");
       const sets: MultisigSignature[][] = [];
       for (const p of checked) {
         const signatures: MultisigSignature[] = [];
         for (const t of p.tasks.filter(t => t.publicKeys.includes(publicKey))) {
-          const result = await signer.signDigest(Object.freeze({ proposalId:p.proposalId,inputIndex:t.inputIndex,digest:t.digest,sighashType:65 as const }));
+          const result = await signDigest(Object.freeze({ proposalId:p.proposalId,inputIndex:t.inputIndex,digest:t.digest,sighashType:65 as const }));
           signatures.push({proposalId:p.proposalId,inputIndex:t.inputIndex,publicKey,signature:wire(result.signature,result.encoding)});
         }
         await verify(p,signatures);sets.push(signatures);

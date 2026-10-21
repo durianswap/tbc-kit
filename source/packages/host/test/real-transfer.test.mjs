@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { withOutputReview } from "../../../scripts/lib/reviewed-transfer-fixture.mjs";
 import { indexedDB } from "fake-indexeddb";
 import {
   TWS_RELEASE,
@@ -33,6 +34,7 @@ const provider = JSON.parse(
     "utf8",
   ),
 );
+integration.canonicalTransfer = withOutputReview(integration.canonicalTransfer);
 const CANONICAL_SIGHASH =
   "1e06ca3ec00947bc4a174c62fbe08777796b2b525915640c5a144c001c27bf25";
 const CANONICAL_TXID =

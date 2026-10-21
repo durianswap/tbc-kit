@@ -12,6 +12,7 @@ import type {
   KitTransactionEngine,
   KitTransactionRequest,
 } from "./public-types.js";
+import type { TbcSecureOperationContext } from "./reviewed-transaction-types.js";
 import {
   createTbcWallet,
   type KitHostPortCall,
@@ -86,8 +87,19 @@ export interface CreateTbcBackendServiceOptions {
   ) => Promise<TbcBackendAuthorizationDecision>;
   /** Opaque service-owned Signer. Private keys never enter Kit inputs. */
   readonly signer?: KitWalletOptions["signer"];
+  /** Shared reviewed raw/associated capability, not a second transaction builder.
+   * A factory receives the service-owned context; never use caller/page identity. */
+  readonly reviewedTransaction?: NonNullable<KitWalletOptions["reviewedTransaction"]> |
+    ((context: TbcBackendReviewContext) => NonNullable<KitWalletOptions["reviewedTransaction"]> |
+      Promise<NonNullable<KitWalletOptions["reviewedTransaction"]>>);
   readonly clock?: KitWalletOptions["clock"];
   readonly randomBytes?: KitWalletOptions["randomBytes"];
+}
+
+export interface TbcBackendReviewContext extends TbcSecureOperationContext {
+  readonly account: KitWalletAccount;
+  /** False after close; authority-aware shared adapters should check this. */
+  readonly isActive: () => boolean;
 }
 
 export type TbcBackendPreparedExecution =
@@ -272,55 +284,67 @@ export function createTbcBackendService(
     if (options.authorize === undefined || options.signer === undefined) {
       throw new Error("Backend execution requires explicit authorize and signer capabilities");
     }
-    sessionPromise ??= createTbcWallet({
-      productId: options.serviceId,
-      name: options.serviceId,
-      accounts: Object.freeze({ current: async () => Object.freeze([account]) }),
-      approval: Object.freeze({
-        request: async (params: unknown, call: KitHostPortCall) => {
-          const binding = approvalBinding(params);
-          const decision = await options.authorize!({ approvalRequest: params, call });
-          if (decision.status === "rejected") {
+    const signer = options.signer;
+    sessionPromise ??= (async () => {
+      const context: TbcBackendReviewContext = Object.freeze({
+        origin: BACKEND_ORIGIN, chainId: account.chainId, accountId: account.accountId,
+        sessionId: `backend-${options.serviceId}`, navigationId: `backend-${options.serviceId}`,
+        account, isActive: () => !closed,
+      });
+      const reviewedTransaction = typeof options.reviewedTransaction === "function"
+        ? await options.reviewedTransaction(context) : options.reviewedTransaction;
+      ensureOpen();
+      return createTbcWallet({
+        productId: options.serviceId,
+        name: options.serviceId,
+        accounts: Object.freeze({ current: async () => Object.freeze([account]) }),
+        approval: Object.freeze({
+          request: async (params: unknown, call: KitHostPortCall) => {
+            const binding = approvalBinding(params);
+            const decision = await options.authorize!({ approvalRequest: params, call });
+            if (decision.status === "rejected") {
+              return Object.freeze({
+                status: "rejected" as const,
+                bindingHash: binding.bindingHash,
+                rejectedAt: decision.rejectedAt,
+              });
+            }
+            if (decision.decisionId.length < 1) throw new TypeError("Backend authorization decisionId is required");
             return Object.freeze({
-              status: "rejected" as const,
+              status: "approved" as const,
+              approvalId: decision.decisionId,
+              approvalToken: decision.decisionId,
               bindingHash: binding.bindingHash,
-              rejectedAt: decision.rejectedAt,
+              approvedAt: decision.approvedAt,
+              expiresAt: binding.expiresAt,
             });
-          }
-          if (decision.decisionId.length < 1) throw new TypeError("Backend authorization decisionId is required");
-          return Object.freeze({
-            status: "approved" as const,
-            approvalId: decision.decisionId,
-            approvalToken: decision.decisionId,
-            bindingHash: binding.bindingHash,
-            approvedAt: decision.approvedAt,
-            expiresAt: binding.expiresAt,
-          });
-        },
-      }),
-      signer: options.signer,
-      storage: Object.freeze({
-        hostStore: createMemoryTwsHostStore(),
-        loadPermissions: async () => Object.freeze({
-          revision: "0",
-          permissions: Object.freeze(BACKEND_CAPABILITIES.map((capability) => permission(capability, account))),
+          },
         }),
-        commitPermissions: unavailable("Backend permission mutation"),
-      }),
-      network: Object.freeze({
-        ...network,
-        broadcastSubmit: network.broadcastSubmit ?? unavailable("Single broadcast"),
-        broadcastSubmitBatch: network.broadcastSubmitBatch ?? unavailable("Batch broadcast"),
-        broadcastReconcile: network.broadcastReconcile ?? unavailable("Broadcast reconciliation"),
-      }),
-      engine,
-      legacy: false,
-      ...(options.clock === undefined ? {} : { clock: options.clock }),
-      ...(options.randomBytes === undefined ? {} : { randomBytes: options.randomBytes }),
-    }).openSession({
-      authority: stableAuthority(options.serviceId, account),
-      execution: Object.freeze({ hostStore: createMemoryTwsHostStore() }),
-    });
+        signer,
+        ...(reviewedTransaction === undefined ? {} : { reviewedTransaction }),
+        storage: Object.freeze({
+          hostStore: createMemoryTwsHostStore(),
+          loadPermissions: async () => Object.freeze({
+            revision: "0",
+            permissions: Object.freeze(BACKEND_CAPABILITIES.map((capability) => permission(capability, account))),
+          }),
+          commitPermissions: unavailable("Backend permission mutation"),
+        }),
+        network: Object.freeze({
+          ...network,
+          broadcastSubmit: network.broadcastSubmit ?? unavailable("Single broadcast"),
+          broadcastSubmitBatch: network.broadcastSubmitBatch ?? unavailable("Batch broadcast"),
+          broadcastReconcile: network.broadcastReconcile ?? unavailable("Broadcast reconciliation"),
+        }),
+        engine,
+        legacy: false,
+        ...(options.clock === undefined ? {} : { clock: options.clock }),
+        ...(options.randomBytes === undefined ? {} : { randomBytes: options.randomBytes }),
+      }).openSession({
+        authority: stableAuthority(options.serviceId, account),
+        execution: Object.freeze({ hostStore: createMemoryTwsHostStore() }),
+      });
+    })();
     return sessionPromise;
   };
 

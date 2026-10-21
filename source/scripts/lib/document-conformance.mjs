@@ -1,13 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const ignoredDirectories = new Set([".git", ".worktrees", "node_modules"]);
+const ignoredDirectories = new Set([".git", ".worktrees", "node_modules", "target", "dist", "build", "vendor", "artifacts", "delivery"]);
 
 function walkFiles(directory, files = []) {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
     const absolutePath = path.join(directory, entry.name);
     if (entry.isDirectory()) {
-      if (!ignoredDirectories.has(entry.name)) walkFiles(absolutePath, files);
+      if (!entry.name.startsWith(".tmp-") && !ignoredDirectories.has(entry.name)) walkFiles(absolutePath, files);
     } else if (entry.isFile()) {
       files.push(absolutePath);
     }
@@ -122,7 +122,7 @@ export function runDocumentConformance(root) {
     root,
     "standards/TWS-008-legacy-compatibility.md",
   );
-  const readme = readStandard(root, "README.md");
+  const readme = readStandard(root, "standards/README.md");
 
   const normativeHashBindings = assertCodeMentions(
     identifiers,
@@ -225,8 +225,8 @@ export function runDocumentConformance(root) {
     "JCS 即 RFC 8785",
   ];
   // Product navigation belongs in README; protocol claims have one linked home.
-  const compatibilityPath = "docs/reference/protocol-compatibility.md";
-  if (!readme.includes(`](${compatibilityPath})`)) {
+  const compatibilityPath = "standards/protocol-compatibility.md";
+  if (!readme.includes("](protocol-compatibility.md)")) {
     throw new Error("README must link the normative protocol compatibility scope");
   }
   const compatibility = readStandard(root, compatibilityPath);

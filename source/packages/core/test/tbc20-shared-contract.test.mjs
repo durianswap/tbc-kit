@@ -40,7 +40,10 @@ test("capability profiles advertise current issuance and unified holders, never 
   assert.deepEqual(normalizeCapabilityConfiguration(config(["tbc.transfer", ...intents])).scopes[0].intents,
     ["tbc.transfer", ...intents]);
   assert.ok(intents.every((intent) => TWS_CAPABILITY_INTENTS.includes(intent)));
-  for(const disabled of ['tbc.collection.create','tbc.nft.mint','tbc.ft.create','tbc.pool.create']) {
+  // Collection format is shared with the current NFT standard; only distinct
+  // historical issuance is disabled, not the reusable collection operation.
+  assert.ok(TWS_CAPABILITY_INTENTS.includes('tbc.collection.create'));
+  for(const disabled of ['tbc.nft.mint','tbc.ft.create','tbc.pool.create']) {
     assert.equal(TWS_CAPABILITY_INTENTS.includes(disabled),false);
     assert.throws(()=>normalizeCapabilityConfiguration(config(['tbc.transfer',disabled])),/Invalid wallet capability scope/);
   }

@@ -59,7 +59,8 @@ export interface MinimalTransferFixture {
   readonly profile: TbcNetworkProfile;
   readonly request: TransactionRequest;
   readonly account: AccountsResolveResult["accounts"][number];
-  readonly snapshot: ChainDataResolveResult;
+  // This example builds one transfer; workflow step arrays are not its output.
+  readonly snapshot: Extract<ChainDataResolveResult, { readonly payload: unknown }>;
   readonly policy: PolicyResolveResult;
 }
 
@@ -153,7 +154,7 @@ export function createTransferFixture(
     snapshot: {
       payload: snapshotPayload,
       snapshotHash: hashCanonical(snapshotPayload),
-    } as ChainDataResolveResult,
+    } satisfies MinimalTransferFixture["snapshot"],
     policy: {
       payload: policyPayload,
       policyHash: hashCanonical(policyPayload),

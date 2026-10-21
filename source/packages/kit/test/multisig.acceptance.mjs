@@ -20,8 +20,8 @@ if(!installed)await build({ entryPoints: [resolve(root, "packages/kit/src/multis
   bundle: true, format: "esm", platform: "node", outdir: output, logLevel: "silent" });
 const { createMultisigClient, createMultisigMaterialLoader } = await import(pathToFileURL(resolve(output, "multisig.js")));
 const { createWasmTbcKeylessEngine } = await import(pathToFileURL(resolve(output, installed ? "index.node.js" : "keyless.js")));
-const wasm = await readFile(installed ? resolve(installed,"artifacts/wasm/tbc_keyless_wasm.wasm") :
-  resolve(root, "packages/tbc-engine/rust/target/wasm32-unknown-unknown/release/tbc_keyless_wasm.wasm"));
+const wasm = await readFile(process.env.TBC_MULTISIG_WASM || (installed ? resolve(installed,"artifacts/wasm/tbc_keyless_wasm.wasm") :
+  resolve(root, "packages/tbc-engine/rust/target/wasm32-unknown-unknown/release/tbc_keyless_wasm.wasm")));
 const engine = await createWasmTbcKeylessEngine(wasm);
 const client = createMultisigClient(engine);
 const nativeDriver = process.env.TBC_MULTISIG_NATIVE_DRIVER;
@@ -148,6 +148,54 @@ test("one batch approval and rejection before signing duplicate outpoints",async
     {proposal:q,signatures:await client.combine(q,sets[1],extra)}]);
   assert.deepEqual(completed,[cases.find(c=>c.name==="create").result,cases.find(c=>c.name==="transferTbc").result]);
   await assert.rejects(client.finalizeBatch([{proposal:p,signatures:sets[0]},{proposal:p,signatures:sets[0]}]),/unique/);
+});
+
+test("review covers all outputs and distinguishes FT from legacy stablecoin without HTTP",async()=>{
+  let token=false,coin=false;
+  for(const f of cases){
+    const reviewed=await client.review(f.proposal),r=reviewed.review;
+    assert.deepEqual(reviewed.proposal,f.proposal);
+    assert.equal(r.proposalId,f.proposal.proposalId);
+    assert.equal(r.feeAtomic,f.proposal.fee);
+    const tx=new tbc.Transaction(f.proposal.unsignedTxraw);
+    assert.deepEqual(r.outputs.flatMap(x=>x.vouts),tx.outputs.map((_,i)=>i));
+    assert.equal(r.outputs.reduce((n,x)=>n+BigInt(x.nativeValueAtomic),0n),tx.outputs.reduce((n,x)=>n+BigInt(x.satoshis),0n));
+    for(const row of r.outputs){
+      if(row.kind==='token'){assert.ok(row.assetIdentity);assert.match(row.amountAtomic,/^[0-9]+$/);token ||= row.assetFamily==='FT';coin ||=row.assetFamily==='STABLE_COIN';}
+      if(row.kind!=='metadata')assert.ok(row.recipient);
+    }
+    if(nativeDriver)assert.deepEqual(nativeCall('reviewMultisig',f.proposal),reviewed);
+  }
+  assert.ok(token&&coin);
+});
+
+test("batch snapshot cannot be replaced, appended, reordered or mutated during approval",async()=>{
+  const originals=[cases.find(c=>c.name==='create').proposal,cases.find(c=>c.name==='transferTbc').proposal];
+  const supplied=structuredClone(originals),count={approvals:0,signatures:0},seen=[];
+  const local=signer(keys[0],count),realSign=local.signDigest;
+  local.signDigest=async t=>{seen.push(t);return realSign(t);};
+  local.approve=async(proposals,reviews)=>{
+    count.approvals++;
+    assert.equal(proposals.length,2);assert.equal(reviews.length,2);
+    assert.deepEqual(reviews.map(x=>x.proposalId),originals.map(x=>x.proposalId));
+    assert.throws(()=>{reviews[1].outputs[0].amountAtomic='0';},TypeError);
+    assert.throws(()=>{proposals[1].request.action.destination=originals[0].address;},TypeError);
+    supplied[1].request.action.amount='1';supplied[1].request.action.destination=originals[0].address;
+    supplied.reverse();supplied.push(structuredClone(originals[0]));
+    local.signDigest=async()=>assert.fail('signer callback was replaced during approval');
+    await Promise.resolve();return true;
+  };
+  const sets=await client.signBatch(supplied,local);
+  assert.equal(count.approvals,1);assert.equal(sets.length,2);
+  assert.deepEqual(seen.map(t=>t.digest),originals.flatMap(p=>p.tasks.filter(t=>t.publicKeys.includes(local.publicKey)).map(t=>t.digest)));
+  for(let i=0;i<sets.length;i++)assert.equal((await client.verify(originals[i],sets[i])).proposalId,originals[i].proposalId);
+});
+
+test("rejecting any mixed batch signs no item",async()=>{
+  const proposals=[cases.find(c=>c.name==='create').proposal,cases.find(c=>c.name==='transferTbc').proposal];
+  const count={approvals:0,signatures:0};
+  await assert.rejects(client.signBatch(proposals,{...signer(keys[0],count),approve:async(_,reviews)=>{count.approvals++;assert.equal(reviews.length,2);return false;}}),/rejected/);
+  assert.equal(count.approvals,1);assert.equal(count.signatures,0);
 });
 
 test("material loader reads only witness parents, single-flights shared funding and ancestors",async()=>{

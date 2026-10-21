@@ -247,11 +247,10 @@ export function chainDataRequirement(
     case "tbc20Stablecoin.transfer":
     case "tbc20-stablecoin-transfer": {
       const coin = intent.type === "tbc20-stablecoin-transfer" || intent.type === "tbc20Stablecoin.transfer";
-      const paymentAllowed = coin || intent.type === "tbc20.transfer";
       const contractId = requireString(intent.contractId, "contractId");
       let amount = requireString(intent.receivers === undefined ? intent.amount : "0", "amount");
       if (intent.receivers !== undefined) {
-        if (intent.to !== undefined || intent.amount !== undefined || intent.receivers.length < 1 || intent.receivers.length > (coin || (paymentAllowed && intent.payment !== undefined) ? 7 : 8)) {
+        if (intent.to !== undefined || intent.amount !== undefined || intent.receivers.length < 1 || intent.receivers.length > (coin || intent.payment !== undefined ? 7 : 8)) {
           throw new TwsEngineError("ENGINE_INPUT_INVALID", "invalid mutually exclusive TBC20 receivers");
         }
         let total = 0n;
@@ -263,14 +262,16 @@ export function chainDataRequirement(
         amount = total.toString();
       }
       base.contractIds.push(contractId);
-      base.nativeAmount = paymentAllowed ? intent.payment?.amount : undefined;
+      base.nativeAmount = intent.payment?.amount;
       base.assets.push(native(base.nativeAmount), direct(coin ? "stablecoin" : "ft", contractId, amount));
       break;
     }
     case "tbc.ft.transfer":
     case "tbc.stablecoin.transfer": {
       const contractId = requireString(intent.contractId, "contractId");
-      const amount = requireString(intent.amount, "amount");
+      const amount = intent.type === "tbc.ft.transfer" && intent.receivers !== undefined
+        ? intent.receivers.reduce((total, receiver) => total + BigInt(receiver.amount), 0n).toString()
+        : requireString(intent.amount, "amount");
       const attached = intent.attachedTbcAmount;
       base.contractIds.push(contractId);
       base.nativeAmount = attached === undefined || attached === "0" ? undefined : attached;
@@ -493,7 +494,7 @@ export function chainDataRequirement(
     ...(base.collectionSlots === undefined ? {} : { collectionSlots: base.collectionSlots }),
     ...(intent.targetOutpoints === undefined ? {} : { targetOutpoints: Object.freeze(intent.targetOutpoints.map(point => Object.freeze({ ...point }))) }),
     ...(intent.certificateOutpoint === undefined ? {} : { certificateOutpoint: Object.freeze({ ...intent.certificateOutpoint }) }),
-    ...((!["amm.mergeToken", "tbc20Lp.transfer", "tbc20Lp.lock", "tbc20Lp.unlock", "tbc20Lp.merge", "tbc20Lp.burn", "amm.swap", "amm.addLiquidity", "amm.removeLiquidity", "tbc721.transfer", "tbc20.transfer", "tbc20.merge", "tbc20Stablecoin.transfer", "tbc20Stablecoin.merge", "tbc.transfer", "tbc-timelock-lock", "tbc-timelock-unlock", "tbc-htlc-lock", "tbc-htlc-claim", "tbc-htlc-refund", "tbc-lop-create", "tbc-lop-cancel", "tbc-lop-match", "tbc20-standard-create", "tbc20-standard-transfer", "tbc20-standard-merge", "tbc20-stablecoin-create", "tbc20-stablecoin-transfer", "tbc20-stablecoin-merge", "tbc20-stablecoin-mint", "tbc20-stablecoin-freeze", "tbc20-stablecoin-unfreeze", "tbc20-lp-transfer", "tbc20-lp-merge", "tbc20-lp-lock", "tbc20-lp-unlock", "tbc-amm-create", "tbc-amm-add-liquidity", "tbc-amm-remove-liquidity", "tbc-amm-swap"].includes(intent.type) && !intent.type.startsWith("tbc721-standard-")) || request.constraints?.inputOutpoints === undefined
+    ...((!["tbc.maintenance.merge", "amm.mergeToken", "tbc20Lp.transfer", "tbc20Lp.lock", "tbc20Lp.unlock", "tbc20Lp.merge", "tbc20Lp.burn", "amm.swap", "amm.addLiquidity", "amm.removeLiquidity", "tbc721.transfer", "tbc20.transfer", "tbc20.merge", "tbc20Stablecoin.transfer", "tbc20Stablecoin.merge", "tbc.transfer", "tbc-timelock-lock", "tbc-timelock-unlock", "tbc-htlc-lock", "tbc-htlc-claim", "tbc-htlc-refund", "tbc-lop-create", "tbc-lop-cancel", "tbc-lop-match", "tbc20-standard-create", "tbc20-standard-transfer", "tbc20-standard-merge", "tbc20-stablecoin-create", "tbc20-stablecoin-transfer", "tbc20-stablecoin-merge", "tbc20-stablecoin-mint", "tbc20-stablecoin-freeze", "tbc20-stablecoin-unfreeze", "tbc20-lp-transfer", "tbc20-lp-merge", "tbc20-lp-lock", "tbc20-lp-unlock", "tbc-amm-create", "tbc-amm-add-liquidity", "tbc-amm-remove-liquidity", "tbc-amm-swap"].includes(intent.type) && !intent.type.startsWith("tbc721-standard-")) || request.constraints?.inputOutpoints === undefined
       ? {}
       : {
           inputOutpoints: Object.freeze(request.constraints.inputOutpoints.map((outpoint) =>

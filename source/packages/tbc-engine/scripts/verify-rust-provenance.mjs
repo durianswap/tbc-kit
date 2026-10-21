@@ -301,9 +301,20 @@ async function verifyAuthenticatedVendorSource(source) {
   }
   const relativePath = source.path.slice(prefix.length);
   assertRelativePath(relativePath, `authenticated source path for ${source.path}`);
-  const sourcePath = path.resolve(vendorRoot, relativePath);
+  let sourcePath = path.resolve(vendorRoot, relativePath);
   if (!sourcePath.startsWith(`${vendorRoot}${path.sep}`)) {
     fail(`authenticated vendor source escapes the pinned subtree: ${source.path}`);
+  }
+  // A classified vendor patch must not rewrite its pinned upstream identity.
+  // Verify the retained original blob, then independently verify the patched
+  // runtime bytes against the explicit patch ledger below.
+  const patches = await readCanonicalJson("patch-ledger.json");
+  if (patches.some(entry => entry.path === relativePath && entry.status === "modified")) {
+    const originalPath = path.resolve(provenanceRoot, "originals", relativePath);
+    try {
+      await readFile(originalPath);
+      sourcePath = originalPath;
+    } catch (error) { if (error?.code !== "ENOENT") throw error; }
   }
   let sourceText;
   try {

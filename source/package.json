@@ -1,6 +1,6 @@
 {
   "name": "tbc-kit-workspace",
-  "version": "0.1.0-rc.1",
+  "version": "0.1.0-rc.10",
   "private": true,
   "type": "module",
   "workspaces": [
@@ -30,7 +30,7 @@
     "build:provider": "npm run generate:v1-candidate && npm run generate:provider-types && npm run generate:provider-validators && tsc -p packages/provider/tsconfig.json && esbuild packages/provider/src/index.ts packages/provider/src/in-memory.ts packages/provider/src/webview.ts --outdir=packages/provider/dist/esm --bundle --external:@tbc-wallet/core --format=esm --platform=neutral --target=es2020 --minify --legal-comments=none --sourcemap --sources-content=false && esbuild packages/provider/src/index.ts packages/provider/src/in-memory.ts packages/provider/src/webview.ts --outdir=packages/provider/dist/cjs --bundle --external:@tbc-wallet/core --format=cjs --platform=neutral --target=es2022 --out-extension:.js=.cjs --minify --legal-comments=none --sourcemap --sources-content=false",
     "build:wallet-standard": "tsc -p packages/wallet-standard/tsconfig.json && esbuild packages/wallet-standard/src/index.ts --outfile=packages/wallet-standard/dist/esm/index.js --bundle --external:@tbc-wallet/provider --external:@wallet-standard/core --format=esm --platform=browser --target=es2020 --minify --legal-comments=none --sourcemap && esbuild packages/wallet-standard/src/index.ts --outfile=packages/wallet-standard/dist/cjs/index.cjs --bundle --external:@tbc-wallet/provider --external:@wallet-standard/core --format=cjs --platform=browser --target=es2022 --minify --legal-comments=none --sourcemap",
     "build:kit": "npm run build:host && npm run build:provider && node packages/kit/scripts/build-legacy-page-bootstrap.mjs && tsc -p packages/kit/tsconfig.json && node packages/kit/scripts/build.mjs",
-    "test:kit": "npm run build:kit && node --test packages/kit/test/*.test.mjs",
+    "test:kit": "npm run build:tbc-engine && npm run build:kit && node --test packages/kit/test/*.test.mjs",
     "pack:kit": "npm run build:kit && npm pack ./packages/kit --pack-destination ./packages/kit/delivery",
     "build:example:minimal": "tsc -p examples/third-party-wallet-minimal/tsconfig.json && esbuild examples/third-party-wallet-minimal/src/dapp.ts examples/third-party-wallet-minimal/src/fixtures.ts examples/third-party-wallet-minimal/src/wallet.ts examples/third-party-wallet-minimal/src/testnet-adapter.ts --outdir=examples/third-party-wallet-minimal/dist/esm --bundle --external:@tbc-wallet/* --format=esm --platform=neutral --target=es2022 --sourcemap",
     "test:core": "npm run build:tbc-engine && node --test packages/core/test/*.test.mjs",
@@ -52,7 +52,7 @@
     "check:sdk-consumer": "npm run build:host && npm run build:tbc-engine && npm run build:provider && npm run build:wallet-standard && node scripts/check-sdk-consumer.mjs",
     "conformance": "node scripts/conformance.mjs",
     "check:conformance": "node scripts/conformance.mjs",
-    "check": "npm run check:core-types && npm run check:provider-types && npm run check:provider-validators && npm run build:core && npm test && npm run test:core && npm run test:tbc-engine && npm run test:host && npm run test:provider && npm run test:wallet-standard && npm run test:example:minimal && npm run check:sdk-consumer && npm run check:core-portability && npm run check:host-portability && npm run check:provider-portability && npm run check:wallet-standard-portability && npm run check:conformance",
+    "check": "npm run check:core-types && npm run check:provider-types && npm run check:provider-validators && npm run build:core && npm test && npm run test:core && npm run test:tbc-engine && npm run test:host && npm run test:provider && npm run test:wallet-standard && npm run test:example:minimal && npm run check:sdk-consumer && npm run check:core-portability && npm run check:host-portability && npm run check:provider-portability && npm run check:wallet-standard-portability && npm run check:conformance && npm run test:kit",
     "check:tbc-engine:rust-delivery": "node packages/tbc-engine/scripts/check-rust-delivery.mjs",
     "build:tbc-engine:fixed-delivery": "node packages/tbc-engine/scripts/build-fixed-delivery.mjs"
   },

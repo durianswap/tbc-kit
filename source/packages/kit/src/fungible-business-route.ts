@@ -77,13 +77,17 @@ export async function resolveFungibleBusinessIntent(
       : first.family === "tbc20" ? "tbc.ft.merge" : "tbc.stablecoin.merge";
     intent = { type, version: "1.0", contractId: input.contractId };
   } else if (first.generation === "current") {
-    if (first.family === "tbc20" && input.payment !== undefined) throw new Error("Current TBC20 builder does not support an attached native payment");
     if (first.family === "tbc20Stablecoin" && input.receivers !== undefined && input.receivers.length > 7) throw new Error("Current Coin receiver bound exceeded");
     const type = first.family === "tbc20" ? "tbc20-standard-transfer" : "tbc20-stablecoin-transfer";
     intent = { type, version: "1.0", contractId: input.contractId,
       ...(input.receivers === undefined ? { to: input.to, amount: input.amount } : { receivers: input.receivers }),
       ...(input.payment === undefined ? {} : { payment: input.payment }) } as Intent;
   } else {
+    if (first.family === "tbc20" && input.receivers !== undefined && input.receivers.length > 1) {
+      if (input.receivers.length > 5 || input.payment !== undefined) throw new Error("Historical FT supports at most five receivers without an attached payment");
+      return Object.freeze({ intent: Object.freeze({ type: "tbc.ft.transfer", version: "1.0", contractId: input.contractId,
+        receivers: input.receivers }), recognition: first });
+    }
     const receiver = input.receivers === undefined ? { to: input.to, amount: input.amount } : input.receivers[0]!;
     if (input.receivers !== undefined && input.receivers.length !== 1) throw new Error("Historical fungible builder does not support multiple receivers");
     if (input.payment !== undefined && input.payment.to !== receiver.to) throw new Error("Historical attached TBC recipient must equal the token recipient");

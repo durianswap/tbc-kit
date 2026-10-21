@@ -146,10 +146,13 @@ test('early approval hides claim secret but keeps complete request binding and d
   assert.ok(!JSON.stringify(model).includes(request.intent.preimage));
   assert.deepEqual(model.warnings, ['HTLC_CLAIM_SIGNED_BYTES_DISCLOSE_PREIMAGE']);
   assert.equal(model.binding.requestHash, requestHash); assert.deepEqual(request, before);
+  const workflowRequest = { steps: [{ ...request, id:'claim', kind:'transaction', dependsOn:[] }] };
   const workflow = projectTbcApprovalPreparation({ method: 'tbc_signWorkflow', operationKind: 'workflow',
-    requestHash: hashCanonical({ steps: [request] }), request: { steps: [request] },
+    requestHash: hashCanonical(workflowRequest), request: workflowRequest,
     expiresAt: Date.parse('2030-01-01T00:00:00Z'), warningScope: [] });
-  assert.deepEqual(workflow.warnings, model.warnings);
+  assert.deepEqual(workflow.warnings, [...model.warnings, 'BATCH_NOT_ATOMIC']);
+  assert.deepEqual(workflow.steps[0].warnings, model.warnings);
+  assert.ok(!JSON.stringify(workflow).includes(request.intent.preimage));
 });
 test('HTLC helpers use standard methods, exact points and fee limits', async () => {
   const calls = [], address = '1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH';

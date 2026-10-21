@@ -135,9 +135,10 @@ export interface TestnetClient {
   readonly preflightBroadcast: (rawTransaction: string) => Promise<void>;
   readonly getUtxos: (
     address: string,
+    consolidation?: Readonly<{ limit: number }>,
   ) => Promise<Readonly<{ tip: TestnetTip; utxos: readonly TestnetUtxo[] }>>;
   /** Fresh native index without a chain-tip query. No confirmation claim. */
-  readonly getNativeUtxos?: (address: string) => Promise<readonly TestnetUtxo[]>;
+  readonly getNativeUtxos?: (address: string, consolidation?: Readonly<{ limit: number }>) => Promise<readonly TestnetUtxo[]>;
   readonly getTip?: () => Promise<TestnetTip>;
   readonly getRawTransaction: (txid: string) => Promise<TestnetRawTransaction>;
   /** One decode query with local txid/output proof; null means the node did not find it. */
@@ -361,9 +362,9 @@ export function createTestnetClient(
     }
   }
 
-  async function getUtxos(address: string) {
+  async function getUtxos(address: string, consolidation?: Readonly<{ limit: number }>) {
     assertTestnetAddress(address);
-    const [tip, utxos] = await Promise.all([getTip(), getNativeUtxos(address)]);
+    const [tip, utxos] = await Promise.all([getTip(), getNativeUtxos(address, consolidation)]);
     return Object.freeze({ tip, utxos });
   }
 
@@ -374,10 +375,16 @@ export function createTestnetClient(
       ...(tipData.mediantime === undefined ? {} : { medianTimePast: uint(tipData.mediantime) }) });
   }
 
-  async function getNativeUtxos(address: string) {
+  async function getNativeUtxos(address: string, consolidation?: Readonly<{ limit: number }>) {
     assertTestnetAddress(address);
-    const utxoData = await apiData(collectTbcUtxoPages(after => api.utxosByAddress({ address, ...(after === undefined ? {} : { after }) },
-      { category: "native-index", concurrencyGroup: "account-index" }), { maxRows: maxUtxos }));
+    const limit = consolidation?.limit ?? maxUtxos;
+    if (!Number.isSafeInteger(limit) || limit < 1 || limit > 500) return fail("INVALID_CONFIG", "Invalid native consolidation bound");
+    // Public consolidation selects one bounded page, as API.mergeUTXO does.
+    // Ordinary transaction reads keep their existing request and pagination.
+    const utxoData = await apiData(consolidation === undefined
+      ? collectTbcUtxoPages(after => api.utxosByAddress({ address, ...(after === undefined ? {} : { after }) },
+          { category: "native-index", concurrencyGroup: "account-index" }), { maxRows: maxUtxos })
+      : api.utxosByAddress({ address, limit }, { category: "native-index", concurrencyGroup: "account-index" }));
     if (
       utxoData === null ||
       !Array.isArray(utxoData.utxos)
@@ -387,7 +394,7 @@ export function createTestnetClient(
         "Incomplete TBC Testnet UTXO response",
       );
     }
-    if (utxoData.utxos.length > maxUtxos) {
+    if (utxoData.utxos.length > limit) {
       return fail("NODE_RESPONSE_INVALID", "Too many TBC Testnet UTXOs");
     }
     const keys = new Set<string>();

@@ -82,8 +82,11 @@ test("Legacy FT current-template mapping reuses one authenticated metadata read"
   assert.equal(second.intent.type, "tbc20.transfer");
   assert.equal(reads, 1);
   assert.equal(inspections, 1);
-  await assert.rejects(() => resolver.resolve({ ...request,
-    tbc_amount: "0.01" }, SOURCE), /Invalid Legacy FT transfer/u);
+  const attached = await resolver.resolve({ ...request, tbc_amount: "0.01" }, SOURCE);
+  assert.deepEqual(attached.intent.payment, { to: RECIPIENT, amount: "10000" });
+  assert.equal(attached.intent.attachedTbcAmount, undefined);
+  assert.equal(reads, 1);
+  assert.equal(inspections, 1);
 });
 
 test("Legacy FT historical-template mapping is unchanged and a failed classification is not cached", async () => {

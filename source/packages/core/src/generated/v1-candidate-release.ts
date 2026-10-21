@@ -2,9 +2,9 @@
 
 export const GENERATED_TWS_RELEASE = {
   "version": "1.0.0-candidate.3",
-  "schemaBundleSha256": "a5974d669990eb04a76d1a6a62571421dfd6f0dbaf59326fe264b040f3bfb2f8",
+  "schemaBundleSha256": "889ffd82db33502af176ccf980028f2007c26e29e8e69eda224111d9220c1092",
   "registryBundleSha256": "a2cc11861c50a6e38212bbd971a24d0f4f0349309f24e6ccd777fd98dc9ee92b"
 } as const;
 
 export const GENERATED_TWS_RELEASE_FINGERPRINT =
-  "e46eff9af37097b9c5562741ea9b4d80d0e4c94f4e35441eb707c97b07603100" as const;
+  "28f9799e651aa1c50adbc8a6eea4825f3c26ab3ce92e69fb91d677bb7a985eb0" as const;

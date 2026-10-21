@@ -7,11 +7,12 @@ import { execFileSync } from "node:child_process";
 
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-test("historical source inventory remains intact, not a current capability claim", async () => {
-  const matrix = JSON.parse(await readFile(path.join(packageRoot, "evidence/capability-matrix.json"), "utf8"));
-  assert.equal(matrix.publicIntents.length, 19);
-  assert.equal(matrix.publicIntents.flatMap((item) => item.legacyBehaviors).length + matrix.internalMaintenance.length, 18);
-  assert.deepEqual(matrix.engineMethods, ["normalizeRequest","plan","validate","finalize"]);
+test("retained family dispatch stays distinct from advertised current capabilities", async () => {
+  const source = await readFile(path.join(packageRoot, "rust/crates/tbc-engine-core/src/plan.rs"), "utf8");
+  const names = new Set(source.match(/"tbc\.[A-Za-z.]+"/g));
+  assert.equal(names.size, 19);
+  assert.ok(names.has('"tbc.ft.transfer"'));
+  assert.ok(names.has('"tbc.pool.swap.exactTokenForTbc"'));
 });
 
 test("current capability check distinguishes retained builders from advertised operations", () => {

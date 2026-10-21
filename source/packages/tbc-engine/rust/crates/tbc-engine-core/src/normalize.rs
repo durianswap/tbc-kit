@@ -161,6 +161,14 @@ pub(crate) fn validate_request(request: &CanonicalRequest) -> Result<(), EngineE
             forbid_fields(request, &["name", "description", "supply", "media", "symbol", "decimals", "initialSupply", "collectionId", "attributes", "attachedTbcAmount"])?;
             validate_contract_id(required(&request.intent.contract_id, "request.intent.contractId")?, "request.intent.contractId")?;
             tbc20_transfer_recipients(request)?;
+            if let Some(payment) = &request.intent.payment {
+                Address::from_string(&payment.to).map_err(|_| error(ErrorCode::InvalidInput,
+                    "invalid native payment address", "request.intent.payment.to"))?;
+                let amount = parse_decimal_u64(&payment.amount, "request.intent.payment.amount")?;
+                if !(42..=9_007_199_254_740_991).contains(&amount) {
+                    return Err(error(ErrorCode::InvalidInput, "TBC20 payment must be 42 or more safe atomic units", "request.intent.payment.amount"));
+                }
+            }
         }
         "tbc20-standard-merge" => {
             forbid_fields(request, &["to", "amount", "name", "description", "supply", "media", "symbol", "decimals", "initialSupply", "collectionId", "attributes", "attachedTbcAmount"])?;
@@ -272,19 +280,17 @@ pub(crate) fn validate_request(request: &CanonicalRequest) -> Result<(), EngineE
                     "request.intent.contractId",
                 ));
             }
-            Address::from_string(required(&request.intent.to, "request.intent.to")?).map_err(|_| {
-                error(ErrorCode::InvalidInput, "invalid FT recipient address", "request.intent.to")
-            })?;
-            let amount = parse_decimal_u128(
-                required(&request.intent.amount, "request.intent.amount")?,
-                "request.intent.amount",
-            )?;
-            if amount == 0 || amount > 10u128.pow(18) {
+            let recipients = tbc20_transfer_recipients(request)?;
+            let amount: u128 = recipients.iter().map(|recipient| recipient.amount).sum();
+            if recipients.len() > 5 || amount > 10u128.pow(18) {
                 return Err(error(
                     ErrorCode::InvalidInput,
-                    "FT amount must be between 1 and 10^18 raw units",
-                    "request.intent.amount",
+                    "FT transfer requires at most five receivers and a total of at most 10^18 raw units",
+                    "request.intent.receivers",
                 ));
+            }
+            if request.intent.receivers.is_some() && request.intent.attached_tbc_amount.is_some() {
+                return Err(error(ErrorCode::InvalidInput, "historical attached TBC requires the single to/amount form", "request.intent.attachedTbcAmount"));
             }
             if let Some(attached) = request.intent.attached_tbc_amount.as_deref() {
                 parse_decimal_u64(attached, "request.intent.attachedTbcAmount")?;
@@ -346,7 +352,7 @@ pub(crate) fn validate_request(request: &CanonicalRequest) -> Result<(), EngineE
         .as_ref()
         .and_then(|constraints| constraints.input_outpoints.as_ref())
     {
-        if !matches!(request.intent.intent_type.as_str(), "tbc.transfer"
+        if !matches!(request.intent.intent_type.as_str(), "tbc.transfer" | "tbc.maintenance.merge"
             | "tbc20-standard-create" | "tbc20-standard-transfer" | "tbc20-standard-merge")
             && !TBC721_INTENTS.contains(&request.intent.intent_type.as_str()) && !COIN_INTENTS.contains(&request.intent.intent_type.as_str()) && !LP_INTENTS.contains(&request.intent.intent_type.as_str()) && !AMM_INTENTS.contains(&request.intent.intent_type.as_str()) && !TIMELOCK_INTENTS.contains(&request.intent.intent_type.as_str()) && !HTLC_INTENTS.contains(&request.intent.intent_type.as_str()) && !LOP_INTENTS.contains(&request.intent.intent_type.as_str()) {
             return Err(error(
@@ -402,11 +408,11 @@ fn validate_intent_field_isolation(request: &CanonicalRequest) -> Result<(), Eng
         || (intent.certificate_outpoint.is_some() && intent.intent_type!="tbc20-stablecoin-mint") {
         return Err(error(ErrorCode::InvalidInput,"Coin administrator fields are isolated to their exact operation","request.intent"));
     }
-    if (intent.slot.is_some() || intent.items.is_some() || (intent.payment.is_some() && intent.intent_type!="tbc20-stablecoin-transfer"))
+    if (intent.slot.is_some() || intent.items.is_some() || (intent.payment.is_some() && !matches!(intent.intent_type.as_str(), "tbc20-stablecoin-transfer" | "tbc20-standard-transfer")))
         && !TBC721_INTENTS.contains(&intent.intent_type.as_str()) {
         return Err(error(ErrorCode::InvalidInput,"new NFT fields are not supported for this intent","request.intent"));
     }
-    if intent.receivers.is_some() && !matches!(intent.intent_type.as_str(),"tbc20-standard-transfer"|"tbc20-stablecoin-transfer") {
+    if intent.receivers.is_some() && !matches!(intent.intent_type.as_str(),"tbc20-standard-transfer"|"tbc20-stablecoin-transfer"|"tbc.ft.transfer") {
         return Err(error(ErrorCode::InvalidInput, "receivers is only supported for tbc20-standard-transfer", "request.intent.receivers"));
     }
     let is_pool = POOL_INTENTS.contains(&intent.intent_type.as_str());

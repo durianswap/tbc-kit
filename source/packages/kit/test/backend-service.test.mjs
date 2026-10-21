@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import { secp256k1 } from "@noble/curves/secp256k1.js";
 import { hashCanonical } from "@tbc-wallet/core";
 import { createTbcEngine, createWasmTbcEngineBackend } from "../dist/esm/engine.js";
+import { parseTbcTransaction } from "../dist/esm/api.js";
 import {
   createTbcBackendService,
   TbcBackendServiceError,
@@ -118,6 +119,33 @@ function transaction(clientRequestId, txid = TXID_A) {
     constraints: Object.freeze({ maxFee: "200", inputOutpoints: Object.freeze([{ txid, vout: 0 }]) }),
   });
 }
+
+test("backend prepares and signs a 500-input native merge with one approval and no extra data reads", async () => {
+  let reads = 0, approvals = 0;
+  const observed = [];
+  const payload = { ...snapshot().payload, parents: [], utxos: Array.from({ length: 500 }, (_, i) => ({
+    txid: (i + 1).toString(16).padStart(64, "0"), vout: 0, satoshis: "1200",
+    scriptPubKey: SCRIPT, confirmations: "100", classification: "native",
+  })) };
+  const material = { payload, snapshotHash: hashCanonical(payload) };
+  const service = createTbcBackendService({
+    serviceId: "backend-native-merge-500", account, engine: createTbcEngine({ backend: wasmBackend }),
+    network: { async resolveChainData() { reads++; return material; }, async resolvePolicy() { return policy(); } },
+    signer: signer(observed), clock: () => NOW,
+    authorize: async () => { approvals++; return { status: "approved", decisionId: "merge-500-once", approvedAt: NOW }; },
+  });
+  try {
+    const prepared = await service.prepareTransaction({ version: "1.0", chainId: CHAIN_ID, from: ADDRESS,
+      clientRequestId: "native-500", intent: { version: "1.0", type: "tbc.maintenance.merge" },
+      constraints: { maxFee: "10000" } });
+    const result = await service.executePrepared({ kind: "transaction", action: "sign", prepared });
+    assert.equal(result.transactions.length, 1);
+    assert.equal(parseTbcTransaction(result.transactions[0].rawTransaction).inputs.length, 500);
+    assert.equal(observed.length, 500);
+    assert.equal(approvals, 1);
+    assert.equal(reads, 2, "one prepare read and one existing Prepared revalidation read, not per-input reads");
+  } finally { service.close(); }
+});
 
 test("Prepared FTLP burn requests the same native, pool and LP material as wallet construction", async () => {
   const poolContractId = "ab".repeat(32);

@@ -43,6 +43,7 @@ const permission = (capability) => ({ id: `probe-${capability}`, parentCapabilit
 const cases = [
   ["tbc.transfer", { type: "tbc.transfer", version: "1.0", to: ADDRESS, amount: "1000" }, {}],
   ["tbc.ft.create", { type: "tbc.ft.create", version: "1.0", name: "Probe", symbol: "PRB", decimals: 6, initialSupply: "1000000" }, {}],
+  ["tbc20-standard-create", { type: "tbc20-standard-create", version: "1.0", name: "Probe", symbol: "PRB", decimals: 6, initialSupply: "1000000" }, {}],
   ["tbc.ft.transfer", { type: "tbc.ft.transfer", version: "1.0", contractId: FT, to: ADDRESS, amount: "250000" }, {}],
   ["tbc.pool.create.mint", { type: "tbc.pool.create", version: "1.0", stage: "mint", ftContractId: FT, lpPlan: 2, serviceProviderTag: "controlled-pool" }, {}],
   ["tbc.pool.create.initialize", { type: "tbc.pool.create", version: "1.0", stage: "initialize", poolContractId: POOL, initialLiquidity: { receiver: ADDRESS, tbcAmount: "1000", ftAmount: "250000" } }, { poolState: "uninitialized" }],
@@ -141,6 +142,15 @@ async function runCase(label, intent, fetchOptions, mode, exerciseReconcile = fa
     execution: { hostStore: signOnlyHostStore },
   });
   try {
+    if (intent.type === "tbc.ft.create" || intent.type === "tbc.pool.create") {
+      await assert.rejects(session.provider.request({ method: capability, params: {
+        version:"1.0", chainId:CHAIN_ID, from:ADDRESS, intent,
+        constraints:{expiresAt:"2026-09-17T00:02:00Z",maxFee:"10000",feePreference:"standard"},
+      } }), error => error.code === 4200 && /Historical asset issuance is disabled/.test(error.message));
+      assert.equal(approvals,0); assert.equal(signerCalls,0); assert.deepEqual(submitted,[]);
+      assert.deepEqual(urls,[],"disabled issuance must fail before chain reads");
+      return {label,denied:true,approvalCalls:approvals,signerCalls,submitCalls:submitted.length};
+    }
     const result = await session.provider.request({ method: capability, params: { version: "1.0", chainId: CHAIN_ID, from: ADDRESS, clientRequestId: `controlled-${label}-${mode}`, intent, constraints: { expiresAt: "2026-09-17T00:02:00Z", maxFee: "10000", feePreference: "standard" } } });
     const txids = result.transactions.map(({ txid }) => txid);
     assert.equal(approvals, 1);
@@ -196,10 +206,12 @@ async function runCase(label, intent, fetchOptions, mode, exerciseReconcile = fa
 }
 
 const signOnly = [];
+const disabled = [];
 for (const [label, intent, fetchOptions] of cases) {
-  signOnly.push(await runCase(label, intent, fetchOptions, "sign"));
+  const result = await runCase(label, intent, fetchOptions, "sign");
+  (result.denied ? disabled : signOnly).push(result);
 }
-const representativeSend = await runCase(cases[1][0], cases[1][1], cases[1][2], "send", true);
+const representativeSend = await runCase(cases[2][0], cases[2][1], cases[2][2], "send", true);
 
 async function runPrepared(mode, intent, label) {
   const httpEdges = [];
@@ -339,7 +351,7 @@ async function runPreparedWorkflow() {
       id: "create-ft",
       kind: "transaction",
       dependsOn: Object.freeze([]),
-      intent: Object.freeze({ type: "tbc.ft.create", version: "1.0", name: "Workflow Probe", symbol: "WFP", decimals: 6, initialSupply: "1000000" }),
+      intent: Object.freeze({ type: "tbc20-standard-create", version: "1.0", name: "Workflow Probe", symbol: "WFP", decimals: 6, initialSupply: "1000000" }),
       constraints: Object.freeze({ expiresAt: "2026-09-17T00:02:00Z", maxFee: "10000", feePreference: "standard" }),
     })]),
   });
@@ -407,7 +419,7 @@ async function runPreparedWorkflow() {
 const prepared = {
   sign: await runPrepared("sign", { type: "tbc.transfer", version: "1.0", to: ADDRESS, amount: "1000" }, "transfer"),
   send: await runPrepared("send", { type: "tbc.transfer", version: "1.0", to: ADDRESS, amount: "1000" }, "transfer"),
-  deferredBundle: await runPrepared("sign", { type: "tbc.ft.create", version: "1.0", name: "Prepared Probe", symbol: "PRP", decimals: 6, initialSupply: "1000000" }, "ft-create"),
+  deferredBundle: await runPrepared("sign", { type: "tbc20-standard-create", version: "1.0", name: "Prepared Probe", symbol: "PRP", decimals: 6, initialSupply: "1000000" }, "tbc20-create"),
   preparedWorkflow: await runPreparedWorkflow(),
 };
 
@@ -420,6 +432,7 @@ console.log(JSON.stringify({
   resolverOverride: false,
   policyOverride: false,
   cases: signOnly.length,
+  disabled,
   signOnly,
   representativeSend,
   prepared,

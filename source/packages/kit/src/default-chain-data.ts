@@ -63,7 +63,9 @@ const MAX_TBC20_INPUTS = 6;
 const MAX_TBC20_ASSET_INPUTS = 128;
 const MAX_STABLECOIN_ASSET_INPUTS = 500;
 const MAX_STABLECOIN_ANCESTRY_TRANSACTIONS = 1_024;
-const MAX_TBC_MERGE_INPUTS = 100;
+const MAX_TBC_MERGE_INPUTS = 500;
+// Automatic AMM fee funding is not a public consolidation request.
+const MAX_AMM_FUNDING_INPUTS = 100;
 const MAX_NATIVE_UTXO_CANDIDATES = 256;
 const DEFAULT_MAX_INPUTS = 128;
 const DEFAULT_SNAPSHOT_TTL_MS = 120_000;
@@ -486,7 +488,7 @@ export function createDefaultTbcChainDataResolver(
   const minimumConfirmations = options.confirmationPolicy === undefined
     ? "0"
     : normalizePoolMaterialConfirmationPolicy(options.confirmationPolicy).minConfirmations;
-  if (!Number.isSafeInteger(maxInputs) || maxInputs < 1 || maxInputs > 256 || !Number.isSafeInteger(snapshotTtlMs) || snapshotTtlMs < 1_000 || snapshotTtlMs > 300_000) {
+  if (!Number.isSafeInteger(maxInputs) || maxInputs < 1 || maxInputs > 500 || !Number.isSafeInteger(snapshotTtlMs) || snapshotTtlMs < 1_000 || snapshotTtlMs > 300_000) {
     throw new TypeError("Invalid default Chain Data configuration");
   }
 
@@ -814,6 +816,7 @@ export function createDefaultTbcChainDataResolver(
       const params = record(rawParams, "Chain Data parameters") as unknown as ChainDataParams;
       if (params.workflowSteps !== undefined) return await resolveWorkflow(params, boundAccount);
       const requirement = record(params.requirement, "Chain Data requirement") as unknown as ChainDataParams["requirement"];
+      const maxInputs = options.maxInputs ?? (requirement.intentType === "tbc.maintenance.merge" ? MAX_TBC_MERGE_INPUTS : DEFAULT_MAX_INPUTS);
       if (requirement.intentType.startsWith("tbc20Lp.") || ["amm.mergeToken", "amm.swap", "amm.addLiquidity", "amm.removeLiquidity"].includes(requirement.intentType)) {
         return await resolveUnifiedPool(rawParams, boundAccount, client);
       }
@@ -945,10 +948,10 @@ export function createDefaultTbcChainDataResolver(
       const nativeTransfer = requirement.intentType === "tbc.transfer" &&
         requirement.assets.length === 1 && nativeAsset?.kind === "native" &&
         nativeAsset.minimumAmount === requirement.nativeAmount && requirement.nativeAmount !== undefined;
-      if (requestedInputOutpoints !== undefined && !nativeTransfer && !tbc20 && !tbc721 && !coin && !ammCreate && !lp && !ammBusiness && !timelockLock && !timelockUnlock && !htlcLock && !htlcSpend) return failure("INVALID_INPUT");
       const nativeMerge = requirement.intentType === "tbc.maintenance.merge" &&
         requirement.assets.length === 1 && nativeAsset?.kind === "native" &&
         nativeAsset.minimumAmount === undefined && requirement.nativeAmount === undefined && requirement.includeAncestry === false;
+      if (requestedInputOutpoints !== undefined && !nativeTransfer && !nativeMerge && !tbc20 && !tbc721 && !coin && !ammCreate && !lp && !ammBusiness && !timelockLock && !timelockUnlock && !htlcLock && !htlcSpend) return failure("INVALID_INPUT");
       const ftCreate = (requirement.intentType === "tbc.ft.create" || tbc20Create || coinCreate) &&
         requirement.assets.length === 1 && nativeAsset?.kind === "native" &&
         nativeAsset.minimumAmount === undefined && requirement.nativeAmount === undefined && requirement.includeAncestry === false;
@@ -1169,8 +1172,8 @@ export function createDefaultTbcChainDataResolver(
         (nativeTransfer || nativeMerge || poolSwapTbcForToken || poolSwapTokenForTbc || poolFtMerge || poolAdd || poolRemove || poolFtlpMerge || poolFtlpBurn || ammCreate || ammBusiness || lp || (htlcTokenSpend && requirement.intentType === "tbc-htlc-claim") || (ftCreate && !coinCreate) || collectionCreate ||
           (stablecoinTransfer || stablecoinMerge || ftTransfer || ftMerge || nftSpend)) && client.getNativeUtxos !== undefined;
       const nativeIndex: Promise<Readonly<{ tip?: TestnetTip; utxos: readonly TestnetUtxo[] }>> = skipTip
-        ? client.getNativeUtxos!(account.address).then(utxos => ({ utxos }))
-        : client.getUtxos(account.address);
+        ? client.getNativeUtxos!(account.address, nativeMerge ? { limit: Math.min(maxInputs, MAX_TBC_MERGE_INPUTS) } : undefined).then(utxos => ({ utxos }))
+        : client.getUtxos(account.address, nativeMerge ? { limit: Math.min(maxInputs, MAX_TBC_MERGE_INPUTS) } : undefined);
       let observedTip: TestnetTip | undefined, pendingTip: Promise<TestnetTip> | undefined;
       const readTip = () => pendingTip ??= nativeIndex.then(async index => {
         observedTip = index.tip ?? (client.getTip === undefined ? (await client.getUtxos(account.address)).tip : await client.getTip());
@@ -1275,7 +1278,7 @@ export function createDefaultTbcChainDataResolver(
       });
       prefetchDirectProofs.catch(() => undefined);
       const nativeIndexPreparation = nativeIndex.then(({ tip, utxos: nativeCandidates }) => {
-        if (nativeCandidates.length > MAX_NATIVE_UTXO_CANDIDATES) throw new ChainDataConflictError("Too many native UTXO candidates");
+        if (nativeCandidates.length > (nativeMerge ? MAX_TBC_MERGE_INPUTS : MAX_NATIVE_UTXO_CANDIDATES)) throw new ChainDataConflictError("Too many native UTXO candidates");
         const tipHeight = tip === undefined ? undefined : BigInt(tip.height);
         const sortedNative = [...nativeCandidates].sort((a, b) => a.txid.localeCompare(b.txid) || a.vout - b.vout);
         validateNativeCandidates(sortedNative, tipHeight);
@@ -1294,7 +1297,7 @@ export function createDefaultTbcChainDataResolver(
         const selectedNative = coinCreate || coinManagement || ammBusiness
           ? requestedInputOutpoints === undefined
             ? poolFunding!.filter(utxo => (minimumConfirmations ?? "0") === "0" || BigInt(confirmations(utxo, tipHeight)!) >= BigInt(minimumConfirmations!))
-                .slice(0, ammBusiness ? Math.min(maxInputs, MAX_TBC_MERGE_INPUTS) : 1)
+                .slice(0, ammBusiness ? Math.min(maxInputs, MAX_AMM_FUNDING_INPUTS) : 1)
             : coinCreate ? selectRequestedNativeOutpoints(sortedNative, requestedInputOutpoints)
               : sortedNative.filter(candidate => requestedInputOutpoints.some(point => point.txid === candidate.txid && point.vout === candidate.vout))
           : poolFunding ?? (nativeTransfer
@@ -1302,7 +1305,9 @@ export function createDefaultTbcChainDataResolver(
             ? selectNativeTransfer(sortedNative, BigInt(requirement.nativeAmount!), maxInputs)
             : selectRequestedNativeOutpoints(sortedNative, requestedInputOutpoints)
           : nativeMerge
-            ? [...sortedNative]
+            ? requestedInputOutpoints !== undefined
+              ? selectRequestedNativeOutpoints(sortedNative, requestedInputOutpoints)
+              : [...sortedNative]
                 .sort((left, right) => BigInt(left.satoshis) === BigInt(right.satoshis)
                   ? left.txid.localeCompare(right.txid) || left.vout - right.vout
                   : BigInt(left.satoshis) < BigInt(right.satoshis) ? -1 : 1)

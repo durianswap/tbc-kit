@@ -34,7 +34,12 @@ test('payment and multiple receivers retain meanings or fail explicitly, never d
  for(const input of [{...common,receivers:[...common.receivers,...common.receivers]}, {...common,payment:{to:'different',amount:'100'}}]){
   await assert.rejects(resolve(input,[material],{engine:engine([identity('tbc20Stablecoin',false)])}));
  }
- await assert.rejects(resolve({...common,family:'tbc20'},[material],{engine:engine([identity()])}),/attached/);
+ const tbc20=await resolve({...common,family:'tbc20'},[material],{engine:engine([identity()])});
+ assert.deepEqual(tbc20.intent.payment,common.payment);
+ const five=Array.from({length:5},(_,i)=>({to:TO,amount:String(i+1)}));
+ const ft=await resolve({family:'tbc20',contractId:ID,operation:'transfer',receivers:five},[material],{engine:engine([identity('tbc20',false)])});
+ assert.equal(ft.intent.type,'tbc.ft.transfer');assert.deepEqual(ft.intent.receivers,five);
+ await assert.rejects(resolve({family:'tbc20',contractId:ID,operation:'transfer',receivers:[...five,five[0]]},[material],{engine:engine([identity('tbc20',false)])}),/five|5/);
  await assert.rejects(resolve({...common,receivers:Array(8).fill(common.receivers[0])},[material],{engine:engine([identity('tbc20Stablecoin')])}),/bound/);
 });
 test('route snapshots the business input before async recognition and rejects issuance',async()=>{

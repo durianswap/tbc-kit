@@ -114,6 +114,32 @@ fn approved(input:&Value,planned:&Value)->Value {
     let mut value=input.clone();value["plan"]=planned["plan"].clone();value["binding"]=binding;value["approval"]=approval;
     value["signatures"]=sign(&planned["plan"]["payload"]["signingTasks"]);value
 }
+
+#[test]
+fn sdk_gap_tbc20_native_payment_is_bound_and_accounted_once() {
+    let mut p=input("tbc20-standard-transfer");
+    let payee="1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP";
+    p["request"]["intent"]["payment"]=json!({"to":payee,"amount":"42"});
+    let p=bind(p); let planned=ok(EngineMethod::Plan,&p);
+    let finalize=approved(&p,&planned);let finalized=ok(EngineMethod::Finalize,&finalize);
+    let tx=Transaction::from_hex(finalized["bundle"]["transactions"][0]["rawTransaction"].as_str().unwrap()).unwrap();
+    let script=tbc_sdk::Address::from_string(payee).unwrap().script_pubkey();
+    assert_eq!(tx.outputs.iter().filter(|output|output.script_pubkey==script&&output.satoshis==42).count(),1);
+    assert!(planned["plan"]["payload"]["preview"]["assetFlows"].as_array().unwrap().iter().any(|flow|flow["kind"]=="native"&&flow["to"]==payee&&flow["amount"]=="42"));
+    for phase in ["finalized", "pre-broadcast"] {
+        assert_eq!(check_phase(phase,&finalize,Some(&finalized["bundle"]))["valid"],true);
+    }
+    for amount in ["0","41","9007199254740992"] {
+        let mut bad=p.clone();bad["request"]["intent"]["payment"]["amount"]=json!(amount);
+        assert_eq!(call(EngineMethod::NormalizeRequest,&json!({"version":"1.0","request":bad["request"]}))["ok"],false);
+    }
+    let mut changed=finalize.clone();changed["request"]["intent"]["payment"]["to"]=p["request"]["from"].clone();
+    changed["requestHash"]=json!(hash(&changed["request"]));assert_eq!(call(EngineMethod::Finalize,&changed)["ok"],false);
+    unified_business::exercise(p.clone(),"tbc20.transfer");
+    if std::env::var("TBC_SDK_GAP_DUMP").as_deref()==Ok("1") {
+        println!("SDK_GAP_VECTOR:{}",json!({"case":"tbc20-native-payment","input":p,"planned":planned,"finalizeInput":finalize,"finalized":finalized}));
+    }
+}
 fn check_phase(phase:&str,finalize:&Value,bundle:Option<&Value>)->Value {
     let mut v=finalize.clone();v["phase"]=json!(phase);
     if phase=="pre-sign" {v.as_object_mut().unwrap().remove("signatures");}
@@ -136,7 +162,7 @@ fn fragmented_input(kind:&str,count:usize)->Value {
     let fees=[FeeInput{outpoint:OutPoint{txid:tx.txid(),vout:2},output:&tx.outputs[2],public_key:&public}];
     let mut receivers=vec![Receiver{controller:owner,amount:123456/count as u128};count];
     receivers[count-1].amount+=123456%count as u128;
-    let built=build_transfer_plan(TransferOptions{inputs:&tokens,fee_inputs:&fees,receivers:&receivers,
+    let built=build_transfer_plan(TransferOptions{payment:None,inputs:&tokens,fee_inputs:&fees,receivers:&receivers,
         expected_identity:parent.identity(),token_change_controller:owner,native_change_hash:public.hash160(),max_fee:5000}).unwrap();
     let stage=begin_signing(&built.unsigned_plan).unwrap();
     let mut scalar=[0;32];scalar[31]=1;let key=SecretKey::from_byte_array(scalar).unwrap();

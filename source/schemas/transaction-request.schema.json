@@ -300,6 +300,7 @@
         "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
         "to": { "$ref": "common.schema.json#/$defs/address" },
         "amount": { "type": "string", "pattern": "^[1-9][0-9]{0,38}$" },
+        "payment": { "$ref": "#/$defs/nativePayment" },
         "receivers": {
           "type": "array", "minItems": 1, "maxItems": 8,
           "items": {
@@ -327,7 +328,7 @@
       }
     },
     "unifiedFungibleTransferIntent": {
-      "$comment": "Template-neutral business request. Engine authenticates complete bound contract material, then validates the resolved template's recipient/payment limits; shape acceptance does not promise every template supports every combination. No caller-selected template version. Payment on historical templates must use the token recipient; current TBC20 rejects payment. Coin or payment permits at most seven receivers.",
+      "$comment": "Template-neutral business request. Engine authenticates bound contract material and validates the resolved template's recipient/payment limits. No caller-selected template version. Historical FT supports up to five recipients, but attached native payment only with one matching token recipient; historical stablecoin supports one recipient. Current TBC20 supports a separate native payment, subject to the actual eight-output-group budget including change. Coin or payment permits at most seven receivers.",
       "type": "object", "additionalProperties": false,
       "required": ["type", "version", "contractId"],
       "properties": {
@@ -862,20 +863,25 @@
       }
     },
     "ftTransferIntent": {
-      "allOf": [
-        { "$ref": "#/$defs/fungibleTransferFields" },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "type": { "const": "tbc.ft.transfer" },
-            "version": true,
-            "contractId": true,
-            "to": true,
-            "amount": true,
-            "attachedTbcAmount": true
+      "$comment": "One historical FT transaction has one to five ordered recipients. Single-recipient fields remain byte-compatible. Native attachment is only supported with a single recipient.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "contractId"],
+      "properties": {
+        "type": { "const": "tbc.ft.transfer" }, "version": { "const": "1.0" },
+        "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+        "to": { "$ref": "common.schema.json#/$defs/address" },
+        "amount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" },
+        "attachedTbcAmount": { "$ref": "common.schema.json#/$defs/atomicAmount" },
+        "receivers": {
+          "type": "array", "minItems": 1, "maxItems": 5,
+          "items": { "type": "object", "additionalProperties": false, "required": ["to", "amount"],
+            "properties": { "to": { "$ref": "common.schema.json#/$defs/address" }, "amount": { "$ref": "common.schema.json#/$defs/positiveAtomicAmount" } }
           }
         }
+      },
+      "oneOf": [
+        { "type": "object", "required": ["to", "amount"], "properties": { "to": true, "amount": true, "receivers": false } },
+        { "type": "object", "required": ["receivers"], "properties": { "receivers": true, "to": false, "amount": false, "attachedTbcAmount": false } }
       ]
     },
     "ftMergeIntent": {

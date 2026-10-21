@@ -11,8 +11,27 @@ use tbc_engine_core::{EngineMethod, call_json};
 use tbc_sdk::{OutPoint, Transaction, TxIn, TxOut, Txid, script::Script};
 
 fn fixture() -> Value {
-    serde_json::from_str(include_str!("../../../fixtures/tbc-transfer.json"))
-        .expect("the checked-in TBC transfer fixture must be valid JSON")
+    let mut fixture: Value = serde_json::from_str(include_str!("../../../fixtures/tbc-transfer.json"))
+        .expect("the checked-in TBC transfer fixture must be valid JSON");
+    // Keep the original SDK wire/signature vector immutable. The later review
+    // envelope commits to these two independently specified outputs, not to
+    // freshly generated Engine output (which would make the test circular).
+    let mut plan = fixture["plan"]["plan"].clone();
+    plan["payload"]["transactions"][0]["outputReview"] = json!([
+        {"kind":"native", "outputIndices":[0], "amountAtomic":"1000",
+         "nativeValueAtomic":"1000", "recipient":"1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP", "warnings":[]},
+        {"kind":"native", "outputIndices":[1], "amountAtomic":"8920",
+         "nativeValueAtomic":"8920", "recipient":"1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH", "warnings":[]}
+    ]);
+    plan["planHash"] = json!(canonical_hash(&plan["payload"]));
+    fixture["plan"]["plan"] = plan.clone();
+    fixture["validateInput"]["plan"] = plan.clone();
+    fixture["finalizeInput"]["plan"] = plan.clone();
+    fixture["finalizeInput"]["binding"]["payload"]["operationHash"] = plan["planHash"].clone();
+    let binding_hash = canonical_hash(&fixture["finalizeInput"]["binding"]["payload"]);
+    fixture["finalizeInput"]["binding"]["bindingHash"] = json!(binding_hash);
+    fixture["finalizeInput"]["approval"]["bindingHash"] = json!(binding_hash);
+    fixture
 }
 
 fn call(method: EngineMethod, input: &Value) -> Value {
@@ -185,6 +204,62 @@ fn tbc_public_merge_consolidates_two_or_more_inputs_into_one_primary_output() {
     params["snapshot"]["snapshotHash"] =
         json!(canonical_hash(&params["snapshot"]["payload"]));
     assert_eq!(call_error(EngineMethod::Plan, &params)["code"], "INSUFFICIENT_FUNDS");
+}
+
+#[test]
+fn sdk_gap_native_merge_100_101_500_and_501_boundary() {
+    for count in [100, 101, 500, 501] {
+        let mut params = fixture()["planInput"].clone();
+        params["request"]["intent"] = json!({"type":"tbc.maintenance.merge","version":"1.0"});
+        params["request"]["constraints"]["maxFee"] = json!("100000");
+        params["requestHash"] = json!(canonical_hash(&params["request"]));
+        let script = params["snapshot"]["payload"]["utxos"][0]["scriptPubKey"].as_str().unwrap().to_owned();
+        let entries = (1..=count).map(|i| native_parent_index(10000, i, &script)).collect::<Vec<_>>();
+        params["snapshot"]["payload"]["utxos"] = json!(entries.iter().map(|e| &e.0).collect::<Vec<_>>());
+        params["snapshot"]["payload"]["parents"] = json!(entries.iter().map(|e| &e.1).collect::<Vec<_>>());
+        params["snapshot"]["snapshotHash"] = json!(canonical_hash(&params["snapshot"]["payload"]));
+        if count == 501 {
+            assert_eq!(call_error(EngineMethod::Plan, &params)["code"], "INVALID_INPUT");
+        } else {
+            let planned = call_ok(EngineMethod::Plan, &params);
+            let tx = Transaction::from_hex(planned["plan"]["payload"]["transactions"][0]["unsignedTransaction"].as_str().unwrap()).unwrap();
+            assert_eq!(tx.inputs.len(), count as usize);
+            assert_eq!(tx.outputs.len(), 1);
+            let mut validation = params.clone(); validation["plan"] = planned["plan"].clone(); validation["phase"] = json!("plan");
+            assert_eq!(call_ok(EngineMethod::Validate, &validation)["valid"], true);
+            let mut finalize = validation_for_plan(&fixture(), &params, &planned, "pre-sign", "2026-08-31T12:01:00Z");
+            finalize.as_object_mut().unwrap().remove("phase");
+            let mut scalar=[0u8;32];scalar[31]=1;
+            let key=secp256k1::SecretKey::from_byte_array(scalar).unwrap();
+            finalize["signatures"]=json!(planned["plan"]["payload"]["signingTasks"].as_array().unwrap().iter().map(|task| {
+                let digest=task["digest"].as_str().unwrap();
+                let bytes=(0..digest.len()).step_by(2).map(|i|u8::from_str_radix(&digest[i..i+2],16).unwrap()).collect::<Vec<_>>();
+                let signature=secp256k1::Secp256k1::new().sign_ecdsa(secp256k1::Message::from_digest(bytes.try_into().unwrap()),&key);
+                json!({"taskId":task["taskId"],"signatureEncoding":"compact64","signature":signature.serialize_compact().iter().map(|b|format!("{b:02x}")).collect::<String>()})
+            }).collect::<Vec<_>>());
+            let finalized=call_ok(EngineMethod::Finalize,&finalize);
+            let mut validation=finalize.clone();validation["phase"]=json!("pre-broadcast");validation["bundle"]=finalized["bundle"].clone();
+            assert_eq!(call_ok(EngineMethod::Validate,&validation)["valid"],true);
+            if std::env::var("TBC_SDK_GAP_DUMP").as_deref() == Ok("1") {
+                println!("SDK_GAP_VECTOR:{}", json!({"case":format!("native-merge-{count}"),"input":params,"planned":planned,"finalizeInput":finalize,"finalized":finalized}));
+            }
+            if count == 500 {
+                let mut bounded = params.clone();
+                bounded["request"]["constraints"]["inputOutpoints"] = json!(entries.iter().take(100)
+                    .map(|e| json!({"txid":e.0["txid"],"vout":e.0["vout"]})).collect::<Vec<_>>());
+                bounded["requestHash"] = json!(canonical_hash(&bounded["request"]));
+                let exact = call_ok(EngineMethod::Plan, &bounded);
+                let tx = Transaction::from_hex(exact["plan"]["payload"]["transactions"][0]["unsignedTransaction"].as_str().unwrap()).unwrap();
+                assert_eq!(tx.inputs.len(), 100, "a larger available set cannot expand an explicit approval scope");
+                if std::env::var("TBC_SDK_GAP_DUMP").as_deref() == Ok("1") {
+                    println!("SDK_GAP_VECTOR:{}", json!({"case":"native-merge-exact-100-of-500","input":bounded,"planned":exact}));
+                }
+                bounded["request"]["constraints"]["inputOutpoints"][0]["txid"] = json!("ff".repeat(32));
+                bounded["requestHash"] = json!(canonical_hash(&bounded["request"]));
+                assert_eq!(call_error(EngineMethod::Plan, &bounded)["code"], "MISSING_MATERIAL");
+            }
+        }
+    }
 }
 
 #[test]
@@ -589,12 +664,29 @@ fn tbc_transfer_accepts_transaction_and_workflow_approval_methods() {
 }
 
 #[test]
+fn tbc_transfer_accepts_utc_milliseconds_without_changing_signed_transaction() {
+    let fixture = fixture();
+    for timestamp in ["2026-08-31T12:02:00.0Z", "2026-08-31T12:02:00.00Z", "2026-08-31T12:02:00.000Z"] {
+        let mut params = fixture["planInput"].clone();
+        params["request"]["constraints"]["expiresAt"] = json!(timestamp);
+        params["requestHash"] = json!(canonical_hash(&params["request"]));
+        let planned = call_ok(EngineMethod::Plan, &params);
+        assert_eq!(planned["plan"]["payload"]["transactions"], fixture["plan"]["plan"]["payload"]["transactions"]);
+        let mut finalize = fixture["finalizeInput"].clone();
+        finalize["approval"]["approvedAt"] = json!("2026-08-31T12:00:10.123Z");
+        finalize["approval"]["expiresAt"] = json!(timestamp);
+        assert_eq!(call_ok(EngineMethod::Finalize, &finalize), fixture["finalized"]);
+    }
+}
+
+#[test]
 fn tbc_transfer_rejects_noncanonical_or_invalid_timestamps_before_planning() {
     let fixture = fixture();
     for timestamp in [
         "not-a-time",
         "2026-08-31T20:02:00+08:00",
-        "2026-08-31T12:02:00.1Z",
+        "2026-08-31T12:02:00.0001Z",
+        "2026-08-31T12:02:00.Z",
         "2026-02-30T12:02:00Z",
         "2026-08-31T24:02:00Z",
     ] {
@@ -612,7 +704,7 @@ fn tbc_transfer_rejects_noncanonical_or_invalid_timestamps_before_planning() {
     for (field, timestamp) in [
         ("approvedAt", "2026-02-30T12:00:10Z"),
         ("expiresAt", "2026-08-31T12:02:00+00:00"),
-        ("expiresAt", "2026-08-31T12:02:00.000Z"),
+        ("expiresAt", "2026-08-31T12:02:00.0001Z"),
     ] {
         let mut finalize = fixture["finalizeInput"].clone();
         finalize["approval"][field] = json!(timestamp);

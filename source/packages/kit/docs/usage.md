@@ -1,5 +1,63 @@
 # JavaScript / TypeScript 使用手册
 
+## 多收款人与定额 TBC 付款
+
+统一业务入口 `tbc20.transfer` 根据经校验的资产脚本选择实现，不由调用方猜测新旧版本：
+
+```ts
+const intent = {
+  type: "tbc20.transfer", version: "1.0", contractId,
+  receivers: [
+    { to: addressA, amount: "100" },
+    { to: addressB, amount: "200" },
+  ],
+};
+```
+
+历史 FT 单笔最多 5 个收款人，超过 5 个明确拒绝，不自动拆单；已有的
+`to` / `amount` 单收款人写法不变，不能与 `receivers` 混用。碎片输入需要
+归并时，仍使用同一批准绑定的维护交易流程，不能把输入归并误认为收款人拆单。
+历史 FT 的附带 TBC 仍仅支持单收款人同址付款；历史稳定币仍为单收款人。
+
+新 TBC20 可额外附带 `payment: { to: paymentAddress, amount: "1234" }`。
+所有金额都是最小单位整数字符串；新 TBC20 的普通 TBC 付款至少 42 最小单位，
+与手续费及找零分别计算、分别展示。支付占用输出组，实际可用收款人数还受
+Token 找零、TBC 找零及金额分槽约束。配置不适用时明确拒绝，不丢弃付款。
+多轮输入维护只在最后的业务交易支付一次，不在每轮重复支付。
+
+主动原生币归集 `tbc.maintenance.merge` 单笔支持 2–500 个输入。
+默认取一个最多 500 项的 UTXO 页面，不为原生币下载祖先交易。
+它不会无限递归清空账户，也不扩大普通转账/AMM 的自动手续费取数范围。
+已有多轮归集仍按每轮最多 100 个输入的批准范围执行，明确绑定每轮选中的
+outpoints，不因单笔上限提高而扩大已批准的输入集合。
+
+## 后端接入已构造交易
+
+`createTbcBackendService` 的 `reviewedTransaction` 接受已有标准能力或一个
+按服务身份创建能力的工厂。复用 `createTbcStandardWorkflowCapabilities`
+返回的 `reviewedTransaction`，不要另写交易构造或审批校验逻辑：
+
+```ts
+const service = createTbcBackendService({
+  serviceId: "org.example.settlement", account, engine, network, signer, authorize,
+  reviewedTransaction: (context) => makeServiceReviewCapabilities(context).reviewedTransaction,
+});
+const prepared = await service.prepareWorkflow({
+  version: "1.0", chainId: account.chainId, from: account.address,
+  expiresAt, maxTotalFee: "1000",
+  steps: [{ id: "reviewed", kind: "reviewedTransaction", dependsOn: [],
+    request: { payload: { format: "raw", transactions } } }],
+});
+const signed = await service.executePrepared({ kind: "workflow", action: "sign", prepared });
+```
+
+`makeServiceReviewCapabilities` 是调用方的装配函数，用服务自己持有的审核器、
+签名适配器和当前账户校验创建共享标准能力。工厂提供的 `context` 含绑定的
+origin、sessionId、navigationId、chainId、accountId、account 和 `isActive()`；
+不得用远端请求中的身份替换这些值。也支持 `format: "associated"` 的父子交易材料。
+准备阶段不加载私钥能力；执行必须显式提供 `authorize` 与 `signer`，整批一次批准。
+未配置审核能力则拒绝，批准后材料变更也拒绝。默认只签名，发送仍须显式接入广播和对账。
+
 ## Registering a wallet
 
 Discovery reuses a live session created with **wallet-platform authority**:

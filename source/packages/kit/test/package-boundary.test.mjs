@@ -11,7 +11,7 @@ const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 test("public export targets exist and React Native conditions precede Node/import/require", async () => {
   const manifest = JSON.parse(await readFile(resolve(packageRoot, "package.json"), "utf8"));
   assert.deepEqual(Object.keys(manifest.exports).sort(),
-    [".", "./wallet", "./engine", "./rpc", "./api", "./sqlite", "./testing"].sort());
+    [".", "./wallet", "./engine", "./rpc", "./api", "./sqlite", "./testing", "./multisig"].sort());
   async function checkTargets(value) {
     if (typeof value === "string") {
       assert.ok(value.startsWith("./dist/"));
@@ -67,8 +67,8 @@ test("Kit build artifacts retain source maps without embedded original source", 
   assert.ok(count > 0);
 });
 
-test("all seven public entry points load in ESM and CommonJS", async () => {
-  const entries = ["index", "wallet", "engine", "rpc", "api", "sqlite", "testing"];
+test("all eight public entry points load in ESM and CommonJS", async () => {
+  const entries = ["index", "wallet", "engine", "rpc", "api", "sqlite", "testing", "multisig"];
   for (const entry of entries) {
     const esm = await import(`../dist/esm/${entry}.js`);
     const cjs = require(`../dist/cjs/${entry}.cjs`);

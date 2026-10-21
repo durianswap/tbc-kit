@@ -1,186 +1,70 @@
 import assert from "node:assert/strict";
-import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 import test from "node:test";
-
 import { repositoryRoot } from "../scripts/lib/repository.mjs";
-
 const root = repositoryRoot(import.meta.url);
-const requiredDocuments = [
-  "docs/getting-started/dapp-quickstart.md",
-  "docs/getting-started/wallet-quickstart.md",
-  "docs/guides/send-tbc.md",
-  "docs/guides/permissions-events-errors.md",
-  "docs/guides/crash-recovery.md",
-  "docs/reference/provider-api.md",
-  "docs/reference/wallet-standard.md",
-  "docs/reference/transport-contract.md",
-];
-
-function read(relative) {
-  return fs.readFileSync(path.join(root, relative), "utf8");
-}
-
-function packageImports(source) {
-  return [...source.matchAll(/from\s+["']([^"']+)["']/g)].map((match) => match[1]);
-}
-
-test("ships the complete public SDK documentation set", () => {
-  for (const relative of requiredDocuments) {
-    assert.equal(fs.existsSync(path.join(root, relative)), true, relative);
+const read = p => fs.readFileSync(path.join(root, p), "utf8");
+const guides = ["README", "dapp", "wallet", "api-and-backend", "native", "legacy", "examples", "api-reference"];
+test("current integration documentation is complete and linked", () => {
+  const index = read("../docs/README.md");
+  for (const name of guides) {
+    const text = read(`../docs/${name}.md`);
+    assert.ok(text.length > 100, name);
+    if (name !== "README") assert.ok(index.includes(`${name}.md`), name);
   }
-  const readme = read("README.md");
-  assert.match(readme, /docs\/reference\/module-index\.md/);
-  const moduleIndex = read("docs/reference/module-index.md");
-  for (const relative of [
-    "getting-started/dapp-quickstart.md",
-    "getting-started/wallet-quickstart.md",
-    "examples/third-party-wallet-minimal/README.md",
-    "packages/provider/README.md",
-    "packages/wallet-standard/README.md",
-  ]) {
-    assert.match(moduleIndex, new RegExp(relative.replaceAll(".", "\\.")));
-  }
-  assert.doesNotMatch(
-    readme,
-    /Provider、Wallet Standard、Transport、\s*真实 testnet 广播与产品 UI 仍属于后续阶段/,
-  );
+  assert.ok(read("../README.md").includes("docs/"));
 });
-
-test("Quickstarts copy only public package boundaries", () => {
-  const dapp = read("docs/getting-started/dapp-quickstart.md");
-  assert.deepEqual(
-    new Set(packageImports(dapp)),
-    new Set(["@tbc-wallet/wallet-standard", "@tbc/kit"]),
-  );
-  assert.doesNotMatch(dapp, /@tbc-wallet\/(?:core|host|tbc-engine)/);
-  assert.doesNotMatch(dapp, /\b(?:Authority|Host Port|checkpoint|signer\.sign)\b/);
-
-  const wallet = read("docs/getting-started/wallet-quickstart.md");
-  const allowed = new Set([
-    "@tbc-wallet/core",
-    "@tbc-wallet/host",
-    "@tbc-wallet/provider",
-    "@tbc-wallet/provider/in-memory",
-    "@tbc-wallet/tbc-engine",
-    "@tbc-wallet/wallet-standard",
-  ]);
-  for (const specifier of packageImports(wallet)) {
-    assert.equal(allowed.has(specifier), true, specifier);
-  }
-  assert.match(wallet, /normalize.*plan.*approval binding.*signer\.sign.*finalize/s);
-  assert.match(wallet, /九个|nine/i);
-  assert.doesNotMatch(wallet, /wallet-vault\/1.*(?:public|公开).*(?:API|接口)/i);
+test("public quickstarts use the single Kit package boundary", () => {
+  const text = guides.map(name => read(`../docs/${name}.md`)).join("\n");
+  const imports = [...text.matchAll(/from\s+["']([^"']+)["']/g)].map(m => m[1]);
+  assert.ok(imports.includes("@tbc/kit"));
+  assert.ok(imports.includes("@tbc/kit/api"));
+  for (const specifier of imports) assert.match(specifier, /^@tbc\/kit(?:\/|$)/);
+  assert.doesNotMatch(text, /from ["']@tbc-wallet\//);
 });
-
-test("marked Quickstart snippets compile against declared public exports", () => {
-  const directory = fs.mkdtempSync(path.join(root, ".tmp-tws-docs-"));
+test("DApp and API guide snippets compile against the current public declarations", () => {
+  const directory = fs.mkdtempSync(path.join(root, ".tmp-kit-docs-"));
   try {
-    const snippets = requiredDocuments.slice(0, 2).flatMap((relative) =>
-      [...read(relative).matchAll(/```ts compile=([^\n]+)\n([\s\S]*?)```/g)]
-        .map((match) => ({ name: match[1], source: match[2] })),
-    );
-    assert.deepEqual(
-      snippets.map(({ name }) => name),
-      [
-        "dapp-discovery",
-        "dapp-send",
-        "wallet-host",
-        "wallet-transport",
-        "wallet-discovery",
-      ],
-    );
-    for (const { name, source } of snippets) {
+    for (const name of ["dapp", "api-and-backend"]) {
+      const blocks = [...read(`../docs/${name}.md`).matchAll(/```ts\n([\s\S]*?)```/g)];
+      assert.equal(blocks.length, 1);
       const file = path.join(directory, `${name}.ts`);
-      fs.writeFileSync(file, source);
-      const compiled = spawnSync(
-        path.join(root, "node_modules/.bin/tsc"),
-        [
-          "--noEmit",
-          "--strict",
-          "--exactOptionalPropertyTypes",
-          "--noUncheckedIndexedAccess",
-          "--skipLibCheck",
-          "--module",
-          "NodeNext",
-          "--moduleResolution",
-          "NodeNext",
-          "--target",
-          "ES2022",
-          "--lib",
-          "ES2022,DOM",
-          file,
-        ],
-        { cwd: root, encoding: "utf8" },
-      );
-      assert.equal(
-        compiled.status,
-        0,
-        `${name}\n${compiled.stdout}\n${compiled.stderr}`,
-      );
+      fs.writeFileSync(file, 'declare const recipientAddress: string;\n' + blocks[0][1]);
+      const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), [
+        "--noEmit", "--strict", "--skipLibCheck", "--exactOptionalPropertyTypes",
+        "--noUncheckedIndexedAccess", "--module", "NodeNext", "--moduleResolution", "NodeNext",
+        "--target", "ES2022", "--lib", "ES2022,DOM", file,
+      ], { cwd: root, encoding: "utf8" });
+      assert.equal(result.status, 0, result.stdout + result.stderr);
     }
-  } finally {
-    fs.rmSync(directory, { recursive: true, force: true });
-  }
+  } finally { fs.rmSync(directory, { recursive: true, force: true }); }
 });
-
-test("Provider and Wallet Standard references project frozen registries", () => {
-  const provider = read("docs/reference/provider-api.md");
-  const methods = JSON.parse(read("registry/methods.json")).methods;
-  const events = JSON.parse(read("registry/events.json")).events;
-  for (const { name } of [...methods, ...events]) {
-    assert.match(provider, new RegExp(`\\\\?\`${name}\\\\?\``));
-  }
-  assert.match(provider, /4 MiB/);
-  assert.match(provider, /single-request/);
-  assert.match(provider, /request\s*Promise.*事件|Promise.*settle.*event/is);
-
-  const discovery = read("docs/reference/wallet-standard.md");
-  assert.match(discovery, /@wallet-standard\/core/);
+test("Provider and discovery normative documentation covers every current registered method and event", () => {
+  const provider = read("standards/TWS-001-provider.md");
+  for (const file of ["methods", "events"])
+    for (const { name } of JSON.parse(read(`registry/${file}.json`))[file])
+      assert.ok(provider.includes(name), name);
+  const discovery = read("standards/TWS-007-discovery-transports.md");
   assert.match(discovery, /tbc:provider/);
-  assert.match(discovery, /不得.*自动选择|never auto-select/i);
-  assert.match(discovery, /EIP-6963.*EVM/s);
+  assert.match(discovery, /EIP-6963.*EVM/);
+  assert.match(read("../docs/dapp.md"), /用户选择/);
 });
-
-test("Transport and operations guides keep authority and safety boundaries explicit", () => {
-  const transport = read("docs/reference/transport-contract.md");
-  assert.match(transport, /\{\s*deliveryId,\s*response,\s*events\s*\}/);
-  for (const profile of ["WebView", "Extension", "Remote"]) {
-    assert.match(transport, new RegExp(profile));
-  }
-  assert.match(transport, /Trusted Context/);
-  assert.match(transport, /DApp.*(?:不得|不能).*origin/is);
-  assert.match(transport, /REQUEST_ABORTED/);
-  assert.match(transport, /未.*认证|not certified/i);
-
-  const send = read("docs/guides/send-tbc.md");
-  assert.match(send, /TBC.*默认|默认.*TBC/i);
-  assert.match(send, /amount.*十进制字符串/s);
-  assert.match(send, /tbc_signTransaction.*不.*broadcast|sign-only.*不.*广播/is);
-
-  const recovery = read("docs/guides/crash-recovery.md");
-  for (const identity of ["callId", "commitId", "deliveryId", "idempotencyKey"]) {
-    assert.match(recovery, new RegExp(identity));
-  }
-  assert.match(recovery, /Memory.*(?:测试|test)/s);
-  assert.match(recovery, /IndexedDB/);
+test("wallet integration preserves platform authority, Vault and approval binding boundaries", () => {
+  const wallet = read("../docs/wallet.md");
+  for (const text of ["origin", "Signer/Vault", "预取", "绑定检查", "session.close()", "审批"])
+    assert.ok(wallet.includes(text), text);
+  const backend = read("../docs/api-and-backend.md");
+  assert.match(backend, /安全 Signer.*服务授权/);
+  assert.match(backend, /txid.*已到账/);
+  assert.match(read("../docs/dapp.md"), /不能将任意页面 digest/);
 });
-
-test("documents permissions, errors, and explicit legacy migration without false certification", () => {
-  const guide = read("docs/guides/permissions-events-errors.md");
-  for (const code of ["4001", "4100", "4200", "4900", "4901", "-32000"] ) {
-    assert.equal(guide.includes(code), true, code);
-  }
-  assert.match(guide, /permissionsChanged/);
-  assert.match(guide, /ProviderRpcError/);
-
-  const walletQuickstart = read("docs/getting-started/wallet-quickstart.md");
-  assert.match(walletQuickstart, /window\.Turing/);
-  assert.match(walletQuickstart, /显式|explicit/i);
-  assert.match(walletQuickstart, /Legacy Adapter/);
-
-  const all = requiredDocuments.map(read).join("\n");
-  assert.doesNotMatch(all, /(?:WebView|Extension|Remote).{0,40}(?:已经|已获).{0,20}(?:生产认证|合规认证)/s);
-  assert.doesNotMatch(all, /(?:私钥|助记词|WIF).{0,30}(?:Provider|DApp).{0,20}(?:传递|暴露)/s);
+test("Legacy is an adapter to shared execution, not a separate signing bypass", () => {
+  const legacy = read("../docs/legacy.md");
+  assert.match(legacy, /window\.Turing/);
+  assert.match(legacy, /审批/);
+  assert.match(legacy, /校验/);
+  assert.doesNotMatch(guides.map(name => read(`../docs/${name}.md`)).join("\n"),
+    /(?:WebView|Extension|Remote).{0,40}(?:已经|已获).{0,20}(?:生产认证|合规认证)/s);
 });

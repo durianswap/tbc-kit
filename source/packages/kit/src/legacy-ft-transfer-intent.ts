@@ -106,16 +106,14 @@ export function resolveLegacyFtTransferIntent(input: Readonly<{
     legacyDisplayAmount(Reflect.get(request, "tbc_amount") ?? "0", true),
     6,
   );
-  if (input.currentStandard === true && attachedTbcAmount !== "0") {
-    return invalidRequest();
-  }
   const intent = Object.freeze({
     version: "1.0" as const,
     type: input.currentStandard === true ? "tbc20.transfer" as const : "tbc.ft.transfer" as const,
     contractId,
     to: recipient,
     amount,
-    ...(attachedTbcAmount === "0" ? {} : { attachedTbcAmount }),
+    ...(attachedTbcAmount === "0" ? {} : input.currentStandard === true
+      ? { payment: { to: recipient, amount: attachedTbcAmount } } : { attachedTbcAmount }),
   });
   const base = Object.freeze({
     version: "1.0" as const,

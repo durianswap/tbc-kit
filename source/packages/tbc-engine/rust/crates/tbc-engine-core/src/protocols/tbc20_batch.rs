@@ -59,6 +59,9 @@ pub fn build_batch_merge_plan(options: BatchOptions<'_>) -> Result<BatchPlan, En
 
 fn build(options: BatchOptions<'_>, merge: bool) -> Result<BatchPlan, EngineError> {
     let original = options.transfer;
+    if merge && original.payment.is_some() {
+        return Err(invalid("TBC20 merge cannot include a native payment"));
+    }
     if options.max_transactions == 0 || original.inputs.is_empty() || original.inputs.len() > 128 {
         return Err(invalid("TBC20 batch requires 1..128 token inputs and a positive bundle limit"));
     }
@@ -109,6 +112,7 @@ fn build(options: BatchOptions<'_>, merge: bool) -> Result<BatchPlan, EngineErro
             amount: inputs.iter().map(|input| input.parent.tape().balance).sum() }];
         let round_options = TransferOptions { inputs: &inputs, fee_inputs: &fees,
             receivers: if final_round && !merge { original.receivers } else { &merge_receivers },
+            payment: if final_round && !merge { original.payment } else { None },
             expected_identity: original.expected_identity, token_change_controller: original.token_change_controller,
             native_change_hash: original.native_change_hash, max_fee: original.max_fee - total_fee };
         let mut round = if final_round && !merge { build_transfer_plan(round_options)? }

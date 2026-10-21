@@ -6,6 +6,7 @@ import {
   createPoolMaterialLoader,
   createWasmTbcKeylessEngine,
 } from "../dist/esm/wallet.js";
+import { inspectTbcTransaction } from "../dist/esm/api.js";
 
 const fixture = JSON.parse(await readFile(
   new URL("./fixtures/controlled-pool.json", import.meta.url),
@@ -44,6 +45,11 @@ function loader(finalResponse, nativeProvider = native) {
       const path = new URL(input instanceof Request ? input.url : String(input)).pathname;
       if (path === `/api/tbc/pool/poolinfo/poolid/${fixture.poolContractId}`) {
         return response(fixture.poolInfo);
+      }
+      if (path === `/api/tbc/ft/info/contract/${fixture.ftContractId}`) {
+        const tx = inspectTbcTransaction(fixture.rawTransactions[fixture.ftContractId]).transaction;
+        return response({code_script:Buffer.from(tx.outputs[0].scriptPubKey).toString('hex'),
+          tape_script:Buffer.from(tx.outputs[1].scriptPubKey).toString('hex'), amount:'10000000'});
       }
       const txid = path.match(/^\/api\/tbc\/txraw\/txid\/([0-9a-f]{64})$/u)?.[1];
       if (txid !== undefined && fixture.rawTransactions[txid] !== undefined) {

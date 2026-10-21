@@ -881,6 +881,82 @@ pub fn inspect(s: &str) -> R<String> {
     let b = revalidate(parse(s)?)?;
     Ok(serde_json::to_string(&b.proposal).unwrap())
 }
+
+/// Approval data is derived from the rebuilt outputs, never caller labels.
+/// Reuses the signing inspection once; no I/O, signing or additional ancestry.
+pub fn review(s: &str) -> R<String> {
+    let b = revalidate(parse(s)?)?;
+    let p = &b.proposal;
+    let mut destinations = vec![p.address.clone()];
+    let token = match &p.request.action {
+        Action::DepositFt { token, .. } | Action::TransferFt { token, .. }
+        | Action::MergeFt { token, .. } => Some(token),
+        _ => None,
+    };
+    match &p.request.action {
+        Action::TransferTbc { destination, .. } | Action::TransferFt { destination, .. } => {
+            destinations.push(destination.clone());
+        }
+        _ => {}
+    }
+    match &p.request.action {
+        Action::Create { public_key, .. } | Action::DepositTbc { public_key, .. }
+        | Action::DepositFt { public_key, .. } => {
+            destinations.push(sdk(PublicKey::from_slice(&key(public_key)?))?.address().to_string());
+        }
+        _ => {}
+    }
+    destinations.sort();
+    destinations.dedup();
+    let mut outputs = Vec::new();
+    let mut i = 0;
+    while i < b.tx.outputs.len() {
+        let o = &b.tx.outputs[i];
+        if let Some(token) = token {
+            let code = script(&token.code)?;
+            let recipient = destinations.iter().find(|address| {
+                receiver(address).and_then(|r| sdk(transfer_code_script(&code, r)))
+                    .is_ok_and(|s| s == o.script_pubkey)
+            });
+            if let Some(recipient) = recipient {
+                let tape = b.tx.outputs.get(i + 1).ok_or("Missing review Tape")?;
+                let pair = sdk(tbc_sdk::validator::inspect_multisig_token_pair(o, Some(tape)))?
+                    .ok_or("Unknown review asset")?;
+                outputs.push(json!({"vouts":[i,i+1],"kind":"token",
+                    "assetFamily":pair.protocol.family,"assetVersion":pair.protocol.version,
+                    "assetIdentity":pair.identity,"amountAtomic":pair.balance.to_string(),
+                    "recipient":recipient,"nativeValueAtomic":o.satoshis.to_string()}));
+                i += 2;
+                continue;
+            }
+        }
+        if let Some(recipient) = destinations.iter().find(|a| destination(a).is_ok_and(|s| s == o.script_pubkey)) {
+            outputs.push(json!({"vouts":[i],"kind":"native","assetFamily":"TBC",
+                "assetIdentity":"TBC","amountAtomic":o.satoshis.to_string(),"recipient":recipient,
+                "nativeValueAtomic":o.satoshis.to_string()}));
+        } else if matches!(p.request.action, Action::Create { .. }) {
+            use tbc_sdk::contracts::multisig::scripts::hold_script;
+            let member = b.keys.iter().find(|k| PublicKey::from_slice(k).is_ok_and(|k| hold_script(&k) == o.script_pubkey));
+            if let Some(member) = member {
+                outputs.push(json!({"vouts":[i],"kind":"member-hold","assetFamily":"TBC",
+                    "assetIdentity":"TBC","amountAtomic":o.satoshis.to_string(),
+                    "recipient":sdk(PublicKey::from_slice(member))?.address().to_string(),
+                    "memberPublicKey":hex::encode(member),"nativeValueAtomic":o.satoshis.to_string()}));
+            } else if o.satoshis == 0 && o.script_pubkey.as_bytes().ends_with(b"\x05MTape") {
+                // revalidate already reproduced the complete exact MTape script.
+                outputs.push(json!({"vouts":[i],"kind":"metadata","assetFamily":"TBC",
+                    "assetIdentity":"TBC","amountAtomic":"0","recipient":null,"nativeValueAtomic":"0"}));
+            } else { return Err("Unclassified approval output".into()); }
+        } else { return Err("Unclassified approval output".into()); }
+        i += 1;
+    }
+    let operation = serde_json::to_value(&p.request.action).unwrap()["type"].clone();
+    Ok(json!({"proposal":p,"review":{"proposalId":p.proposal_id,"chainId":p.request.chain_id,
+        "groupAddress":p.address,"requiredSignatures":p.request.group.required_signatures,
+        "publicKeys":p.request.group.public_keys,"operation":operation,"outputs":outputs,
+        "feeAtomic":p.fee,"maxFeeAtomic":p.request.max_fee,
+        "includesChange":true,"assetIdentityKind":"locking-code-fingerprint"}}).to_string())
+}
 fn verified(b: &Built, partials: &[Partial]) -> R<BTreeMap<(usize, String), Vec<u8>>> {
     if partials.len() > b.inputs.len() * b.keys.len() {
         return Err("Too many signatures".into());

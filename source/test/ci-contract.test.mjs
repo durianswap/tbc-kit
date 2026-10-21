@@ -8,7 +8,7 @@ const root = repositoryRoot(import.meta.url);
 
 test("CI installs from the lockfile and runs the complete local gate", () => {
   const workflow = fs.readFileSync(
-    `${root}/.github/workflows/conformance.yml`,
+    `${root}/../.github/workflows/conformance.yml`,
     "utf8",
   );
   assert.match(workflow, /node-version: 22/);
@@ -16,11 +16,18 @@ test("CI installs from the lockfile and runs the complete local gate", () => {
     [...workflow.matchAll(/^\s+- run: (.+)$/gm)].map((match) => match[1]),
     [
       "npm ci",
+      "cargo fetch --locked --manifest-path packages/tbc-engine/rust/Cargo.toml",
+      "sdkmanager 'ndk;27.2.12479018'",
+      "node packages/tbc-engine/scripts/build-rust-native.mjs",
+      "node packages/tbc-engine/scripts/build-rust-mobile.mjs",
+      "node packages/tbc-engine/scripts/build-rust-wasm.mjs",
+      "npm run build:wallet-standard",
+      "npm run build:tbc-engine",
+      "npm run build:kit",
       "npm run check:core-portability",
       "npm run check:host-portability",
       "npm run check:provider-portability",
       "npm run check:wallet-standard-portability",
-      "npm run check:handoff:sdk",
       "npm run check",
     ],
   );
@@ -50,39 +57,10 @@ test("CI installs from the lockfile and runs the complete local gate", () => {
     "npm run check:provider-portability",
     "npm run check:wallet-standard-portability",
     "npm run check:conformance",
-    "npm run check:handoff:draft1",
-    "npm run check:handoff:draft2",
-    "npm run check:handoff:draft3",
-    "npm run check:handoff:draft4",
-    "npm run check:handoff:draft5",
-    "npm run check:handoff:draft6",
-    "npm run check:handoff:core",
-    "npm run check:handoff:sdk",
   ]) {
     assert.match(packageJson.scripts.check, new RegExp(requiredCommand.replaceAll(".", "\\.")));
   }
-  const handoffScripts = Object.entries(packageJson.scripts)
-    .filter(([name]) => name.startsWith("check:handoff:"))
-    .map(([, command]) => command)
-    .join("\n");
-  for (const requiredAsset of [
-    "release/tws-1.0.0-draft.1.config.json",
-    "release/tws-1.0.0-draft.2.config.json",
-    "release/freeze.config.json",
-    "release/tws-1.0.0-draft.3.json",
-    "release/tws-1.0.0-draft.4.config.json",
-    "release/tws-1.0.0-draft.4.json",
-    "release/tws-1.0.0-draft.5.config.json",
-    "release/tws-1.0.0-draft.5.json",
-    "release/tws-1.0.0-draft.6.config.json",
-    "release/tws-1.0.0-draft.6.json",
-    "release/tws-core-1.0.0-draft.6.config.json",
-    "release/tws-core-1.0.0-draft.6.json",
-    "release/tws-sdk-1.0.0-draft.6.3.config.json",
-    "release/tws-sdk-1.0.0-draft.6.3.json",
-  ]) {
-    assert.match(handoffScripts, new RegExp(requiredAsset.replaceAll(".", "\\.")));
-  }
+  assert.match(packageJson.scripts.check, /npm run test:kit/);
 });
 
 test("runs every v1 Candidate conformance profile", () => {

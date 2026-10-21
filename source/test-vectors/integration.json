@@ -857,6 +857,7 @@
       "task": {
         "taskId": "review-example",
         "purpose": "reviewedTransaction",
+        "policyMaterial": { "resolvedOutputs": [] },
         "contextHash": "2222222222222222222222222222222222222222222222222222222222222222",
         "requestHash": "3333333333333333333333333333333333333333333333333333333333333333",
         "reviewHash": "4444444444444444444444444444444444444444444444444444444444444444",

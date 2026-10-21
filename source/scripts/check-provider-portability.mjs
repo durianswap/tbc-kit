@@ -17,23 +17,23 @@ const webviewEsmEntry = path.join(root, "packages", "provider", "dist", "esm", "
 const webviewCjsEntry = path.join(root, "packages", "provider", "dist", "cjs", "webview.cjs");
 
 export const PROVIDER_PORTABILITY_LIMITS = Object.freeze({
-  // Candidate189 measured dependency-inclusive baseline, user-approved 2026-09-26.
+  // Current dependency-inclusive baseline, user-approved 2026-10-21.
   // Includes Prepared, reviewed/crypto, batch-send and WebView validation.
-  maxBundleBytes: 1_614_000,
-  maxGzipBytes: 158_000,
+  maxBundleBytes: 2_361_000,
+  maxGzipBytes: 234_000,
   maxInMemoryBundleBytes: 8_000,
   maxInMemoryGzipBytes: 2_500,
   // The standalone WebView entry carries the exact generated Provider
   // validators so native decoding cannot resolve a different package copy.
-  // Candidate189 ESM artifact: 514,313 / 52,249 bytes, same approved baseline.
-  maxWebViewArtifactBytes: 515_000,
-  maxWebViewArtifactGzipBytes: 53_000,
+  // ESM artifact: 778,979 / 79,827 bytes, same approved baseline.
+  maxWebViewArtifactBytes: 780_000,
+  maxWebViewArtifactGzipBytes: 81_000,
 });
 
 export const PROVIDER_PACKAGE_LIMITS = Object.freeze({
   // Includes source maps for both strict-validator-bearing WebView formats.
-  maxTarballBytes: 650_000,
-  maxUnpackedBytes: 6_200_000,
+  maxTarballBytes: 770_000,
+  maxUnpackedBytes: 6_800_000,
 });
 
 const expectedRuntimeExports = Object.freeze([
@@ -203,7 +203,7 @@ async function bundleVariant(name, entryPoint, options) {
     bytes > PROVIDER_PORTABILITY_LIMITS.maxBundleBytes ||
     gzipBytes > PROVIDER_PORTABILITY_LIMITS.maxGzipBytes
   ) {
-    throw new Error(`${name} Provider bundle exceeds the portability size budget`);
+    throw new Error(`${name} Provider bundle exceeds the portability size budget: ${bytes} bytes / ${gzipBytes} gzip`);
   }
   if (forbidden.length > 0 || forbiddenGraphInputs.length > 0) {
     throw new Error(`${name} Provider bundle contains a forbidden runtime capability`);

@@ -11,7 +11,7 @@ const rootPackage = JSON.parse(
   await readFile(new URL("../../../package.json", import.meta.url), "utf8"),
 );
 const workflow = await readFile(
-  new URL("../../../.github/workflows/conformance.yml", import.meta.url),
+  new URL("../../../../.github/workflows/conformance.yml", import.meta.url),
   "utf8",
 );
 

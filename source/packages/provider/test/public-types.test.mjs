@@ -38,7 +38,6 @@ test("Provider package declares portable root and opt-in transport boundaries", 
   assert.deepEqual(manifest.files, [
     "dist",
     "README.md",
-    "CHANGELOG.md",
     "LICENSE",
   ]);
   assert.deepEqual(Object.keys(manifest.exports), [".", "./in-memory", "./webview"]);

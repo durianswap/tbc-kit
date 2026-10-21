@@ -43,7 +43,9 @@ test("new create/transfer/merge use exact action names in ordinary mainnet and t
       valid(request, { version: "1.0", chainId, from: address, intent: value });
     }
   }
-  for (const type of ["tbc20.transfer", "tbc20-transfer", "tbc20-standard-transfer-v1"]) {
+  valid(intent, { ...transfer, type: "tbc20.transfer" }); // Unified holder route.
+  valid(intent, { ...transfer, payment: { to: address, amount: "42" } });
+  for (const type of ["tbc20-transfer", "tbc20-standard-transfer-v1"]) {
     assert.equal(intent({ ...transfer, type }), false);
   }
 });

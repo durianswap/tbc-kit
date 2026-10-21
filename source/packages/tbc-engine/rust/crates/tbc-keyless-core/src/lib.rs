@@ -23,6 +23,7 @@ pub const OPERATIONS: &[&str] = &[
     "decodeMultisigAddress",
     "prepareMultisig",
     "inspectMultisig",
+    "reviewMultisig",
     "verifyMultisigSignatures",
     "finalizeMultisig",
 ];
@@ -43,6 +44,7 @@ pub fn call(operation: &str, request: &str) -> Result<String, String> {
         "decodeMultisigAddress" => multisig::decode_address(request),
         "prepareMultisig" => multisig::prepare(request),
         "inspectMultisig" => multisig::inspect(request),
+        "reviewMultisig" => multisig::review(request),
         "verifyMultisigSignatures" => multisig::combine(request, false),
         "finalizeMultisig" => multisig::combine(request, true),
         _ => Err("KEYLESS_OPERATION_UNAVAILABLE".to_owned()),
@@ -70,7 +72,7 @@ mod tests {
                 "inspectAmmMaterial",
                 "inspectLopMaterial",
                 "inspectTokenMaterial",
-                "describeMultisig", "decodeMultisigAddress", "prepareMultisig", "inspectMultisig",
+                "describeMultisig", "decodeMultisigAddress", "prepareMultisig", "inspectMultisig", "reviewMultisig",
                 "verifyMultisigSignatures", "finalizeMultisig"
             ]
         );

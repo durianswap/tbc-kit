@@ -2,35 +2,8 @@ mod ft_suite {
     include!("../tests/ft.rs");
 
     pub fn runtime_vectors() -> serde_json::Value {
-        let create_plan_input = create_plan_input();
-        let create_planned = call_ok(
-            tbc_engine_core::EngineMethod::Plan,
-            &create_plan_input,
-        );
-        let mut create_finalize = public_finalize_input(
-            &create_plan_input,
-            &create_planned,
-        );
-        let mut create_finalize_inputs = Vec::new();
-        let create_complete = loop {
-            create_finalize_inputs.push(create_finalize.clone());
-            let result = call_ok(
-                tbc_engine_core::EngineMethod::Finalize,
-                &create_finalize,
-            );
-            if result.get("bundle").is_some() {
-                break result;
-            }
-            create_finalize["continuation"] = result["continuation"].clone();
-            create_finalize["signatures"] =
-                sign_public_tasks(&result["signingRequests"]);
-        };
         serde_json::json!({
-            "create": {
-                "planInput": create_plan_input,
-                "finalizeInputs": create_finalize_inputs,
-                "complete": create_complete,
-            },
+            "create": super::current_ft::create(),
             "direct": transfer_plan_input("direct"),
             "mergeRequired": transfer_plan_input("mergeRequired"),
         })
@@ -115,9 +88,27 @@ mod pool_suite {
             )),
             "ftlpBurn": public_complete_vector_from(ftlp_burn),
             "createPlanInput": public_plan_input("pool-create.json"),
-            "createMint": public_complete_vector_from(split_create_mint_input()),
-            "createInitialize": public_complete_vector_from(split_create_initialize_input()),
+            "createMintInput": split_create_mint_input(),
+            "createInitializeInput": split_create_initialize_input(),
         })
+    }
+}
+
+mod current_ft {
+    include!("../tests/tbc20_public.rs");
+    pub fn create() -> Value {
+        let plan_input = input("tbc20-standard-create");
+        let plan = ok(EngineMethod::Plan, &plan_input);
+        let mut stage = approved(&plan_input, &plan);
+        let mut inputs = Vec::new();
+        let complete = loop {
+            inputs.push(stage.clone());
+            let result = ok(EngineMethod::Finalize, &stage);
+            if result.get("bundle").is_some() { break result; }
+            stage["continuation"] = result["continuation"].clone();
+            stage["signatures"] = sign(&result["signingRequests"]);
+        };
+        json!({"planInput": plan_input, "finalizeInputs": inputs, "complete": complete})
     }
 }
 

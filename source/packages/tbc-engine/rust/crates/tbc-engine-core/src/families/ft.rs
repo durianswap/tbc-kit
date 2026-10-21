@@ -6,7 +6,7 @@ use tbc_sdk::{
     Address, DEFAULT_LOCK_TIME, DEFAULT_SEQUENCE, DEFAULT_SIGHASH, OutPoint, PublicKey,
     Transaction, TxIn, TxOut, Txid,
     contracts::ft::{
-        amount::build_tape_amount,
+        amount::{build_tape_amount, build_multi_tape_amounts},
         scripts::{
             FT_CODE_SATOSHIS, FT_MINT_SOURCE_SATOSHIS, FT_TAPE_SATOSHIS, FtCodeReceiver,
             mint_source_script, mint_tape_script, transfer_code_script, transfer_tape_script,
@@ -421,12 +421,11 @@ fn plan_transfer(
     signing: &PublicSigningContext,
 ) -> Result<PlannedTransfer, EngineError> {
     let contract_id = required(&request.intent.contract_id, "request.intent.contractId")?;
-    let amount = parse_u128(
-        required(&request.intent.amount, "request.intent.amount")?,
-        "request.intent.amount",
-    )?;
-    let recipient = Address::from_string(required(&request.intent.to, "request.intent.to")?)
-        .map_err(|_| error(ErrorCode::InvalidInput, "invalid FT recipient", "request.intent.to"))?;
+    let recipients = crate::normalize::tbc20_transfer_recipients(request)?.into_iter()
+        .map(|recipient| Ok((Address::from_string(recipient.to)
+            .map_err(|_| error(ErrorCode::InvalidInput, "invalid FT recipient", "request.intent.to"))?, recipient.amount)))
+        .collect::<Result<Vec<_>, EngineError>>()?;
+    let amount = checked_sum_u128(recipients.iter().map(|(_, amount)| *amount), "FT amount overflow")?;
     let attached = request
         .intent
         .attached_tbc_amount
@@ -492,7 +491,7 @@ fn plan_transfer(
         material,
         signing,
         &ancestry.metadata,
-        &recipient,
+        &recipients,
         amount,
         attached,
         candidates,
@@ -624,7 +623,7 @@ fn build_transfer_with_funding(
     material: &WalletMaterial<'_>,
     signing: &PublicSigningContext,
     metadata: &FtMetadata,
-    recipient: &Address,
+    recipients: &[(Address, u128)],
     amount: u128,
     attached: Option<u64>,
     mut candidates: Vec<AssetCandidate>,
@@ -653,7 +652,7 @@ fn build_transfer_with_funding(
             let predicted_outputs = transfer_outputs(
                 metadata,
                 signing,
-                recipient,
+                recipients,
                 amount,
                 attached,
                 &predicted,
@@ -778,7 +777,7 @@ fn build_transfer_with_funding(
     let primary_outputs = transfer_outputs(
         metadata,
         signing,
-        recipient,
+        recipients,
         amount,
         attached,
         &candidates,
@@ -822,14 +821,14 @@ fn build_transfer_with_funding(
     }
     let total_fee = checked_sum_u64(fees.iter().copied(), "FT fee overflow")?;
     enforce_max_fee(request, total_fee)?;
-    let mut flows = vec![AssetFlow {
+    let mut flows = recipients.iter().map(|(recipient, amount)| AssetFlow {
         kind: if metadata.is_coin { "stablecoin" } else { "ft" }.to_owned(),
         direction: "send".to_owned(),
         amount: amount.to_string(),
         contract_id: None,
         from: request.from.clone(),
-        to: request.intent.to.clone(),
-    }];
+        to: Some(recipient.to_string()),
+    }).collect::<Vec<_>>();
     if let Some(value) = attached {
         flows.push(AssetFlow {
             kind: "native".to_owned(),
@@ -837,7 +836,7 @@ fn build_transfer_with_funding(
             amount: value.to_string(),
             contract_id: None,
             from: request.from.clone(),
-            to: request.intent.to.clone(),
+            to: Some(recipients[0].0.to_string()),
         });
     }
     finish_plan(
@@ -854,30 +853,32 @@ fn build_transfer_with_funding(
 fn transfer_outputs(
     metadata: &FtMetadata,
     signing: &PublicSigningContext,
-    recipient: &Address,
+    recipients: &[(Address, u128)],
     amount: u128,
     attached: Option<u64>,
     candidates: &[AssetCandidate],
 ) -> Result<Vec<TxOut>, EngineError> {
     let balances = candidates.iter().map(|candidate| candidate.balance_raw).collect::<Vec<_>>();
     let total = checked_sum_u128(balances.iter().copied(), "FT balance overflow")?;
-    let (amount_tape, change_tape) = build_tape_amount(amount, &balances)
+    let amounts = recipients.iter().map(|(_, amount)| *amount).collect::<Vec<_>>();
+    let tapes = build_multi_tape_amounts(&amounts, &balances)
         .map_err(|_| error(ErrorCode::InsufficientFunds, "FT balance is insufficient", "snapshot.payload.utxos"))?;
     let base_code = Script::from_bytes(decode_hex(&metadata.code_script, "contract.codeScript")?);
     let base_tape = Script::from_bytes(decode_hex(&metadata.tape_script, "contract.tapeScript")?);
-    let mut outputs = vec![
-        TxOut {
+    let mut outputs = Vec::with_capacity(2 * (recipients.len() + 1) + 1);
+    for ((recipient, _), tape) in recipients.iter().zip(&tapes) {
+        outputs.push(TxOut {
             satoshis: FT_CODE_SATOSHIS,
             script_pubkey: transfer_code_script(&base_code, FtCodeReceiver::Address(recipient.clone()))
                 .map_err(|_| invalid_input("FT recipient code script is invalid", "request.intent.to"))?,
-        },
-        TxOut {
+        });
+        outputs.push(TxOut {
             satoshis: FT_TAPE_SATOSHIS,
-            script_pubkey: asset_tape_script(metadata, &base_tape, &amount_tape)?,
-        },
-    ];
+            script_pubkey: asset_tape_script(metadata, &base_tape, tape)?,
+        });
+    }
     if let Some(value) = attached {
-        outputs.push(TxOut { satoshis: value, script_pubkey: recipient.script_pubkey() });
+        outputs.push(TxOut { satoshis: value, script_pubkey: recipients[0].0.script_pubkey() });
     }
     if amount < total {
         let change_address = Address::from_string(&signing.address).map_err(|_| {
@@ -893,7 +894,7 @@ fn transfer_outputs(
         });
         outputs.push(TxOut {
             satoshis: FT_TAPE_SATOSHIS,
-            script_pubkey: asset_tape_script(metadata, &base_tape, &change_tape)?,
+            script_pubkey: asset_tape_script(metadata, &base_tape, &tapes[recipients.len()])?,
         });
     }
     Ok(outputs)

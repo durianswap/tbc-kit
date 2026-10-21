@@ -43,7 +43,7 @@ fn handoff(parent:&Transaction,vout:usize,ancestors:&[Transaction],is_coin:bool,
             additional_payment:None,additional_info:None,max_fee:10000}).unwrap()
     }else{
         let material=tbc20_material::inspect_parent(&raw,&point,None).unwrap();let linked=tbc20_material::link_ancestors(&material,&refs).unwrap();
-        tbc20_transfer::build_transfer_plan(tbc20_transfer::TransferOptions{inputs:&[tbc20_transfer::TokenInput{parent:&material,ancestors:&linked,public_key:&public}],fee_inputs:&[fee],
+        tbc20_transfer::build_transfer_plan(tbc20_transfer::TransferOptions{payment:None,inputs:&[tbc20_transfer::TokenInput{parent:&material,ancestors:&linked,public_key:&public}],fee_inputs:&[fee],
             receivers:&[tbc20_transfer::Receiver{controller:receiver,amount:material.tape().balance}],expected_identity:material.identity(),token_change_controller:change,native_change_hash:public.hash160(),max_fee:10000}).unwrap()
     };signed_fixture(&plan.unsigned_plan,&owner)
 }

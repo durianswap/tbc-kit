@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { withOutputReview } from "../../../scripts/lib/reviewed-transfer-fixture.mjs";
 import * as tws from "../dist/esm/index.js";
 import { createTbcTransferEngine, createSourceTbcTransferEngine } from "./fixtures/tbc-transfer-engine.mjs";
 
@@ -15,7 +16,7 @@ const permissions = JSON.parse(
 );
 const context = provider.trustedContexts[0].context;
 const session = provider.providerSessions.sessionA;
-const canonical = integration.canonicalTransfer;
+const canonical = withOutputReview(integration.canonicalTransfer);
 
 function permissionFor(capability) {
   const base = permissions.result[0];

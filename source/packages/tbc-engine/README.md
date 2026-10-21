@@ -3,7 +3,7 @@
 Source-traceable, deterministic, keyless TBC transaction construction. This is
 the internal source package, not the recommended separate installation for new
 integrators. Use `@tbc/kit/engine` and the platform assets specified in the
-[current local delivery](../../docs/distribution/candidate225-local-assets.md).
+[platform integration guide](../../../docs/native.md).
 One Rust core powers iOS, Android, host-native and import-free WASM adapters.
 TypeScript provides validation and transport. Frozen historical packages are
 not overwritten when source or documentation changes.
@@ -17,19 +17,17 @@ Current library declarations and template limits are maintained in
 [`business-capabilities.ts`](../kit/src/business-capabilities.ts); they do not
 automatically authorize or advertise every capability in an individual wallet.
 
-`evidence/capability-matrix.json` is the retained historical 19-intent source
-inventory. Its `implemented-tested` labels describe that earlier implementation,
-not current permission to execute old creation. Old FT creation, old NFT Code
+The historical builders remain in source for compatibility verification, not authorization. Old FT creation, old NFT Code
 mint and old Pool creation are now rejected by public Engine execution. Shared
 collection creation remains allowed; existing collections can mint current NFT
 Code. Supported old transfers, maintenance and Pool/LP operations remain usable.
 Historical `tbc.pool.liquidity.close` remains in source but is not an advertised
 Kit wallet intent. Internal builder retention is not a fallback authorization.
 
-`check:capabilities` checks both preservation of the historical inventory and
+`check:capabilities` checks retained dispatch families and
 consistency of the current declaration. This is a source/declaration check, not
 an execution, VM, device or chain proof. See the
-[current execution evidence](../../docs/handoff/unified-api-stage4kv-capability-policy-2026-10-03.md)
+[current execution evidence](../kit/src/business-capabilities.ts)
 for the exact frozen Native/WASM policy scope.
 
 ## Create an engine

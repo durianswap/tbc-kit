@@ -297,6 +297,7 @@ test("default wallet composition drives representative TBC success through the r
     },
   });
   assert.equal(result.atomic, false);
+  assert.equal(result.status, "complete", JSON.stringify(result));
   assert.ok(Object.isFrozen(result));
   assert.ok(Object.isFrozen(result.progress));
   assert.deepEqual(result.progress.map(({ phase }) => phase), [
@@ -704,7 +705,12 @@ test("wallet formal-credential rejection is terminal before Signer and POST with
 
 test("default wallet composition drives controlled FT multi-round success through the real Rust Engine", async () => {
   const ownerScript = assertTestnetAddress(ADDRESS).scriptPubKey;
-  const rawTransactions = new Map();
+  // Historical issuance is retired. Start from the committed public scalar-one
+  // holder fixture, then exercise real transfers and merge without a mint bypass.
+  const existing = JSON.parse(await readFile(new URL('./fixtures/controlled-pool-key1.json',import.meta.url),'utf8'));
+  assert.equal(existing.address,ADDRESS);
+  const contractId = existing.ftContractId;
+  const rawTransactions = new Map(Object.entries(existing.rawTransactions));
   const funding = [["8096980000000000", "10000000"], ["002d310100000000", "20000000"]];
   const fundingRaw = funding.map(([amount], index) => [
     "0a000000", "01", String(index).padStart(2, "0").repeat(32), "00000000", "00", "ffffffff",
@@ -715,7 +721,8 @@ test("default wallet composition drives controlled FT multi-round success throug
     rawTransactions.set(txid, raw);
     return { txid, vout: 0, satoshis: funding[index][1], height: "990" };
   });
-  let ftUtxos = [];
+  let ftUtxos = [{txid:existing.ownerCandidate.txid,vout:existing.ownerCandidate.index,
+    satoshis:String(existing.ownerCandidate.tbc_value),ftAmount:existing.ownerCandidate.ft_value,height:'990'}];
   const accepted = new Set();
   const ftTrace = [];
   const amountFromTape = (script) => {
@@ -728,6 +735,12 @@ test("default wallet composition drives controlled FT multi-round success throug
     const url = new URL(input instanceof Request ? input.url : String(input));
     ftTrace.push(url.pathname);
     if (url.pathname === "/api/tbc/nodeinfo") return response({ blocks: 1000, bestblockhash: "aa".repeat(32) });
+    if (url.pathname === `/api/tbc/ft/info/contract/${contractId}`) {
+      const tx=parseTbcTransaction(rawTransactions.get(contractId));
+      return response({code_script:Buffer.from(tx.outputs[0].scriptPubKey).toString('hex'),
+        tape_script:Buffer.from(tx.outputs[1].scriptPubKey).toString('hex'),
+        amount:'1000000',decimal:0,name:'Merge Fixture',symbol:'MRG'});
+    }
     if (url.pathname === `/api/tbc/utxo/address/${ADDRESS}`) {
       return response({ utxos: nativeUtxos.map((item) => ({
         txid: item.txid, index: item.vout, value: item.satoshis, height: Number(item.height),
@@ -880,11 +893,6 @@ test("default wallet composition drives controlled FT multi-round success throug
       throw new Error(`${error.message}; sequence=${sequence}; plan=${planError?.message ?? "none"}; trace=${ftTrace.join(",")}`, { cause: error });
     }
   };
-  const created = await send({
-    version: "1.0", type: "tbc.ft.create", name: "Merge Fixture", symbol: "MRG",
-    decimals: 0, initialSupply: "1000000",
-  }, 0);
-  const contractId = created.transactions.at(-1).txid;
   for (let index = 1; index <= 5; index += 1) {
     await send({
       version: "1.0", type: "tbc.ft.transfer", contractId, to: ADDRESS,
@@ -904,8 +912,8 @@ test("default wallet composition drives controlled FT multi-round success throug
   assert.equal(result.finalUtxoCount, 1);
   assert.deepEqual(result.steps.map(({ inputCount }) => inputCount), [5, 2]);
   assert.equal(scopeApprovals, 1);
-  assert.equal(ordinaryApprovals, 6, "merge steps consume the bounded consent without reopening UI");
+  assert.equal(ordinaryApprovals, 5, "merge steps consume the bounded consent without reopening UI");
   assert.ok(signerCalls > setupSignerCalls, "real Rust Engine merge tasks reached the real secp Signer");
-  assert.equal(broadcasts, 9);
+  assert.equal(broadcasts, 7);
   session.close();
 });

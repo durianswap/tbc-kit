@@ -1,0 +1,35 @@
+name: Source conformance
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: macos-14
+    defaults:
+      run:
+        working-directory: source
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: source/package-lock.json
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown,aarch64-apple-ios,aarch64-apple-ios-sim,aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android
+      - uses: android-actions/setup-android@v3
+      - run: npm ci
+      - run: cargo fetch --locked --manifest-path packages/tbc-engine/rust/Cargo.toml
+      - run: sdkmanager 'ndk;27.2.12479018'
+      - run: node packages/tbc-engine/scripts/build-rust-native.mjs
+      - run: node packages/tbc-engine/scripts/build-rust-mobile.mjs
+      - run: node packages/tbc-engine/scripts/build-rust-wasm.mjs
+      - run: npm run build:wallet-standard
+      - run: npm run build:tbc-engine
+      - run: npm run build:kit
+      - run: npm run check:core-portability
+      - run: npm run check:host-portability
+      - run: npm run check:provider-portability
+      - run: npm run check:wallet-standard-portability
+      - run: npm run check

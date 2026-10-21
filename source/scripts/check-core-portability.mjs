@@ -10,12 +10,10 @@ const root = repositoryRoot(import.meta.url);
 const coreSourceRoot = path.join(root, "packages", "core", "src");
 
 export const PORTABILITY_LIMITS = Object.freeze({
-  // Candidate 189 baseline explicitly approved on 2026-09-26. Measured maxima:
-  // 1,245,456 minified / 141,444 gzip bytes; retain narrow, fixed headroom.
-  // This is a size-policy update only, not a validator or runtime optimization.
-  // Evidence: docs/distribution/candidate189-core-size-baseline.md.
-  maxBundleBytes: 1_246_000,
-  maxGzipBytes: 142_000,
+  // Current full schema surface, user-approved rebaseline 2026-10-21.
+  // Includes dependencies and unchanged validators; narrow fixed headroom.
+  maxBundleBytes: 1_748_000,
+  maxGzipBytes: 196_000,
 });
 
 const ALLOWED_RUNTIME_DEPENDENCIES = Object.freeze({
@@ -146,7 +144,7 @@ async function bundleVariant(name, options) {
     bytes > PORTABILITY_LIMITS.maxBundleBytes ||
     gzipBytes > PORTABILITY_LIMITS.maxGzipBytes
   ) {
-    throw new Error(`${name} bundle exceeds the frozen portability size budget`);
+    throw new Error(`${name} bundle exceeds the frozen portability size budget: ${bytes} bytes / ${gzipBytes} gzip`);
   }
   if (forbiddenCapabilities.length > 0 || forbiddenGraphInputs.length > 0) {
     throw new Error(`${name} bundle contains a forbidden runtime capability`);

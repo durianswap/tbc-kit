@@ -6,7 +6,7 @@ TWS packages. Its default run is fixture-backed and offline; it is not evidence 
 production wallet, a real network request, or chain acceptance.
 
 This is a low-level single-transfer conformance example, not the recommended
-full-feature integration starter. Use [Kit consumers](../kit-consumers/README.md)
+full-feature integration starter. Use [Kit consumers](../../packages/kit/examples/independent-wallet/README.md)
 for new integrations. Crypto, reviewed raw transactions and batch submission
 are deliberately unsupported here and fail closed; the example never substitutes
 multiple single POSTs for a batch API.
@@ -87,15 +87,6 @@ approval/signing sequence.
 
 The opt-in [`testnet-adapter.ts`](src/testnet-adapter.ts) builds a live public snapshot,
 performs sign-only verification first, and requires an exact preview fingerprint echo
-before it installs the real broadcast callback. Its confirmed real-node evidence and
-credential-free record format are documented in
-[`docs/testing/testnet-acceptance.md`](../../docs/testing/testnet-acceptance.md).
-Run `npm run check:testnet:preflight` for the separate read-only live API contract probe;
-it rejects every non-GET request and does not count as transfer acceptance.
+before it installs the real broadcast callback. Its opt-in broadcast boundary requires an explicit preview fingerprint and verifies confirmations separately. The adapter API is documented inline in the source; no historical run is treated as acceptance of the current package.
 
-For a funded run, `npm run testnet:acceptance -- --adapter /absolute/path/adapter.mjs`
-is dry-run by default. The adapter must stay outside the repository and expose only the
-documented public input plus opaque Node/signer closures. Adding `--broadcast` still
-requires the funds controller to paste the exact preview fingerprint in the same
-process before broadcast authority exists. See the acceptance document for the exact
-adapter contract, confirmation exit codes, and credential-free result format.
+Run `npm run check:testnet:preflight` for a separate read-only API contract probe. It rejects every non-GET request and does not count as transfer acceptance.

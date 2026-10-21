@@ -20,7 +20,8 @@ use crate::signing::{
 use crate::{EngineError, ErrorCode};
 
 const MAX_TBC_INPUTS: usize = 1_000;
-pub(crate) const MAX_TBC_MERGE_INPUTS: usize = 100;
+// Match tbc-contract API.mergeUTXO's bounded single-page consolidation.
+pub(crate) const MAX_TBC_MERGE_INPUTS: usize = 500;
 
 #[derive(Clone)]
 struct Spendable {
@@ -349,6 +350,15 @@ pub(crate) fn plan_tbc_merge(
     }
     let account_script = hex(public_key.address().script_pubkey().as_bytes());
     let mut selected = validate_wallet_utxos(material, &account_script, minimum_confirmations)?;
+    if let Some(requested) = request.constraints.as_ref().and_then(|c| c.input_outpoints.as_ref()) {
+        let allowed = requested.iter().map(|p| (p.txid.as_str(), p.vout)).collect::<BTreeSet<_>>();
+        selected.retain(|candidate| allowed.contains(&(candidate.txid.as_str(), candidate.vout)));
+        if selected.len() != allowed.len() {
+            return Err(error(ErrorCode::MissingMaterial,
+                "one or more explicit native TBC merge input outpoints are unavailable",
+                "request.constraints.inputOutpoints"));
+        }
+    }
     selected.sort_by(|left, right| {
         left.satoshis
             .cmp(&right.satoshis)

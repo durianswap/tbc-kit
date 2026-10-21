@@ -120,10 +120,14 @@ pub(crate) fn resolve(request: &CanonicalRequest, material: &WalletMaterial<'_>)
         (false, true, false) => "tbc.stablecoin.transfer", (false, true, true) => "tbc.stablecoin.merge",
     }.into();
     if !current {
-        if let Some(receivers) = resolved.intent.receivers.take() {
-            if receivers.len() != 1 { return Err(invalid("historical fungible templates require exactly one receiver")); }
-            resolved.intent.to = Some(receivers[0].to.clone());
-            resolved.intent.amount = Some(receivers[0].amount.clone());
+        if let Some(receivers) = &resolved.intent.receivers {
+            if receivers.len() == 1 {
+                resolved.intent.to = Some(receivers[0].to.clone());
+                resolved.intent.amount = Some(receivers[0].amount.clone());
+                resolved.intent.receivers = None;
+            } else if coin || receivers.len() > 5 {
+                return Err(invalid("historical FT supports at most five receivers; historical Coin requires one"));
+            }
         }
         if let Some(payment) = resolved.intent.payment.take() {
             if Some(&payment.to) != resolved.intent.to.as_ref() {

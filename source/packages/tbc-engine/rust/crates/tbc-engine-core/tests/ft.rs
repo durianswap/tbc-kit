@@ -1097,6 +1097,84 @@ fn public_finalize_input(plan_input: &Value, planned: &Value) -> Value {
     })
 }
 
+#[test]
+fn sdk_gap_ft_five_recipients_are_one_bound_transaction() {
+    let mut input = transfer_plan_input("direct");
+    // Existing selection fixtures deliberately use synthetic non-contract
+    // grandparents. VM acceptance instead needs a genuine SDK mint ancestry.
+    let mut scalar=[0u8;32];scalar[31]=1;
+    let key=tbc_sdk::PrivateKey::from_slice(&scalar).unwrap();
+    let native_parent=Transaction::from_hex(input["snapshot"]["payload"]["parents"][0]["rawTransaction"].as_str().unwrap()).unwrap();
+    let funding=tbc_sdk::Utxo { outpoint:OutPoint{txid:native_parent.txid(),vout:0},
+        satoshis:native_parent.outputs[0].satoshis, script_pubkey:native_parent.outputs[0].script_pubkey.clone(), private_key:key.clone() };
+    let mut ft=tbc_sdk::contracts::ft::Ft::new("Gap Token".to_owned(),"GAP".to_owned(),1000,0).unwrap();
+    let minted=ft.mint_ft(key.clone(),key.address(),funding).unwrap();
+    let id=minted.mint.txid().to_string();
+    input["request"]["intent"]["contractId"]=json!(id);
+    input["snapshot"]["payload"]["utxos"]=json!([input["snapshot"]["payload"]["utxos"][0],{
+        "txid":id,"vout":0,"satoshis":"500","scriptPubKey":encode_hex(minted.mint.outputs[0].script_pubkey.as_bytes()),
+        "confirmations":"100","classification":"ft","contractId":id
+    }]);
+    input["snapshot"]["payload"]["parents"]=json!([
+        {"txid":native_parent.txid().to_string(),"rawTransaction":native_parent.to_hex()},
+        {"txid":minted.source.txid().to_string(),"rawTransaction":minted.source.to_hex()},
+        {"txid":id,"rawTransaction":minted.mint.to_hex()}
+    ]);
+    input["snapshot"]["payload"]["contracts"]=json!([{
+        "contractId":id,"family":"ft","protocolVersion":"4.0","creationTxid":id,
+        "currentOutpoint":{"txid":id,"vout":0}
+    }]);
+    let sender = input["request"]["from"].clone();
+    let other = input["request"]["intent"]["to"].clone();
+    for field in ["to", "amount", "attachedTbcAmount"] { input["request"]["intent"].as_object_mut().unwrap().remove(field); }
+    let recipients = (0..5).map(|i| json!({"to":if i%2==0 {&sender}else{&other},"amount":(i+1).to_string()})).collect::<Vec<_>>();
+    input["request"]["intent"]["receivers"] = json!(recipients);
+    input["policy"]["payload"]["amountLimits"] = json!([{"scope":"native","maximum":"2100000000000000"}]);
+    // Enough fee funding for all five Code/Tape pairs; no extra network reads.
+    replace_native_funding(&mut input,
+        "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+        "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+        "751e76e8199196d454941c45d1b3a323f1433bd6", 100000);
+    let input = bind_request(input);
+    let planned = call_ok(EngineMethod::Plan, &input);
+    assert_eq!(roles(&planned), ["primary"]);
+    let flows = planned["plan"]["payload"]["preview"]["assetFlows"].as_array().unwrap().iter()
+        .filter(|flow| flow["kind"] == "ft" && flow["direction"] == "send").collect::<Vec<_>>();
+    assert_eq!(flows.len(), 5);
+    for (flow, receiver) in flows.iter().zip(&recipients) {
+        assert_eq!(flow["to"], receiver["to"]); assert_eq!(flow["amount"], receiver["amount"]);
+    }
+    let finalized_input = public_finalize_input(&input, &planned);
+    let finalized = call_ok(EngineMethod::Finalize, &finalized_input);
+    let tx = Transaction::from_hex(finalized["bundle"]["transactions"][0]["rawTransaction"].as_str().unwrap()).unwrap();
+    assert_eq!(tx.outputs.len(), 13); // Five recipients, token change, native change.
+    let native=&input["snapshot"]["payload"]["utxos"][0];
+    let sdk_batches=ft.batch_transfer(key.clone(),recipients.iter().map(|r|tbc_sdk::contracts::ft::FtReceiver{
+        address:Address::from_string(r["to"].as_str().unwrap()).unwrap(),amount_raw:r["amount"].as_str().unwrap().parse().unwrap()
+    }).collect(),vec![tbc_sdk::contracts::ft::FtUtxo{base:tbc_sdk::Utxo{
+        outpoint:OutPoint{txid:minted.mint.txid(),vout:0},satoshis:500,
+        script_pubkey:minted.mint.outputs[0].script_pubkey.clone(),private_key:key.clone()},ft_balance_raw:1000}],
+        tbc_sdk::Utxo{outpoint:OutPoint{txid:native["txid"].as_str().unwrap().parse().unwrap(),vout:0},
+            satoshis:100000,script_pubkey:key.address().script_pubkey(),private_key:key.clone()},
+        vec![minted.mint.clone()],vec![tbc_sdk::contracts::ft::unlock::pre_pre_tx_data_from_parents(&minted.mint,0,&[minted.source.clone()]).unwrap()]).unwrap();
+    assert_eq!(sdk_batches.len(),1,"SDK five-recipient batch remains one chain transaction");
+    let sdk_tx=Transaction::from_hex(&sdk_batches[0].txraw).unwrap();
+    assert_eq!(tx.outputs[..12],sdk_tx.outputs[..12],"all five recipients and token change match SDK Code/Tape bytes");
+    for (i, receiver) in recipients.iter().enumerate() {
+        assert_eq!(tbc_sdk::contracts::ft::amount::balance_from_tape(&tx.outputs[2*i+1].script_pubkey).unwrap(), (i+1) as u128);
+        assert_eq!(flows[i]["to"], receiver["to"]);
+    }
+    let mut changed = finalized_input.clone(); changed["request"]["intent"]["receivers"][4]["amount"] = json!("9");
+    changed["requestHash"] = json!(canonical_hash(&changed["request"]));
+    assert_eq!(call(EngineMethod::Finalize, &changed)["ok"], false);
+    let mut too_many = input.clone(); too_many["request"]["intent"]["receivers"].as_array_mut().unwrap().push(recipients[0].clone());
+    assert_eq!(call(EngineMethod::NormalizeRequest, &json!({"version":"1.0","request":too_many["request"]}))["ok"], false);
+    unified_business::exercise(input.clone(), "tbc20.transfer");
+    if std::env::var("TBC_SDK_GAP_DUMP").as_deref() == Ok("1") {
+        println!("SDK_GAP_VECTOR:{}", json!({"case":"ft-five-receivers","input":input,"planned":planned,"finalizeInput":finalized_input,"finalized":finalized}));
+    }
+}
+
 fn sign_public_tasks(tasks: &Value) -> Value {
     let mut secret_bytes = [0u8; 32];
     secret_bytes[31] = 1;

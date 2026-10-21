@@ -201,7 +201,12 @@ test('Keyless bridge requires matching native identity, preserves concurrency an
   const engine = connectNativeKeylessEngine(native, id);
   assert.equal(seen.length, 0);
   const info = JSON.parse(await engine.protocolInfo());
-  assert.equal(info.operations.length, 10);
+  assert.deepEqual(info.operations, [
+    'preparePoolNft', 'prepareAssetAncestry', 'legacyPoolPreview', 'inspectTokenReceipt',
+    'inspectNftReceipt', 'prepareReviewedStage', 'finalizeReviewedStage', 'inspectAmmMaterial',
+    'inspectLopMaterial', 'inspectTokenMaterial', 'describeMultisig', 'decodeMultisigAddress',
+    'prepareMultisig', 'inspectMultisig', 'reviewMultisig', 'verifyMultisigSignatures', 'finalizeMultisig',
+  ]);
   assert.equal(seen.length, 0, 'protocolInfo is local, not a version query');
   const one = engine.execute('inspectTokenMaterial', '{"memo":"中文🍈"}');
   const two = engine.execute('prepareReviewedStage', '{"second":true}');

@@ -2,7 +2,7 @@
 
 `@tbc-wallet/core` 是 TWS `1.0.0-draft.6` 的平台中立、可恢复执行内核。它让官方移动钱包、Chrome MV3 插件和第三方钱包复用同一套协议状态机，同时各自保留 UI、Vault、Keyring、Transport、RPC 与产品策略。
 
-当前包是冻结候选，尚未发布到 npm。固定实现和完整哈希见 [`release/tws-core-1.0.0-draft.6.json`](../../release/tws-core-1.0.0-draft.6.json)。
+当前包是冻结候选，尚未发布到 npm。固定实现和完整哈希见 [`release/tws-core-1.0.0-draft.6.json`](../../release/tws-v1-candidate.json)。
 
 ## 公共边界
 

@@ -77,7 +77,50 @@ fn finish(p: &Value, ks: &[PrivateKey]) -> (Value, Transaction) {
     (r, tx)
 }
 fn record(cases: &mut Vec<Value>, name: &str, p: &Value, r: &Value, inputs: Vec<Value>) {
+    let checked = call("reviewMultisig", p);
+    assert_eq!(checked["proposal"], *p, "review must not alter transaction or digest");
+    let review = &checked["review"];
+    assert_eq!(review["proposalId"], p["proposalId"]);
+    assert_eq!(review["feeAtomic"], p["fee"]);
+    let tx = Transaction::from_hex(p["unsignedTxraw"].as_str().unwrap()).unwrap();
+    let mut covered = Vec::new();
+    let mut native_total = 0u64;
+    for row in review["outputs"].as_array().unwrap() {
+        let vouts = row["vouts"].as_array().unwrap();
+        covered.extend(vouts.iter().map(|v| v.as_u64().unwrap() as usize));
+        let first = vouts[0].as_u64().unwrap() as usize;
+        assert_eq!(row["nativeValueAtomic"], tx.outputs[first].satoshis.to_string());
+        native_total += row["nativeValueAtomic"].as_str().unwrap().parse::<u64>().unwrap();
+        if row["kind"] != "metadata" { assert!(!row["recipient"].as_str().unwrap().is_empty()); }
+        if row["kind"] == "token" {
+            assert!(!row["assetIdentity"].as_str().unwrap().is_empty());
+            assert!(row["assetFamily"] == "FT" || row["assetFamily"] == "STABLE_COIN");
+            assert_eq!(vouts.len(), 2);
+        }
+    }
+    assert_eq!(covered, (0..tx.outputs.len()).collect::<Vec<_>>(), "every output exactly once");
+    assert_eq!(native_total, tx.outputs.iter().map(|o| o.satoshis).sum::<u64>());
     cases.push(json!({"name":name,"proposal":p,"result":r,"inputs":inputs}));
+}
+
+#[test]
+fn review_rejects_replaced_payment_and_digest() {
+    let ks = keys();
+    let f = funding(MultiSig::lock_script(&address(&ks)).unwrap(), 1000000);
+    let p = call("prepareMultisig", &request(group(&ks,2),
+        json!({"type":"transferTbc","destination":ks[2].address().to_string(),"amount":"500000","inputs":[input(&f,0)]})));
+    let original_signatures = sign(&p, &ks[..2]);
+    for field in ["amount", "destination"] {
+        let mut bad_p = p.clone();
+        bad_p["request"]["action"][field] = if field == "amount" {json!("400000")} else {json!(ks[1].address().to_string())};
+        bad("reviewMultisig", &bad_p);
+        // Even a valid replacement with its own new ID cannot use old signatures.
+        let replacement = call("prepareMultisig", &bad_p["request"]);
+        bad("finalizeMultisig", &json!({"proposal":replacement,"signatures":original_signatures}));
+    }
+    let mut bad_p = p.clone(); bad_p["tasks"][0]["digest"] = json!("00".repeat(32)); bad("reviewMultisig", &bad_p);
+    let mut bad_p = p.clone(); bad_p["fee"] = json!("0"); bad("reviewMultisig", &bad_p);
+    let mut bad_p = p.clone(); bad_p["request"]["chainId"] = json!("tbc:mainnet"); bad("reviewMultisig", &bad_p);
 }
 
 #[test]

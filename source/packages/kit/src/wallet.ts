@@ -259,6 +259,7 @@ export {
   type CreateTbcBackendServiceOptions,
   type TbcBackendAuthorizationDecision,
   type TbcBackendAuthorizationRequest,
+  type TbcBackendReviewContext,
   type TbcBackendNetwork,
   type TbcBackendPreparedExecution,
   type TbcBackendService,

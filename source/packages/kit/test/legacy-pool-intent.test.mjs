@@ -108,14 +108,14 @@ test("Legacy Pool LP and swap mapping preserves amounts, truncation, and expiry"
   }, SOURCE);
   assert.equal(buy.intent.type, "tbc.pool.swap.exactTbcForToken");
   assert.equal(buy.intent.tbcAmount, "1000");
-  assert.deepEqual(buy.constraints, { expiresAt: "2026-09-12T08:05:00Z" });
+  assert.deepEqual(buy.constraints, { expiresAt: "2026-09-12T08:05:00.123Z" });
   const sell = await resolver.resolve({
     flag: "POOLNFT_SWAP_TO_TBC", nft_contract_address: POOL_ID, address: RECEIVER,
     ft_amount: "0.0025", poolNFT_version: 2, broadcastEnabled: false,
   }, SOURCE);
   assert.equal(sell.intent.type, "tbc.pool.swap.exactTokenForTbc");
   assert.equal(sell.intent.ftAmount, "2500");
-  assert.deepEqual(sell.constraints, { expiresAt: "2026-09-12T08:05:00Z" });
+  assert.deepEqual(sell.constraints, { expiresAt: "2026-09-12T08:05:00.123Z" });
 });
 
 test("Legacy Pool mapping rejects broadcast, hidden fields, invalid policy, and zero output", async () => {

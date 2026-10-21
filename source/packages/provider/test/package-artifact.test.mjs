@@ -20,18 +20,17 @@ const root = path.resolve(
   "../../..",
 );
 const expectedEntries = new Set([
-  "CHANGELOG.md",
   "LICENSE",
   "README.md",
   "package.json",
 ]);
 
 function run(command, args, cwd) {
-  const result = spawnSync(command, args, { cwd, encoding: "utf8" });
+  const result = spawnSync(command, args, { cwd, encoding: "utf8", maxBuffer: 16 * 1024 * 1024 });
   assert.equal(
     result.status,
     0,
-    `${command} ${args.join(" ")}\n${result.stdout}\n${result.stderr}`,
+    `${command} ${args.join(" ")}\n${result.stdout}\n${result.error ?? ""}\n${result.stderr?.slice(-4000)}`,
   );
   return result.stdout;
 }
@@ -70,42 +69,27 @@ async function writeLegacyCoreFixture(modules) {
       },
     }, null, 2)}\n`,
   );
-  const runtime = [
-    'const { createHash } = require("node:crypto");',
-    "function canonicalize(value) {",
-    '  if (value === null || typeof value !== "object") return JSON.stringify(value);',
-    '  if (Array.isArray(value)) return `[${value.map(canonicalize).join(",")}]`;',
-    '  return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonicalize(value[key])}`).join(",")}}`;',
-    "}",
-    'function utf8(value) { return new TextEncoder().encode(value); }',
-    'function sha256Hex(value) { return createHash("sha256").update(value).digest("hex"); }',
+  // Isolate registry staleness, not missing unrelated Core utility exports.
+  const coreEsm = pathToFileURL(path.join(root, "packages/core/dist/esm/index.js")).href;
+  const coreCjs = path.join(root, "packages/core/dist/cjs/index.cjs");
+  const registryOverride = [
     "function getTwsMethod(name) {",
     '  if (name === "tbc_signTypedData") throw new Error("old registry rejects tbc_signTypedData");',
     '  return { paramsKind: "named" };',
     "}",
-    "module.exports = { canonicalize, getTwsMethod, sha256Hex, utf8 };",
-    "",
   ].join("\n");
-  await writeFile(path.join(directory, "index.cjs"), runtime);
-  await writeFile(
-    path.join(directory, "index.js"),
-    [
-      'import { createHash } from "node:crypto";',
-      "function canonicalize(value) {",
-      '  if (value === null || typeof value !== "object") return JSON.stringify(value);',
-      '  if (Array.isArray(value)) return `[${value.map(canonicalize).join(",")}]`;',
-      '  return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${canonicalize(value[key])}`).join(",")}}`;',
-      "}",
-      'function utf8(value) { return new TextEncoder().encode(value); }',
-      'function sha256Hex(value) { return createHash("sha256").update(value).digest("hex"); }',
-      "function getTwsMethod(name) {",
-      '  if (name === "tbc_signTypedData") throw new Error("old registry rejects tbc_signTypedData");',
-      '  return { paramsKind: "named" };',
-      "}",
-      "export { canonicalize, getTwsMethod, sha256Hex, utf8 };",
-      "",
-    ].join("\n"),
-  );
+  await writeFile(path.join(directory, "index.cjs"), [
+    `const current = require(${JSON.stringify(coreCjs)});`,
+    registryOverride,
+    "module.exports = { ...current, getTwsMethod };",
+    "",
+  ].join("\n"));
+  await writeFile(path.join(directory, "index.js"), [
+    `export * from ${JSON.stringify(coreEsm)};`,
+    registryOverride,
+    "export { getTwsMethod };",
+    "",
+  ].join("\n"));
 }
 
 test("packed Provider exposes only declared artifacts and works by package name", async () => {
@@ -324,7 +308,7 @@ test("packed WebView decoder uses its generated schema under an older consumer C
     );
     run(
       process.execPath,
-      [path.join(consumerDirectory, "roundtrip.mjs")],
+      ["--input-type=module", "-e", `import(${JSON.stringify(pathToFileURL(path.join(consumerDirectory, "roundtrip.mjs")).href)}).catch(e=>{console.error(e.name+': '+e.message);process.exitCode=1;})`],
       consumerDirectory,
     );
     run(

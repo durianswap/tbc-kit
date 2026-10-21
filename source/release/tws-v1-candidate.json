@@ -5,7 +5,7 @@
   "compatibilityBaseline": "legacy-window-turing-only",
   "providerMethodCount": 22,
   "providerEventCount": 6,
-  "schemaBundleSha256": "a5974d669990eb04a76d1a6a62571421dfd6f0dbaf59326fe264b040f3bfb2f8",
+  "schemaBundleSha256": "889ffd82db33502af176ccf980028f2007c26e29e8e69eda224111d9220c1092",
   "registryBundleSha256": "a2cc11861c50a6e38212bbd971a24d0f4f0349309f24e6ccd777fd98dc9ee92b",
   "schemaFiles": [
     {
@@ -74,7 +74,7 @@
     },
     {
       "path": "schemas/transaction-request.schema.json",
-      "sha256": "31b2fc137a6e1953de25e9ef6dd0a762df5c2411bc0652f6ea8b34af84177837"
+      "sha256": "7a8470e08047617292f792ef60911c40c09a61d4be707f9f77d207e73ec2cccf"
     },
     {
       "path": "schemas/wallet-actions.schema.json",

@@ -35,7 +35,7 @@ fn tbc20_transfer_merge_match_upstream_full_raw_and_reuse_shared_evidence() {
         let fees = [FeeInput { outpoint: OutPoint {txid:parent_tx.txid(),vout:fee_vout},
             output:&parent_tx.outputs[fee_vout as usize], public_key:&public }];
         let receivers = [Receiver {controller:controller(&public), amount}];
-        let options = TransferOptions { inputs:&inputs, fee_inputs:&fees, receivers:&receivers,
+        let options = TransferOptions {payment:None, inputs:&inputs, fee_inputs:&fees, receivers:&receivers,
             expected_identity:parents[0].identity(), token_change_controller:controller(&public),
             native_change_hash:public.hash160(), max_fee:1000 };
         let built = if index==2 {build_transfer_plan(options)} else {build_merge_plan(options,controller(&public))}.unwrap();
@@ -70,7 +70,7 @@ fn tbc20_transfer_rejects_bad_identity_insufficient_balance_fee_cap_and_duplicat
     let inputs=[TokenInput{parent:&parent,ancestors:&ancestors,public_key:&public}];
     let fees=[FeeInput{outpoint:OutPoint{txid:tx.txid(),vout:2},output:&tx.outputs[2],public_key:&public}];
     let receivers=[Receiver{controller:controller(&public),amount:40000}];
-    let options=||TransferOptions{inputs:&inputs,fee_inputs:&fees,receivers:&receivers,expected_identity:parent.identity(),
+    let options=||TransferOptions{payment:None,inputs:&inputs,fee_inputs:&fees,receivers:&receivers,expected_identity:parent.identity(),
         token_change_controller:controller(&public),native_change_hash:public.hash160(),max_fee:1000};
     let mut bad=options();bad.expected_identity=&[0;34];assert!(build_transfer_plan(bad).is_err());
     let mut bad=options();bad.max_fee=1;assert_eq!(build_transfer_plan(bad).unwrap_err().code,ErrorCode::FeeCapExceeded);
@@ -86,6 +86,13 @@ fn tbc20_transfer_rejects_bad_identity_insufficient_balance_fee_cap_and_duplicat
     let eight=vec![Receiver{controller:controller(&public),amount:15432};8];
     let mut bad=options();bad.receivers=&eight;
     assert!(build_transfer_plan(bad).unwrap_err().message.contains("no group left"));
+    let seven=vec![Receiver{controller:controller(&public),amount:100};7];
+    let mut bad=options();bad.receivers=&seven;
+    bad.payment=Some(tbc_engine_core::protocols::tbc20_transfer::NativePayment{recipient_hash:[7;20],amount:42});
+    assert!(build_transfer_plan(bad).unwrap_err().message.contains("no output group left"));
+    let mut bad=options();
+    bad.payment=Some(tbc_engine_core::protocols::tbc20_transfer::NativePayment{recipient_hash:[7;20],amount:9_007_199_254_740_991});
+    assert_eq!(build_transfer_plan(bad).unwrap_err().code,ErrorCode::InsufficientFunds);
     let six:Vec<_>=(0..6).map(|_|TokenInput{parent:&parent,ancestors:&ancestors,public_key:&public}).collect();
     let mut bad=options();bad.inputs=&six;
     assert!(build_transfer_plan(bad).unwrap_err().message.contains("six total"));

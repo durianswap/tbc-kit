@@ -49,6 +49,7 @@ const RECORD = Object.freeze({
 function externalInput() {
   return {
     node: Object.freeze({}),
+    engineBackend: Object.freeze({ async call() { throw new Error("command test must not execute Engine"); } }),
     source: {
       address: PREVIEW.sourceAddress,
       publicKey: `02${"11".repeat(32)}`,
@@ -85,6 +86,7 @@ test("runs dry by default and emits no broadcast authority", async () => {
     dependencies: {
       async runAcceptance(input) {
         assert.equal(input.packageCommit, PACKAGE_COMMIT);
+        assert.equal(typeof input.engineBackend.call, "function");
         assert.equal(input.authorizeBroadcast, undefined);
         return DRY_RUN;
       },

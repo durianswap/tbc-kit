@@ -12,7 +12,7 @@ const root = repositoryRoot(import.meta.url);
 test("validates every root schema, definition, registry and declared vector", () => {
   assert.deepEqual(runSchemaConformance(root), {
     schemas: 19,
-    definitions: 408,
+    definitions: 420,
     registries: 7,
     positive: 277,
     negative: 72,

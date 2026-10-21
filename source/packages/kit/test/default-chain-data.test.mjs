@@ -36,6 +36,17 @@ const NATIVE_RAW_2 = [
   "404b4c0000000000", "19", NATIVE_SCRIPT, "00000000",
 ].join("");
 const NATIVE_TXID_2 = turingTransactionId(NATIVE_RAW_2);
+const ftCreation = inspectTbcTransaction(fixture.rawTransactions[fixture.ftContractId]).transaction;
+const FT_INFO = Object.freeze({
+  contractId: fixture.ftContractId,
+  codeScript: Buffer.from(ftCreation.outputs[0].scriptPubKey).toString("hex"),
+  tapeScript: Buffer.from(ftCreation.outputs[1].scriptPubKey).toString("hex"),
+  totalSupply: "10000000", decimals: 0, name: "Controlled FT", symbol: "FT",
+});
+async function controlledFtInfo(contractId) {
+  assert.equal(contractId, fixture.ftContractId);
+  return FT_INFO;
+}
 
 function response(data) {
   return new Response(JSON.stringify({ code: "200", data }), {
@@ -44,11 +55,40 @@ function response(data) {
   });
 }
 
+test("explicit native consolidation requests one bounded 500-input page with no parent downloads", async () => {
+  const calls = [];
+  const network = createDefaultTbcTestnetNetwork({
+    accounts: { current: async () => [ACCOUNT] },
+    fetch: async (input) => {
+      const url = new URL(String(input)); calls.push(url);
+      if (url.pathname === "/api/tbc/nodeinfo") return response({ blocks:1000,bestblockhash:"aa".repeat(32) });
+      if (url.pathname === `/api/tbc/utxo/address/${ADDRESS}`) {
+        assert.equal(url.searchParams.get("limit"),"500");
+        return response({utxos:Array.from({length:500},(_,i)=>({txid:(i+1).toString(16).padStart(64,"0"),index:0,value:"20000",height:990}))});
+      }
+      throw new Error(`Unexpected extra read: ${url.pathname}`);
+    },
+    now: () => Date.parse("2026-09-17T00:00:00Z"),
+    snapshotId: async () => "merge-500-sdk",
+    broadcast: {submit:async()=>({}),reconcile:async()=>({})},
+  });
+  const snapshot = await resolve(network,"tbc.maintenance.merge");
+  assert.equal(snapshot.portError,undefined,JSON.stringify(snapshot.portError));
+  assert.equal(snapshot.payload.utxos.length,500);
+  assert.equal(snapshot.payload.parents.length,0);
+  assert.equal(calls.filter(url=>url.pathname.includes("/utxo/")).length,1);
+  assert.equal(calls.length,1,"one index request; zero-floor native merge needs no tip or ancestry");
+});
+
 function controlledFetch(trace) {
   return async (input, init) => {
     const url = new URL(input instanceof Request ? input.url : String(input));
     trace.push(`${init?.method ?? "GET"} ${url.pathname}`);
     if (url.pathname === "/api/tbc/nodeinfo") return response({ blocks: 1000, bestblockhash: "aa".repeat(32) });
+    if (url.pathname === `/api/tbc/ft/info/contract/${fixture.ftContractId}`) {
+      return response({code_script:FT_INFO.codeScript, tape_script:FT_INFO.tapeScript,
+        amount:FT_INFO.totalSupply, decimal:FT_INFO.decimals, name:FT_INFO.name, symbol:FT_INFO.symbol});
+    }
     if (url.pathname === `/api/tbc/utxo/address/${ADDRESS}`) {
       return response({ utxos: [
         { txid: NATIVE_TXID, index: 0, value: "20000", height: 990 },
@@ -292,10 +332,15 @@ test("default Testnet orchestration handles TBC and FT without consumer selector
   assert.equal(ft.payload.contracts[0].contractId, fixture.ftContractId);
   assert.equal(ft.payload.utxos.filter((utxo) => utxo.classification === "ft").length, 1);
   assert.equal(ft.payload.utxos.find((utxo) => utxo.classification === "ft").txid, fixture.ownerCandidate.txid);
-  assert.equal(ft.payload.parents.some((parent) => parent.txid === fixture.ftContractId), true);
+  assert.deepEqual(ft.payload.contracts[0].indexedFungible, {
+    codeScript: FT_INFO.codeScript, tapeScript: FT_INFO.tapeScript, totalSupply: FT_INFO.totalSupply,
+  });
+  assert.equal(trace.slice(beforeFt).some((entry) => entry.endsWith(`/txraw/txid/${fixture.ftContractId}`)), false,
+    "trusted identity metadata replaces a creation-only download");
   assert.equal(trace.slice(beforeFt).some((entry) => entry.includes(`/decode/`)), false);
   assert.equal(ledger.snapshot().counts["native-index"], 4);
   assert.equal(ledger.snapshot().counts["asset-index"], 2);
+  assert.equal(trace.filter(entry => entry.includes("/ft/info/")).length, 1);
   assert.ok(ledger.snapshot().counts.txraw >= 3);
 });
 
@@ -692,13 +737,18 @@ test("single-flight remains active when request observation is disabled", async 
   assert.equal(fetches, 2);
 });
 
-test("FT selected-parent and creation reads start together", async () => {
+test("FT selected-parent and trusted metadata reads start together without creation-only downloads", async () => {
   let releaseSelectedParent;
   const selectedParentGate = new Promise((resolve) => { releaseSelectedParent = resolve; });
   let creationStarted = false;
   let signalCreationStarted;
   const creationStartedSignal = new Promise((resolve) => { signalCreationStarted = resolve; });
   const client = {
+    async getFtInfo(contractId) {
+      creationStarted = true;
+      signalCreationStarted();
+      return controlledFtInfo(contractId);
+    },
     async getUtxos() {
       return {
         tip: { height: "1000", hash: "aa".repeat(32) },
@@ -716,10 +766,6 @@ test("FT selected-parent and creation reads start together", async () => {
     },
     async getRawTransactionBytes(txid) {
       if (txid === fixture.ownerCandidate.txid) await selectedParentGate;
-      if (txid === fixture.ftContractId) {
-        creationStarted = true;
-        signalCreationStarted();
-      }
       const raw = fixture.rawTransactions[txid];
       if (raw === undefined) throw new Error(`missing controlled raw ${txid}`);
       return raw;
@@ -742,7 +788,7 @@ test("FT selected-parent and creation reads start together", async () => {
     creationStartedSignal,
     new Promise((resolve) => setTimeout(resolve, 50)),
   ]);
-  assert.equal(creationStarted, true, "creation bytes must start while the selected parent is held");
+  assert.equal(creationStarted, true, "metadata must start while the selected parent is held");
   releaseSelectedParent();
   const result = await resolving;
   assert.equal("portError" in result, false);
@@ -754,6 +800,7 @@ test("FT decoded confirmation state stays fresh across resolver requests", async
   let confirmations = "0";
   let decodedReads = 0;
   const client = {
+    getFtInfo: controlledFtInfo,
     async getUtxos() {
       return {
         tip: { height: "1000", hash: "aa".repeat(32) },
@@ -795,6 +842,7 @@ test("FT decoded confirmation state stays fresh across resolver requests", async
     client,
     now: () => Date.parse("2026-09-17T00:00:00Z"),
     snapshotId: (() => { let id = 0; return async () => `snapshot-ft-fresh-${++id}`; })(),
+    confirmationPolicy: { minConfirmations: "1" },
   });
   const first = await resolver.resolve({
     version: "1.0", chainId: CHAIN_ID, accountId: ACCOUNT.accountId,
@@ -812,6 +860,7 @@ test("FT decoded confirmation state stays fresh across resolver requests", async
 
 test("zero-floor FT construction omits unknown confirmation counts without decode", async () => {
   const client = {
+    getFtInfo: controlledFtInfo,
     async getUtxos() {
       return { tip: { height: "1000", hash: "aa".repeat(32) },
         utxos: [{ txid: NATIVE_TXID, vout: 0, satoshis: "20000", height: "990" }] };
@@ -850,6 +899,7 @@ test("FT indexed then missing height falls back to a fresh decoded observation",
   let indexed = true;
   let decodedReads = 0;
   const client = {
+    getFtInfo: controlledFtInfo,
     async getUtxos() {
       return {
         tip: { height: "1000", hash: "aa".repeat(32) },
@@ -891,6 +941,7 @@ test("FT indexed then missing height falls back to a fresh decoded observation",
     accounts: { current: async () => [ACCOUNT] }, client,
     now: () => Date.parse("2026-09-17T00:00:00Z"),
     snapshotId: (() => { let id = 0; return async () => `snapshot-ft-height-${++id}`; })(),
+    confirmationPolicy: { minConfirmations: "1" },
   });
   const first = await resolver.resolve({
     version: "1.0", chainId: CHAIN_ID, accountId: ACCOUNT.accountId,
@@ -943,16 +994,11 @@ test("LP readIndex resolves from the native index without waiting for funding pa
         utxos: [{ txid: NATIVE_TXID_2, vout: 0, satoshis: "5000000", height: "990" }],
       };
     },
-    async getNativeUtxoParent() {
+    async getRawTransactionBytes(txid) {
+      assert.equal(txid, NATIVE_TXID_2);
       fundingParentStarted = true;
       await fundingParentGate;
-      return {
-        txid: NATIVE_TXID_2,
-        rawTransaction: NATIVE_RAW_2,
-        confirmations: "11",
-        inputs: [{ txid: "11".repeat(32), vout: 0 }],
-        outputs: [{ vout: 0, satoshis: "5000000", scriptPubKey: NATIVE_SCRIPT, addresses: [ADDRESS] }],
-      };
+      return NATIVE_RAW_2;
     },
     async getRawTransaction() { throw new Error("unexpected decoded read"); },
     async getFtUtxos() { throw new Error("unexpected FT index read"); },
@@ -980,7 +1026,7 @@ test("LP readIndex resolves from the native index without waiting for funding pa
       includeAncestry: true,
     },
   });
-  for (let turn = 0; turn < 12 && !indexResolved; turn += 1) await Promise.resolve();
+  await new Promise(resolve => setImmediate(resolve));
   assert.equal(fundingParentStarted, true);
   assert.equal(indexResolved, true, "LP lock-height index must not wait for funding parent bytes");
   releaseFundingParent();
@@ -1010,9 +1056,10 @@ test("default network shares one exact-byte inspector across client proof and Ch
   });
   const result = await resolve(network, "tbc.ft.transfer");
   assert.equal("portError" in result, false);
-  const creationRaw = fixture.rawTransactions[fixture.ftContractId];
-  assert.equal(calls.get(creationRaw), 2, "client proof and material conversion must use the same inspector");
-  assert.equal(parsed.has(creationRaw), true);
+  const selectedRaw = fixture.rawTransactions[fixture.ownerCandidate.txid];
+  assert.ok(calls.get(selectedRaw) >= 2, "material and ancestry must share the exact-byte inspector");
+  assert.equal(parsed.has(selectedRaw), true);
+  assert.equal(parsed.size, result.payload.parents.length, "only required parents are parsed");
 });
 
 test("default Pool orchestration reuses the wallet source and exports exact LP snapshot material", async () => {

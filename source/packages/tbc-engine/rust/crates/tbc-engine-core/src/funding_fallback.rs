@@ -50,7 +50,9 @@ pub(crate) fn plan_with_funding(
     }
     candidates.sort_by(|a, b| b.satoshis.cmp(&a.satoshis)
         .then_with(|| a.txid.cmp(&b.txid)).then_with(|| a.vout.cmp(&b.vout)));
-    let limit = candidates.len().min(super::families::tbc::MAX_TBC_MERGE_INPUTS);
+    // Keep the existing automatic funding policy; 500 is for explicit public
+    // native consolidation, not a reason to grow ordinary transaction work.
+    let limit = candidates.len().min(100);
     if limit < 2 { return Err(original); }
     let exact_tbc20 = tbc20 && request.constraints.as_ref().and_then(|c| c.input_outpoints.as_ref()).is_some();
     if exact_tbc20 && candidates.len() > limit {

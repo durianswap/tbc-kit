@@ -74,6 +74,8 @@ export type Tbc20StandardTransferIntent = Readonly<{
   type: "tbc20-standard-transfer";
   version: "1.0";
   contractId: string;
+  /** Separate non-dust native payment in atomic units; not automatic change. */
+  payment?: Readonly<{ to: string; amount: string }>;
 }> & (
   | Readonly<{ to: string; amount: string; receivers?: never }>
   | Readonly<{ receivers: readonly Readonly<{ to: string; amount: string }>[]; to?: never; amount?: never }>
@@ -176,10 +178,10 @@ export type FtTransferIntent = Readonly<{
   type: "tbc.ft.transfer";
   version: "1.0";
   contractId: string;
-  to: string;
-  amount: string;
-  attachedTbcAmount?: string;
-}>;
+}> & (
+  | Readonly<{ to: string; amount: string; receivers?: never; attachedTbcAmount?: string }>
+  | Readonly<{ receivers: readonly Readonly<{ to: string; amount: string }>[]; to?: never; amount?: never; attachedTbcAmount?: never }>
+);
 
 export type FtMergeIntent = Readonly<{
   type: "tbc.ft.merge";

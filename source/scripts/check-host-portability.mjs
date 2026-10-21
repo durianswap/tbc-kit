@@ -22,10 +22,10 @@ const expectedDriverMethods = Object.freeze([
 ]);
 
 export const HOST_PORTABILITY_LIMITS = Object.freeze({
-  // Candidate189 measured dependency-inclusive baseline, user-approved 2026-09-26.
+  // Current dependency-inclusive baseline, user-approved 2026-10-21.
   // Keep the same bundle graph and all capability checks; do not exclude Core.
-  maxBundleBytes: 1_132_000,
-  maxGzipBytes: 115_000,
+  maxBundleBytes: 1_614_000,
+  maxGzipBytes: 164_000,
 });
 
 const allowedRuntimeDependencies = Object.freeze({
@@ -172,7 +172,7 @@ async function bundleVariant(name, entryPoint, options) {
     bytes > HOST_PORTABILITY_LIMITS.maxBundleBytes ||
     gzipBytes > HOST_PORTABILITY_LIMITS.maxGzipBytes
   ) {
-    throw new Error(`${name} Host bundle exceeds the portability size budget`);
+    throw new Error(`${name} Host bundle exceeds the portability size budget: ${bytes} bytes / ${gzipBytes} gzip`);
   }
   if (forbidden.length > 0 || forbiddenGraphInputs.length > 0) {
     throw new Error(`${name} Host bundle contains a forbidden runtime capability`);

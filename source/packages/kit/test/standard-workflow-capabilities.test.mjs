@@ -14,6 +14,7 @@ const {
   createWasmTbcKeylessEngine,
   normalizeTbcReviewedTransactionMaterial,
   createTbcWallet,
+  createTbcBackendService,
   hashCanonical,
 } = await import(walletModule);
 const { parseTbcTransaction, turingTransactionId } = await import(new URL("api.js", walletModule));
@@ -173,7 +174,7 @@ function approval(bindingHash = "aa".repeat(32)) {
   });
 }
 
-function capabilityFixture(now = "2026-09-21T00:00:00Z", decryptedMessage = "hello") {
+function capabilityFixture(now = "2026-09-21T00:00:00Z", decryptedMessage = "hello", navigation = NAVIGATION) {
   const counts = {
     authority: 0,
     rawReviews: 0,
@@ -190,7 +191,7 @@ function capabilityFixture(now = "2026-09-21T00:00:00Z", decryptedMessage = "hel
     networkSourceIdentity: "testnet:official",
   });
   const capabilities = createTbcStandardWorkflowCapabilities({
-    navigation: NAVIGATION,
+    navigation,
     chainId: CHAIN_ID,
     account: ACCOUNT,
     materialNative,
@@ -464,6 +465,75 @@ test("standard capability authority drift fails before a private native effect",
   );
   assert.equal(fixture.counts.privateLoads, 0);
   assert.equal(fixture.counts.rawSigns, 0);
+});
+
+test("backend reviewed raw and associated batch reuses shared review, authorizes once and stays keyless until approval", async () => {
+  for (const reject of [false, true]) {
+    const now = "2026-09-21T00:00:10Z";
+    let approvals = 0, factories = 0, fixture, context;
+    const forbidden = async () => { throw new Error("unexpected network/Engine/digest-sign operation"); };
+    const service = createTbcBackendService({
+      serviceId: `reviewed-backend-${reject}`, account: { ...ACCOUNT, chainId: CHAIN_ID },
+      engine: { normalizeRequest: forbidden, plan: forbidden, validate: forbidden, finalize: forbidden },
+      network: { resolveChainData: forbidden, resolvePolicy: forbidden },
+      signer: { sign: forbidden }, clock: () => now,
+      reviewedTransaction: async (value) => {
+        factories++; context = value;
+        assert.equal(value.account.accountId, ACCOUNT_ID);
+        assert.equal(value.origin, "https://backend.tbc-kit.invalid");
+        fixture = capabilityFixture(now, "hello", { ...NAVIGATION, ...value,
+          topOrigin: value.origin, committedUrl: `${value.origin}/` });
+        return fixture.capabilities.reviewedTransaction;
+      },
+      authorize: async ({approvalRequest}) => {
+        approvals++;
+        assert.equal(fixture.counts.privateLoads, 0);
+        assert.equal(approvalRequest.preview.steps.length, 2);
+        return reject ? {status:"rejected",rejectedAt:now}
+          : {status:"approved",decisionId:"backend-reviewed-once",approvedAt:now};
+      },
+    });
+    try {
+      const prepared = await service.prepareWorkflow({ version:"1.0",chainId:CHAIN_ID,from:ADDRESS,
+        expiresAt:"2026-09-21T00:02:00Z",maxTotalFee:"5000",steps:[
+          {id:"raw",kind:"reviewedTransaction",dependsOn:[],request:rawStandardRequest()},
+          {id:"associated",kind:"reviewedTransaction",dependsOn:["raw"],request:associatedStandardRequest(true)},
+        ] });
+      assert.equal(factories,0,"preparation does not initialize a private capability");
+      const execution = service.executePrepared({kind:"workflow",action:"sign",prepared});
+      if (reject) await assert.rejects(execution);
+      else {
+        const result = await execution;
+        assert.equal(result.steps.length,2);
+        assert.equal(fixture.counts.rawSigns,1);
+        assert.equal(fixture.counts.associatedExecutes,1);
+      }
+      assert.equal(approvals,1);
+      assert.equal(factories,1);
+      if (reject) assert.equal(fixture.counts.privateLoads,0);
+      assert.equal(context.isActive(),true);
+    } finally { service.close(); }
+    assert.equal(context.isActive(),false);
+  }
+});
+
+test("backend reviewed execution without a review capability fails before approval or signing", async () => {
+  let calls = 0;
+  const forbidden = async () => { calls++; throw new Error("unexpected private or network operation"); };
+  const service = createTbcBackendService({
+    serviceId: "reviewed-backend-unconfigured", account: { ...ACCOUNT, chainId: CHAIN_ID },
+    engine: { normalizeRequest: forbidden, plan: forbidden, validate: forbidden, finalize: forbidden },
+    network: { resolveChainData: forbidden, resolvePolicy: forbidden },
+    signer: { sign: forbidden }, authorize: forbidden, clock: () => "2026-09-21T00:00:10Z",
+  });
+  try {
+    const prepared = await service.prepareWorkflow({ version: "1.0", chainId: CHAIN_ID, from: ADDRESS,
+      expiresAt: "2026-09-21T00:02:00Z", maxTotalFee: "5000", steps: [
+        { id: "raw", kind: "reviewedTransaction", dependsOn: [], request: rawStandardRequest() },
+      ] });
+    await assert.rejects(service.executePrepared({ kind: "workflow", action: "sign", prepared }));
+    assert.equal(calls, 0);
+  } finally { service.close(); }
 });
 
 function permission(capability) {

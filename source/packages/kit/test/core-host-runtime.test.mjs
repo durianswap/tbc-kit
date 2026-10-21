@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { TWS_RELEASE_FINGERPRINT as CORE_RELEASE_FINGERPRINT } from "../../core/dist/esm/release.js";
 
 import {
   TWS_HOST_PORT_NAMES,
@@ -64,7 +65,7 @@ test("wallet and sqlite expose one generated Core/Host protocol identity", () =>
   assert.equal(TWS_RELEASE.version, "1.0.0-candidate.3");
   assert.equal(
     TWS_RELEASE_FINGERPRINT,
-    "fc9b0bc55b26e8d24edaa4673f0a82ab66b2447b9e79b61daa2766a8171cceeb",
+    CORE_RELEASE_FINGERPRINT,
   );
   assert.equal(TBC_KIT_HOST_RELEASE_FINGERPRINT, TWS_RELEASE_FINGERPRINT);
   assert.deepEqual(TWS_HOST_PORT_NAMES, PORT_NAMES);

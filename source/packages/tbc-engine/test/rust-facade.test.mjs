@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { withOutputReview } from "../../../scripts/lib/reviewed-transfer-fixture.mjs";
 
 import { createTbcEngine } from "../dist/esm/index.js";
 import { createNativeTbcEngineBackend } from "../dist/esm/native.js";
@@ -19,8 +20,8 @@ test("WASM facade executes the Rust plan path with exactly four methods", async 
   assert.deepEqual(Object.keys(engine).sort(), ["finalize", "normalizeRequest", "plan", "validate"]);
   const result = await engine.plan(fixture.planInput);
   assert.equal(result.plan.payload.transactions.length, 1);
-  // The plan commits to the readable chain identity; transaction bytes are unchanged.
-  assert.equal(result.plan.planHash, "23e5d5d128ba5672ac36fc7375307989ccc0e8adf12fe8638be6ed17bfdb5cd6");
+  // Explicit expected output-review envelope; original transaction bytes stay fixed.
+  assert.deepEqual(result.plan, withOutputReview(fixture.finalizeInput).plan);
 });
 
 test("native backend delegates canonical JSON once and maps Rust errors", async () => {

@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const kitRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
-test("default HTTP orchestration finalizes all nine business cases and preserves controlled submit order", () => {
+test("default HTTP orchestration finalizes supported business cases, denies historical issuance and preserves submit order", () => {
   const evidence = JSON.parse(execFileSync(
     process.execPath,
     [resolve(kitRoot, "scripts/check-default-success-lifecycles.mjs")],
@@ -14,8 +14,10 @@ test("default HTTP orchestration finalizes all nine business cases and preserves
   ));
   assert.equal(evidence.resolverOverride, false);
   assert.equal(evidence.policyOverride, false);
-  assert.equal(evidence.cases, 9);
-  assert.equal(evidence.signOnly.length, 9);
+  assert.equal(evidence.cases, 7);
+  assert.equal(evidence.signOnly.length, 7);
+  assert.deepEqual(evidence.disabled.map(item=>item.label), ['tbc.ft.create','tbc.pool.create.mint','tbc.pool.create.initialize']);
+  assert.ok(evidence.disabled.every(item=>item.approvalCalls===0&&item.signerCalls===0&&item.submitCalls===0));
   assert.ok(evidence.signOnly.every((item) => item.approvalCalls === 1 && item.signerCalls > 0 && item.submitCalls === 0));
   assert.ok(evidence.signOnly.every((item) => !item.httpEdges.includes("POST /api/tbc/broadcasttx")));
   assert.ok(evidence.signOnly.every((item) => item.hostIdentity.executionTypes.every((type) => type === "session-only")));
@@ -24,7 +26,7 @@ test("default HTTP orchestration finalizes all nine business cases and preserves
     (item.label.startsWith("tbc.pool.create.") && item.presentation.businessType === "tbc.pool.create")));
   assert.ok(evidence.signOnly.every((item) => Number(item.presentation.actualFeeAtomic) >= 0));
   assert.ok(evidence.signOnly.every((item) => item.presentation.transactions > 0 && item.presentation.signingTasks > 0));
-  assert.equal(evidence.representativeSend.label, "tbc.ft.create");
+  assert.equal(evidence.representativeSend.label, "tbc20-standard-create");
   assert.equal(evidence.representativeSend.transactions, 2);
   assert.equal(evidence.representativeSend.submitCalls, 2);
   assert.equal(evidence.representativeSend.httpEdges.filter((edge) => edge === "POST /api/tbc/broadcasttx").length, 2);
