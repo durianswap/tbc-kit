@@ -54,6 +54,11 @@ internal object NativeApprovalDisplay {
     ((i["receivers"] as? List<*>)?:listOf(mapOf("to" to to,"amount" to i["amount"]))).map{val r=it as Map<*,*>;row(family,r["amount"],"exact-intent",r["to"] as? String)}
    }
    "tbc721.transfer"->listOf(row("NFT","1"))
+   "tbc721.batchTransfer"->((i["transfers"] as? List<*>)?:emptyList<Any>()).flatMap{value->
+    val item=value as Map<*,*>
+    listOf(row("NFT","1","exact-intent",item["to"] as? String).copy(assetId=item["contractId"] as? String))+
+     ((item["payment"] as? Map<*,*>)?.let{listOf(row("TBC",it["amount"],"exact-intent",it["to"] as? String))}?:emptyList())
+   }
    "tbc20-standard-create"->listOf(row("FT",i["initialSupply"],"exact-intent",to,"mint"))
    "tbc721-standard-create-collection"->listOf(row("NFT collection",i["supply"],"collection-capacity",to,"create"))
    "tbc721-standard-mint","tbc721-standard-batch-mint"->(if(type=="tbc721-standard-mint")listOf(i)else (i["items"] as? List<*>)?:emptyList<Any>()).map{val item=it as Map<*,*>;row("NFT","1","exact-intent",item["to"] as? String?:owner,"mint").copy(assetId=i["collectionId"] as? String)}
@@ -150,6 +155,7 @@ class NativeCustody(
   val pending=mutableMapOf<String,()->Unit>()
   val results=mutableMapOf<String,DeliveryPermit>()
   var maintenance:Maintenance?=null
+  var mintJob:MintJob?=null
  }
  private class Operation(val session:Session,val id:String,val method:String,
   val revision:Int,val accountRevision:Long,val account:NativeAccount,val epoch:String){
@@ -179,6 +185,8 @@ class NativeCustody(
   var maintenance:Maintenance?=null;var maintenanceStep:Map<String,Any?>?=null;var maintenanceRequestHash:String?=null
   var maintenanceRecoveryId:String?=null
   var maintenanceInputs=emptySet<String>();var maintenanceBoundInputs=emptySet<String>();var maintenanceFee:java.math.BigInteger?=null
+  var mintJob:MintJob?=null;var mintOffset=0;var mintFees=emptyList<java.math.BigInteger>();val mintRecovery=mutableMapOf<String,String>()
+  var mintOutcomes:List<Map<String,String>>?=null
   val broadcastClosers=mutableMapOf<String,()->Unit>()
   val broadcastStates=mutableMapOf<String,()->List<Map<String,String>>>()
   var reviewedConsent:Map<String,Any?>?=null;var reviewedBound:NativeReviewed.Bound?=null;var reviewedStage:Map<String,Any?>?=null
@@ -201,6 +209,11 @@ class NativeCustody(
   val completedRows=mutableListOf<Map<String,Any?>>()
   var failedStep:Map<String,Any?>?=null;var failureMayHaveSubmitted=false;var failureRecoveryId:String?=null
  }
+ private class MintJob(val session:Session,val id:String,val account:NativeAccount,val accountRevision:Long,val epoch:String,
+  val scope:Map<String,Any?>,val scopeHash:String,val expiresAt:Instant,val maxFee:java.math.BigInteger){
+  val revision=session.revision;var approved=false;var stopped=false;var activeChild:String?=null
+  var offset=0;var spent=java.math.BigInteger.ZERO;var planBytes=0;val batches=mutableListOf<Map<String,Any?>>()
+ }
  private data class DeliveryPermit(val revision:Int,val accountRevision:Long,
   val account:NativeAccount,val epoch:String,val capability:String,val controller:NativeAccount?,val workflowMethod:String?=null,val workflowResultHash:String?=null,val cryptoMethod:String?=null,val cryptoResultHash:String?=null,val sendMethod:String?=null,val sendResultHash:String?=null,val maintenanceResultHash:String?=null,val maintenanceTarget:Int?=null)
  private val sessions=mutableMapOf<String,Session>()
@@ -217,6 +230,7 @@ class NativeCustody(
  private fun fence(s:Session){
   onExecutor();s.revision++;s.results.clear()
   s.maintenance?.stopped=true;s.maintenance=null
+  s.mintJob?.stopped=true;s.mintJob=null
   val operations=s.operations.values.toList();s.operations.clear();operations.forEach{closeBroadcasts(it)}
   val cancel=s.pending.values.toList();s.pending.clear();cancel.forEach{runCatching{it()}}
  }
@@ -300,6 +314,87 @@ class NativeCustody(
   }
   need(permissions.epoch(o.session.scope.getValue("origin"))==o.epoch,"NATIVE_REVISION_CHANGED")
   o.maintenance?.let{currentMaintenance(it);need(it.approved&&it.activeChild==o.id,"NATIVE_MERGE_INACTIVE")}
+  o.mintJob?.let{currentMintJob(it);need(it.approved&&it.activeChild==o.id,"NATIVE_NFT_JOB_INACTIVE")}
+ }
+ private fun currentMintJob(m:MintJob,active:Boolean=true){
+  current(m.session,m.revision,m.account,m.accountRevision,m.id)
+  need(m.session.mintJob===m&&broadcastRegistered&&sendSourceIdentity!=null&&permissions.epoch(m.session.scope.getValue("origin"))==m.epoch,"NATIVE_NFT_JOB_AUTHORITY")
+  for(method in listOf("tbc_accounts","tbc_sendTransaction"))permissions.require(m.session.scope.getValue("origin"),method,permissionAccount(m.account))
+  if(active)need(!m.stopped&&Instant.now().isBefore(m.expiresAt),"NATIVE_NFT_JOB_EXPIRED")
+ }
+ fun beginMintJob(owner:String,scope:Map<String,String>,id:String,expectedRevision:Int,expectedAccount:NativeAccount,consent:Map<String,Any?>,complete:(Result<Map<String,Any?>>)->Unit){
+  val s=session(owner,scope);val account=selectedAccount(s);val r=immutable(consent)
+  need(s.mintJob==null&&s.revision==expectedRevision&&account==expectedAccount&&walletProtocol==NativeWalletProtocol.STANDARD,"NATIVE_NFT_JOB_ACTIVE")
+  current(s,s.revision,account,accounts.revision,id)
+  need(r.keys==setOf("operationKind","authority","collectionId","items","limits")&&r["operationKind"]=="tbc721.batchMint"&&canonical(r).toByteArray(Charsets.UTF_8).size<=8*1024*1024,"NATIVE_NFT_JOB_SCOPE")
+  val authority=mapOf("chainId" to chain,"accountId" to account.accountId,"address" to account.address,"origin" to s.scope.getValue("origin"),"sessionId" to s.scope.getValue("sessionId"))
+  need(canonical(r["authority"])==canonical(authority),"NATIVE_NFT_JOB_SCOPE");digest(r["collectionId"] as String)
+  val items=(r["items"] as? List<*>)?.map{map(it)}?:throw NativeCustodyFailure("NATIVE_NFT_JOB_ITEMS")
+  need(items.size in 1..2000,"NATIVE_NFT_JOB_ITEMS");val seen=mutableSetOf<Int>()
+  val steps=items.mapIndexed{index,item->
+   need(seen.add(integer(item["slot"]))&&item["to"] is String,"NATIVE_NFT_JOB_ITEMS")
+   val intent=mapOf("version" to "1.0","type" to "tbc721-standard-batch-mint","collectionId" to r["collectionId"],"items" to listOf(item))
+   NativeApprovalStep((index+1).toString(),"NFT mint",mintDescription(intent,account.address),NativeApprovalDisplay.intent(mapOf("intent" to intent),account.address),emptyList())
+  }
+  val limits=map(r["limits"]);val fee=amount(limits["maxTotalFee"]);val expiry=Instant.parse(limits["expiresAt"] as String)
+  val per=integer(limits["maxItemsPerBatch"]);val bytes=integer(limits["maxPlanBytes"]);val total=integer(limits["maxTotalPlanBytes"])
+  need(limits.keys==setOf("maxTotalFee","expiresAt","maxItemsPerBatch","maxPlanBytes","maxTotalPlanBytes")&&per in 1..100&&bytes in 1..4*1024*1024&&total>=bytes&&total<=32*1024*1024&&fee<=java.math.BigInteger("2100000000000000")&&expiry.isAfter(Instant.now()),"NATIVE_NFT_JOB_LIMITS")
+  reserve(s,id);val m=MintJob(s,id,account,accounts.revision,permissions.epoch(s.scope.getValue("origin")),r,hash(r),expiry,fee);s.mintJob=m
+  try{currentMintJob(m)}catch(e:Exception){s.mintJob=null;throw e}
+  val description="Mint ${items.size} NFTs in ordered sub-batches. Total network fee limit: $fee atomic, shared by the entire job. Collection: ${r["collectionId"]}. Expiry: ${limits["expiresAt"]}. A partial result is not permission to resend successful transactions.\n"+steps.joinToString("\n"){it.description}
+  decision(s,id,NativeReview(id,s.scope.getValue("origin"),chain,account.address,"Approve NFT mint job",description,steps=steps),{yes->
+   currentMintJob(m);if(!yes){m.stopped=true;s.mintJob=null;throw NativeCustodyFailure("USER_REJECTED")};m.approved=true
+   mapOf("status" to "approved","scopeHash" to m.scopeHash)
+  },complete)
+ }
+ fun beginMintBatch(owner:String,scope:Map<String,String>,parent:String,id:String,offset:Int,request:Map<String,Any?>):NativeWalletSnapshot{
+  val s=session(owner,scope);val m=s.mintJob?:throw NativeCustodyFailure("NATIVE_NFT_JOB_INACTIVE");need(m.id==parent,"NATIVE_NFT_JOB_INACTIVE");currentMintJob(m)
+  val r=immutable(request);val intent=map(r["intent"]);val c=map(r["constraints"]);val limits=map(m.scope["limits"]);val items=m.scope["items"] as List<*>
+  val child=intent["items"] as? List<*>?:throw NativeCustodyFailure("NATIVE_NFT_JOB_ITEMS")
+  need(m.approved&&m.activeChild==null&&offset==m.offset&&child.isNotEmpty()&&child.size<=integer(limits["maxItemsPerBatch"])&&offset+child.size<=items.size,"NATIVE_NFT_JOB_SLICE")
+  val expected=mapOf("version" to "1.0","type" to "tbc721-standard-batch-mint","collectionId" to m.scope["collectionId"],"items" to items.subList(offset,offset+child.size))
+  need(r.keys==setOf("version","chainId","from","intent","constraints")&&r["version"]=="1.0"&&r["chainId"]==chain&&r["from"]==m.account.address&&canonical(intent)==canonical(expected)&&c.keys==setOf("maxFee","expiresAt")&&amount(c["maxFee"])==m.maxFee-m.spent&&!Instant.parse(c["expiresAt"] as String).isAfter(m.expiresAt),"NATIVE_NFT_JOB_REQUEST")
+  val snapshot=begin(owner,scope,id,"tbc_sendTransaction",m.revision,m.account)
+  val o=s.operations.getValue(id);o.mintJob=m;o.mintOffset=offset;o.maintenanceRequestHash=hash(r);m.activeChild=id;return snapshot
+ }
+ private fun bindMintJob(o:Operation,plan:Map<String,Any?>,payload:Map<String,Any?>,review:Map<String,Any?>,expiry:Instant){
+  val m=o.mintJob?:return;currentMintJob(m)
+  val limits=map(m.scope["limits"]);val items=map(o.request!!["intent"])["items"] as List<*>;val txs=(payload["transactions"] as? List<*>)?.map{map(it)}?:emptyList()
+  val bytes=canonical(plan).toByteArray(Charsets.UTF_8).size;val fee=amount(review["totalFee"])
+  need(!expiry.isAfter(m.expiresAt)&&txs.size==items.size&&fee<=m.maxFee-m.spent&&bytes<=integer(limits["maxPlanBytes"])&&m.planBytes+bytes<=integer(limits["maxTotalPlanBytes"]),"NATIVE_NFT_JOB_BUDGET")
+  val fees=txs.map{amount(it["fee"])};need(fees.fold(java.math.BigInteger.ZERO){a,b->a+b}==fee,"NATIVE_NFT_JOB_FEE");o.mintFees=fees;m.planBytes+=bytes
+ }
+ private fun captureMintBatch(o:Operation){
+  val m=o.mintJob?:return;if(m.activeChild!=o.id)return
+  val count=((o.request?.get("intent") as? Map<*,*>)?.get("items") as? List<*>)?.size?:0
+  val txs=((o.sendMaterial?.get("bundle") as? Map<*,*>)?.get("transactions") as? List<*>)?.map{map(it)}?:emptyList()
+  var accepted=0;var uncertain=false;var interrupted=false
+  val rows=txs.mapIndexed{i,t->
+   val key="single:$i";val row=o.mintOutcomes?.getOrNull(i)?:runCatching{o.broadcastStates[key]?.invoke()?.firstOrNull()}.getOrNull()
+   var status=if(key in o.broadcastStates)"uncertain" else "not-submitted"
+   if(row?.get("txid")==t["txid"]&&row?.get("status") in listOf("accepted","known","rejected"))status=row!!.getValue("status")
+   if(status in listOf("accepted","known")&&interrupted)status="uncertain"
+   if(status in listOf("accepted","known")&&i<o.mintFees.size&&o.mintFees[i]<=m.maxFee-m.spent){accepted++;m.spent+=o.mintFees[i]}else interrupted=true
+   uncertain=uncertain||status=="uncertain"
+   mutableMapOf<String,Any?>("txid" to t["txid"],"fee" to (o.mintFees.getOrNull(i)?:java.math.BigInteger.ZERO).toString(),"status" to status).also{r->o.mintRecovery[key]?.let{r["recoveryId"]=it}}
+  }
+  val complete=o.sendResultHash!=null&&accepted==count&&count>0
+  m.batches.add(mapOf("offset" to o.mintOffset,"count" to count,"planHash" to o.planHash,"status" to if(complete)"complete" else if(uncertain)"uncertain" else if(accepted>0)"partial" else "failed","transactions" to rows))
+  m.offset+=accepted;m.activeChild=null;if(!complete)m.stopped=true
+ }
+ fun mintBatchResult(owner:String,scope:Map<String,String>,id:String):Map<String,Any?>{
+  val s=session(owner,scope);val m=s.mintJob?:throw NativeCustodyFailure("NATIVE_NFT_JOB_RESULT");need(m.id==id&&m.activeChild==null&&m.batches.isNotEmpty(),"NATIVE_NFT_JOB_RESULT");currentMintJob(m,false);return m.batches.last()
+ }
+ fun finishMintJob(owner:String,scope:Map<String,String>,id:String,reason:String):Map<String,Any?>{
+  val s=session(owner,scope);val m=s.mintJob?:throw NativeCustodyFailure("NATIVE_NFT_JOB_RESULT");need(m.id==id&&m.approved&&m.activeChild==null,"NATIVE_NFT_JOB_RESULT");currentMintJob(m,false)
+  need(reason in listOf("complete","preparation-failed","execution-failed","expired","submission-uncertain"),"NATIVE_NFT_JOB_REASON")
+  val requested=(m.scope["items"] as List<*>).size;val uncertain=m.batches.any{it["status"]=="uncertain"};val complete=m.offset==requested&&!m.stopped
+  val result=mapOf("status" to if(complete)"complete" else if(uncertain)"uncertain" else if(m.offset>0)"partial" else "stopped","reason" to if(complete)"complete" else if(uncertain)"submission-uncertain" else if(reason=="complete")"execution-failed" else reason,"scopeHash" to m.scopeHash,"requested" to requested,"minted" to m.offset,"confirmedSubmissionFee" to m.spent.toString(),"batches" to m.batches.toList())
+  m.stopped=true;s.mintJob=null;return result
+ }
+ fun closeMintJob(owner:String,scope:Map<String,String>,id:String){
+  val s=session(owner,scope);val m=s.mintJob?:return;if(m.id!=id)return
+  m.activeChild?.let{close(owner,scope,it)};m.stopped=true;s.mintJob=null;s.pending.remove(id)?.invoke()
  }
  private fun currentMaintenance(m:Maintenance){
   maintenanceAuthority(m)
@@ -625,6 +720,14 @@ class NativeCustody(
     }
     "tbc20.merge"->"FT ${intent["contractId"] as String}\nMerge token inputs into the same account: ${o.account.address}."
     "tbc20Stablecoin.merge"->"Stablecoin ${intent["contractId"] as String}\nMerge token inputs into the same account: ${o.account.address}."
+    "tbc721.batchTransfer"->{
+     val transfers=(intent["transfers"] as? List<*>)?.map{map(it)}?:emptyList()
+     need(transfers.size in 1..100,"NATIVE_NFT_BATCH")
+     transfers.mapIndexed{index,item->
+      val payment=item["payment"]?.let{map(it)}?.let{" Also send ${amount(it["amount"])} TBC atomic to ${it["to"] as String}."}?:""
+      "${index+1}. Send NFT ${item["contractId"] as String} to ${item["to"] as String}.$payment"
+     }.joinToString("\n")
+    }
     "tbc721.transfer"->{
      val payment=intent["payment"]?.let{map(it)}?.let{"\nAlso send ${amount(it["amount"])} TBC atomic to ${it["to"] as String}."}?:""
      "Send NFT ${intent["contractId"] as String} to ${intent["to"] as String}.$payment"
@@ -652,8 +755,9 @@ class NativeCustody(
   request:Map<String,Any?>,context:Map<String,Any?>,review:Map<String,Any?>?,complete:(Result<Boolean>)->Unit){
   val o=operation(owner,scope,id)
   if(o.maintenance!=null)need(hash(request)==o.maintenanceRequestHash,"NATIVE_MERGE_REQUEST")
+  if(o.mintJob!=null)need(hash(request)==o.maintenanceRequestHash,"NATIVE_NFT_JOB_REQUEST")
   val description=if(method in NativeWorkflow.methods)describeWorkflow(o,method,request,context,review)else describeConsent(o,method,request,context,review)
-  if(o.maintenance!=null){current(o);o.approved=true;complete(Result.success(true));return}
+  if(o.maintenance!=null||o.mintJob!=null){current(o);o.approved=true;complete(Result.success(true));return}
   val children=o.workflow?.children?:listOf(o)
   val steps=children.mapIndexed{index,child->
    val request=child.request?:emptyMap();val kind=child.method
@@ -690,13 +794,14 @@ class NativeCustody(
   }else if(NativePrepared.transaction(o.method)){
    val signedPlan=immutable(plan?:throw NativeCustodyFailure("PLAN_REQUIRED"));val payload=map(signedPlan["payload"])
    need(signedPlan["planHash"]==hash(payload)&&p["operationHash"]==signedPlan["planHash"]&&payload["requestHash"]==o.requestHash&&payload["accountId"]==o.account.accountId&&payload["chainId"]==chain,"NATIVE_PLAN_BINDING")
-   o.preparedProposal?.let{NativePrepared.bind(it,payload,expiry)}
+   o.preparedProposal?.let{NativePrepared.bind(it,payload,expiry,bundleLimit(o.request))}
    val count=integer(review["transactionCount"])
-   need(canonical(review)==canonical(payload["preview"])&&count in 1..32&&review["operationKind"]=="transaction"&&coveredWarnings(o.request!!,payload),"NATIVE_REVIEW")
+   need(canonical(review)==canonical(payload["preview"])&&count in 1..bundleLimit(o.request)&&review["operationKind"]=="transaction"&&coveredWarnings(o.request!!,payload),"NATIVE_REVIEW")
    need(amount(review["totalFee"])<=amount(o.consentFeeCap),"NATIVE_FEE_CAP")
    val ids=(payload["transactions"] as List<*>).map{map(it)["id"] as String}
    need(ids.size==count&&ids.toSet().size==count,"NATIVE_PLAN_TRANSACTIONS")
    bindMaintenance(o,payload,review,expiry)
+   bindMintJob(o,signedPlan,payload,review,expiry)
    o.transactionCount=count;o.transactionIds=ids.toSet();o.planHash=signedPlan["planHash"] as String
    if(NativePrepared.sends(o.method))o.sendPlan=mapOf("totalFee" to review["totalFee"],"transactions" to (payload["transactions"] as List<*>).map{map(it).filterKeys{key->key in setOf("id","role","dependsOn")}})
    (payload["signingTasks"] as List<*>).map{map(it)}
@@ -715,7 +820,7 @@ class NativeCustody(
    listOf(mapOf("taskId" to (if(walletProtocol==NativeWalletProtocol.LEGACY)"legacy-sign-message" else "sign-message"),"purpose" to "message","algorithm" to "secp256k1-recoverable-ecdsa-sha256d","digest" to p["operationHash"],"signatureEncoding" to "compact65-recoverable","origin" to p["origin"],"accountId" to o.account.accountId,"publicKey" to o.account.publicKey))
   }
   val profile=(o.request?.get("intent") as? Map<*,*>)?.get("type")
-  val limit=if(!NativePrepared.transaction(o.method))1 else mapOf("tbc-lop-create" to 128,"tbc-lop-cancel" to 3,"tbc-lop-match" to 3,"tbc-htlc-lock" to 128,"tbc-htlc-claim" to 128,"tbc-htlc-refund" to 128,"tbc-timelock-lock" to 128,"tbc-timelock-unlock" to 128,"amm.swap" to 128,"amm.addLiquidity" to 128,"amm.removeLiquidity" to 128,"amm.mergeToken" to 6,"tbc20Lp.transfer" to 128,"tbc20Lp.lock" to 128,"tbc20Lp.unlock" to 128,"tbc20Lp.merge" to 128,"tbc20Lp.burn" to 6,"tbc20.transfer" to 32,"tbc20.merge" to 32,"tbc20-standard-create" to 128,"tbc721-standard-create-collection" to 128,"tbc721-standard-mint" to 128,"tbc721-standard-batch-mint" to 128,"tbc-amm-create" to 128,"tbc-amm-add-liquidity" to 128,"tbc-amm-remove-liquidity" to 128,"tbc-amm-swap" to 128,"tbc20-lp-transfer" to 128,"tbc20-lp-merge" to 128,"tbc20-lp-lock" to 128,"tbc20-lp-unlock" to 128,"tbc.pool.swap.exactTbcForToken" to 128,"tbc.pool.swap.exactTokenForTbc" to 128,"tbc.pool.liquidity.add" to 128,"tbc.pool.liquidity.remove" to 128,"tbc.pool.ft.merge" to 6,"tbc.pool.ftlp.merge" to 6,"tbc.pool.ftlp.burn" to 6,"tbc721.transfer" to 128,"tbc20Stablecoin.transfer" to 128,"tbc20Stablecoin.merge" to 128,"tbc.transfer" to 128,"tbc.maintenance.merge" to 100)[profile]?:0
+  val limit=if(!NativePrepared.transaction(o.method))1 else mapOf("tbc-lop-create" to 128,"tbc-lop-cancel" to 3,"tbc-lop-match" to 3,"tbc-htlc-lock" to 128,"tbc-htlc-claim" to 128,"tbc-htlc-refund" to 128,"tbc-timelock-lock" to 128,"tbc-timelock-unlock" to 128,"amm.swap" to 128,"amm.addLiquidity" to 128,"amm.removeLiquidity" to 128,"amm.mergeToken" to 6,"tbc20Lp.transfer" to 128,"tbc20Lp.lock" to 128,"tbc20Lp.unlock" to 128,"tbc20Lp.merge" to 128,"tbc20Lp.burn" to 6,"tbc20.transfer" to 32,"tbc20.merge" to 32,"tbc20-standard-create" to 128,"tbc721-standard-create-collection" to 128,"tbc721-standard-mint" to 128,"tbc721-standard-batch-mint" to 128,"tbc-amm-create" to 128,"tbc-amm-add-liquidity" to 128,"tbc-amm-remove-liquidity" to 128,"tbc-amm-swap" to 128,"tbc20-lp-transfer" to 128,"tbc20-lp-merge" to 128,"tbc20-lp-lock" to 128,"tbc20-lp-unlock" to 128,"tbc.pool.swap.exactTbcForToken" to 128,"tbc.pool.swap.exactTokenForTbc" to 128,"tbc.pool.liquidity.add" to 128,"tbc.pool.liquidity.remove" to 128,"tbc.pool.ft.merge" to 6,"tbc.pool.ftlp.merge" to 6,"tbc.pool.ftlp.burn" to 6,"tbc721.transfer" to 128,"tbc721.batchTransfer" to 128,"tbc20Stablecoin.transfer" to 128,"tbc20Stablecoin.merge" to 128,"tbc.transfer" to 128,"tbc.maintenance.merge" to 100)[profile]?:0
   val reviewed=o.method==NativeReviewed.method
   need(if(reviewed)tasks.size<=1000 else tasks.isNotEmpty()&&tasks.size<=limit,"NATIVE_TASKS")
   val validated=mutableMapOf<String,Map<String,Any?>>()
@@ -958,7 +1063,7 @@ class NativeCustody(
   need(c["requestHash"]==o.requestHash&&c["planHash"]==o.planHash&&c["bindingHash"]==o.receipt!!["bindingHash"]&&c["approvalId"]==o.receipt!!["approvalId"],"NATIVE_STAGE_BINDING")
   need(stage==o.stage+1&&stage<o.transactionCount&&(o.stageSession==null||o.stageSession==session)&&s["sessionId"]==session&&integer(s["stage"])==stage&&s["stageCommitment"]==commitment&&inner["sessionId"]==session&&inner["planCommitment"]==session&&integer(inner["nextStage"])==stage,"NATIVE_STAGE_ORDER")
   val tasks=(p["signingRequests"] as List<*>).map{map(it)};val requests=(s["signingRequests"] as List<*>).map{map(it)}
-  val limit=if(poolContinuation(profile)||lpContinuation(profile))128 else mapOf("tbc20.transfer" to 32,"tbc20.merge" to 32,"tbc20-standard-create" to 128,"tbc721-standard-batch-mint" to 128,"tbc-amm-create" to 128)[profile]?:0
+  val limit=if(poolContinuation(profile)||lpContinuation(profile))128 else mapOf("tbc20.transfer" to 32,"tbc20.merge" to 32,"tbc20-standard-create" to 128,"tbc721.batchTransfer" to 128,"tbc721-standard-batch-mint" to 128,"tbc-amm-create" to 128)[profile]?:0
   need(tasks.isNotEmpty()&&tasks.size<=limit&&tasks.size==requests.size&&o.tasks.size+tasks.size<=o.expectedTasks,"NATIVE_TASKS")
   val validated=mutableMapOf<String,Map<String,Any?>>()
   for((t,r) in tasks.zip(requests)){
@@ -1052,10 +1157,10 @@ class NativeCustody(
   }else{
    val plan=o.sendPlan?:throw NativeCustodyFailure("NATIVE_BROADCAST_PLAN")
    need(workflow==null&&fullySigned(o),"NATIVE_STAGE_INCOMPLETE")
-   NativeWorkflow.completedBundle(value,o.account,o.requestHash!!,receipt["approvalId"] as String,plan["totalFee"] as String,(plan["transactions"] as List<*>).map{map(it)},null)
+   NativeWorkflow.completedBundle(value,o.account,o.requestHash!!,receipt["approvalId"] as String,plan["totalFee"] as String,(plan["transactions"] as List<*>).map{map(it)},null,bundleLimit(o.request))
   }
   val ids=transactions.map{it["txid"] as String}
-  need(ids.size in 1..32&&ids.toSet().size==ids.size&&transactions.all{(it["rawTransaction"] as String).length<=4*1024*1024},"NATIVE_BROADCAST_BOUNDS")
+  need(ids.size in 1..(if(o.workflow==null)bundleLimit(o.request)else 32)&&ids.toSet().size==ids.size&&transactions.all{(it["rawTransaction"] as String).length<=4*1024*1024},"NATIVE_BROADCAST_BOUNDS")
   val accountHash=hash(o.account.identity());val authorization=hash(mapOf("method" to o.method,"sourceIdentity" to source,"accountScopeHash" to accountHash,"contextHash" to hash(context(o.session)),"operationId" to id,"approvalId" to receipt["approvalId"],"bindingHash" to receipt["bindingHash"],"bundleHash" to hash(value)))
   o.sendMaterial=mapOf("bundle" to value,"sourceIdentity" to source,"accountScopeHash" to accountHash,"authorizationId" to authorization,"expiresAt" to receipt["expiresAt"])
  }
@@ -1081,9 +1186,10 @@ class NativeCustody(
  // Native-only cleanup; never accept a caller assertion of POST=0.
  fun ownBroadcast(owner:String,scope:Map<String,String>,id:String,key:String,state:()->List<Map<String,String>>,close:()->Unit,recoveryId:String?=null){
   val o=operation(owner,scope,id);receipt(o)
-  need(o.sendMaterial!=null&&key !in o.broadcastClosers&&o.broadcastClosers.size<32,"NATIVE_BROADCAST_OWNER")
+  need(o.sendMaterial!=null&&key !in o.broadcastClosers&&o.broadcastClosers.size<(if(o.workflow==null)bundleLimit(o.request)else 32),"NATIVE_BROADCAST_OWNER")
   o.broadcastClosers[key]=close;o.broadcastStates[key]=state
   if(o.maintenance!=null&&key=="single:0")o.maintenanceRecoveryId=recoveryId
+  if(o.mintJob!=null&&recoveryId!=null)o.mintRecovery[key]=recoveryId
  }
  private fun closeBroadcasts(o:Operation){val callbacks=o.broadcastClosers.values.toList();o.broadcastClosers.clear();o.broadcastStates.clear();callbacks.forEach{runCatching{it()}}}
  // Native signed material + actual journal outcome -> immutable public result.
@@ -1124,6 +1230,8 @@ class NativeCustody(
    val step=o.maintenanceStep!!
    m.completedRows+=mapOf("stepId" to step["stepId"],"txid" to txid,"status" to states[0]["status"],"fee" to fee.toString(),"inputCount" to step["inputCount"],"outputCount" to 1,"dependsOn" to step["dependsOn"])
   }
+  // Native-verified outcomes survive normal dispatch-authority closure.
+  if(o.mintJob!=null)o.mintOutcomes=states
   o.sendResultHash=resultHash
  }
  fun close(owner:String,scope:Map<String,String>,id:String){
@@ -1147,6 +1255,8 @@ class NativeCustody(
    }
    m.activeChild=null;if(!deliverable)m.stopped=true
   }
+  captureMintBatch(o)
+  if(o.mintJob!=null)s.results.remove(id)
   s.operations.remove(id);closeBroadcasts(o);s.pending.remove(id)?.invoke()
  }
  // Native WebView emission must call this immediately before releasing a
@@ -1312,7 +1422,7 @@ class NativeCustody(
  }
  private fun mintDescription(intent:Map<String,Any?>,owner:String):String{
   val items=if(intent["type"]=="tbc721-standard-mint")listOf(intent)else (intent["items"] as? List<*>)?.map{map(it)}?:emptyList()
-  need(items.size in 1..32,"NATIVE_MINT_BOUND")
+  need(items.size in 1..100,"NATIVE_MINT_BOUND")
   val slots=items.map{integer(it["slot"])};need(slots.all{it>0}&&slots.toSet().size==slots.size,"NATIVE_MINT_SLOTS")
   val details=items.joinToString("\n"){item->
    val media=item["media"]?.let{map(it)}?.let{"\nMedia SHA256: ${hash(it)}; ${it["uri"] as? String ?: "embedded"}"}?:""
@@ -1321,6 +1431,7 @@ class NativeCustody(
   return "Mint ${items.size} NFT(s) from collection ${intent["collectionId"] as String}.\n$details\nApprove the ordered mint steps as one bounded request."
  }
  private fun poolContinuation(profile:Any?):Boolean=profile in setOf("tbc-amm-add-liquidity","tbc-amm-remove-liquidity","tbc-amm-swap","amm.addLiquidity","amm.removeLiquidity","amm.swap")
+ private fun bundleLimit(request:Map<String,Any?>?):Int=if((request?.get("intent") as? Map<*,*>)?.get("type") in setOf("tbc721.batchTransfer","tbc721-standard-batch-mint"))100 else 32
  // LP uses the Engine's pool continuation family, but not AMM controller authority.
  private fun lpContinuation(profile:Any?):Boolean=profile in setOf("tbc20-lp-transfer","tbc20-lp-merge","tbc20-lp-lock","tbc20-lp-unlock","tbc20Lp.transfer","tbc20Lp.merge","tbc20Lp.lock","tbc20Lp.unlock")
  private fun coveredWarnings(request:Map<String,Any?>,payload:Map<String,Any?>):Boolean{
@@ -1329,6 +1440,11 @@ class NativeCustody(
   if((request["intent"] as? Map<*,*>)?.get("type")=="tbc-htlc-claim")return warnings==listOf("HTLC_CLAIM_SIGNED_BYTES_DISCLOSE_PREIMAGE") && (payload["transactions"] as? List<*>)?.size==1 && preview["transactionCount"]==1
   if(warnings.isEmpty())return true
   val txs=payload["transactions"] as? List<*> ?: return false
+  if((request["intent"] as? Map<*,*>)?.get("type")=="tbc721.batchTransfer"){
+   val items=(request["intent"] as? Map<*,*>)?.get("transfers") as? List<*>?:return false
+   return warnings==listOf("MULTI_TRANSACTION") && txs.size in 2..bundleLimit(request) && preview["transactionCount"]==txs.size &&
+    txs.count{(it as? Map<*,*>)?.get("role")=="primary"}==items.size && txs.all{(it as? Map<*,*>)?.get("role") in setOf("primary","maintenance")}
+  }
   if(poolContinuation((request["intent"] as? Map<*,*>)?.get("type")))return warnings.size==2 && warnings.toSet()==setOf("MULTI_TRANSACTION","MAINTENANCE_TRANSACTION") && txs.size in 2..32 && preview["transactionCount"]==txs.size && (txs.first() as? Map<*,*>)?.get("id")=="native-funding-1" && txs.dropLast(1).all{(it as? Map<*,*>)?.get("role")=="maintenance"} && (txs.last() as? Map<*,*>)?.get("role")=="primary"
   return (request["intent"] as? Map<*,*>)?.get("type")=="tbc20-standard-create" &&
    warnings.size==2 && warnings.toSet()==setOf("MULTI_TRANSACTION","MAINTENANCE_TRANSACTION") &&

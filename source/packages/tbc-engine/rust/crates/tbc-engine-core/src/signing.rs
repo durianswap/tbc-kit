@@ -68,6 +68,10 @@ pub const MAX_POOL_PROOF_REFERENCES: usize = 6;
 pub const MAX_POOL_RECIPE_SERIALIZED_BYTES: usize = 4_194_304;
 pub const MAX_POOL_RECIPE_RAW_BYTES: usize = 1_048_576;
 pub const MAX_POOL_UNLOCKING_SCRIPT_BYTES: usize = 65_535;
+// TBC721 proves all other collection outputs on the first spend. A supported
+// 2000-slot collection exceeds the Pool-specific 64KiB proof ceiling. Keep
+// Pool unchanged; NFT remains bounded by its 1MiB material/transaction budget.
+const MAX_TBC721_UNLOCKING_SCRIPT_BYTES: usize = crate::protocols::tbc20_material::MAX_MATERIAL_TRANSACTION_BYTES;
 pub const MAX_STANDARD_FTLP_INPUTS: usize = 1;
 const MAX_LOCKED_FTLP_INPUTS: usize = 6;
 const MAX_FTLP_MAINTENANCE_INPUTS: usize = 5;
@@ -275,6 +279,27 @@ fn tbc721_recipe_sources(recipe: &Tbc721UnlockRecipe) -> impl Iterator<Item = &T
 pub fn tbc721_unlocking_descriptor(recipe: Tbc721UnlockRecipe) -> Result<String, EngineError> {
     validate_recipe_sources(tbc721_recipe_sources(&recipe))?;
     serialize_recipe(TBC721_UNLOCK_PREFIX, &recipe)
+}
+
+/// Re-index only typed NFT proof references while composing a shared batch.
+/// Raw script bytes are never searched/replaced. Existing single plans stay intact.
+pub(crate) fn remap_nft_evidence(value: &str, indices: &std::collections::BTreeMap<u32,u32>) -> Result<String,EngineError> {
+    let remap=|source:&mut TransactionSource|->Result<(),EngineError>{
+        match source {
+            TransactionSource::Evidence(index)=>*index=*indices.get(index).ok_or_else(||invalid_plan("unbound NFT batch evidence index"))?,
+            _=>return Err(invalid_plan("NFT batch expects authenticated evidence references")),
+        }Ok(())
+    };
+    if value.is_empty(){return Ok(String::new());}
+    if value.starts_with(TBC721_UNLOCK_PREFIX){
+        let mut recipe=parse_tbc721_unlock_recipe(value)?;
+        remap(&mut recipe.parent)?;remap(&mut recipe.grandparent)?;
+        tbc721_unlocking_descriptor(recipe)
+    }else if value.starts_with(NFT_UNLOCK_PREFIX){
+        let mut recipe=parse_nft_unlock_recipe(value)?;
+        remap(&mut recipe.parent)?;remap(&mut recipe.pre_pre)?;
+        nft_unlocking_descriptor(recipe.parent,recipe.pre_pre,recipe.version)
+    }else{Err(invalid_plan("unexpected NFT batch unlocking recipe"))}
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -1400,7 +1425,7 @@ fn validate_finalized_input(
         return Ok(fields[98][..fields[98].len() - 1].to_vec());
     }
     if input.unlocking_script.starts_with(TBC721_UNLOCK_PREFIX) {
-        let fields = covenant_script_fields(script, crate::protocols::tbc721_proof::UNLOCK_LEAF_COUNT)?;
+        let fields = covenant_script_fields_with_budget(script, crate::protocols::tbc721_proof::UNLOCK_LEAF_COUNT, MAX_TBC721_UNLOCKING_SCRIPT_BYTES)?;
         if fields.len() != crate::protocols::tbc721_proof::UNLOCK_LEAF_COUNT {
             return Err(invalid_plan("finalized TBC721 script must contain exactly 20 leaves"));
         }
@@ -1653,7 +1678,7 @@ fn apply_external_signature_bytes(
             return Err(invalid_signature("TBC721 external signer differs from the recipe signer"));
         }
         let mut signature = der.to_vec(); signature.push(DEFAULT_SIGHASH as u8);
-        return set_bounded_unlocking_script(transaction, input_index, prepared.finalize(&signature)?.into_bytes());
+        return set_unlocking_script_with_budget(transaction, input_index, prepared.finalize(&signature)?.into_bytes(), MAX_TBC721_UNLOCKING_SCRIPT_BYTES);
     }
     if is_ecdsa_fungible_recipe(&input.unlocking_script) {
         let prepared = resolve_ecdsa_fungible_prepared(transaction, input_index, input, plan, continuation)?;
@@ -1778,8 +1803,8 @@ fn apply_maximum_external_signature(
     }
     if input.unlocking_script.starts_with(TBC721_UNLOCK_PREFIX) {
         let prepared = resolve_tbc721_prepared(transaction, input_index, input, plan, continuation)?;
-        return set_bounded_unlocking_script(transaction, input_index,
-            vec![0; prepared.max_unlocking_script_bytes()]);
+        return set_unlocking_script_with_budget(transaction, input_index,
+            vec![0; prepared.max_unlocking_script_bytes()], MAX_TBC721_UNLOCKING_SCRIPT_BYTES);
     }
     if is_ecdsa_fungible_recipe(&input.unlocking_script) {
         let prepared = resolve_ecdsa_fungible_prepared(transaction, input_index, input, plan, continuation)?;
@@ -1833,9 +1858,13 @@ fn set_bounded_unlocking_script(
     input_index: usize,
     script: Vec<u8>,
 ) -> Result<(), EngineError> {
-    if script.len() > MAX_POOL_UNLOCKING_SCRIPT_BYTES {
-        return Err(invalid_plan("Pool unlocking script exceeds the byte budget"));
-    }
+    set_unlocking_script_with_budget(transaction, input_index, script, MAX_POOL_UNLOCKING_SCRIPT_BYTES)
+}
+
+fn set_unlocking_script_with_budget(transaction:&mut Transaction,input_index:usize,script:Vec<u8>,max_bytes:usize)->Result<(),EngineError> {
+    if script.len()>max_bytes {return Err(invalid_plan(if max_bytes==MAX_POOL_UNLOCKING_SCRIPT_BYTES {
+        "Pool unlocking script exceeds the byte budget"
+    }else{"TBC721 unlocking script exceeds the byte budget"}));}
     transaction.inputs[input_index].script_sig = Script::from_bytes(script);
     Ok(())
 }
@@ -2109,7 +2138,11 @@ fn resolve_fungible_proof_sources(
 // The new ABI uses canonical small-number opcodes. Do not loosen the older
 // recipe parser to add these semantics to historical unlock formats.
 fn covenant_script_fields(script: &[u8], max_leaves: usize) -> Result<Vec<Vec<u8>>, EngineError> {
-    if script.len() > MAX_POOL_UNLOCKING_SCRIPT_BYTES {
+    covenant_script_fields_with_budget(script,max_leaves,MAX_POOL_UNLOCKING_SCRIPT_BYTES)
+}
+
+fn covenant_script_fields_with_budget(script:&[u8],max_leaves:usize,max_bytes:usize)->Result<Vec<Vec<u8>>,EngineError> {
+    if script.len() > max_bytes {
         return Err(invalid_plan("covenant unlocking script exceeds the byte budget"));
     }
     let mut fields = Vec::new();
@@ -5057,6 +5090,22 @@ mod budget_tests {
         value: u32,
     }
 
+    #[test]
+    fn nft_proof_budget_is_separate_from_pool_and_still_bounded() {
+        let limit=super::MAX_TBC721_UNLOCKING_SCRIPT_BYTES;
+        let mut transaction=Transaction::new();
+        transaction.inputs.push(TxIn::new(OutPoint {txid:Txid::default(),vout:0}));
+        super::set_unlocking_script_with_budget(&mut transaction,0,vec![0;limit],limit).unwrap();
+        assert!(super::set_unlocking_script_with_budget(&mut transaction,0,vec![0;limit+1],limit).is_err());
+        assert!(set_bounded_unlocking_script(&mut transaction,0,vec![0;65_536]).is_err());
+        let mut script=vec![0x4e];script.extend_from_slice(&((limit-5) as u32).to_le_bytes());
+        script.resize(limit,0);
+        assert!(super::covenant_script_fields(&script,1).is_err());
+        assert_eq!(super::covenant_script_fields_with_budget(&script,1,limit).unwrap()[0].len(),limit-5);
+        script.push(0);
+        assert!(super::covenant_script_fields_with_budget(&script,2,limit).is_err());
+    }
+
     #[derive(Serialize)]
     struct SizedPayload {
         data: String,
@@ -5509,7 +5558,9 @@ fn apply_schnorr_signature(transaction:&mut Transaction,input_index:usize,input:
         }
         let mut result=Vec::new();push_script_data(&mut result,&wire)?;push_script_data(&mut result,&key)?;result
     };
-    set_bounded_unlocking_script(transaction,input_index,script)
+    if input.unlocking_script.starts_with(TBC721_UNLOCK_PREFIX) {
+        set_unlocking_script_with_budget(transaction,input_index,script,MAX_TBC721_UNLOCKING_SCRIPT_BYTES)
+    }else{set_bounded_unlocking_script(transaction,input_index,script)}
 }
 
 fn validate_public_identity(context: &PublicSigningContext) -> Result<PublicKey, EngineError> {

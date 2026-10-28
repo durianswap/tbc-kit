@@ -5,7 +5,12 @@ export function createChainDataReadScope(client: TestnetClient): TestnetClient {
   function once<Args extends readonly unknown[], Value>(read: (...args: Args) => Promise<Value>) {
     const reads = new Map<string, Promise<Value>>();
     return (...args: Args): Promise<Value> => {
-      const key = JSON.stringify(args);
+      // Omitted optional arguments and explicit trailing undefined invoke
+      // the same read. Prefetch uses (address), concrete readers may use
+      // (address, undefined); they must share the same in-flight request.
+      let length = args.length;
+      while (length > 0 && args[length - 1] === undefined) length -= 1;
+      const key = JSON.stringify(args.slice(0, length));
       let result = reads.get(key);
       if (result === undefined) {
         result = Promise.resolve().then(() => read(...args));
@@ -51,6 +56,7 @@ export function createChainDataReadScope(client: TestnetClient): TestnetClient {
       ...client.api,
       poolInfo: once(client.api.poolInfo.bind(client.api)),
       ...(client.api.nftUtxosByScriptHash === undefined ? {} : { nftUtxosByScriptHash: once(client.api.nftUtxosByScriptHash.bind(client.api)) }),
+      ...(client.api.utxosByScriptHash === undefined ? {} : { utxosByScriptHash: once(client.api.utxosByScriptHash.bind(client.api)) }),
       ftUtxosByCombineScript: once(client.api.ftUtxosByCombineScript.bind(client.api)),
       poolLpUtxosByScriptHash: once(client.api.poolLpUtxosByScriptHash.bind(client.api)),
       ...(client.api.nodeInfo === undefined ? {} : { nodeInfo: once(client.api.nodeInfo.bind(client.api)) }),

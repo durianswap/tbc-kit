@@ -70,6 +70,12 @@ enum NativeApprovalDisplay {
    let family=type=="tbc20.transfer" ? "FT":"Stablecoin"
    rows=((i["receivers"] as? [[String:Any]]) ?? [["to":to,"amount":i["amount"] as Any]]).map{row(family,$0["amount"],"exact-intent",$0["to"] as? String)}
   case "tbc721.transfer": rows=[row("NFT","1")]
+  case "tbc721.batchTransfer":
+   rows=(i["transfers"] as? [[String:Any]] ?? []).flatMap{item->[NativeApprovalAsset] in
+    var result=[row("NFT","1","exact-intent",item["to"] as? String,"send",item["contractId"] as? String)]
+    if let p=item["payment"] as? [String:Any]{result.append(row("TBC",p["amount"],"exact-intent",p["to"] as? String))}
+    return result
+   }
   case "tbc20-standard-create":rows=[row("FT",i["initialSupply"],"exact-intent",to,"mint")]
   case "tbc721-standard-create-collection":rows=[row("NFT collection",i["supply"],"collection-capacity",to,"create")]
   case "tbc721-standard-mint","tbc721-standard-batch-mint":
@@ -162,6 +168,7 @@ struct NativeCustodyNetworkAuthority {
   var used=Set<String>(),cancelled=Set<String>(),operations=[String:Operation]()
   var pending=[String:@MainActor ()->Void](),results=[String:DeliveryPermit]()
   var maintenance:Maintenance?
+  var mintJob:MintJob?
   init(owner:String,scope:[String:String]){self.owner=owner;self.scope=scope}
  }
  private final class Operation {
@@ -190,6 +197,8 @@ struct NativeCustodyNetworkAuthority {
   var maintenance:Maintenance?,maintenanceStep:[String:Any]?,maintenanceRequestHash:String?
   var maintenanceRecoveryId:String?
   var maintenanceInputs=Set<String>(),maintenanceBoundInputs=Set<String>(),maintenanceFee:UInt64?
+  var mintJob:MintJob?,mintOffset=0,mintFees=[UInt64](),mintRecovery=[String:String]()
+  var mintOutcomes:[[String:String]]?
   var broadcastClosers=[String:()->Void]()
   var broadcastStates=[String:()throws->[[String:String]]]()
   init(session:Session,id:String,method:String,revision:Int,accountRevision:Int64,account:NativeAccount,epoch:String){
@@ -218,6 +227,13 @@ struct NativeCustodyNetworkAuthority {
    self.session=session;self.id=id;self.account=account;self.accountRevision=accountRevision;self.revision=session.revision;self.epoch=epoch
    self.scope=scope;self.scopeHash=scopeHash;self.expiresAt=expiresAt;self.maxFee=maxFee;self.maxTransactions=maxTransactions;self.inputLimit=inputLimit;approvalId=UUID().uuidString
   }
+ }
+ private final class MintJob {
+  let session:Session,id:String,revision:Int,accountRevision:Int64,account:NativeAccount,epoch:String
+  let scope:[String:Any],scopeHash:String,expiresAt:Date,maxFee:UInt64
+  var approved=false,stopped=false,activeChild:String?,offset=0,spent:UInt64=0,planBytes=0
+  var batches=[[String:Any]]()
+  init(session:Session,id:String,account:NativeAccount,accountRevision:Int64,epoch:String,scope:[String:Any],scopeHash:String,expiresAt:Date,maxFee:UInt64){self.session=session;self.id=id;self.revision=session.revision;self.account=account;self.accountRevision=accountRevision;self.epoch=epoch;self.scope=scope;self.scopeHash=scopeHash;self.expiresAt=expiresAt;self.maxFee=maxFee}
  }
  private struct DeliveryPermit {
   let revision:Int,accountRevision:Int64,account:NativeAccount,epoch:String,capability:String,controller:NativeAccount?
@@ -264,6 +280,7 @@ struct NativeCustodyNetworkAuthority {
  private func fence(_ s:Session){
   s.revision+=1;s.results.removeAll()
   s.maintenance?.stopped=true;s.maintenance=nil
+  s.mintJob?.stopped=true;s.mintJob=nil
   let operations=Array(s.operations.values);s.operations.removeAll()
   for o in operations{closeBroadcasts(o)}
   let cancel=Array(s.pending.values);s.pending.removeAll();for f in cancel{f()}
@@ -361,6 +378,96 @@ struct NativeCustodyNetworkAuthority {
   }
   try need(permissions.epoch(o.session.scope["origin"]!)==o.epoch,"NATIVE_REVISION_CHANGED")
   if let m=o.maintenance{try currentMaintenance(m);try need(m.approved && m.activeChild==o.id,"NATIVE_MERGE_INACTIVE")}
+  if let m=o.mintJob{try currentMintJob(m);try need(m.approved && m.activeChild==o.id,"NATIVE_NFT_JOB_INACTIVE")}
+ }
+ private func currentMintJob(_ m:MintJob,active:Bool=true)throws{
+  try current(m.session,m.revision,m.account,m.accountRevision,m.id)
+  try need(m.session.mintJob===m && broadcastRegistered && sendSourceIdentity != nil && permissions.epoch(m.session.scope["origin"]!)==m.epoch,"NATIVE_NFT_JOB_AUTHORITY")
+  for method in ["tbc_accounts","tbc_sendTransaction"]{try permissions.require(m.session.scope["origin"]!,method,account:permissionAccount(m.account))}
+  if active{try need(!m.stopped && Date()<m.expiresAt,"NATIVE_NFT_JOB_EXPIRED")}
+ }
+ func beginMintJob(owner:String,scope:[String:String],id:String,expectedRevision:Int,expectedAccount:NativeAccount,consent:[String:Any],complete:@escaping @MainActor (Result<[String:Any],Error>)->Void)throws{
+  let s=try session(owner,scope),account=try selectedAccount(s),r=try immutable(consent)
+  try need(s.mintJob==nil && s.revision==expectedRevision && account==expectedAccount && walletProtocol == .standard,"NATIVE_NFT_JOB_ACTIVE")
+  try current(s,s.revision,account,accounts.revision,id)
+  try need(Set(r.keys)==["operationKind","authority","collectionId","items","limits"] && r["operationKind"] as? String=="tbc721.batchMint" && canonical(r).utf8.count<=8*1024*1024,"NATIVE_NFT_JOB_SCOPE")
+  let authority:[String:Any]=["chainId":chain,"accountId":account.accountId,"address":account.address,"origin":s.scope["origin"]!,"sessionId":s.scope["sessionId"]!]
+  try need(canonical(r["authority"])==canonical(authority),"NATIVE_NFT_JOB_SCOPE");_ = try digest(r["collectionId"])
+  guard let items=r["items"] as? [[String:Any]],(1...2000).contains(items.count) else{throw NativeCustodyFailure(code:"NATIVE_NFT_JOB_ITEMS")}
+  var seen=Set<Int>(),steps=[NativeApprovalStep]()
+  for (index,item) in items.enumerated(){
+   try need(seen.insert(integer(item["slot"])).inserted && item["to"] is String,"NATIVE_NFT_JOB_ITEMS")
+   let i:[String:Any]=["version":"1.0","type":"tbc721-standard-batch-mint","collectionId":r["collectionId"]!,"items":[item]]
+   let description=try mintDescription(i,account.address)
+   steps.append(NativeApprovalStep(id:String(index+1),kind:"NFT mint",description:description,assets:NativeApprovalDisplay.intent(["intent":i],owner:account.address),warnings:[]))
+  }
+  let limits=try map(r["limits"]),fee=try amount(limits["maxTotalFee"]),expiry=try date(limits["expiresAt"])
+  let per=try integer(limits["maxItemsPerBatch"]),bytes=try integer(limits["maxPlanBytes"]),total=try integer(limits["maxTotalPlanBytes"])
+  try need(Set(limits.keys)==["maxTotalFee","expiresAt","maxItemsPerBatch","maxPlanBytes","maxTotalPlanBytes"] && (1...100).contains(per) && (1...4*1024*1024).contains(bytes) && total>=bytes && total<=32*1024*1024 && fee<=2100000000000000 && expiry>Date(),"NATIVE_NFT_JOB_LIMITS")
+  try reserve(s,id)
+  let m=try MintJob(session:s,id:id,account:account,accountRevision:accounts.revision,epoch:permissions.epoch(s.scope["origin"]!),scope:r,scopeHash:hash(r),expiresAt:expiry,maxFee:fee);s.mintJob=m
+  do{try currentMintJob(m)}catch{s.mintJob=nil;throw error}
+  let description="Mint \(items.count) NFTs in ordered sub-batches. Total network fee limit: \(fee) atomic, shared by the entire job. Collection: \(r["collectionId"]!). Expiry: \(limits["expiresAt"]!). A partial result is not permission to resend successful transactions.\n"+steps.map{$0.description}.joined(separator:"\n")
+  decision(s,id,NativeReview(operationId:id,origin:s.scope["origin"]!,chainId:chain,accountAddress:account.address,title:"Approve NFT mint job",description:description,steps:steps),finish:{yes in
+   try self.currentMintJob(m);if !yes{m.stopped=true;s.mintJob=nil;throw NativeCustodyFailure(code:"USER_REJECTED")};m.approved=true
+   return ["status":"approved","scopeHash":m.scopeHash]
+  },complete:complete)
+ }
+ func beginMintBatch(owner:String,scope:[String:String],parent:String,id:String,offset:Int,request:[String:Any])throws->NativeWalletSnapshot{
+  let s=try session(owner,scope);guard let m=s.mintJob,m.id==parent else{throw NativeCustodyFailure(code:"NATIVE_NFT_JOB_INACTIVE")};try currentMintJob(m)
+  let r=try immutable(request),intent=try map(r["intent"]),c=try map(r["constraints"]),limits=try map(m.scope["limits"]),items=m.scope["items"] as! [[String:Any]]
+  guard let child=intent["items"] as? [[String:Any]] else{throw NativeCustodyFailure(code:"NATIVE_NFT_JOB_ITEMS")}
+  try need(m.approved && m.activeChild==nil && offset==m.offset && !child.isEmpty && child.count<=integer(limits["maxItemsPerBatch"]) && offset+child.count<=items.count,"NATIVE_NFT_JOB_SLICE")
+  let expected:[String:Any]=["version":"1.0","type":"tbc721-standard-batch-mint","collectionId":m.scope["collectionId"]!,"items":Array(items[offset..<offset+child.count])]
+  try need(Set(r.keys)==["version","chainId","from","intent","constraints"] && r["version"] as? String=="1.0" && r["chainId"] as? String==chain && r["from"] as? String==m.account.address && canonical(intent)==canonical(expected) && Set(c.keys)==["maxFee","expiresAt"] && amount(c["maxFee"])==m.maxFee-m.spent && date(c["expiresAt"])<=m.expiresAt,"NATIVE_NFT_JOB_REQUEST")
+  let snapshot=try begin(owner:owner,scope:scope,id:id,method:"tbc_sendTransaction",expectedRevision:m.revision,expectedAccount:m.account)
+  let o=s.operations[id]!;o.mintJob=m;o.mintOffset=offset;o.maintenanceRequestHash=try hash(r);m.activeChild=id;return snapshot
+ }
+ private func bindMintJob(_ o:Operation,_ plan:[String:Any],_ payload:[String:Any],_ review:[String:Any],_ expiry:Date)throws{
+  guard let m=o.mintJob else{return};try currentMintJob(m)
+  let limits=try map(m.scope["limits"]),items=try map(o.request!["intent"])["items"] as! [[String:Any]],txs=payload["transactions"] as? [[String:Any]] ?? []
+  let bytes=try canonical(plan).utf8.count,fee=try amount(review["totalFee"])
+  try need(expiry<=m.expiresAt && txs.count==items.count && fee<=m.maxFee-m.spent && bytes<=integer(limits["maxPlanBytes"]) && m.planBytes+bytes<=integer(limits["maxTotalPlanBytes"]),"NATIVE_NFT_JOB_BUDGET")
+  let fees=try txs.map{try amount($0["fee"])}
+  var total:UInt64=0;for f in fees{try need(f<=fee-total,"NATIVE_NFT_JOB_FEE");total+=f}
+  try need(total==fee,"NATIVE_NFT_JOB_FEE");o.mintFees=fees;m.planBytes+=bytes
+ }
+ // Read actual native journal outcomes before child close releases handles.
+ // Unknown effects stop the job; accepted prefixes remain visible to callers.
+ private func captureMintBatch(_ o:Operation){
+  guard let m=o.mintJob,m.activeChild==o.id else{return}
+  let count=((o.request?["intent"] as? [String:Any])?["items"] as? [Any])?.count ?? 0
+  let txs=(o.sendMaterial?["bundle"] as? [String:Any])?["transactions"] as? [[String:Any]] ?? []
+  var rows=[[String:Any]](),accepted=0,uncertain=false,interrupted=false
+  for (i,t) in txs.enumerated(){
+   let key="single:\(i)"
+   let row=o.mintOutcomes.flatMap{$0.indices.contains(i) ? $0[i]:nil} ?? (try? o.broadcastStates[key]?())?.first
+   var status=o.broadcastStates[key]==nil ? "not-submitted":"uncertain"
+   if row?["txid"]==t["txid"] as? String,let found=row?["status"],["accepted","known","rejected"].contains(found){status=found}
+   if ["accepted","known"].contains(status) && interrupted{status="uncertain"}
+   if ["accepted","known"].contains(status),i<o.mintFees.count,o.mintFees[i]<=m.maxFee-m.spent{accepted+=1;m.spent+=o.mintFees[i]}else{interrupted=true}
+   uncertain = uncertain || status=="uncertain"
+   var result:[String:Any]=["txid":t["txid"]!,"fee":String(i<o.mintFees.count ? o.mintFees[i]:0),"status":status]
+   if let recovery=o.mintRecovery[key]{result["recoveryId"]=recovery};rows.append(result)
+  }
+  let complete=o.sendResultHash != nil && accepted==count && count>0
+  m.batches.append(["offset":o.mintOffset,"count":count,"planHash":o.planHash as Any? ?? NSNull(),"status":complete ? "complete":uncertain ? "uncertain":accepted>0 ? "partial":"failed","transactions":rows])
+  m.offset+=accepted;m.activeChild=nil;if !complete{m.stopped=true}
+ }
+ func mintBatchResult(owner:String,scope:[String:String],id:String)throws->[String:Any]{
+  let s=try session(owner,scope);guard let m=s.mintJob,m.id==id,let row=m.batches.last,m.activeChild==nil else{throw NativeCustodyFailure(code:"NATIVE_NFT_JOB_RESULT")};try currentMintJob(m,active:false);return row
+ }
+ func finishMintJob(owner:String,scope:[String:String],id:String,reason:String)throws->[String:Any]{
+  let s=try session(owner,scope);guard let m=s.mintJob,m.id==id,m.approved,m.activeChild==nil else{throw NativeCustodyFailure(code:"NATIVE_NFT_JOB_RESULT")};try currentMintJob(m,active:false)
+  try need(["complete","preparation-failed","execution-failed","expired","submission-uncertain"].contains(reason),"NATIVE_NFT_JOB_REASON")
+  let requested=(m.scope["items"] as! [Any]).count,uncertain=m.batches.contains{$0["status"] as? String=="uncertain"},complete=m.offset==requested && !m.stopped
+  let result:[String:Any]=["status":complete ? "complete":uncertain ? "uncertain":m.offset>0 ? "partial":"stopped","reason":complete ? "complete":uncertain ? "submission-uncertain":reason=="complete" ? "execution-failed":reason,"scopeHash":m.scopeHash,"requested":requested,"minted":m.offset,"confirmedSubmissionFee":String(m.spent),"batches":m.batches]
+  m.stopped=true;s.mintJob=nil;return result
+ }
+ func closeMintJob(owner:String,scope:[String:String],id:String)throws{
+  let s=try session(owner,scope);guard let m=s.mintJob,m.id==id else{return}
+  if let child=m.activeChild{try close(owner:owner,scope:scope,id:child)}
+  m.stopped=true;s.mintJob=nil;s.pending.removeValue(forKey:id)?()
  }
  private func currentMaintenance(_ m:Maintenance)throws{
   try maintenanceAuthority(m)
@@ -688,6 +795,12 @@ struct NativeCustodyNetworkAuthority {
     detail="\(label) \(try string(intent["contractId"]))\n"+sends+payment
    case "tbc20.merge":detail="FT \(try string(intent["contractId"]))\nMerge token inputs into the same account: \(o.account.address)."
    case "tbc20Stablecoin.merge":detail="Stablecoin \(try string(intent["contractId"]))\nMerge token inputs into the same account: \(o.account.address)."
+   case "tbc721.batchTransfer":
+    guard let transfers=intent["transfers"] as? [[String:Any]],(1...100).contains(transfers.count) else{throw NativeCustodyFailure(code:"NATIVE_NFT_BATCH")}
+    detail=try transfers.enumerated().map{index,item in
+     let payment=try (item["payment"] as? [String:Any]).map{" Also send \(try amount($0["amount"])) TBC atomic to \(try string($0["to"]))."} ?? ""
+     return "\(index+1). Send NFT \(try string(item["contractId"])) to \(try string(item["to"]))."+payment
+    }.joined(separator:"\n")
    case "tbc721.transfer":
     let payment=try (intent["payment"] as? [String:Any]).map{"\nAlso send \(try amount($0["amount"])) TBC atomic to \(try string($0["to"]))."} ?? ""
     detail="Send NFT \(try string(intent["contractId"])) to \(try string(intent["to"]))."+payment
@@ -717,8 +830,9 @@ struct NativeCustodyNetworkAuthority {
   complete:@escaping @MainActor (Result<Bool,Error>)->Void)throws{
   let o=try operation(owner,scope,id)
   if o.maintenance != nil{try need(hash(request)==o.maintenanceRequestHash,"NATIVE_MERGE_REQUEST")}
+  if o.mintJob != nil{try need(hash(request)==o.maintenanceRequestHash,"NATIVE_NFT_JOB_REQUEST")}
   let description=try NativeWorkflow.methods.contains(method) ? describeWorkflow(o,method:method,request:request,context:context,review:review):describeConsent(o,method:method,request:request,context:context,review:review)
-  if o.maintenance != nil{try current(o);o.approved=true;complete(.success(true));return}
+  if o.maintenance != nil || o.mintJob != nil{try current(o);o.approved=true;complete(.success(true));return}
   let children=o.workflow?.children ?? [o]
   let steps=children.enumerated().map{index,child -> NativeApprovalStep in
    let request=child.request ?? [:],kind=child.method
@@ -762,15 +876,16 @@ struct NativeCustodyNetworkAuthority {
    guard let plan else{throw NativeCustodyFailure(code:"PLAN_REQUIRED")}
    let signedPlan=try immutable(plan),payload=try map(signedPlan["payload"])
    try need(signedPlan["planHash"] as? String==hash(payload) && p["operationHash"] as? String==signedPlan["planHash"] as? String && payload["requestHash"] as? String==o.requestHash && payload["accountId"] as? String==o.account.accountId && payload["chainId"] as? String==chain,"NATIVE_PLAN_BINDING")
-   if let proposal=o.preparedProposal{try NativePrepared.bind(proposal,plan:payload,expiry:expiry)}
+   if let proposal=o.preparedProposal{try NativePrepared.bind(proposal,plan:payload,expiry:expiry,limit:bundleLimit(o.request))}
    let count=try integer(review["transactionCount"])
-   try need(canonical(review)==canonical(payload["preview"]) && (1...32).contains(count) && review["operationKind"] as? String=="transaction" && coveredWarnings(o.request!,payload),"NATIVE_REVIEW")
+   try need(canonical(review)==canonical(payload["preview"]) && (1...bundleLimit(o.request)).contains(count) && review["operationKind"] as? String=="transaction" && coveredWarnings(o.request!,payload),"NATIVE_REVIEW")
    try need(amount(review["totalFee"])<=amount(o.consentFeeCap),"NATIVE_FEE_CAP")
    guard let value=payload["signingTasks"] as? [[String:Any]]else{throw NativeCustodyFailure(code:"NATIVE_TASKS")};tasks=value
    let transactions=payload["transactions"] as? [[String:Any]] ?? []
    let ids=try transactions.map{try string($0["id"])}
    try need(ids.count==count && Set(ids).count==count,"NATIVE_PLAN_TRANSACTIONS")
    try bindMaintenance(o,payload,review,expiry)
+   try bindMintJob(o,signedPlan,payload,review,expiry)
    o.transactionCount=count;o.transactionIds=Set(ids);o.planHash=try string(signedPlan["planHash"])
    if NativePrepared.sends(o.method){o.sendPlan=["totalFee":review["totalFee"]!,"transactions":transactions.map{$0.filter{["id","role","dependsOn"].contains($0.key)}}]}
   }else if o.method=="tbc_signTypedData"{
@@ -788,7 +903,7 @@ struct NativeCustodyNetworkAuthority {
    tasks=[["taskId":walletProtocol == .legacy ? "legacy-sign-message":"sign-message","purpose":"message","algorithm":"secp256k1-recoverable-ecdsa-sha256d","digest":p["operationHash"]!,"signatureEncoding":"compact65-recoverable","origin":p["origin"]!,"accountId":o.account.accountId,"publicKey":o.account.publicKey]]
   }
   let profile=(o.request?["intent"] as? [String:Any])?["type"] as? String
-  let limit = !NativePrepared.transaction(o.method) ? 1:(["tbc-lop-create":128,"tbc-lop-cancel":3,"tbc-lop-match":3,"tbc-htlc-lock":128,"tbc-htlc-claim":128,"tbc-htlc-refund":128,"tbc-timelock-lock":128,"tbc-timelock-unlock":128,"amm.swap":128,"amm.addLiquidity":128,"amm.removeLiquidity":128,"amm.mergeToken":6,"tbc20Lp.transfer":128,"tbc20Lp.lock":128,"tbc20Lp.unlock":128,"tbc20Lp.merge":128,"tbc20Lp.burn":6,"tbc20.transfer":32,"tbc20.merge":32,"tbc20-standard-create":128,"tbc721-standard-create-collection":128,"tbc721-standard-mint":128,"tbc721-standard-batch-mint":128,"tbc-amm-create":128,"tbc-amm-add-liquidity":128,"tbc-amm-remove-liquidity":128,"tbc-amm-swap":128,"tbc20-lp-transfer":128,"tbc20-lp-merge":128,"tbc20-lp-lock":128,"tbc20-lp-unlock":128,"tbc.pool.swap.exactTbcForToken":128,"tbc.pool.swap.exactTokenForTbc":128,"tbc.pool.liquidity.add":128,"tbc.pool.liquidity.remove":128,"tbc.pool.ft.merge":6,"tbc.pool.ftlp.merge":6,"tbc.pool.ftlp.burn":6,"tbc721.transfer":128,"tbc20Stablecoin.transfer":128,"tbc20Stablecoin.merge":128,"tbc.transfer":128,"tbc.maintenance.merge":100][profile ?? ""] ?? 0)
+  let limit = !NativePrepared.transaction(o.method) ? 1:(["tbc-lop-create":128,"tbc-lop-cancel":3,"tbc-lop-match":3,"tbc-htlc-lock":128,"tbc-htlc-claim":128,"tbc-htlc-refund":128,"tbc-timelock-lock":128,"tbc-timelock-unlock":128,"amm.swap":128,"amm.addLiquidity":128,"amm.removeLiquidity":128,"amm.mergeToken":6,"tbc20Lp.transfer":128,"tbc20Lp.lock":128,"tbc20Lp.unlock":128,"tbc20Lp.merge":128,"tbc20Lp.burn":6,"tbc20.transfer":32,"tbc20.merge":32,"tbc20-standard-create":128,"tbc721-standard-create-collection":128,"tbc721-standard-mint":128,"tbc721-standard-batch-mint":128,"tbc-amm-create":128,"tbc-amm-add-liquidity":128,"tbc-amm-remove-liquidity":128,"tbc-amm-swap":128,"tbc20-lp-transfer":128,"tbc20-lp-merge":128,"tbc20-lp-lock":128,"tbc20-lp-unlock":128,"tbc.pool.swap.exactTbcForToken":128,"tbc.pool.swap.exactTokenForTbc":128,"tbc.pool.liquidity.add":128,"tbc.pool.liquidity.remove":128,"tbc.pool.ft.merge":6,"tbc.pool.ftlp.merge":6,"tbc.pool.ftlp.burn":6,"tbc721.transfer":128,"tbc721.batchTransfer":128,"tbc20Stablecoin.transfer":128,"tbc20Stablecoin.merge":128,"tbc.transfer":128,"tbc.maintenance.merge":100][profile ?? ""] ?? 0)
   let reviewed=o.method==NativeReviewed.method
   try need(reviewed ? tasks.count<=1000:(!tasks.isEmpty && tasks.count<=limit),"NATIVE_TASKS");var validated=[String:[String:Any]]()
   o.exactTaskCount = !(poolContinuation(profile) && o.transactionCount>1 && review["signingTaskCount"]==nil)
@@ -1056,7 +1171,7 @@ struct NativeCustodyNetworkAuthority {
   try need(c["requestHash"] as? String==o.requestHash && c["planHash"] as? String==o.planHash && c["bindingHash"] as? String==o.receipt!["bindingHash"] as? String && c["approvalId"] as? String==o.receipt!["approvalId"] as? String,"NATIVE_STAGE_BINDING")
   try need(stage==o.stage+1 && stage<o.transactionCount && (o.stageSession==nil || o.stageSession==session) && s["sessionId"] as? String==session && integer(s["stage"])==stage && s["stageCommitment"] as? String==commitment && inner["sessionId"] as? String==session && inner["planCommitment"] as? String==session && integer(inner["nextStage"])==stage,"NATIVE_STAGE_ORDER")
   guard let tasks=p["signingRequests"] as? [[String:Any]],let requests=s["signingRequests"] as? [[String:Any]] else{throw NativeCustodyFailure(code:"NATIVE_TASKS")}
-  let limit=(poolContinuation(profile) || lpContinuation(profile)) ? 128:(["tbc20.transfer":32,"tbc20.merge":32,"tbc20-standard-create":128,"tbc721-standard-batch-mint":128,"tbc-amm-create":128][profile ?? ""] ?? 0)
+  let limit=(poolContinuation(profile) || lpContinuation(profile)) ? 128:(["tbc20.transfer":32,"tbc20.merge":32,"tbc20-standard-create":128,"tbc721.batchTransfer":128,"tbc721-standard-batch-mint":128,"tbc-amm-create":128][profile ?? ""] ?? 0)
   try need(!tasks.isEmpty && tasks.count<=limit && tasks.count==requests.count && o.tasks.count+tasks.count<=o.expectedTasks,"NATIVE_TASKS")
   var validated=[String:[String:Any]]()
   for (t,r) in zip(tasks,requests){
@@ -1158,10 +1273,10 @@ struct NativeCustodyNetworkAuthority {
   }else{
    guard let plan=o.sendPlan else{throw NativeCustodyFailure(code:"NATIVE_BROADCAST_PLAN")}
    try need(workflow==nil && fullySigned(o),"NATIVE_STAGE_INCOMPLETE")
-   transactions=try NativeWorkflow.completedBundle(value,account:o.account,requestHash:o.requestHash!,approvalId:string(receipt["approvalId"]),fee:string(plan["totalFee"]),transactions:plan["transactions"] as? [[String:Any]],reviewed:nil)
+   transactions=try NativeWorkflow.completedBundle(value,account:o.account,requestHash:o.requestHash!,approvalId:string(receipt["approvalId"]),fee:string(plan["totalFee"]),transactions:plan["transactions"] as? [[String:Any]],reviewed:nil,limit:bundleLimit(o.request))
   }
   let ids=try transactions.map{try string($0["txid"])}
-  try need((1...32).contains(ids.count) && Set(ids).count==ids.count && transactions.allSatisfy{($0["rawTransaction"] as? String)?.utf8.count ?? Int.max <= 4*1024*1024},"NATIVE_BROADCAST_BOUNDS")
+  try need((1...(o.workflow==nil ? bundleLimit(o.request):32)).contains(ids.count) && Set(ids).count==ids.count && transactions.allSatisfy{($0["rawTransaction"] as? String)?.utf8.count ?? Int.max <= 4*1024*1024},"NATIVE_BROADCAST_BOUNDS")
   let accountHash=try hash(o.account.identity),authorization=try hash(["method":o.method,"sourceIdentity":source,"accountScopeHash":accountHash,"contextHash":hash(context(o.session)),"operationId":id,"approvalId":receipt["approvalId"]!,"bindingHash":receipt["bindingHash"]!,"bundleHash":hash(value)])
   o.sendMaterial=["bundle":value,"sourceIdentity":source,"accountScopeHash":accountHash,"authorizationId":authorization,"expiresAt":receipt["expiresAt"]!]
  }
@@ -1191,9 +1306,10 @@ struct NativeCustodyNetworkAuthority {
  // authority has already changed: it may cancel only its own unstarted ticket.
  func ownBroadcast(owner:String,scope:[String:String],id:String,key:String,state:@escaping ()throws->[[String:String]],close:@escaping ()->Void,recoveryId:String?=nil)throws{
   let o=try operation(owner,scope,id);try receipt(o)
-  try need(o.sendMaterial != nil && o.broadcastClosers[key]==nil && o.broadcastClosers.count<32,"NATIVE_BROADCAST_OWNER")
+  try need(o.sendMaterial != nil && o.broadcastClosers[key]==nil && o.broadcastClosers.count<(o.workflow==nil ? bundleLimit(o.request):32),"NATIVE_BROADCAST_OWNER")
   o.broadcastClosers[key]=close;o.broadcastStates[key]=state
   if o.maintenance != nil && key=="single:0"{o.maintenanceRecoveryId=recoveryId}
+  if o.mintJob != nil,let recoveryId{o.mintRecovery[key]=recoveryId}
  }
  private func closeBroadcasts(_ o:Operation){let callbacks=Array(o.broadcastClosers.values);o.broadcastClosers.removeAll();o.broadcastStates.removeAll();for close in callbacks{close()}}
  // Commit only the exact public projection of this operation's native-owned
@@ -1236,6 +1352,9 @@ struct NativeCustodyNetworkAuthority {
    let step=o.maintenanceStep!
    m.completedRows.append(["stepId":step["stepId"]!,"txid":txid,"status":states[0]["status"]!,"fee":String(fee),"inputCount":step["inputCount"]!,"outputCount":1,"dependsOn":step["dependsOn"]!])
   }
+  // Preserve these already-verified native outcomes before the normal send
+  // authority closes. Never reopen a dispatch fence to recover completion.
+  if o.mintJob != nil{o.mintOutcomes=states}
   o.sendResultHash=resultHash
  }
  // A completed operation retains only an epoch permit for result emission, not
@@ -1265,6 +1384,8 @@ struct NativeCustodyNetworkAuthority {
    }
    m.activeChild=nil;if !deliverable{m.stopped=true}
   }
+  captureMintBatch(o)
+  if o.mintJob != nil{s.results.removeValue(forKey:id)}
   s.operations.removeValue(forKey:id);closeBroadcasts(o);s.pending.removeValue(forKey:id)?()
  }
  // Repeat on the native WebView executor at actual signature result emission.
@@ -1455,7 +1576,7 @@ struct NativeCustodyNetworkAuthority {
  }
  private func mintDescription(_ intent:[String:Any],_ owner:String)throws->String{
   let items=intent["type"] as? String=="tbc721-standard-mint" ? [intent]:(intent["items"] as? [[String:Any]] ?? [])
-  try need((1...32).contains(items.count),"NATIVE_MINT_BOUND")
+  try need((1...100).contains(items.count),"NATIVE_MINT_BOUND")
   let slots=try items.map{try integer($0["slot"])}
   try need(slots.allSatisfy{$0>0 && $0<=0xffffffff} && Set(slots).count==slots.count,"NATIVE_MINT_SLOTS")
   let details=try items.map{item in
@@ -1465,6 +1586,7 @@ struct NativeCustodyNetworkAuthority {
   return "Mint \(items.count) NFT(s) from collection \(try string(intent["collectionId"])).\n\(details)\nApprove the ordered mint steps as one bounded request."
  }
  private func poolContinuation(_ profile:String?)->Bool{["tbc-amm-add-liquidity","tbc-amm-remove-liquidity","tbc-amm-swap","amm.addLiquidity","amm.removeLiquidity","amm.swap"].contains(profile ?? "")}
+ private func bundleLimit(_ request:[String:Any]?)->Int{["tbc721.batchTransfer","tbc721-standard-batch-mint"].contains((request?["intent"] as? [String:Any])?["type"] as? String ?? "") ? 100:32}
  // LP uses the Engine's pool continuation family, but not AMM controller authority.
  private func lpContinuation(_ profile:String?)->Bool{["tbc20-lp-transfer","tbc20-lp-merge","tbc20-lp-lock","tbc20-lp-unlock","tbc20Lp.transfer","tbc20Lp.merge","tbc20Lp.lock","tbc20Lp.unlock"].contains(profile ?? "")}
  // Only known maintenance warnings covered by the bounded early consent.
@@ -1475,6 +1597,12 @@ struct NativeCustodyNetworkAuthority {
    return warnings==["HTLC_CLAIM_SIGNED_BYTES_DISCLOSE_PREIMAGE"] && (payload["transactions"] as? [[String:Any]])?.count==1 && preview["transactionCount"] as? Int==1
   }
   if warnings.isEmpty{return true}
+  if (request["intent"] as? [String:Any])?["type"] as? String=="tbc721.batchTransfer"{
+   guard warnings==["MULTI_TRANSACTION"],let txs=payload["transactions"] as? [[String:Any]],
+     (2...bundleLimit(request)).contains(txs.count),preview["transactionCount"] as? Int==txs.count,
+     let items=(request["intent"] as? [String:Any])?["transfers"] as? [[String:Any]] else{return false}
+   return txs.filter{$0["role"] as? String=="primary"}.count==items.count && txs.allSatisfy{["primary","maintenance"].contains($0["role"] as? String ?? "")}
+  }
   if poolContinuation((request["intent"] as? [String:Any])?["type"] as? String){
    guard warnings.count==2,Set(warnings)==["MULTI_TRANSACTION","MAINTENANCE_TRANSACTION"],
      let txs=payload["transactions"] as? [[String:Any]],(2...32).contains(txs.count),preview["transactionCount"] as? Int==txs.count else{return false}

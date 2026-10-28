@@ -3,6 +3,7 @@
 import '../configuration.dart';
 import '../host_environment.dart';
 import 'protocol_codec.dart';
+import 'transaction_profiles.dart' show transactionBundleLimit;
 
 Map<String, dynamic> defaultTransactionPolicy({
   required TbcNetworkConfiguration network,
@@ -42,6 +43,39 @@ Map<String, dynamic> defaultTransactionPolicy({
         'tbc20Stablecoin.merge',
       ].contains(request['intent']?['type']);
   need(request['chainId'] == network.chainId, 'POLICY_NETWORK');
+  if (request['intent']?['type'] == 'tbc721.batchTransfer') {
+    need(
+      snapshot != null &&
+          snapshot['snapshotHash'] == hashJson(snapshot['payload']) &&
+          snapshot['payload']['chainId'] == network.chainId,
+      'POLICY_MATERIAL',
+    );
+    final items = request['intent']['transfers'] as List;
+    final contracts = snapshot!['payload']['contracts'] as List;
+    need(
+      contracts.length == items.length &&
+          contracts.every(
+            (c) =>
+                c['family'] == 'nft' &&
+                ['tbc721', '2.0'].contains(c['protocolVersion']) &&
+                items.any((i) => i['contractId'] == c['contractId']),
+          ),
+      'POLICY_NFT_BATCH',
+    );
+    final policy = currentNftPolicy(
+      network: network,
+      request: request,
+      now: now,
+    );
+    policy['payload']['contractPolicies'] = [
+      {
+        'family': 'nft',
+        'allowedVersions': ['tbc721', '2.0'],
+      },
+    ];
+    policy['policyHash'] = hashJson(policy['payload']);
+    return policy;
+  }
   if ([
     'tbc-lop-create',
     'tbc-lop-cancel',
@@ -225,6 +259,7 @@ Map<String, dynamic> currentNftPolicy({
     request['chainId'] == network.chainId &&
         [
           'tbc721.transfer',
+          'tbc721.batchTransfer',
           'tbc721-standard-create-collection',
           'tbc721-standard-mint',
           'tbc721-standard-batch-mint',
@@ -238,7 +273,7 @@ Map<String, dynamic> currentNftPolicy({
     'chainId': network.chainId,
     'expiresAt': tbcProtocolTimestamp(now.add(const Duration(minutes: 5))),
     'sighashType': 65,
-    'maxBundleTransactions': 32,
+    'maxBundleTransactions': transactionBundleLimit(request),
     'minConfirmations': '0',
     'dustThreshold': '42',
     'feeRateSatPerKb': '80',

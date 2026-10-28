@@ -1,5 +1,6 @@
 pub(crate) mod ft;
 pub(crate) mod nft;
+pub(crate) mod nft_batch;
 pub(crate) mod pool;
 pub(crate) mod stablecoin;
 pub(crate) mod tbc;

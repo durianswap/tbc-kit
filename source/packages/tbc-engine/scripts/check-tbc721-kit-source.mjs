@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { registerHooks } from "node:module";
 import { build } from "esbuild";
+import { createHash } from "node:crypto";
 import { secp256k1 } from "@noble/curves/secp256k1.js";
 
 const root = fileURLToPath(new URL("../../../", import.meta.url));
@@ -77,6 +78,12 @@ async function main() {
   ];
   const checks = [];
   intents.push(...intents.slice(3).map(intent=>({...intent,type:'tbc721.transfer'})));
+  const largeMediaBytes = Buffer.alloc(70_000, 42);
+  const largeMedia = { kind: 'base64', mediaType: 'image/png', data: largeMediaBytes.toString('base64'),
+    sha256: createHash('sha256').update(largeMediaBytes).digest('hex') };
+  // Exercise both normal and Prepared Provider/approval/signing boundaries,
+  // not only the Rust planner. Existing small-media read budgets stay intact.
+  intents.push({ ...intents[0], media: largeMedia }, { ...intents[1], media: largeMedia });
   function setup(intent, hooks = {}) {
     const transfer = intent.type === "tbc721-standard-transfer" || intent.type === "tbc721.transfer";
     const funding = transfer ? current : collection;
@@ -115,11 +122,13 @@ async function main() {
     return { network, trace };
   }
   for (const intent of intents) {
-    const request = { version: "1.0", chainId: account.chainId, from: address, intent, constraints: { maxFee: "5000" } };
+    const request = { version: "1.0", chainId: account.chainId, from: address, intent, constraints: { maxFee: intent.media?.kind === 'base64' ? "20000" : "5000" } };
     check(JSON.stringify(kit.chainDataRequirement(request)) === JSON.stringify(kit.preparedChainDataRequirement(request)), "Ordinary/Prepared requirement projection differs");
-    const expectedReads = intent.type.endsWith("create-collection") ? 2 : intent.type.endsWith("transfer") ? 7 : 4;
+    // Default floor is zero; Code and Hold come from the same authenticated
+    // parent. Neither nodeInfo nor an independent Hold-status GET is needed.
+    const expectedReads = intent.type.endsWith("create-collection") ? 1 : intent.type.endsWith("transfer") ? 5 : 3;
     for (const preparedMode of [false, true]) {
-      const label = `${intent.type}${intent.payment ? "+payment" : ""}/${preparedMode ? "prepared" : "ordinary"}`;
+      const label = `${intent.type}${intent.payment ? "+payment" : ""}${intent.media?.kind === 'base64' ? '+70KB-media' : ''}/${preparedMode ? "prepared" : "ordinary"}`;
       let approvals = 0, signatures = 0, finalizations = 0, latestPlan;
       const walletNetwork = setup(intent, { beforeRead() { check(approvals === 0, `${label}: read after approval`); } });
       const dappNetwork = preparedMode ? setup(intent) : undefined;
@@ -178,7 +187,7 @@ async function main() {
           result = response.result;
         }
         check(approvals === 1 && signatures > 0, `${label}: incomplete approval/signing`);
-        check(walletNetwork.trace.length === expectedReads, `${label}: wallet read count ${walletNetwork.trace.length}, expected ${expectedReads}`);
+        check(walletNetwork.trace.length === expectedReads, `${label}: wallet read count ${walletNetwork.trace.length}, expected ${expectedReads}: ${JSON.stringify(walletNetwork.trace.map(r => r.path))}`);
         check(new Set(walletNetwork.trace.map(r => r.path)).size === expectedReads, `${label}: duplicate read`);
         check((dappNetwork?.trace.length ?? 0) === (preparedMode ? expectedReads : 0), `${label}: DApp read count`);
         check(result.transactions.length === (intent.items?.length ?? 1) && finalizations === result.transactions.length, `${label}: bundle/signing continuation mismatch`);
@@ -297,17 +306,17 @@ async function main() {
         }
       }
       check(JSON.stringify(JSON.parse(receipt.envelope.message.data).txids) === JSON.stringify(minted.transactions.map(tx => tx.txid)), "NFT workflow message binding lost signed IDs");
-      const expectedReads=unifiedTransfer?7:4;
+      const expectedReads=unifiedTransfer?5:3;
       check(approvals === 1 && signatures === (unifiedTransfer ? 4 : intent.items ? 5 : 3) && run.trace.length === expectedReads, "NFT workflow read/signature budget");
       if (preparedMode) check(dapp.trace.length === expectedReads, `Prepared NFT read budget: ${dapp.trace.length}, expected ${expectedReads}`);
       if (preparedMode) {
         const before = dapp.trace.length;
         await kit.prepareTbcWorkflow({ request: params, network: dapp.network, engine: sequentialDappEngine });
         const fresh = dapp.trace.slice(before);
-        check(fresh.length === (unifiedTransfer?4:3) && fresh.every(row => !row.path.includes('/txraw/')) &&
-          fresh.some(row => row.path === '/api/tbc/nodeinfo') && fresh.some(row => row.path.includes('/utxo/address/')) &&
-          fresh.some(row => row.path.includes('/utxo/scriptpubkeyhash/')) &&
-          (!unifiedTransfer || fresh.some(row=>row.path==='/api/tbc/txo/status')), "Prepared workflow retained mutable state across calls");
+        check(fresh.length === 2 && fresh.every(row => !row.path.includes('/txraw/')) &&
+          fresh.some(row => row.path.includes('/utxo/address/')) &&
+          fresh.some(row => row.path.includes('/utxo/scriptpubkeyhash/')),
+          "Prepared workflow retained mutable state across calls");
       }
       checks.push(`${intent.type}/${separateSteps ? "independent-mints" : "workflow"}${preparedMode ? "-prepared" : ""}:reads=${expectedReads},approval=1,signatures=${signatures}`);
     } catch (error) {
@@ -370,7 +379,8 @@ async function main() {
   const first = cached.trace.length;
   check(!!(await cached.network.resolveChainData(cachedParams)).snapshotHash, "Cached NFT snapshot failed");
   check(cached.trace.slice(first).every(read => !read.path.includes("/txraw/")), "Immutable NFT raw cache was not reused");
-  check(cached.trace.slice(first).some(read => read.path === "/api/tbc/txo/status") && cached.trace.slice(first).some(read => read.path.includes("/nft/utxo/")), "Cache incorrectly replaced live spend-state reads");
+  check(cached.trace.slice(first).length === 2 && cached.trace.slice(first).some(read => read.path.includes("/utxo/address/")) &&
+    cached.trace.slice(first).some(read => read.path.includes("/nft/utxo/")), "Cache incorrectly replaced live spend-state reads");
   for (const name of ["testnet", "mainnet"]) {
     let reads = 0;
     const network = kit.createDefaultTbcNetwork({ network: kit.createTbcNetworkContext({ network: name }), accounts: { current: async () => [] },

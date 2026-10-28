@@ -226,6 +226,26 @@ test("DApp multi-round convenience emits one bounded shared request and preserve
   });
 });
 
+test("NFT hundreds use one job request; ordinary single-plan mint keeps its existing route", async () => {
+  const calls=[];
+  const provider={async request(request,options){calls.push(structuredClone(request));
+    if(request.method==='tbc_requestAccounts') return ['1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH'];
+    return {status:'complete',method:request.method};},on(){},removeListener(){},destroy(){}};
+  const wallet=await createTbcClient({network:'testnet',provider}).connect();
+  const items=Array.from({length:250},(_,i)=>({slot:i+1,name:`NFT ${i}`,symbol:'N',description:'',attributes:[]}));
+  const limits={maxTotalFee:'100000',expiresAt:'2099-10-27T00:05:00Z'};
+  await wallet.tbc721.batchMint({collectionId:'ab'.repeat(32),items,limits});
+  assert.equal(calls.length,2);assert.equal(calls[1].method,'tbc_runNftMintJob');
+  assert.deepEqual(calls[1].params.items,items);assert.deepEqual(calls[1].params.limits,limits);
+  assert.equal(calls[1].params.chainId,'tbc:testnet');
+  assert.throws(()=>wallet.tbc721.batchMint({collectionId:'ab'.repeat(32),items}),/whole-job limits/);
+  assert.throws(()=>wallet.tbc721.batchMint({collectionId:'ab'.repeat(32),items,limits,constraints:{maxFee:'10'}}),/whole-job limits/);
+  assert.equal(calls.length,2);
+  await wallet.tbc721.batchMint({collectionId:'ab'.repeat(32),items:items.slice(0,2),constraints:{maxFee:'1000'}});
+  assert.equal(calls.length,3);assert.equal(calls[2].method,'tbc_sendTransaction');
+  assert.equal(calls[2].params.intent.type,'tbc721-standard-batch-mint');
+});
+
 test("new-standard reviewed signing and crypto helpers use independent methods", async () => {
   const calls = [];
   const address = "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH";

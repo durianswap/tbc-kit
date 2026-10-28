@@ -108,6 +108,18 @@ final class TbcWalletActions {
       request('tbc_signTransaction', transaction);
   Future<Object?> sendTransaction(Map<String, Object?> transaction) =>
       request('tbc_sendTransaction', transaction);
+
+  /// One immutable mint manifest and one native approval. The fee budget is
+  /// shared across all sub-batches; amounts use native atomic decimal strings.
+  /// A partial/uncertain result must be reconciled, never blindly submitted again.
+  Future<Map<String,dynamic>> mintNftJob({required String collectionId,
+    required List<Map<String,dynamic>> items,
+    required Map<String,dynamic> limits}) async {
+    if(_closed)throw const TbcWalletException(4900,'Wallet session closed');
+    _control.requireCurrent();
+    return _session.mintNftJob(operation:'mint-job-${++_sequence}',
+      collectionId:collectionId,items:items,limits:limits);
+  }
   Future<Object?> signPreparedTransaction(Map<String, Object?> transaction) =>
       request('tbc_signPreparedTransaction', transaction);
   Future<Object?> sendPreparedTransaction(Map<String, Object?> transaction) =>

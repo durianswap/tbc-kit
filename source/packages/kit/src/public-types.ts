@@ -173,6 +173,11 @@ export type Tbc721StandardTransferIntent = Readonly<{
 export type Tbc721TransferIntent = Readonly<Omit<Tbc721StandardTransferIntent, "type"> & {
   type: "tbc721.transfer";
 }>;
+/** One approval-bound plan; settlement of its transactions is not atomic. */
+export type Tbc721BatchTransferIntent = Readonly<{
+  type: "tbc721.batchTransfer"; version: "1.0";
+  transfers: readonly Readonly<Omit<Tbc721StandardTransferIntent, "type" | "version">>[];
+}>;
 
 export type FtTransferIntent = Readonly<{
   type: "tbc.ft.transfer";
@@ -313,6 +318,7 @@ export type KitSupportedIntent =
   | Tbc721StandardBatchMintIntent
   | Tbc721StandardTransferIntent
   | Tbc721TransferIntent
+  | Tbc721BatchTransferIntent
   | FtCreateIntent
   | FtTransferIntent
   | FtMergeIntent

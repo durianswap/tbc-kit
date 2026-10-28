@@ -43,7 +43,9 @@ pub(crate) fn validate(input: Value) -> Result<Value, EngineError> {
         Ok(expected) => {
             let business_plan = expected.business_plan.as_ref().unwrap_or(&expected.unsigned_plan);
             let business_request = expected.resolved_request.as_ref().unwrap_or(&params.request);
-            if business_request.intent.intent_type == "tbc.transfer" {
+            if business_request.intent.intent_type == "tbc721.batchTransfer" {
+                violations.extend(crate::families::nft_batch::validate_plan(business_request, business_plan));
+            } else if business_request.intent.intent_type == "tbc.transfer" {
                 violations.extend(validate_tbc_transfer(business_request, &expected.unsigned_plan));
             } else if business_request.intent.intent_type == "tbc.maintenance.merge" {
                 violations.extend(validate_tbc_merge(business_request, &expected.unsigned_plan));

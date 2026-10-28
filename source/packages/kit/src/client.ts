@@ -6,6 +6,7 @@ import type {
   Tbc721StandardMintIntent,
   Tbc721StandardBatchMintIntent,
   Tbc721TransferIntent,
+  Tbc721BatchTransferIntent,
   FtCreateIntent,
   FtMergeIntent,
   FtTransferIntent,
@@ -67,6 +68,9 @@ import type {
 } from "./prepared.js";
 import { createTbcOfficialApi } from "./official-api.js";
 import { createTimelockReader, type TimelockReader, type ListTimelockDepositsInput } from "./timelock-query.js";
+import { createTbc721Reader, type Tbc721Reader, type GetTbc721MintStatusInput, type CreateTbc721ReaderOptions } from "./nft-query.js";
+import { createLazyBundledWasmTbcKeylessEngine } from "./keyless.js";
+import type { TbcNftMintJobLimits, TbcNftMintJobResult } from "./nft-mint-job.js";
 import type {
   TbcMultiRoundMergeAsset,
   TbcMultiRoundMergeLimits,
@@ -91,6 +95,11 @@ import type {
 } from "./core-runtime.js";
 
 export type TbcWorkflowSendResult = WorkflowSendResult;
+
+export type Tbc721MintJobInput = Omit<Tbc721StandardBatchMintIntent, "type" | "version"> &
+  Readonly<{ limits: TbcNftMintJobLimits; constraints?: never }>;
+export type Tbc721SingleBatchMintInput = Omit<Tbc721StandardBatchMintIntent, "type" | "version"> &
+  Readonly<{ constraints?: KitTransactionConstraints; limits?: never }>;
 
 export type TbcEncodedMessage = Readonly<{
   encoding: "utf8" | "hex" | "base64";
@@ -173,6 +182,8 @@ export interface CreateTbcClientOptions {
   readonly requestIdFactory?: () => string;
   /** HTTP chain API only. RPC configuration remains separate and is never guessed. */
   readonly api?: Omit<CreateTransferVerifierOptions, "network">;
+  /** Optional existing Native/WASM instance for local read-only material decoding. */
+  readonly materialEngine?: CreateTbc721ReaderOptions["engine"];
 }
 
 export interface TbcConnectOptions {
@@ -288,8 +299,13 @@ export interface TbcConnectedWallet {
   readonly tbc721: Readonly<{
     createCollection: (input: Omit<Tbc721StandardCollectionIntent, "type" | "version"> & Readonly<{ constraints?: KitTransactionConstraints }>) => Promise<unknown>;
     mint: (input: Omit<Tbc721StandardMintIntent, "type" | "version"> & Readonly<{ constraints?: KitTransactionConstraints }>) => Promise<unknown>;
-    batchMint: (input: Omit<Tbc721StandardBatchMintIntent, "type" | "version"> & Readonly<{ constraints?: KitTransactionConstraints }>) => Promise<unknown>;
+    /** Add job limits for automatic resource-bounded sub-batches and one whole-job approval. */
+    batchMint: {
+      (input: Tbc721MintJobInput, options?: KitRequestOptions): Promise<TbcNftMintJobResult>;
+      (input: Tbc721SingleBatchMintInput, options?: KitRequestOptions): Promise<unknown>;
+    };
     transfer: (input: Omit<Tbc721TransferIntent, "type" | "version"> & Readonly<{ constraints?: KitTransactionConstraints }>) => Promise<unknown>;
+    batchTransfer: (input: Omit<Tbc721BatchTransferIntent, "type" | "version"> & Readonly<{ constraints?: KitTransactionConstraints }>) => Promise<unknown>;
   }>;
   readonly maintenance: Readonly<{
     /** @deprecated Use tbc.merge. This is the same function, not a fallback path. */
@@ -365,6 +381,7 @@ export interface TbcClient {
   readonly verifyTransfer: (input: VerifyTransferInput) => Promise<TransferVerificationResult>;
   /** Public chain query, no wallet connection or permission required. */
   readonly timelock: TimelockReader;
+  readonly tbc721: Tbc721Reader;
   readonly wallets: () => readonly KitWalletDescriptor[];
   readonly subscribeWallets: (listener: (wallets: readonly KitWalletDescriptor[]) => void) => () => void;
   readonly walletOptions: () => readonly KitWalletOption[];
@@ -533,6 +550,18 @@ export function createTbcClientWithWalletDiscovery(
     return timelockReader.listDeposits(input);
   } });
   const walletCatalog = Object.freeze((options.walletCatalog ?? []).map(catalogEntry));
+  let nftReader: Tbc721Reader | undefined;
+  const tbc721 = Object.freeze({ getMintStatus(input: GetTbc721MintStatusInput) {
+    if (receiptNetwork === undefined) throw new TypeError("NFT queries require a configured mainnet or testnet chain ID");
+    nftReader ??= createTbc721Reader({ engine: options.materialEngine ?? createLazyBundledWasmTbcKeylessEngine(),
+      api: createTbcOfficialApi({ network: receiptNetwork,
+        ...(options.api?.baseUrl === undefined ? {} : { baseUrl: options.api.baseUrl }),
+        ...(options.api?.fetch === undefined ? {} : { fetch: options.api.fetch }),
+        ...(options.api?.allowedOrigins === undefined ? {} : { allowedOrigins: options.api.allowedOrigins }),
+        ...(options.api?.requestTimeoutMs === undefined ? {} : { timeoutMs: options.api.requestTimeoutMs }),
+      }) });
+    return nftReader.getMintStatus(input);
+  } });
   if (new Set(walletCatalog.map(({ productId }) => productId)).size !== walletCatalog.length) {
     throw new TypeError("Wallet catalog productId values must be unique");
   }
@@ -624,6 +653,20 @@ export function createTbcClientWithWalletDiscovery(
       const { constraints, ...intent } = input;
       return { intent, constraints };
     };
+    function batchMint(input: Tbc721MintJobInput, requestOptions?: KitRequestOptions): Promise<TbcNftMintJobResult>;
+    function batchMint(input: Tbc721SingleBatchMintInput, requestOptions?: KitRequestOptions): Promise<unknown>;
+    function batchMint(input: Tbc721MintJobInput | Tbc721SingleBatchMintInput, requestOptions?: KitRequestOptions): Promise<unknown> {
+      if (input.limits !== undefined) {
+        if (input.constraints !== undefined) throw new TypeError("Use whole-job limits, not per-batch constraints");
+        return provider!.request({ method: "tbc_runNftMintJob", params: {
+          version: "1.0", chainId, from: account, collectionId: input.collectionId, items: input.items, limits: input.limits,
+        } }, requestOptions);
+      }
+      if (input.items.length > 100) throw new TypeError("More than 100 NFTs require whole-job limits");
+      const { intent, constraints } = split(input);
+      return send({ ...intent, type: "tbc721-standard-batch-mint", version: "1.0" } as Tbc721StandardBatchMintIntent,
+        constraints === undefined ? {} : { constraints });
+    }
     const splitPoolSwap = <T extends object>(input: T & Readonly<{ constraints?: KitTransactionConstraints }>) => {
       const separated = split(input);
       if (
@@ -989,13 +1032,14 @@ export function createTbcClientWithWalletDiscovery(
           const { intent, constraints } = split(input);
           return send({ ...intent, type: "tbc721-standard-mint", version: "1.0" } as Tbc721StandardMintIntent, constraints === undefined ? {} : { constraints });
         },
-        batchMint(input: Parameters<TbcConnectedWallet["tbc721"]["batchMint"]>[0]) {
-          const { intent, constraints } = split(input);
-          return send({ ...intent, type: "tbc721-standard-batch-mint", version: "1.0" } as Tbc721StandardBatchMintIntent, constraints === undefined ? {} : { constraints });
-        },
+        batchMint,
         transfer(input: Parameters<TbcConnectedWallet["tbc721"]["transfer"]>[0]) {
           const { intent, constraints } = split(input);
           return send({ ...intent, type: "tbc721.transfer", version: "1.0" } as Tbc721TransferIntent, constraints === undefined ? {} : { constraints });
+        },
+        batchTransfer(input: Parameters<TbcConnectedWallet["tbc721"]["batchTransfer"]>[0]) {
+          const { intent, constraints } = split(input);
+          return send({ ...intent, type: "tbc721.batchTransfer", version: "1.0" } as Tbc721BatchTransferIntent, constraints === undefined ? {} : { constraints });
         },
       }),
       maintenance: Object.freeze({
@@ -1098,6 +1142,7 @@ export function createTbcClientWithWalletDiscovery(
   return Object.freeze({
     verifyTransfer,
     timelock,
+    tbc721,
     wallets: () => descriptors(discovery),
     subscribeWallets(listener: (wallets: readonly KitWalletDescriptor[]) => void) {
       if (typeof listener !== "function") throw new TypeError("A wallet listener is required");

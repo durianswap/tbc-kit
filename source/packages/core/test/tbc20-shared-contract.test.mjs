@@ -153,10 +153,14 @@ test("same-collection workflow mint steps share exact slots without dropping per
   const partlyScoped = workflowChainDataRequirement([requests[0], { intent: requests[1].intent }]);
   assert.equal(partlyScoped.inputOutpoints, undefined, "one scoped step must not restrict the other step's candidates");
   assert.throws(() => workflowChainDataRequirement([requests[0], requests[0]]), /mint slots/);
-  const tooMany = Array.from({ length: 2 }, (_, group) => ({ intent: {
+  const withinConstructionLimit = Array.from({ length: 2 }, (_, group) => ({ intent: {
     type: "tbc721-standard-batch-mint", collectionId: contractId,
-    items: Array.from({ length: 20 }, (_, i) => ({ slot: group * 20 + i + 1 })),
+    items: Array.from({ length: 50 }, (_, i) => ({ slot: group * 50 + i + 1 })),
   } }));
+  assert.equal(workflowChainDataRequirement(withinConstructionLimit).collectionSlots.length, 100);
+  const tooMany = [...withinConstructionLimit, { intent: {
+    type: "tbc721-standard-mint", collectionId: contractId, slot: 101,
+  } }];
   assert.throws(() => workflowChainDataRequirement(tooMany), /mint slots/);
 });
 

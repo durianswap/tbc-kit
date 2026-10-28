@@ -50,8 +50,8 @@ internal object NativePrepared {
   val r=Reader(raw);need(r.uint(4)==10L);val count=r.compact();need(count in 1..1024)
   return (0 until count).map{val tx=r.take(32).reversed().joinToString(""){"%02x".format(it)};val vout=r.uint(4);r.script();r.take(4);"$tx:$vout"}
  }
- private fun transactions(value:Any?):List<Map<String,Any?>>{
-  need(value is List<*> && value.size in 1..32);val known=mutableSetOf<String>()
+ private fun transactions(value:Any?,limit:Int):List<Map<String,Any?>>{
+  need(value is List<*> && value.size in 1..limit);val known=mutableSetOf<String>()
   return (value as List<*>).map{v->
    val tx=map(v);val id=tx["id"] as String;val parents=(tx["dependsOn"] as List<*>).map{it as String}
    need(parents.toSet().size==parents.size&&parents.all{it in known})
@@ -78,8 +78,8 @@ internal object NativePrepared {
     else mapOf("kind" to "deferred","unsignedTransactionTemplate" to tx["unsignedTransaction"],"deferredInputs" to edges)
   }
  }
- fun bind(proposal:Map<String,Any?>,plan:Map<String,Any?>,expiry:Instant){
+ fun bind(proposal:Map<String,Any?>,plan:Map<String,Any?>,expiry:Instant,limit:Int=32){
   val expires=Instant.parse(proposal["expiresAt"] as String);need(!expiry.isAfter(expires)&&Instant.now().isBefore(expires))
-  need(equal(proposal["transactions"],transactions(plan["transactions"]))&&equal(proposal["estimatedTotalFee"],map(plan["preview"])["totalFee"]))
+  need(equal(proposal["transactions"],transactions(plan["transactions"],limit))&&equal(proposal["estimatedTotalFee"],map(plan["preview"])["totalFee"]))
  }
 }

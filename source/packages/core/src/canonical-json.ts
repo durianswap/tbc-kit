@@ -1,3 +1,29 @@
+import { ownedJsonValues } from "./immutable-json-ownership.js";
+
+// A bounded, private serialization cache for Core-created immutable snapshots.
+// This is not a hash/validation cache. New wrappers, state hashes and binding
+// comparisons still execute. Bounds affect only reuse, never accepted inputs.
+const MAX_CACHE_CHARACTERS = 2 * 1024 * 1024;
+const MAX_CACHE_ENTRIES = 4096;
+const MAX_ENTRY_CHARACTERS = 256 * 1024;
+let serializedOwnedValues = new WeakMap<object, string>();
+let cachedCharacters = 0;
+let cachedEntries = 0;
+
+function rememberOwned(value: object, text: string, reusable: boolean): string {
+  if (reusable && text.length <= MAX_ENTRY_CHARACTERS) {
+    if (cachedCharacters + text.length > MAX_CACHE_CHARACTERS || cachedEntries >= MAX_CACHE_ENTRIES) {
+      serializedOwnedValues = new WeakMap<object, string>();
+      cachedCharacters = 0;
+      cachedEntries = 0;
+    }
+    serializedOwnedValues.set(value, text);
+    cachedCharacters += text.length;
+    cachedEntries += 1;
+  }
+  return text;
+}
+
 function assertUnicodeScalars(value: string): void {
   // Check the common scalar-only case in the VM, not one JS call per code
   // unit of transaction hex. Surrogate-containing strings keep exact checks.
@@ -33,6 +59,9 @@ function serialize(value: unknown, ancestors: Set<object>): string {
   if (typeof value !== "object") {
     throw new TypeError(`JCS rejects ${typeof value}`);
   }
+  const reusable = ownedJsonValues.has(value);
+  const cached = reusable ? serializedOwnedValues.get(value) : undefined;
+  if (cached !== undefined) return cached;
   if (ancestors.has(value)) {
     throw new TypeError("JCS rejects cyclic values");
   }
@@ -42,7 +71,7 @@ function serialize(value: unknown, ancestors: Set<object>): string {
     if (Array.isArray(value)) {
       const items: string[] = [];
       for (const item of value) items.push(serialize(item, ancestors));
-      return `[${items.join(",")}]`;
+      return rememberOwned(value, `[${items.join(",")}]`, reusable);
     }
 
     const prototype = Object.getPrototypeOf(value) as object | null;
@@ -64,7 +93,7 @@ function serialize(value: unknown, ancestors: Set<object>): string {
         assertUnicodeScalars(key);
         return `${JSON.stringify(key)}:${serialize(record[key], ancestors)}`;
       });
-    return `{${members.join(",")}}`;
+    return rememberOwned(value, `{${members.join(",")}}`, reusable);
   } finally {
     ancestors.delete(value);
   }

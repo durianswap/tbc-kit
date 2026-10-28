@@ -529,7 +529,7 @@ export async function createTbcKitSqliteBroadcastJournal(
 
   async function readByTxids(txids: readonly string[]): Promise<readonly TbcKitBroadcastJournalRecord[]> {
     if (txids.length === 0) return Object.freeze([]);
-    if (txids.length > 32 || txids.some((txid) => !/^[0-9a-f]{64}$/u.test(txid))) {
+    if (txids.length > 100 || txids.some((txid) => !/^[0-9a-f]{64}$/u.test(txid))) {
       throw new TbcKitBroadcastConflictError("Invalid broadcast reconciliation identity");
     }
     return options.driver.transaction(async (transaction) => {

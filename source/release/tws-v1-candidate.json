@@ -5,7 +5,7 @@
   "compatibilityBaseline": "legacy-window-turing-only",
   "providerMethodCount": 22,
   "providerEventCount": 6,
-  "schemaBundleSha256": "889ffd82db33502af176ccf980028f2007c26e29e8e69eda224111d9220c1092",
+  "schemaBundleSha256": "3ba5cca50f499f1fb12c052a28730277137badd8f6e11b28917a261044845beb",
   "registryBundleSha256": "a2cc11861c50a6e38212bbd971a24d0f4f0349309f24e6ccd777fd98dc9ee92b",
   "schemaFiles": [
     {
@@ -34,7 +34,7 @@
     },
     {
       "path": "schemas/integration.schema.json",
-      "sha256": "27148de63e0e5c5edc4f96035554cead0fb526d75a42a636e0541763cdef2646"
+      "sha256": "1c694ea1439b771dd9114bd357388dbe6be9ae7b7466b8b938ad7c0e8abb45b2"
     },
     {
       "path": "schemas/method-registry.schema.json",
@@ -54,7 +54,7 @@
     },
     {
       "path": "schemas/prepared-transaction.schema.json",
-      "sha256": "7d1a2bdb647486ecf7fa798ae3750477a613126f2771a8bf4ce44714b190d859"
+      "sha256": "ca35846920b2a0f6836f840be6538e0619593e0e2b0f8702b9dbb6fac888f356"
     },
     {
       "path": "schemas/prepared-workflow.schema.json",
@@ -62,7 +62,7 @@
     },
     {
       "path": "schemas/provider.schema.json",
-      "sha256": "f3cb286141fb8ff127c3b034d5d4f20b3de10f8c99dab0d0e7aec2dcf2d982ac"
+      "sha256": "523f29a1f0d641c7390d5bd1ec84529a43fdb1a7fb47d6b15d48015915df791b"
     },
     {
       "path": "schemas/reviewed-transaction.schema.json",
@@ -74,7 +74,7 @@
     },
     {
       "path": "schemas/transaction-request.schema.json",
-      "sha256": "7a8470e08047617292f792ef60911c40c09a61d4be707f9f77d207e73ec2cccf"
+      "sha256": "e06045ecf39ec92576df450fd340846bd958001426d5f01844dfab45d737b396"
     },
     {
       "path": "schemas/wallet-actions.schema.json",
@@ -82,7 +82,7 @@
     },
     {
       "path": "schemas/workflow.schema.json",
-      "sha256": "167515dde994a87a5e15751f4a45f739d1f10c2c6ebb2705fc16879c50e5b1a1"
+      "sha256": "dbe0e75208fe78ef5b18105961e765e628c4b55ec874502d0e0a4e9dfe1d7f73"
     }
   ],
   "registryFiles": [

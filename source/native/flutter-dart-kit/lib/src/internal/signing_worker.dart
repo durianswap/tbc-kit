@@ -20,6 +20,9 @@ import 'htlc_material.dart';
 import 'htlc_token_material.dart';
 import 'lop_material.dart';
 import 'collection_material.dart';
+import 'nft_mint_job.dart';
+import 'nft_mint_job_material.dart';
+import 'nft_mint_job_backend.dart';
 import 'nft_material.dart';
 import 'operation_authority.dart';
 import 'read_api.dart';
@@ -77,6 +80,7 @@ final class TbcSigningWorker {
   bool get usesLegacyMessageProfile =>
       _messageProfile == MessageSigningProfile.legacyBitcoin;
   bool get supportsMaintenance => _backend is TbcMaintenanceBackend;
+  bool get supportsNftMintJob => _backend is TbcNftMintJobBackend;
   final ReceivePort _events = ReceivePort();
   final ReceivePort _exit = ReceivePort();
   final ReceivePort _errors = ReceivePort();
@@ -137,6 +141,61 @@ final class TbcSigningWorker {
 
   bool get isClosed => _closed;
   int get pendingCount => _jobs.length;
+
+  Future<Map<String, dynamic>> executeNftMintJob({
+    required TbcSigningRequestScope scope,
+    required String collectionId,
+    required List<Map<String, dynamic>> items,
+    required Map<String, dynamic> limits,
+    required void Function() requireAuthorized,
+    required bool Function() isUnlocked,
+    TbcExecutionTiming? timing,
+  }) async {
+    need(
+      !_closed && _commands != null && _jobs.length < 16 && supportsNftMintJob,
+      'NFT_JOB_BACKEND',
+    );
+    requireAuthorized();
+    need(
+      scope.method == 'tbc_sendTransaction' &&
+          scope.account.network == network.network &&
+          !_jobs.values.any(
+            (j) =>
+                j.nftMint &&
+                j.scope.navigation.matches(scope.navigation.toWire()),
+          ),
+      'NFT_JOB_ACTIVE',
+    );
+    final id = 'job-${++_sequence}',
+        job = _ParentJob(
+          scope,
+          requireAuthorized,
+          isUnlocked,
+          timing,
+          nftMint: true,
+        );
+    _jobs[id] = job;
+    job.result.future.ignore();
+    try {
+      _commands!.send({
+        'type': 'nftMint',
+        'id': id,
+        'scope': scope,
+        'collectionId': collectionId,
+        'items': copied({'items': items})['items'],
+        'limits': copied(limits),
+        'timing': timing != null,
+      });
+      final result = await job.result.future;
+      job.check();
+      return result;
+    } finally {
+      _jobs.remove(id);
+      job.active = false;
+      _commands?.send({'type': 'cancel', 'id': id});
+      await job.dispose();
+    }
+  }
 
   /// Internal shared maintenance entry. The caller supplies a committed
   /// accounts+send grant fence; neither a Legacy page nor this worker grants
@@ -625,7 +684,10 @@ final class TbcSigningWorker {
     };
     try {
       if (job == null ||
-          (!job.readOnly && !job.maintenance && job.operation == null))
+          (!job.readOnly &&
+              !job.maintenance &&
+              !job.nftMint &&
+              job.operation == null))
         throw StateError('Unknown signing operation');
       final args = event['args'];
       dynamic value;
@@ -641,12 +703,108 @@ final class TbcSigningWorker {
         value = await _read!(args as String);
         job.check();
       } else if (event['method'] == 'close') {
-        if (job.maintenance) {
+        if (job.maintenance || job.nftMint) {
           await job.closeChild();
         } else {
           await job.dispose();
         }
         value = null;
+      } else if (job.nftMint &&
+          {
+            'nftCurrent',
+            'nftApprove',
+            'nftBatch',
+            'nftResult',
+            'nftFinish',
+            'read',
+            'txoStatus',
+          }.contains(event['method'])) {
+        job.check();
+        switch (event['method']) {
+          case 'nftCurrent':
+            need(job.isUnlocked(), 'NFT_JOB_LOCKED');
+            value = null;
+          case 'nftApprove':
+            need(
+              job.nftOwner == null && !job.openingMaintenance,
+              'NFT_JOB_APPROVED',
+            );
+            job.openingMaintenance = true;
+            try {
+              job.nftOwner = await (_backend as TbcNftMintJobBackend)
+                  .beginNftMintJob(job.scope, copied(args as Map));
+              try {
+                job.check();
+              } catch (_) {
+                await job.dispose();
+                rethrow;
+              }
+              value = null;
+            } finally {
+              job.openingMaintenance = false;
+            }
+          case 'nftBatch':
+            need(
+              job.nftOwner != null &&
+                  job.operation == null &&
+                  !job.openingChild,
+              'NFT_JOB_CHILD_ACTIVE',
+            );
+            job.openingChild = true;
+            try {
+              final child = TbcSigningRequestScope(
+                operationId:
+                    'nft-${hashJson({'parent': job.scope.operationId, 'offset': args['offset']})}',
+                method: job.scope.method,
+                navigation: job.scope.navigation,
+                account: job.scope.account,
+                revision: job.scope.revision,
+              );
+              job.operation = await job.nftOwner!.beginBatch(
+                child,
+                copied(args['request']),
+                args['offset'] as int,
+              );
+              try {
+                job.check();
+                need(
+                  job.operation is TbcBroadcastSigningOperation,
+                  'NFT_JOB_BROADCAST',
+                );
+              } catch (_) {
+                await job.dispose();
+                rethrow;
+              }
+              value = {
+                'scope': child,
+                'nativeBroadcastCommands':
+                    job.operation is NativeBroadcastCommands,
+              };
+            } finally {
+              job.openingChild = false;
+            }
+          case 'nftResult':
+            need(
+              job.operation == null && job.nftOwner != null,
+              'NFT_JOB_CHILD_ACTIVE',
+            );
+            value = await job.nftOwner!.batchResult();
+          case 'nftFinish':
+            need(
+              job.operation == null && job.nftOwner != null,
+              'NFT_JOB_CHILD_ACTIVE',
+            );
+            value = await job.nftOwner!.finish(args as String);
+          case 'read':
+            need(_read != null, 'NFT_JOB_READ');
+            value = await _read!(args as String);
+          case 'txoStatus':
+            need(_txoStatus != null, 'NFT_JOB_STATUS');
+            value = await _txoStatus!([
+              for (final p in args as List) copied(p as Map),
+            ]);
+        }
+        job.check();
       } else if (job.maintenance &&
           {
             'maintenanceCurrent',
@@ -986,9 +1144,11 @@ final class _ParentJob {
     this.timing, {
     this.readOnly = false,
     this.maintenance = false,
+    this.nftMint = false,
   });
   final bool readOnly;
   final bool maintenance;
+  final bool nftMint;
   final TbcSigningRequestScope scope;
   final void Function() authorized;
   final bool Function() isUnlocked;
@@ -996,6 +1156,7 @@ final class _ParentJob {
   final Completer<Map<String, dynamic>> result = Completer();
   TbcSigningOperation? operation;
   TbcMaintenanceOwner? maintenanceOwner;
+  TbcNftMintJobOwner? nftOwner;
   bool openingMaintenance = false, openingChild = false;
   Future<void>? _closingMaintenance;
   bool active = true;
@@ -1012,6 +1173,7 @@ final class _ParentJob {
   }
 
   Future<void> dispose() {
+    if (nftMint) return _disposeNft();
     if (maintenance) return _disposeMaintenance();
     final op = operation;
     // A late native begin still needs close; do not memoize an absent operation.
@@ -1034,6 +1196,15 @@ final class _ParentJob {
       if (owner != null) await (_closingMaintenance ??= owner.close());
     } finally {
       await closeChild();
+    }
+  }
+
+  Future<void> _disposeNft() async {
+    try {
+      await closeChild();
+    } finally {
+      final owner = nftOwner;
+      if (owner != null) await (_closingMaintenance ??= owner.close());
     }
   }
 }
@@ -1251,6 +1422,79 @@ Future<void> _entry(Map<String, dynamic> initial) async {
                 });
               } catch (_) {
                 events.send({'type': 'result', 'id': job.id, 'ok': false});
+              } finally {
+                jobs.remove(job.id);
+                job.cancel();
+              }
+            }, zoneValues: {_readOwner: job}),
+          );
+        case 'nftMint':
+          final job = _WorkerJob(
+            event['id'] as String,
+            rpc,
+            workflow: false,
+            cachePreparation: true,
+          );
+          jobs[job.id] = job;
+          unawaited(
+            runZoned(() async {
+              try {
+                final scope = event['scope'] as TbcSigningRequestScope;
+                final consent = nftMintJobScope(
+                  authority: {
+                    'chainId': network.chainId,
+                    'accountId': scope.account.accountId,
+                    'address': scope.account.address,
+                    'origin': scope.navigation.origin,
+                    'sessionId': scope.navigation.sessionId,
+                  },
+                  collectionId: event['collectionId'],
+                  items: [for (final i in event['items']) copied(i as Map)],
+                  limits: copied(event['limits']),
+                  validateRequest: (request) {
+                    final reply =
+                        jsonDecode(
+                              engine.call(
+                                'engine',
+                                'normalizeRequest',
+                                canonical({
+                                  'version': '1.0',
+                                  'request': request,
+                                }),
+                              ),
+                            )
+                            as Map;
+                    need(
+                      reply['ok'] == true &&
+                          canonical(reply['result']['request']) ==
+                              canonical(request),
+                      'NFT_JOB_REQUEST',
+                    );
+                  },
+                );
+                final adapter = _WorkerNftMintAdapter(
+                  job,
+                  scope,
+                  collectionReader,
+                  engine,
+                  network,
+                  event['timing'] == true,
+                );
+                final result = await NftMintJob(adapter).run(consent);
+                job.check();
+                events.send({
+                  'type': 'result',
+                  'id': job.id,
+                  'ok': true,
+                  'value': result,
+                });
+              } catch (error) {
+                events.send({
+                  'type': 'result',
+                  'id': job.id,
+                  'ok': false,
+                  if (error is TbcSigningRejected) 'rejected': true,
+                });
               } finally {
                 jobs.remove(job.id);
                 job.cancel();
@@ -1508,7 +1752,10 @@ Future<void> _entry(Map<String, dynamic> initial) async {
                             'tbc721-standard-batch-mint',
                           ].contains(request['intent']['type'])
                           ? collectionReader.resolve
-                          : request['intent']['type'] == 'tbc721.transfer'
+                          : [
+                            'tbc721.transfer',
+                            'tbc721.batchTransfer',
+                          ].contains(request['intent']['type'])
                           ? nftReader.resolve
                           : [
                             'tbc20Stablecoin.transfer',
@@ -2148,6 +2395,196 @@ final class _WorkerMergeAdapter extends MultiRoundMergeAdapter {
     'txid': input['txid'],
     'status': 'unknown',
   };
+}
+
+final class _WorkerNftMintAdapter extends NftMintJobAdapter {
+  _WorkerNftMintAdapter(
+    this.job,
+    this.scope,
+    this.reader,
+    this.engine,
+    this.network,
+    this.timing,
+  );
+  final _WorkerJob job;
+  final TbcSigningRequestScope scope;
+  final CollectionMaterialReader reader;
+  final ComputeProbe engine;
+  final TbcNetworkConfiguration network;
+  final bool timing;
+  NftMintJobMaterial? material;
+  @override
+  Future<void> requireCurrent() async {
+    job.check();
+    await job.call('nftCurrent', null);
+    job.check();
+  }
+
+  @override
+  Future<void> approve(NftJobMap consent) async {
+    await job.call('nftApprove', consent);
+  }
+
+  @override
+  Future<void> prepare(NftJobMap consent) async {
+    final now = DateTime.fromMillisecondsSinceEpoch(
+      DateTime.now().millisecondsSinceEpoch,
+      isUtc: true,
+    );
+    material = await NftMintJobMaterial.prepare(
+      scope: consent,
+      account: scope.account.toKitAccount(),
+      resolve:
+          (request) => reader.resolve(
+            request: request,
+            account: scope.account.toKitAccount(),
+            now: now,
+            snapshotId: scope.operationId,
+          ),
+    );
+    job.check();
+  }
+
+  @override
+  Future<NftJobMap> execute(NftJobMap request, int offset) async {
+    final opened =
+        await job.call('nftBatch', {'request': request, 'offset': offset})
+            as Map;
+    final child = opened['scope'] as TbcSigningRequestScope;
+    final delegate = _WorkerCustody(
+      job,
+      broadcast:
+          opened['nativeBroadcastCommands'] == true
+              ? NativeBroadcastBinding(
+                network: network,
+                scope: child,
+                invoke:
+                    (command, fields) => job.call('broadcastCommand', {
+                      'command': command,
+                      'fields': fields,
+                    }),
+              )
+              : null,
+    );
+    final custody = _MintCustody(delegate);
+    final authority = TbcOperationAuthority(
+      context: {
+        'sessionId': child.navigation.sessionId,
+        'navigationId': child.navigation.navigationId,
+        'origin': child.navigation.origin,
+        'topOrigin': child.navigation.origin,
+        'transport': 'webview',
+        'frame': 'top',
+        'createdAt': child.navigation.createdAt,
+      },
+      account: child.account,
+      requireAuthorized: (method) {
+        job.check();
+        need(method == 'tbc_sendTransaction', 'NFT_JOB_METHOD');
+      },
+      isUnlocked: () => delegate.unlocked,
+      clock: DateTime.now,
+    );
+    final slots = [
+      for (final i in request['intent']['items'] as List) i['slot'] as int,
+    ];
+    try {
+      await TbcSigningExecutor(
+        authority: authority,
+        engine: engine,
+        signer: custody,
+        prepareMaterial: (r, a) async {
+          need(
+            canonical(r) == canonical(request) &&
+                canonical(a) == canonical(scope.account.toKitAccount()),
+            'NFT_JOB_MATERIAL_REQUEST',
+          );
+          final snapshot = material!.snapshot(slots);
+          return {
+            'snapshot': snapshot,
+            'policy': defaultTransactionPolicy(
+              network: network,
+              request: r,
+              now: authority.now,
+              snapshot: snapshot,
+            ),
+          };
+        },
+        timing:
+            !timing
+                ? null
+                : (stage, us) => job.rpc.events.send({
+                  'type': 'timing',
+                  'id': job.id,
+                  'stage': stage,
+                  'us': us,
+                }),
+      ).execute('tbc_sendTransaction', request);
+    } catch (_) {
+      /* Native journal still returns the submitted prefix below. */
+    }
+    final result = copied(await job.call('nftResult', null) as Map);
+    if (result['status'] == 'complete') {
+      need(custody.signed != null, 'NFT_JOB_SIGNED_MISSING');
+      material!.acceptValidatedBatch(slots, custody.signed!);
+    }
+    return result;
+  }
+
+  @override
+  Future<NftJobMap> finish(String reason) async =>
+      copied(await job.call('nftFinish', reason) as Map);
+}
+
+// Retains the existing executor's validated final bytes only until advancing
+// task-local change. Submission results come from native custody, not this copy.
+final class _MintCustody implements TbcBroadcastSigningOperation {
+  _MintCustody(this.delegate);
+  final _WorkerCustody delegate;
+  List<NftJobMap>? signed;
+  @override
+  Future<void> requireCurrent() => delegate.requireCurrent();
+  @override
+  Future<bool> requestConsent(TbcBoundedSigningIntent i) =>
+      delegate.requestConsent(i);
+  @override
+  Future<TbcSigningReceipt> bind(TbcSigningMaterial m) => delegate.bind(m);
+  @override
+  Future<void> advance(TbcSigningReceipt r, TbcSigningContinuation c) =>
+      delegate.advance(r, c);
+  @override
+  Future<TbcTaskSignature> sign(TbcSigningReceipt r, TbcSigningTask t) =>
+      delegate.sign(r, t);
+  @override
+  Future<void> close() => delegate.close();
+  @override
+  Future<void> authorizeBroadcast(
+    TbcSigningReceipt r,
+    TbcBroadcastMaterial m,
+  ) async {
+    await delegate.authorizeBroadcast(r, m);
+    signed = [
+      for (final tx in m.bundle['transactions'] as List)
+        {'txid': tx['txid'], 'rawTransaction': tx['rawTransaction']},
+    ];
+  }
+
+  @override
+  Future<TbcBroadcastResult> submitTransaction(TbcSigningReceipt r, int i) =>
+      delegate.submitTransaction(r, i);
+  @override
+  Future<TbcBroadcastResult> submitBatch(TbcSigningReceipt r) async =>
+      throw StateError('NFT_JOB_ORDERED_SUBMISSION');
+  @override
+  Future<TbcBroadcastResult> reconcileSubmitted(
+    TbcSigningReceipt r,
+    List<String> ids,
+  ) => delegate.reconcileSubmitted(r, ids);
+  @override
+  Future<void> finishBroadcast(
+    TbcSigningReceipt r,
+    TbcBroadcastResult result,
+  ) => delegate.finishBroadcast(r, result);
 }
 
 /// Records only submission phase, not a second journal. It distinguishes a

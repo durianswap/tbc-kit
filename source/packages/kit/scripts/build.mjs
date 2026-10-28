@@ -99,6 +99,8 @@ const declarationRewrites = [
   ["host-runtime.d.ts", '"@tbc-wallet/host"', '"./internal/host/index.js"'],
   ["wallet-runtime.d.ts", '"@tbc-wallet/core"', '"./internal/core/index.js"'],
   ["wallet-runtime.d.ts", '"@tbc-wallet/host"', '"./internal/host/index.js"'],
+  ["nft-mint-job-wallet.d.ts", '"@tbc-wallet/core"', '"./internal/core/index.js"'],
+  ["nft-mint-job-material.d.ts", '"@tbc-wallet/core"', '"./internal/core/index.js"'],
   ["reviewed-coin-admin.d.ts", '"@tbc-wallet/core"', '"./internal/core/index.js"'],
   ["reviewed-role-executor.d.ts", '"@tbc-wallet/core"', '"./internal/core/index.js"'],
   ["reviewed-transaction-types.d.ts", '"@tbc-wallet/core"', '"./internal/core/index.js"'],

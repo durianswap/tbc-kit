@@ -26,6 +26,7 @@ interface TransactionIntent {
   readonly receivers?: readonly Readonly<{ to: string; amount: string }>[];
   readonly slot?: number;
   readonly items?: readonly Readonly<{ slot: number }>[];
+  readonly transfers?: readonly Readonly<{ contractId: string; to: string; payment?: Readonly<{ to: string; amount: string }> }>[];
   readonly payment?: Readonly<{ to: string; amount: string }>;
   readonly targetOutpoints?: readonly Readonly<{ txid: string; vout: number }>[];
   readonly certificateOutpoint?: Readonly<{ txid: string; vout: number }>;
@@ -205,7 +206,7 @@ export function chainDataRequirement(
     case "tbc721-standard-batch-mint": {
       const contractId = requireString(intent.collectionId, "collectionId");
       const slots = intent.type === "tbc721-standard-mint" ? [intent.slot!] : intent.items?.map((item) => item.slot);
-      if (slots === undefined || slots.length < 1 || slots.length > 32 || new Set(slots).size !== slots.length ||
+      if (slots === undefined || slots.length < 1 || slots.length > 100 || new Set(slots).size !== slots.length ||
           slots.some((slot) => !Number.isSafeInteger(slot) || slot < 1 || slot > 0xffff_ffff)) {
         throw new TwsEngineError("ENGINE_INPUT_INVALID", "invalid NFT mint slots");
       }
@@ -220,6 +221,17 @@ export function chainDataRequirement(
       const contractId = requireString(intent.contractId, "contractId");
       base.contractIds.push(contractId);
       base.assets.push(native(), direct("stablecoin", contractId));
+      break;
+    }
+    case "tbc721.batchTransfer": {
+      const items = intent.transfers;
+      if (items === undefined || items.length < 1 || items.length > 100 || new Set(items.map(item => item.contractId)).size !== items.length) {
+        throw new TwsEngineError("ENGINE_INPUT_INVALID", "invalid or duplicate NFT batch targets");
+      }
+      const payments = items.filter(item => item.payment !== undefined);
+      if (payments.length > 0) base.nativeAmount = payments.reduce((sum, item) => sum + BigInt(item.payment!.amount), 0n).toString();
+      base.assets.push(native(base.nativeAmount));
+      for (const item of items) { base.contractIds.push(item.contractId); base.assets.push(direct("nft", item.contractId, "1")); }
       break;
     }
     case "tbc721.transfer":
@@ -492,6 +504,8 @@ export function chainDataRequirement(
     ...(base.nativeAmount === undefined ? {} : { nativeAmount: base.nativeAmount }),
     ...(base.lopAssets === undefined ? {} : { lopAssets: base.lopAssets }),
     ...(base.collectionSlots === undefined ? {} : { collectionSlots: base.collectionSlots }),
+    ...(intent.type === "tbc721.batchTransfer" && request.constraints?.inputOutpoints !== undefined
+      ? { inputOutpoints: Object.freeze(request.constraints.inputOutpoints.map(point => Object.freeze({ ...point }))) } : {}),
     ...(intent.targetOutpoints === undefined ? {} : { targetOutpoints: Object.freeze(intent.targetOutpoints.map(point => Object.freeze({ ...point }))) }),
     ...(intent.certificateOutpoint === undefined ? {} : { certificateOutpoint: Object.freeze({ ...intent.certificateOutpoint }) }),
     ...((!["tbc.maintenance.merge", "amm.mergeToken", "tbc20Lp.transfer", "tbc20Lp.lock", "tbc20Lp.unlock", "tbc20Lp.merge", "tbc20Lp.burn", "amm.swap", "amm.addLiquidity", "amm.removeLiquidity", "tbc721.transfer", "tbc20.transfer", "tbc20.merge", "tbc20Stablecoin.transfer", "tbc20Stablecoin.merge", "tbc.transfer", "tbc-timelock-lock", "tbc-timelock-unlock", "tbc-htlc-lock", "tbc-htlc-claim", "tbc-htlc-refund", "tbc-lop-create", "tbc-lop-cancel", "tbc-lop-match", "tbc20-standard-create", "tbc20-standard-transfer", "tbc20-standard-merge", "tbc20-stablecoin-create", "tbc20-stablecoin-transfer", "tbc20-stablecoin-merge", "tbc20-stablecoin-mint", "tbc20-stablecoin-freeze", "tbc20-stablecoin-unfreeze", "tbc20-lp-transfer", "tbc20-lp-merge", "tbc20-lp-lock", "tbc20-lp-unlock", "tbc-amm-create", "tbc-amm-add-liquidity", "tbc-amm-remove-liquidity", "tbc-amm-swap"].includes(intent.type) && !intent.type.startsWith("tbc721-standard-")) || request.constraints?.inputOutpoints === undefined
@@ -545,7 +559,7 @@ export function workflowChainDataRequirement(
   const collectionSlots = contractIds.length === 1 && requirements.every((item) => item.collectionSlots !== undefined)
     ? requirements.flatMap((item) => item.collectionSlots!)
     : undefined;
-  if (collectionSlots !== undefined && (collectionSlots.length > 32 || new Set(collectionSlots).size !== collectionSlots.length)) {
+  if (collectionSlots !== undefined && (collectionSlots.length > 100 || new Set(collectionSlots).size !== collectionSlots.length)) {
     throw new TwsEngineError("ENGINE_INPUT_INVALID", "workflow mint slots are duplicated or exceed the material budget");
   }
   const assets = new Map<string, AssetRequirement>();

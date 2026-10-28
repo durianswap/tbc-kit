@@ -12,6 +12,7 @@ import { reviewNativeTimelockFlow } from "./reviewed-timelock-flows.js";
 import { requireReviewedIssuancePolicy, normalizeReviewedPolicyMaterial } from "./reviewed-issuance-policy.js";
 import type { TbcReviewedPolicyMaterial } from "./reviewed-transaction-types.js";
 import { reviewedCoinAdministrator } from "./reviewed-coin-admin.js";
+import { forEachTxoStatusBatch } from "./txo-status-batches.js";
 
 import type {
   AssetFlow,
@@ -226,7 +227,8 @@ function structuredPreview(
 /**
  * Default shared reviewer for historical raw `signTransaction`.
  *
- * It performs at most two batched official TXO-status reads: one for every
+ * It uses two primary official TXO-status phases, each split into at most 25
+ * outputs per request with bounded parallelism: one for every
  * signed prevout and one for only the contract tape/origin dependencies found
  * by the parser. Reads remain inside the official API's existing idempotent
  * single-flight/retry policy. Current Token LOP adds only missing Tape status
@@ -264,16 +266,21 @@ function createLegacyDefaultReviewEngine(
     if (unique.length > MAX_TXO_STATUS_ITEMS) {
       throw new Error(`Too many Legacy ${label} TXOs`);
     }
-    const result = await api.txoStatus({
-      txos: unique.map(({ txid, vout }) => Object.freeze({ txid, index: vout })),
-    }, { category: "asset-index", concurrencyGroup: "legacy-review" });
     const rows = new Map<string, TbcApiTxoStatus>();
-    for (const row of result.txos) {
-      const index = statusIndex(row);
-      const key = statusKey(row.txid, index);
-      if (rows.has(key)) throw new Error(`Duplicate Legacy ${label} TXO`);
-      rows.set(key, row);
-    }
+    await forEachTxoStatusBatch(api,
+      unique.map(({ txid, vout }) => Object.freeze({ txid, index: vout })), result => {
+        if (result.status === "rejected") throw result.reason;
+        const { requested, response } = result.value;
+        const remaining = new Set(requested.map(p => statusKey(p.txid, p.index)));
+        if (!Array.isArray(response.txos) || response.txos.length !== requested.length) {
+          throw new Error(`Legacy ${label} status material incomplete`);
+        }
+        for (const row of response.txos) {
+          const key = statusKey(row.txid, statusIndex(row));
+          if (!remaining.delete(key) || rows.has(key)) throw new Error(`Legacy ${label} status material mismatch`);
+          rows.set(key, Object.freeze({ ...row }));
+        }
+      }, { category: "asset-index", concurrencyGroup: "legacy-review" });
     return rows;
   }
 

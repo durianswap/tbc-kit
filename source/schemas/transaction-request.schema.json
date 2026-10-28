@@ -95,6 +95,13 @@
         { "$ref": "#/$defs/base64Media" }
       ]
     },
+    "tbc721Media": {
+      "$comment": "Inline data is stored as base64 text in Tape, not decoded before inclusion. 1048576 characters is only an early upper bound: the complete signed transaction, including UTF-8 metadata, Code, Hold, proofs and fees, must fit the 1MiB NFT material budget. Engine also enforces whole-plan/evidence limits before signing. URI media avoids on-chain payload growth.",
+      "allOf": [
+        { "$ref": "#/$defs/media" },
+        { "type": "object", "properties": { "data": { "type": "string", "maxLength": 1048576 } } }
+      ]
+    },
     "attribute": {
       "type": "object",
       "additionalProperties": false,
@@ -186,7 +193,7 @@
         "name": { "type": "string", "minLength": 1, "maxLength": 64 },
         "description": { "type": "string", "maxLength": 2048 },
         "supply": { "type": "string", "pattern": "^(?:[1-9]|[1-9][0-9]{1,2}|1[0-9]{3}|2000)$" },
-        "media": { "$ref": "#/$defs/media" },
+        "media": { "$ref": "#/$defs/tbc721Media" },
         "to": { "$ref": "common.schema.json#/$defs/address" }
       }
     },
@@ -199,7 +206,7 @@
         "symbol": { "type": "string", "pattern": "^[!-~]{1,16}$" },
         "description": { "type": "string", "maxLength": 2048 },
         "attributes": { "type": "array", "maxItems": 64, "items": { "$ref": "#/$defs/attribute" } },
-        "media": { "$ref": "#/$defs/media" },
+        "media": { "$ref": "#/$defs/tbc721Media" },
         "to": { "$ref": "common.schema.json#/$defs/address" }
       }
     },
@@ -215,7 +222,7 @@
         "symbol": { "type": "string", "pattern": "^[!-~]{1,16}$" },
         "description": { "type": "string", "maxLength": 2048 },
         "attributes": { "type": "array", "maxItems": 64, "items": { "$ref": "#/$defs/attribute" } },
-        "media": { "$ref": "#/$defs/media" },
+        "media": { "$ref": "#/$defs/tbc721Media" },
         "to": { "$ref": "common.schema.json#/$defs/address" }
       }
     },
@@ -227,7 +234,7 @@
         "type": { "const": "tbc721-standard-batch-mint" },
         "version": { "const": "1.0" },
         "collectionId": { "$ref": "common.schema.json#/$defs/contractId" },
-        "items": { "type": "array", "minItems": 1, "maxItems": 32, "items": { "$ref": "#/$defs/tbc721StandardMintItem" } }
+        "items": { "type": "array", "minItems": 1, "maxItems": 100, "items": { "$ref": "#/$defs/tbc721StandardMintItem" } }
       }
     },
     "nativePayment": {
@@ -259,6 +266,26 @@
         "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
         "to": { "$ref": "common.schema.json#/$defs/address" },
         "payment": { "$ref": "#/$defs/nativePayment" }
+      }
+    },
+    "unifiedNftBatchTransferIntent": {
+      "$comment": "Shared NFT batch, one bound plan/approval, not an atomic multi-transaction settlement. Each contract may appear once. Engine authenticates the supported current/historical template and coordinates fee inputs and signed change. Wallet policy and byte budgets may impose smaller limits.",
+      "type": "object", "additionalProperties": false,
+      "required": ["type", "version", "transfers"],
+      "properties": {
+        "type": { "const": "tbc721.batchTransfer" },
+        "version": { "const": "1.0" },
+        "transfers": {
+          "type": "array", "minItems": 1, "maxItems": 100,
+          "items": {
+            "type": "object", "additionalProperties": false, "required": ["contractId", "to"],
+            "properties": {
+              "contractId": { "$ref": "common.schema.json#/$defs/contractId" },
+              "to": { "$ref": "common.schema.json#/$defs/address" },
+              "payment": { "$ref": "#/$defs/nativePayment" }
+            }
+          }
+        }
       }
     },
     "ftCreateIntent": {
@@ -1098,6 +1125,7 @@
         { "$ref": "#/$defs/tbc721StandardBatchMintIntent" },
         { "$ref": "#/$defs/tbc721StandardTransferIntent" },
         { "$ref": "#/$defs/unifiedNftTransferIntent" },
+        { "$ref": "#/$defs/unifiedNftBatchTransferIntent" },
         { "$ref": "#/$defs/unifiedAmmAddIntent" },
         { "$ref": "#/$defs/unifiedAmmRemoveIntent" },
         { "$ref": "#/$defs/unifiedAmmSwapIntent" },
@@ -1290,7 +1318,7 @@
             "transactions": {
               "type": "array",
               "minItems": 1,
-              "maxItems": 32,
+              "maxItems": 100,
               "items": { "$ref": "#/$defs/signedTransaction" }
             }
           }
@@ -1314,7 +1342,7 @@
             "transactions": {
               "type": "array",
               "minItems": 1,
-              "maxItems": 32,
+              "maxItems": 100,
               "items": { "$ref": "#/$defs/submittedTransaction" }
             }
           }

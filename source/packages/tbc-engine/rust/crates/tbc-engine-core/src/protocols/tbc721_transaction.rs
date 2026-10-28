@@ -149,17 +149,13 @@ pub fn build_mint_plan(collection:&Transaction,item:MintItem<'_>,key:&PublicKey,
 
 pub fn build_batch_mint_plan(collection:&Transaction,items:&[MintItem<'_>],key:&PublicKey,
     funding:&[FundingInput<'_>],max_fee:u64)->Result<NftPlan,EngineError> {
-    if items.is_empty()||items.len()>MAX_SIGNING_PLAN_TRANSACTIONS||items.len()*4>MAX_SIGNING_PLAN_OUTPUTS {
+    if items.is_empty()||items.len()>100||items.len()>MAX_SIGNING_PLAN_TRANSACTIONS||items.len()*4>MAX_SIGNING_PLAN_OUTPUTS {
         return Err(invalid("TBC721 mint batch exceeds shared transaction/output limits or is empty"));
     }
-    let metadata:CollectionData=super::nft_metadata::decode_tape(collection.outputs.first().ok_or_else(||invalid("collection Tape missing"))?)?;
-    if collection.version!=10||collection.inputs.is_empty()||collection.serialize().len()>MAX_MATERIAL_TRANSACTION_BYTES
-        ||metadata.supply==0||u64::from(metadata.supply)+1>MAX_SIGNING_PLAN_OUTPUTS as u64
-        ||![metadata.supply as usize+1,metadata.supply as usize+2].contains(&collection.outputs.len()) {
-        return Err(invalid("TBC721 collection layout does not match its supply"));
-    }
-    let signer=context(key)?;let mint_script=scripts::mint_script(&key.address());
-    if collection.outputs[1..=metadata.supply as usize].iter().any(|o|o.satoshis!=100||o.script_pubkey!=mint_script) {
+    let layout=super::nft_origin::inspect_collection_layout(collection).map_err(|e|invalid(&e))?;
+    let metadata=layout.metadata;
+    let signer=context(key)?;
+    if layout.owner!=key.address() {
         return Err(invalid("TBC721 collection slots do not match the mint owner"));
     }
     let collection_id=collection.txid();let mut slots=BTreeSet::new();

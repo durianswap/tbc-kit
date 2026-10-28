@@ -90,7 +90,7 @@ pub(crate) fn plan_with_funding(
                 return Err(error(ErrorCode::InvalidAncestry, "funding preview collides with supplied ancestry", "snapshot.payload.parents"));
             }
             snapshot.payload.parents.push(ParentTransaction { txid: txid.clone(), raw_transaction: raw.clone() });
-            let internal = WalletMaterial { snapshot: &snapshot, policy: material.policy, planned_native: Some(&funding) };
+            let internal = WalletMaterial { snapshot: &snapshot, policy: material.policy, planned_native: Some(std::slice::from_ref(&funding)) };
             // Only the new profile has an exact external-input contract here.
             // Its internal business sees the prerequisite output instead of the
             // native inputs already consumed by that prerequisite. Final compose

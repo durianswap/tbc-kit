@@ -82,3 +82,5 @@ export {
   type TestnetAddress,
   type TestnetNodeErrorCode,
 } from "./testnet-validation.js";
+export { createTbc721Reader, type CreateTbc721ReaderOptions, type GetTbc721MintStatusInput,
+  type Tbc721Collection, type Tbc721MintStatus, type Tbc721Reader } from "./nft-query.js";

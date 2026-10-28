@@ -4,6 +4,7 @@ import 'nft_material.dart' show ApiTxoStatus;
 import 'protocol_codec.dart';
 import 'reviewed_material.dart';
 import 'transaction_read.dart';
+import 'txo_status_batches.dart';
 
 String _point(Map value) => '${hash32(value['txid'])}:${value['vout']}';
 
@@ -89,7 +90,7 @@ final class ReviewedStatusReader {
     need(!_pending && missing.length <= 10000, 'REVIEWED_STATUS_BATCH');
     _pending = true;
     try {
-      final reply = await status(List.unmodifiable(missing.values));
+      final reply = await readTxoStatusBatches(status, List.unmodifiable(missing.values));
       requireCurrent();
       need(
         reply['txos'] is List &&

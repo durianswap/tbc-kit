@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { createRequire } from "node:module";
 import test from "node:test";
 
 import { secp256k1 } from "@noble/curves/secp256k1.js";
+import { createWasmTbcKeylessEngine } from "../dist/esm/index.js";
 import {
   createTbcWallet,
   hashCanonical,
@@ -29,6 +31,7 @@ const ACCOUNT = Object.freeze({
   publicKey: Buffer.from(secp256k1.getPublicKey(PRIVATE_KEY, true)).toString("hex"),
 });
 const ASSET = Object.freeze({ kind: "tbc" });
+const tbcVm = createRequire(import.meta.url)('tbc-lib-js');
 
 function response(data) {
   return new Response(JSON.stringify({ code: "200", data }), {
@@ -703,7 +706,11 @@ test("wallet formal-credential rejection is terminal before Signer and POST with
   session.close();
 });
 
-test("default wallet composition drives controlled FT multi-round success through the real Rust Engine", async () => {
+for (const scenario of ['explicit merge', 'direct fragmented transfer', 'twenty fragments with one fee UTXO']) {
+test(`default wallet composition drives controlled FT ${scenario} through the real Rust Engine`, async () => {
+  const manyFragments = scenario === 'twenty fragments with one fee UTXO';
+  const fragmentCount = manyFragments ? 20 : 6;
+  let checkedBatchInputs = 0;
   const ownerScript = assertTestnetAddress(ADDRESS).scriptPubKey;
   // Historical issuance is retired. Start from the committed public scalar-one
   // holder fixture, then exercise real transfers and merge without a mint bypass.
@@ -711,7 +718,9 @@ test("default wallet composition drives controlled FT multi-round success throug
   assert.equal(existing.address,ADDRESS);
   const contractId = existing.ftContractId;
   const rawTransactions = new Map(Object.entries(existing.rawTransactions));
-  const funding = [["8096980000000000", "10000000"], ["002d310100000000", "20000000"]];
+  const funding = manyFragments
+    ? [["002d310100000000", "20000000"]]
+    : [["8096980000000000", "10000000"], ["002d310100000000", "20000000"]];
   const fundingRaw = funding.map(([amount], index) => [
     "0a000000", "01", String(index).padStart(2, "0").repeat(32), "00000000", "00", "ffffffff",
     "01", amount, "19", ownerScript, "00000000",
@@ -726,10 +735,15 @@ test("default wallet composition drives controlled FT multi-round success throug
   const accepted = new Set();
   const ftTrace = [];
   const amountFromTape = (script) => {
-    const slot = script.slice(3, 11);
-    let value = 0n;
-    for (let index = 7; index >= 0; index -= 1) value = value * 256n + BigInt(slot[index]);
-    return value.toString();
+    // V4 balances are distributed across six slots after a multi-input spend.
+    // Reading only slot zero would make the synthetic index lose token value.
+    let total = 0n;
+    for (let offset = 3; offset < 51; offset += 8) {
+      let value = 0n;
+      for (let index = 7; index >= 0; index -= 1) value = value * 256n + BigInt(script[offset + index]);
+      total += value;
+    }
+    return total.toString();
   };
   const controlledFetch = async (input) => {
     const url = new URL(input instanceof Request ? input.url : String(input));
@@ -835,12 +849,28 @@ test("default wallet composition drives controlled FT multi-round success throug
         fetch: controlledFetch,
         now: () => NOW,
         snapshotId: (() => { let value = 0; return async () => `controlled-ft-snapshot-${++value}`; })(),
+        poolNative: await createWasmTbcKeylessEngine(await readFile(new URL('../artifacts/wasm/tbc_keyless_wasm.wasm', import.meta.url))),
         broadcast: {
           async submit(params) {
             broadcasts += 1;
             const raw = params.transaction.rawTransaction;
             const parsed = parseTbcTransaction(raw);
             const txid = turingTransactionId(raw);
+            if (manyFragments) {
+              const independent = new tbcVm.Transaction(raw);
+              for (const [index, input] of independent.inputs.entries()) {
+                const parent = rawTransactions.get(input.prevTxId.toString('hex'));
+                assert.ok(parent, 'VM resolves signed previous output from already-held material');
+                input.output = new tbcVm.Transaction(parent).outputs[input.outputIndex];
+                const checked = independent.verifyScript(index);
+                assert.equal(checked.success, true, `independent VM input ${index}: ${checked.error}`);
+                if (broadcasts >= fragmentCount) checkedBatchInputs += 1;
+              }
+              if (broadcasts >= fragmentCount) {
+                independent.outputs[0].setScript(tbcVm.Script.buildPublicKeyHashOut('1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP'));
+                assert.equal(independent.verifyScript(0).success, false, 'signed batch recipient cannot be replaced');
+              }
+            }
             rawTransactions.set(txid, raw);
             const spent = new Set(parsed.inputs.map((input) => `${input.txid}:${input.vout}`));
             nativeUtxos = nativeUtxos.filter((item) => !spent.has(`${item.txid}:${item.vout}`));
@@ -886,21 +916,44 @@ test("default wallet composition drives controlled FT multi-round success throug
           version: "1.0", chainId: CHAIN_ID, from: ADDRESS,
           clientRequestId: `controlled-ft-setup-${sequence}`,
           intent,
-          constraints: { expiresAt: "2026-09-24T00:03:00Z", maxFee: "5000", feePreference: "standard" },
+          constraints: { expiresAt: "2026-09-24T00:03:00Z", maxFee: manyFragments ? "50000" : "5000", feePreference: "standard" },
         },
       });
     } catch (error) {
       throw new Error(`${error.message}; sequence=${sequence}; plan=${planError?.message ?? "none"}; trace=${ftTrace.join(",")}`, { cause: error });
     }
   };
-  for (let index = 1; index <= 5; index += 1) {
+  for (let index = 1; index < fragmentCount; index += 1) {
     await send({
       version: "1.0", type: "tbc.ft.transfer", contractId, to: ADDRESS,
-      amount: String(index * 10000), attachedTbcAmount: "10000",
+      amount: String(index * (manyFragments ? 1000 : 10000)),
+      ...(manyFragments ? {} : { attachedTbcAmount: "10000" }),
     }, index);
   }
-  assert.equal(ftUtxos.length, 6, "controlled Engine setup creates six indexed FT outputs");
+  assert.equal(ftUtxos.length, fragmentCount, "controlled Engine setup creates the required indexed FT fragments");
+  if (manyFragments) assert.equal(nativeUtxos.length, 1, 'one spendable fee input before the whole transfer');
   const setupSignerCalls = signerCalls;
+  if (scenario !== 'explicit merge') {
+    const beforeApproval = ordinaryApprovals, beforeReads = ftTrace.length;
+    const amount = ftUtxos.reduce((total, u) => total + BigInt(u.ftAmount), 0n) - 1n;
+    assert.ok(ftUtxos.every(u => BigInt(u.ftAmount) < amount));
+    const result = await send({ version: '1.0', type: 'tbc20.transfer', contractId, to: ADDRESS, amount: String(amount) }, fragmentCount);
+    const mergeCount = manyFragments ? 4 : 1;
+    assert.deepEqual(result.transactions.map(t => [t.role, t.status]), [
+      ...Array.from({ length: mergeCount }, () => ['maintenance', 'submitted']), ['primary', 'submitted']]);
+    assert.ok(result.transactions.every(t => /^[0-9a-f]{64}$/.test(t.txid)));
+    assert.equal(ordinaryApprovals - beforeApproval, 1, 'maintenance and primary consume one approval');
+    assert.equal(scopeApprovals, 0, 'direct transfer must not require a separate explicit-merge approval');
+    assert.equal(signerCalls - setupSignerCalls, manyFragments ? 29 : 9, 'real secp signatures cover every input of all stages');
+    if (manyFragments) assert.equal(checkedBatchInputs, 29, 'independent script VM accepts every signed input of all five transactions');
+    assert.equal(broadcasts, fragmentCount + mergeCount, 'setup transfers plus maintenance and primary');
+    assert.equal(ftUtxos.length, 2);
+    assert.equal(ftUtxos.reduce((total, u) => total + BigInt(u.ftAmount), 0n), amount + 1n);
+    const reads = ftTrace.slice(beforeReads);
+    assert.equal(new Set(reads).size, reads.length, 'whole transfer reuses material without duplicate HTTP reads');
+    session.close();
+    return;
+  }
   const result = await session.runMultiRoundMerge({
     asset: { kind: "ft", contractId },
     limits: {
@@ -917,3 +970,4 @@ test("default wallet composition drives controlled FT multi-round success throug
   assert.equal(broadcasts, 7);
   session.close();
 });
+}

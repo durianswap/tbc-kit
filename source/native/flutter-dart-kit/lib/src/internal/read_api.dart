@@ -6,6 +6,7 @@ import '../configuration.dart';
 import 'protocol_codec.dart';
 import 'transaction_read.dart';
 import 'txo_status_reply.dart';
+import 'txo_status_batches.dart';
 
 final class TbcReadApi {
   TbcReadApi(this.network);
@@ -91,6 +92,7 @@ final class TbcReadApi {
         'TXO_STATUS_DUPLICATE',
       );
     }
+    if (txos.length > 25) return readTxoStatusBatches(txoStatus, txos);
     return normalizeTxoStatusReply(
       await _send('POST', '/api/tbc/txo/status', jsonEncode({'txos': txos})),
     );

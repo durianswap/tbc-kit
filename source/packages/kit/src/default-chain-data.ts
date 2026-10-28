@@ -17,6 +17,8 @@ import { createChainDataReadScope } from "./chain-data-read-scope.js";
 import { identifyTbcFungibleContracts, identifyTbcFungibleOrigin, identifyTbcNftOrigin, identifyTbcPoolOrigin, type TbcFungibleOriginHint, type TbcNftOriginHint, type TbcPoolOriginHint } from "./contract-identification.js";
 import { inspectReviewedTokenCodes } from "./reviewed-token.js";
 import { NftMaterialUnavailableError, resolveNftMaterial } from "./nft-material.js";
+import { prepareTbcNftMintJobMaterial, type TbcNftMintJobMaterial } from "./nft-mint-job-material.js";
+import type { TbcNftMintJobScope } from "./nft-mint-job.js";
 import { resolveCoinManagementMaterial } from "./coin-management-material.js";
 import { resolveTimelockMaterial } from "./timelock-material.js";
 import { resolveHtlcMaterial } from "./htlc-material.js";
@@ -134,6 +136,8 @@ export interface DefaultTbcChainDataResolver {
   readonly network: TbcNetworkContext;
   /** The account is supplied by Kit after session binding when available. */
   readonly resolve: (params: unknown, account?: KitWalletAccount) => Promise<unknown>;
+  /** Private bounded job scope; no cross-request mutable cache or background work. */
+  readonly prepareNftMintJob: (scope: TbcNftMintJobScope, account: KitWalletAccount) => Promise<TbcNftMintJobMaterial>;
   /** Private read-plan selection, bound to this exact unexpired snapshot. */
   readonly readUnifiedIntent: (binding: Readonly<{
     snapshotHash: string; chainId: string; from: string; contractId: string; intentType: string;
@@ -248,21 +252,30 @@ export function inspectFtAncestryReferences(
   return Object.freeze(references);
 }
 
-function selectFtCandidates(candidates: readonly TestnetFtUtxo[], minimumAmount: bigint): readonly TestnetFtUtxo[] {
+function selectFtCandidates(candidates: readonly TestnetFtUtxo[], minimumAmount: bigint, maxInputs: number): readonly TestnetFtUtxo[] {
+  if (maxInputs < 1) throw new ChainDataConflictError("FT input count exceeds policy");
   const single = [...candidates]
     .filter((candidate) => BigInt(candidate.ftAmount) > 0n && BigInt(candidate.ftAmount) >= minimumAmount)
     .sort((left, right) =>
       (BigInt(left.ftAmount) < BigInt(right.ftAmount) ? -1 : BigInt(left.ftAmount) > BigInt(right.ftAmount) ? 1 : 0) ||
       left.txid.localeCompare(right.txid) || left.vout - right.vout,
     )[0];
-  const selected = single === undefined
-    ? [...candidates]
-        .sort((left, right) =>
-          (BigInt(left.ftAmount) > BigInt(right.ftAmount) ? -1 : BigInt(left.ftAmount) < BigInt(right.ftAmount) ? 1 : 0) ||
-          left.txid.localeCompare(right.txid) || left.vout - right.vout,
-        )
-        .slice(0, MAX_FT_ASSET_INPUTS)
-    : [single];
+  const selected: TestnetFtUtxo[] = single === undefined ? [] : [single];
+  if (single === undefined) {
+    const sorted = [...candidates].filter(candidate => BigInt(candidate.ftAmount) > 0n).sort((left, right) =>
+      (BigInt(left.ftAmount) > BigInt(right.ftAmount) ? -1 : BigInt(left.ftAmount) < BigInt(right.ftAmount) ? 1 : 0) ||
+      left.txid.localeCompare(right.txid) || left.vout - right.vout,
+    );
+    let amount = 0n;
+    for (const candidate of sorted) {
+      if (selected.length >= maxInputs || amount >= minimumAmount) break;
+      selected.push(candidate);
+      amount += BigInt(candidate.ftAmount);
+    }
+  }
+  // Five is the per-transaction contract limit, not a whole-plan limit.
+  // Engine owns maintenance → primary construction. Read only the selected
+  // plan inputs; never fetch all holder parents to work around fragmentation.
   if (selected.length === 0 || selected.reduce((sum, item) => sum + BigInt(item.ftAmount), 0n) < minimumAmount) {
     throw new ChainDataConflictError("FT transfer requires an asset merge or more balance");
   }
@@ -700,6 +713,74 @@ export function createDefaultTbcChainDataResolver(
     } finally { await drained; }
   }
 
+  async function resolveNftBatch(raw: unknown, boundAccount: KitWalletAccount | undefined, client: TestnetClient): Promise<unknown> {
+    assertValidTws("chainDataResolveParams", raw);
+    const params = JSON.parse(canonicalize(raw)) as ChainDataParams;
+    const r = params.requirement, ids = r.contractIds;
+    const native = r.assets[0];
+    if (params.chainId !== network.chainId || params.signingRoles !== undefined || params.signingAccounts !== undefined ||
+        !Array.isArray(ids) || ids.length < 1 || ids.length > 100 || new Set(ids).size !== ids.length ||
+        r.includeAncestry !== true || r.assets.length !== ids.length + 1 || native?.kind !== "native" ||
+        native.contractId !== undefined || native.contractDependency !== undefined || native.minimumAmount !== r.nativeAmount ||
+        r.collectionSlots !== undefined || r.targetOutpoints !== undefined || r.certificateOutpoint !== undefined ||
+        ids.some((id, index) => { const asset = r.assets[index + 1]; return asset?.kind !== "nft" ||
+          asset.contractId !== id || asset.minimumAmount !== "1" || asset.contractDependency !== undefined; })) {
+      return failure("INVALID_INPUT");
+    }
+    const accounts = boundAccount === undefined ? await options.accounts.current() : [boundAccount];
+    const account = accounts.find(a => a.accountId === params.accountId && a.chainId === params.chainId);
+    if (account === undefined || account.accountId !== `${account.chainId}:${account.address}`) return failure("UNAUTHORIZED");
+    assertTbcAddress(account.address, network.profile.p2pkhVersion);
+    // Reuse existing authenticated single-NFT readers. One scope owns all
+    // indexes/raw promises, including common collection ancestry. Never retain
+    // mutable UTXO observations beyond this batch.
+    const scoped = createChainDataReadScope(client);
+    const results = await Promise.allSettled(ids.map(contractId => resolveUnifiedAsset({
+      version: params.version, chainId: params.chainId, accountId: params.accountId,
+      requirement: { intentType: "tbc721.transfer", includeAncestry: true, contractIds: [contractId],
+        assets: [{ kind: "native" }, { kind: "nft", contractId, minimumAmount: "1" }] },
+    }, account, scoped)));
+    const utxos = new Map<string, Record<string, unknown>>();
+    const parents = new Map<string, Record<string, unknown>>();
+    const contracts = new Map<string, Record<string, unknown>>();
+    let first: Record<string, unknown> | undefined;
+    let capturedAt = Infinity, expiresAt = Infinity;
+    const merge = (map: Map<string, Record<string, unknown>>, key: string, item: Record<string, unknown>) => {
+      const previous = map.get(key);
+      if (previous !== undefined && canonicalize(previous) !== canonicalize(item)) throw new ChainDataConflictError("NFT batch material differs for one identity");
+      map.set(key, item);
+    };
+    for (const [index, result] of results.entries()) {
+      if (result.status === "rejected") throw result.reason;
+      const value = record(result.value, "NFT batch child snapshot");
+      if (value.portError !== undefined) return value;
+      const payload = record(value.payload, "NFT batch child payload");
+      if (first === undefined) first = payload;
+      else if (canonicalize(payload.account) !== canonicalize(first.account) ||
+          canonicalize(payload.block ?? null) !== canonicalize(first.block ?? null)) throw new ChainDataConflictError("NFT batch account or chain context changed");
+      capturedAt = Math.min(capturedAt, Date.parse(String(payload.capturedAt)));
+      expiresAt = Math.min(expiresAt, Date.parse(String(payload.expiresAt)));
+      for (const rawItem of payload.utxos as unknown[]) {
+        const item = record(rawItem, "NFT batch input");
+        merge(utxos, `${item.txid}:${item.vout}`, item);
+      }
+      for (const rawItem of payload.parents as unknown[]) {
+        const item = record(rawItem, "NFT batch parent"); merge(parents, String(item.txid), item);
+      }
+      for (const rawItem of payload.contracts as unknown[]) {
+        const item = record(rawItem, "NFT batch contract");
+        if (item.contractId !== ids[index]) throw new ChainDataConflictError("NFT batch reader returned an unrequested contract");
+        merge(contracts, String(item.contractId), item);
+      }
+    }
+    if (contracts.size !== ids.length || utxos.size > (options.maxInputs ?? 2 * ids.length + DEFAULT_MAX_INPUTS) || parents.size > 10_000) return failure("INVALID_INPUT");
+    const payload = Object.freeze({ ...first!, snapshotId: await snapshotId(), capturedAt: canonicalTime(capturedAt), expiresAt: canonicalTime(expiresAt),
+      utxos: Object.freeze([...utxos.values()]), parents: Object.freeze([...parents.values()]), contracts: Object.freeze([...contracts.values()]) });
+    const result = Object.freeze({ payload, snapshotHash: hashCanonical(payload) });
+    assertValidTws("chainDataResolveResult", result);
+    return result;
+  }
+
   async function resolveWorkflow(raw: ChainDataParams, boundAccount?: KitWalletAccount): Promise<unknown> {
     assertValidTws("chainDataResolveParams", raw);
     // Own the full request before the first await; a DApp may retain its object.
@@ -816,6 +897,7 @@ export function createDefaultTbcChainDataResolver(
       const params = record(rawParams, "Chain Data parameters") as unknown as ChainDataParams;
       if (params.workflowSteps !== undefined) return await resolveWorkflow(params, boundAccount);
       const requirement = record(params.requirement, "Chain Data requirement") as unknown as ChainDataParams["requirement"];
+      if (requirement.intentType === "tbc721.batchTransfer") return await resolveNftBatch(rawParams, boundAccount, client);
       const maxInputs = options.maxInputs ?? (requirement.intentType === "tbc.maintenance.merge" ? MAX_TBC_MERGE_INPUTS : DEFAULT_MAX_INPUTS);
       if (requirement.intentType.startsWith("tbc20Lp.") || ["amm.mergeToken", "amm.swap", "amm.addLiquidity", "amm.removeLiquidity"].includes(requirement.intentType)) {
         return await resolveUnifiedPool(rawParams, boundAccount, client);
@@ -942,7 +1024,7 @@ export function createDefaultTbcChainDataResolver(
       const tbc721Mint = requirement.intentType === "tbc721-standard-mint" || requirement.intentType === "tbc721-standard-batch-mint";
       const tbc721 = tbc721Mint || requirement.intentType === "tbc721-standard-create-collection" || requirement.intentType === "tbc721-standard-transfer";
       const slots = requirement.collectionSlots;
-      if (tbc721Mint ? !Array.isArray(slots) || slots.length < 1 || slots.length > 32 || new Set(slots).size !== slots.length ||
+      if (tbc721Mint ? !Array.isArray(slots) || slots.length < 1 || slots.length > 100 || new Set(slots).size !== slots.length ||
           slots.some(slot => !Number.isSafeInteger(slot) || slot < 1 || slot > 0xffff_ffff) ||
           (requirement.intentType === "tbc721-standard-mint" && slots.length !== 1) : slots !== undefined) return failure("INVALID_INPUT");
       const nativeTransfer = requirement.intentType === "tbc.transfer" &&
@@ -1246,7 +1328,7 @@ export function createDefaultTbcChainDataResolver(
               ? selectFtMergeCandidates(candidates!)
               : stablecoinTransfer
                 ? selectStablecoinCandidates(candidates!, minimumFt, Math.max(1, maxInputs - 1))
-                : selectFtCandidates(candidates!, minimumFt);
+                : selectFtCandidates(candidates!, minimumFt, maxInputs - 1);
             const [selectedParents, creation, stablecoinInfo] = await Promise.all([
               Promise.all([...new Set(selected.map((item) => item.txid))].map((txid) =>
                 minimumConfirmations === "0" || selected.filter((item) => item.txid === txid).every((item) => item.height !== undefined)
@@ -1666,6 +1748,16 @@ export function createDefaultTbcChainDataResolver(
   return Object.freeze({
     network,
     resolve,
+    prepareNftMintJob(scope: TbcNftMintJobScope, account: KitWalletAccount) {
+      const captured = now();
+      const scoped = createDefaultTbcChainDataResolver({ ...options,
+        client: createChainDataReadScope(options.client), now: () => captured });
+      const knownCollection = immutable.get(scope.collectionId);
+      if (knownCollection !== undefined) scoped.rememberFinalizedTransaction(knownCollection);
+      // All subset snapshots keep the ORIGINAL observation deadline. Reusing
+      // an index must not silently extend its lifetime on each sub-batch.
+      return prepareTbcNftMintJobMaterial({ scope, account, network, resolve: scoped.resolve, now });
+    },
     readUnifiedIntent(binding: Parameters<DefaultTbcChainDataResolver["readUnifiedIntent"]>[0]) {
       const key = hashCanonical(binding), value = resolvedPolicies.get(key);
       if (value !== undefined && value.expiresAt <= now()) { resolvedPolicies.delete(key); return undefined; }

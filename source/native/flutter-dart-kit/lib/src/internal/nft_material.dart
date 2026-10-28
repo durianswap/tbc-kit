@@ -31,6 +31,107 @@ final class NftMaterialReader {
   final KeylessCall keyless;
   final Map<String, bool> _origins = {};
 
+  // Same rc.16 composition as the JS material router: reuse authenticated
+  // single-NFT readers, with one operation-owned read scope. The Engine owns
+  // dependent funding/change and every transaction; this is not a new builder.
+  Future<Map<String, dynamic>> _batch({
+    required Map<String, dynamic> request,
+    required Map<String, dynamic> account,
+    required DateTime now,
+    required String snapshotId,
+    required String minConfirmations,
+  }) async {
+    request = copied(request);
+    account = copied(account);
+    final items = request['intent']['transfers'];
+    need(
+      items is List && items.isNotEmpty && items.length <= 100,
+      'NFT_BATCH_BOUND',
+    );
+    final ids = <String>{};
+    for (final item in items) {
+      need(
+        item is Map && ids.add(hash32(item['contractId'])),
+        'NFT_BATCH_IDENTITY',
+      );
+      need(
+        item.keys.every({'contractId', 'to', 'payment'}.contains),
+        'NFT_BATCH_FIELDS',
+      );
+      inspectP2pkhAddress(item['to']);
+    }
+    final reads = <String, Future<Map<String, dynamic>>>{};
+    final histories = <String, Future<Map<String, dynamic>>>{};
+    final scoped = NftMaterialReader(
+      network: network,
+      read: (p) => reads.putIfAbsent(p, () => read(p)),
+      status: status,
+      readHistory: (id) => histories.putIfAbsent(id, () => readHistory(id)),
+      rememberParent: rememberParent,
+      keyless: keyless,
+    );
+    final results = await Future.wait<Map<String, dynamic>>([
+      for (final item in items)
+        scoped.resolve(
+          request: {
+            ...request,
+            'intent': {
+              'version': request['intent']['version'],
+              'type': 'tbc721.transfer',
+              'contractId': item['contractId'],
+              'to': item['to'],
+              if (item['payment'] != null) 'payment': copied(item['payment']),
+            },
+          },
+          account: account,
+          now: now,
+          snapshotId: snapshotId,
+          minConfirmations: minConfirmations,
+        ),
+    ], eagerError: false);
+    final utxos = <String, Map>{},
+        parents = <String, Map>{},
+        contracts = <String, Map>{};
+    void merge(Map<String, Map> into, String key, Map item) {
+      need(
+        !into.containsKey(key) || canonical(into[key]) == canonical(item),
+        'NFT_BATCH_CONFLICT',
+      );
+      into[key] = item;
+    }
+
+    final first = results.first['payload'] as Map;
+    for (var n = 0; n < results.length; n++) {
+      final p = results[n]['payload'] as Map;
+      need(
+        canonical(p['account']) == canonical(first['account']) &&
+            canonical(p['block']) == canonical(first['block']) &&
+            p['capturedAt'] == first['capturedAt'] &&
+            p['expiresAt'] == first['expiresAt'],
+        'NFT_BATCH_CONTEXT',
+      );
+      for (final u in p['utxos']) merge(utxos, '${u['txid']}:${u['vout']}', u);
+      for (final r in p['parents']) merge(parents, r['txid'], r);
+      for (final c in p['contracts']) {
+        need(c['contractId'] == items[n]['contractId'], 'NFT_BATCH_CONTRACT');
+        merge(contracts, c['contractId'], c);
+      }
+    }
+    need(
+      contracts.length == items.length &&
+          utxos.length <= 128 + 2 * items.length &&
+          parents.length <= 10000,
+      'NFT_BATCH_MATERIAL_BOUND',
+    );
+    final payload = <String, dynamic>{
+      ...first,
+      'utxos': utxos.values.toList(),
+      'parents': parents.values.toList(),
+      'contracts': contracts.values.toList(),
+    };
+    return {'payload': payload, 'snapshotHash': hashJson(payload)};
+  }
+
   Future<Map<String, dynamic>> resolve({
     required Map<String, dynamic> request,
     required Map<String, dynamic> account,
@@ -38,6 +139,15 @@ final class NftMaterialReader {
     required String snapshotId,
     String minConfirmations = '0',
   }) async {
+    if (request['intent']?['type'] == 'tbc721.batchTransfer') {
+      return _batch(
+        request: request,
+        account: account,
+        now: now,
+        snapshotId: snapshotId,
+        minConfirmations: minConfirmations,
+      );
+    }
     final owner = inspectAccount(account, expectedChainId: network.chainId);
     need(
       request['chainId'] == network.chainId &&
@@ -65,7 +175,10 @@ final class NftMaterialReader {
         need(seen.add('${hash32(p['txid'])}:${p['vout']}'), 'REQUESTED_INPUTS');
       }
     }
-    final tipRead = floor > BigInt.zero ? read('/api/tbc/nodeinfo') : Future<Map<String, dynamic>?>.value(null),
+    final tipRead =
+            floor > BigInt.zero
+                ? read('/api/tbc/nodeinfo')
+                : Future<Map<String, dynamic>?>.value(null),
         nativeRead = collectUtxoPages(
           read,
           '/api/tbc/utxo/address/${account['address']}',
@@ -156,7 +269,10 @@ final class NftMaterialReader {
           return (await freshParent!)['confirmations'] as String;
         }
         final observedTip = await tipRead;
-        final h = height == '-1' || height == -1 ? BigInt.zero : BigInt.parse(uintString(height));
+        final h =
+            height == '-1' || height == -1
+                ? BigInt.zero
+                : BigInt.parse(uintString(height));
         if (observedTip == null) return h == BigInt.zero ? '0' : null;
         final tip = BigInt.parse(uintString(observedTip['blocks']));
         need(h <= tip, 'FUTURE_NFT');
@@ -177,7 +293,8 @@ final class NftMaterialReader {
       final tx = values[0] as Map,
           count = values[2] as String?,
           tip = values[3] as Map?;
-      final height = tip == null ? null : BigInt.parse(uintString(tip['blocks']));
+      final height =
+          tip == null ? null : BigInt.parse(uintString(tip['blocks']));
       if (tip != null) hash32(tip['bestblockhash']);
       final txOutputs = tx['outputs'] as List;
       need(txOutputs.length >= 3, 'NFT_OUTPUTS');
@@ -218,8 +335,12 @@ final class NftMaterialReader {
         await keep(at == id ? hash32(ins[0]['txid']) : ancestor(tx));
       } else {
         identity(mint);
-        if (at != id) identity(await keep(ancestor(tx)));
-        else await keep(origin); // Mint's direct unlocking predecessor, not a history audit.
+        if (at != id)
+          identity(await keep(ancestor(tx)));
+        else
+          await keep(
+            origin,
+          ); // Mint's direct unlocking predecessor, not a history audit.
       }
       final raw = values[4]['utxos'];
       need(
@@ -251,8 +372,9 @@ final class NftMaterialReader {
           'vout': v.toInt(),
           'satoshis': value,
           'scriptPubKey': owner['scriptPubKey'],
-          if (height != null || h == BigInt.zero) 'confirmations':
-              h == BigInt.zero ? '0' : '${height! - h + BigInt.one}',
+          if (height != null || h == BigInt.zero)
+            'confirmations':
+                h == BigInt.zero ? '0' : '${height! - h + BigInt.one}',
           'classification': 'native',
         });
       }
@@ -284,7 +406,8 @@ final class NftMaterialReader {
         'version': '1.0',
         'snapshotId': snapshotId,
         'chainId': network.chainId,
-        if (tip != null) 'block': {'height': '$height', 'hash': tip['bestblockhash']},
+        if (tip != null)
+          'block': {'height': '$height', 'hash': tip['bestblockhash']},
         'capturedAt': tbcProtocolTimestamp(now),
         'expiresAt': tbcProtocolTimestamp(now.add(const Duration(minutes: 2))),
         'account': account,

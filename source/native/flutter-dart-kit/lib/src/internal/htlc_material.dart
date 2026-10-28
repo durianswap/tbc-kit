@@ -8,6 +8,7 @@ import 'protocol_codec.dart';
 import 'tbc20_material.dart' show ApiRead;
 import 'nft_material.dart' show ApiTxoStatus;
 import 'transaction_read.dart';
+import 'txo_status_batches.dart';
 
 const htlcProfiles = {'tbc-htlc-lock', 'tbc-htlc-claim', 'tbc-htlc-refund'};
 
@@ -112,7 +113,7 @@ final class HtlcMaterialReader {
     }
     final replies = await Future.wait([
       !claim || floor > BigInt.zero ? read('/api/tbc/nodeinfo') : Future<Map<String, dynamic>?>.value(null),
-      status(txos),
+      readTxoStatusBatches(status, txos),
     ]);
     final node = replies[0], height = node == null ? null : BigInt.parse(uintString(node['blocks']));
     need(height == null || height < BigInt.from(500000000), 'HTLC_TIP_HEIGHT');

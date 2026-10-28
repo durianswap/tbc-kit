@@ -153,3 +153,47 @@ fn nft_dust_and_batch_exhaustion_never_donate_unbounded_fees_or_reuse_slots() {
     let repeated=[FundingInput {outpoint:OutPoint {txid:source.txid(),vout:0},output:&low},FundingInput {outpoint:OutPoint {txid:source.txid(),vout:0},output:&low}];
     assert!(build_collection_plan(&collection_data(),&owner,&public,&repeated,1000).is_err());
 }
+
+#[test]
+fn large_nft_media_remains_readable_and_transferable_after_signing() {
+    use tbc_engine_core::protocols::nft_origin::{inspect_collection_origin,inspect_nft_origin};
+    let public=key().public_key();let owner=public.address();
+    let mut reports=Vec::new();
+    for (length,supply) in [(70_000,3),(500_000,3),(4,2000)] {
+        let mut source=funding();source.outputs[0].satoshis=10_000_000;
+        let mut collection_meta=collection_data();collection_meta.file="x".repeat(length);collection_meta.supply=supply;
+        let cplan=build_collection_plan(&collection_meta,&owner,&public,&[FundingInput {
+            outpoint:OutPoint {txid:source.txid(),vout:0},output:&source.outputs[0]}],1_000_000).unwrap();
+        let collection=sign(&cplan).remove(0);
+        assert_eq!(inspect_collection_origin(&collection.txid(),&collection.serialize()).unwrap().metadata.file.len(),length);
+        let mut data=nft_data();data.file=Some("y".repeat(length));
+        let mplan=build_mint_plan(&collection,MintItem {slot:1,recipient:&owner,data:&data},&public,&[FundingInput {
+            outpoint:OutPoint {txid:collection.txid(),vout:supply+1},output:&collection.outputs[supply as usize+1]}],1_000_000).unwrap();
+        let mint=sign(&mplan).remove(0);
+        inspect_nft_origin(&mint.txid(),&mint.serialize()).unwrap();
+        let mut transactions=vec![collection.to_hex(),mint.to_hex()];
+        let origin=OutPoint {txid:collection.txid(),vout:1};
+        let mut parent=mint.clone();let mut grandparent=collection.clone();
+        for _ in 0..2 {
+            let plan=build_transfer_plan(TransferOptions {parent:&parent,grandparent:&grandparent,expected_origin:&origin,
+                public_key:&public,recipient:&owner,funding:&[FundingInput {outpoint:OutPoint {txid:parent.txid(),vout:3},output:&parent.outputs[3]}],
+                payment:None,max_fee:1_000_000}).unwrap();
+            let sent=sign(&plan).remove(0);
+            assert_eq!(sent.outputs[2],mint.outputs[2]);
+            assert!(sent.serialize().len()<=1_048_576);
+            transactions.push(sent.to_hex());
+            grandparent=parent;parent=sent;
+        }
+        data.file=Some("z".repeat(1_048_576));
+        let oversized=build_mint_plan(&collection,MintItem {slot:1,recipient:&owner,data:&data},&public,&[FundingInput {
+            outpoint:OutPoint {txid:collection.txid(),vout:supply+1},output:&collection.outputs[supply as usize+1]}],1_000_000).unwrap_err();
+        assert!(oversized.message.contains("metadata exceeds material budget"));
+        collection_meta.file="z".repeat(1_048_576);
+        assert!(build_collection_plan(&collection_meta,&owner,&public,&[FundingInput {
+            outpoint:OutPoint {txid:source.txid(),vout:0},output:&source.outputs[0]}],1_000_000).is_err());
+        reports.push(json!({"mediaBytes":length,"supply":supply,"fundingRaw":source.to_hex(),"transactions":transactions}));
+    }
+    if let Ok(path)=std::env::var("TBC721_MEDIA_REPORT") {
+        std::fs::write(path,serde_json::to_vec(&reports).unwrap()).unwrap();
+    }
+}

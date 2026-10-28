@@ -5,6 +5,7 @@ import type { KitSupportedIntent } from "./public-types.js";
  * No Engine/WASM, API request, mutable state or account authority is loaded. */
 export const TBC_KIT_WALLET_INTENTS = Object.freeze([
   "tbc.transfer", "tbc.maintenance.merge",
+  "tbc721.batchTransfer",
   "tbc20.transfer", "tbc20.merge", "tbc20Stablecoin.transfer", "tbc20Stablecoin.merge", "tbc721.transfer",
   "amm.swap", "amm.addLiquidity", "amm.removeLiquidity", "amm.mergeToken",
   "tbc20Lp.transfer", "tbc20Lp.lock", "tbc20Lp.unlock", "tbc20Lp.merge", "tbc20Lp.burn",
@@ -30,8 +31,8 @@ export const TBC_KIT_UNIFIED_TEMPLATE_SUPPORT = Object.freeze({
   "historical-ft-v4": Object.freeze(["tbc20.transfer", "tbc20.merge"] as const),
   "tbc20-stablecoin": Object.freeze(["tbc20Stablecoin.transfer", "tbc20Stablecoin.merge"] as const),
   "historical-stablecoin-v4": Object.freeze(["tbc20Stablecoin.transfer", "tbc20Stablecoin.merge"] as const),
-  "tbc721-standard": Object.freeze(["tbc721.transfer"] as const),
-  "historical-nft": Object.freeze(["tbc721.transfer"] as const),
+  "tbc721-standard": Object.freeze(["tbc721.transfer", "tbc721.batchTransfer"] as const),
+  "historical-nft": Object.freeze(["tbc721.transfer", "tbc721.batchTransfer"] as const),
   "tbc-amm": Object.freeze(["amm.swap", "amm.addLiquidity", "amm.removeLiquidity",
     "tbc20Lp.transfer", "tbc20Lp.lock", "tbc20Lp.unlock", "tbc20Lp.merge"] as const),
   "historical-pool2": Object.freeze(["amm.swap", "amm.addLiquidity", "amm.removeLiquidity",

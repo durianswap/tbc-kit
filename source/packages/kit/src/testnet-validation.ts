@@ -44,7 +44,9 @@ const BASE58_INDEX = new Map(
 );
 const MAX_TRANSACTION_BYTES = 2 * 1024 * 1024;
 const MAX_TRANSACTION_ITEMS = 10_000;
-const MAX_SCRIPT_BYTES = 10_000;
+// Script lengths are bounded by Reader.bytes and the complete transaction
+// budget. A Bitcoin-era 10KB per-script limit rejects valid NFT Tape/proofs;
+// this structural decoder is not a script VM or a contract-policy validator.
 
 function fail(code: TestnetNodeErrorCode, message: string): never {
   throw new TestnetNodeError(code, message);
@@ -180,8 +182,8 @@ export function assertHash32(value: string): string {
 
 export function assertRawTransaction(value: string): string {
   if (
-    !/^(?:[0-9a-f]{2})+$/.test(value) ||
-    value.length / 2 > MAX_TRANSACTION_BYTES
+    value.length / 2 > MAX_TRANSACTION_BYTES ||
+    !/^(?:[0-9a-f]{2})+$/.test(value)
   ) {
     return fail("NODE_RESPONSE_INVALID", "Invalid raw TBC transaction");
   }
@@ -301,9 +303,6 @@ function parseTransactionBytes(raw: string, unsignedTemplate: boolean): ParsedTb
     const txid = bytesToHex(reverse(reader.bytes(32)));
     const vout = reader.uint32();
     const scriptLength = reader.compactSize();
-    if (scriptLength > MAX_SCRIPT_BYTES) {
-      return fail("NODE_RESPONSE_INVALID", "TBC input script is too large");
-    }
     const scriptSig = reader.bytes(scriptLength);
     if (unsignedTemplate && scriptLength !== 0) {
       return fail("NODE_RESPONSE_INVALID", "Unsigned TBC template contains an unlocking script");
@@ -326,9 +325,6 @@ function parseTransactionBytes(raw: string, unsignedTemplate: boolean): ParsedTb
   const outputs = Array.from({ length: outputCount }, () => {
     const satoshis = reader.uint64();
     const scriptLength = reader.compactSize();
-    if (scriptLength > MAX_SCRIPT_BYTES) {
-      return fail("NODE_RESPONSE_INVALID", "TBC output script is too large");
-    }
     return Object.freeze({
       satoshis,
       scriptPubKey: reader.bytes(scriptLength),

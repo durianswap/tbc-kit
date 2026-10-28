@@ -1,5 +1,8 @@
 export { TBC_KIT_WALLET_INTENTS, TBC_KIT_UNIFIED_TEMPLATE_SUPPORT } from "./business-capabilities.js";
+export type { TbcNftMintJobLimits, TbcNftMintJobResult, TbcNftMintJobBatchResult } from "./nft-mint-job.js";
 export { normalizeAmmFeePolicy, describeAmmFeePolicy } from "./amm-fee-policy.js";
+export { createTbc721Reader, type CreateTbc721ReaderOptions, type GetTbc721MintStatusInput,
+  type Tbc721Collection, type Tbc721MintStatus, type Tbc721Reader } from "./nft-query.js";
 export {
   identifyTbcFungibleContracts,
   type TbcFungibleContractMaterial, type TbcFungibleContractIdentity,
@@ -52,6 +55,8 @@ export {
   type CreateTbcClientOptions,
   type TbcClient,
   type TbcConnectedWallet,
+  type Tbc721MintJobInput,
+  type Tbc721SingleBatchMintInput,
   type TbcConnectOptions,
   type TbcDappMultiRoundMergeInput,
   type TbcDappMultiRoundMergeResult,
@@ -147,6 +152,7 @@ export type {
   Tbc721StandardBatchMintIntent,
   Tbc721StandardTransferIntent,
   Tbc721TransferIntent,
+  Tbc721BatchTransferIntent,
   UnifiedAmmSwapIntent,
   UnifiedLpTransferIntent,
   UnifiedLpLockIntent,

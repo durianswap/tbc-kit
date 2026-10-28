@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
@@ -97,7 +98,11 @@ async function planIntent(engine, resolver, intent, sequence) {
   return { ...params, plan: result.plan };
 }
 
-test("collection create -> NFT mint -> NFT transfer shares exact retained bytes and reaches Rust-WASM plans", async () => {
+for (const mediaBytes of [4, 70_000]) {
+test(`collection create -> NFT mint -> NFT transfer retains ${mediaBytes} media bytes through Rust-WASM plans`, async () => {
+  const mediaBuffer = mediaBytes === 4 ? Buffer.from([1, 2, 3, 4]) : Buffer.alloc(mediaBytes, 42);
+  const media = { kind: "base64", mediaType: "image/png", data: mediaBuffer.toString("base64"),
+    sha256: createHash("sha256").update(mediaBuffer).digest("hex") };
   const backend = await createWasmTbcEngineBackend(await readFile(
     new URL("../artifacts/wasm/tbc_engine_wasm.wasm", import.meta.url),
   ));
@@ -163,7 +168,7 @@ test("collection create -> NFT mint -> NFT transfer shares exact retained bytes 
   const collectionIntent = {
     type: "tbc721-standard-create-collection", version: "1.0", name: "Kit Collection",
     description: "Controlled three-step collection", supply: "2",
-    media: { kind: "uri", uri: "ipfs://kit-collection" },
+    media: mediaBytes === 4 ? { kind: "uri", uri: "ipfs://kit-collection" } : media,
   };
   const collection = await planIntent(engine, resolver, collectionIntent, "collection");
   assert.equal(collection.plan.payload.transactions.length, 1);
@@ -183,7 +188,7 @@ test("collection create -> NFT mint -> NFT transfer shares exact retained bytes 
     type: "tbc721-standard-mint", version: "1.0", collectionId: state.collectionId, slot: 1,
     name: "Kit NFT", symbol: "KNFT", description: "Controlled NFT",
     attributes: [{ traitType: "rarity", value: "genesis" }],
-    media: { kind: "base64", mediaType: "image/png", data: "AQIDBA==", sha256: "9f64a747e1b97f131fabb6b447296c9b6f0201e79fb3c5356e6c77e89b6a806a" },
+    media,
   }, "mint");
   assert.equal(mint.snapshot.payload.utxos.filter((item) => item.classification === "collection-slot").length, 1);
   assert.equal(mint.snapshot.payload.contracts[0].contractId, state.collectionId);
@@ -213,6 +218,7 @@ test("collection create -> NFT mint -> NFT transfer shares exact retained bytes 
   assert.deepEqual(calls, { collectionIndex: 1, nftIndex: 1, txoStatus: 0, raw: 0, decoded: 0 },
     "zero-floor immediate successor path reuses retained bytes and performs no confirmation decode");
 });
+}
 
 test("NFT material fails closed on mismatched collection slot and positive-floor missing confirmation", async () => {
   const collectionRaw = [

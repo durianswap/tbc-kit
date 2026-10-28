@@ -180,6 +180,7 @@ export interface DefaultTbcTestnetNetwork {
   readonly network: TbcNetworkContext;
   readonly client: TestnetClient;
   readonly chainData: DefaultTbcChainDataResolver;
+  readonly prepareNftMintJob: DefaultTbcChainDataResolver["prepareNftMintJob"];
   /** Initializes wallet-owned Pool native capability without chain reads. */
   readonly warmup: () => Promise<void>;
   /** Wallet-private authoritative Pool asset inventory for bounded maintenance. */
@@ -360,6 +361,7 @@ export function createDefaultTbcNetwork(
         ...LOP_INTENTS,
         "tbc.stablecoin.transfer", "tbc.stablecoin.merge", "tbc.pool.create",
         "tbc.collection.create", "tbc.nft.mint", "tbc.nft.transfer",
+        "tbc721.batchTransfer",
         "tbc.pool.liquidity.add", "tbc.pool.liquidity.remove",
         "tbc.pool.ft.merge", "tbc.pool.ftlp.merge", "tbc.pool.ftlp.burn",
         "tbc.pool.swap.exactTbcForToken", "tbc.pool.swap.exactTokenForTbc",
@@ -370,6 +372,7 @@ export function createDefaultTbcNetwork(
       const htlcToken = String(transaction.intent.type).startsWith("tbc-htlc-") ? transaction.intent.assetStandard : undefined;
       const isTbc20 = TBC20_STANDARD_INTENTS.has(String(transaction.intent.type)) || htlcToken === "tbc20-standard";
       const isTbc721 = TBC721_STANDARD_INTENTS.has(String(transaction.intent.type));
+      const isNftBatch = transaction.intent.type === "tbc721.batchTransfer";
       const isCoin = COIN_INTENTS.has(String(transaction.intent.type)) || htlcToken === "tbc20-stablecoin";
       const isAmmLp = AMM_LP_INTENTS.has(String(transaction.intent.type));
       const isLop = LOP_INTENTS.has(String(transaction.intent.type));
@@ -392,6 +395,14 @@ export function createDefaultTbcNetwork(
       if (isTbc721 && Array.isArray(transaction.intent.items)) {
         for (const item of transaction.intent.items as readonly Readonly<{ to?: string }>[]) {
           if (item.to !== undefined) assertTbcAddress(item.to, network.profile.p2pkhVersion);
+        }
+      }
+      if (isNftBatch) {
+        const items = transaction.intent.transfers as readonly Readonly<{ contractId: string; to: string; payment?: Readonly<{ to: string }> }>[];
+        if (new Set(items.map(item => item.contractId)).size !== items.length) return failure("INVALID_INPUT");
+        for (const item of items) {
+          assertTbcAddress(item.to, network.profile.p2pkhVersion);
+          if (item.payment !== undefined) assertTbcAddress(item.payment.to, network.profile.p2pkhVersion);
         }
       }
       if ((unified || isTbc721 || isCoin) && transaction.intent.payment !== undefined) {
@@ -432,11 +443,12 @@ export function createDefaultTbcNetwork(
         revision: policy.revision,
         chainId: transaction.chainId,
         feeRateSatPerKb: policy.feeRateSatPerKb,
-        dustThreshold: isAmmLp ? "10" : isLop || isTbc20 || isTbc721 || transaction.intent.type === "tbc-timelock-lock" || transaction.intent.type === "tbc-timelock-unlock" || String(transaction.intent.type).startsWith("tbc-htlc-") ? "42" : policy.dustThreshold,
+        dustThreshold: isAmmLp ? "10" : isLop || isTbc20 || isTbc721 || isNftBatch || transaction.intent.type === "tbc-timelock-lock" || transaction.intent.type === "tbc-timelock-unlock" || String(transaction.intent.type).startsWith("tbc-htlc-") ? "42" : policy.dustThreshold,
         minConfirmations: confirmationPolicy.minConfirmations,
-        maxBundleTransactions: policy.maxBundleTransactions,
+        maxBundleTransactions: isNftBatch || transaction.intent.type === "tbc721-standard-batch-mint" ? 100 : policy.maxBundleTransactions,
         sighashType: 65 as const,
-        contractPolicies: isLop ? Object.freeze([...TBC20_CONTRACT_POLICIES, ...COIN_CONTRACT_POLICIES]) : isAmmLp ? AMM_CONTRACT_POLICIES : isCoin ? COIN_CONTRACT_POLICIES : isTbc20 ? TBC20_CONTRACT_POLICIES : isTbc721 ? TBC721_CONTRACT_POLICIES : Object.freeze([]),
+        contractPolicies: isNftBatch ? Object.freeze([Object.freeze({ family: "nft", allowedVersions: Object.freeze(["tbc721", "2.0"]) })])
+          : isLop ? Object.freeze([...TBC20_CONTRACT_POLICIES, ...COIN_CONTRACT_POLICIES]) : isAmmLp ? AMM_CONTRACT_POLICIES : isCoin ? COIN_CONTRACT_POLICIES : isTbc20 ? TBC20_CONTRACT_POLICIES : isTbc721 ? TBC721_CONTRACT_POLICIES : Object.freeze([]),
         amountLimits: Object.freeze([
           Object.freeze({ scope: "native" as const, maximum: policy.maximumNativeAmount }),
           ...(isTbc20 || isLop ? TBC20_AMOUNT_LIMITS : []),
@@ -457,6 +469,7 @@ export function createDefaultTbcNetwork(
     network,
     client,
     chainData,
+    prepareNftMintJob: chainData.prepareNftMintJob,
     warmup: async () => {
       await poolMaterial.warmup?.();
     },

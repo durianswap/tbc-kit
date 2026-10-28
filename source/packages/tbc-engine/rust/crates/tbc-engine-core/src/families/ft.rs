@@ -636,6 +636,7 @@ fn build_transfer_with_funding(
     let mut fees = Vec::new();
     let mut fee_inputs = FeePool::new(fee_inputs)?;
     let mut terminal_fee_changes = Vec::new();
+    let mut earlier_fee_changes = Vec::new();
     let balances = candidates.iter().map(|candidate| candidate.balance_raw).collect::<Vec<_>>();
     let total = checked_sum_u128(balances.iter().copied(), "FT balance overflow")?;
     if amount > total {
@@ -669,7 +670,10 @@ fn build_transfer_with_funding(
         };
         let mut source = candidates.into_iter();
         let mut next_level = Vec::new();
-        terminal_fee_changes.clear();
+        // These are unspent, owner-bound planned outputs, not new chain reads.
+        // Keep prior-level change available if the snapshot has only one fee
+        // UTXO. Prefer original independent inputs to preserve existing DAGs.
+        earlier_fee_changes.append(&mut terminal_fee_changes);
         let mut merge_index = 0usize;
         loop {
             let mut chunk = source
@@ -706,21 +710,32 @@ fn build_transfer_with_funding(
             )?;
             let transaction_id = format!("ft-merge-{}", transactions.len() + 1);
             let code = merge_outputs[0].script_pubkey.clone();
-            let (_, built) = build_with_smallest_sufficient(
+            let build = |fee_input: &FeeCandidate| build_asset_transaction(
+                &transaction_id, "maintenance", &chunk, fee_input, &merge_outputs,
+                signing, fee_rate, true,
+            );
+            let built = match build_with_smallest_sufficient(
                 &mut fee_inputs,
                 required_funding,
                 "distinct native fee inputs are insufficient for the FT merge DAG",
-                |fee_input| build_asset_transaction(
-                    &transaction_id,
-                    "maintenance",
-                    &chunk,
-                    fee_input,
-                    &merge_outputs,
-                    signing,
-                    fee_rate,
-                    true,
-                ),
-            )?;
+                build,
+            ) {
+                Ok((_, built)) => built,
+                Err(failure) if failure.code == ErrorCode::InsufficientFunds => {
+                    // A chained fee input may consume the first merge's
+                    // reserved primary funding. Retain that minimum again in
+                    // the replacement change, including on the last merge.
+                    let retained_minimum = minimum_asset_funding(&chunk, &merge_outputs, signing,
+                        fee_rate, Some(terminal_required_change.unwrap_or(tbc_sdk::SDK_DUST_SAT)))?;
+                    let current = build_with_planned_change(&mut terminal_fee_changes, retained_minimum, build)?;
+                    match current {
+                        Some(built) => built,
+                        None => build_with_planned_change(&mut earlier_fee_changes, retained_minimum, build)?
+                            .ok_or(failure)?,
+                    }
+                }
+                Err(failure) => return Err(failure),
+            };
             let proof_references = chunk
                 .iter()
                 .rev()
@@ -794,20 +809,16 @@ fn build_transfer_with_funding(
             checked_sum_u64(fees.iter().copied(), "FT fee overflow")?,
         )?
     } else {
-        let fee_input = terminal_fee_changes
-            .into_iter()
-            .next()
-            .ok_or_else(|| internal("FT merge DAG did not retain terminal fee change"))?;
-        build_asset_transaction(
-            "ft-transfer-1",
-            "primary",
-            &candidates,
-            &fee_input,
-            &primary_outputs,
-            signing,
-            fee_rate,
-            false,
-        )?
+        let minimum = minimum_asset_funding(&candidates, &primary_outputs, signing, fee_rate, None)?;
+        let build = |fee_input: &FeeCandidate| build_asset_transaction(
+            "ft-transfer-1", "primary", &candidates, fee_input, &primary_outputs, signing, fee_rate, false,
+        );
+        match build_with_planned_change(&mut terminal_fee_changes, minimum, build)? {
+            Some(built) => built,
+            None => build_with_planned_change(&mut earlier_fee_changes, minimum, build)?
+                .ok_or_else(|| error(ErrorCode::InsufficientFunds,
+                    "FT retained fee change cannot cover primary transfer", "snapshot.payload.utxos"))?,
+        }
     };
     fees.push(primary.fee);
     previews.push(primary.preview);
@@ -995,6 +1006,23 @@ fn restore_fee_candidates(
         fee_pool.restore(candidate)?;
     }
     Ok(())
+}
+
+// Consume a planned change exactly once and retain its typed parent/stage.
+// Do not insert it into the external-outpoint FeePool or fabricate a txid.
+fn build_with_planned_change<F>(
+    changes: &mut Vec<FeeCandidate>, minimum: u64, mut build: F,
+) -> Result<Option<BuiltAssetTransaction>, EngineError>
+where F: FnMut(&FeeCandidate) -> Result<BuiltAssetTransaction, EngineError> {
+    for index in 0..changes.len() {
+        if changes[index].satoshis < minimum { continue; }
+        match build(&changes[index]) {
+            Ok(built) => { changes.remove(index); return Ok(Some(built)); }
+            Err(failure) if failure.code == ErrorCode::InsufficientFunds => continue,
+            Err(failure) => return Err(failure),
+        }
+    }
+    Ok(None)
 }
 
 fn build_with_smallest_sufficient<F>(
@@ -1471,10 +1499,10 @@ pub(crate) fn funding_candidates(
     signing: &PublicSigningContext,
 ) -> Result<Vec<NativeFundingUtxo>, EngineError> {
     if let Some(planned) = material.planned_native {
-        // Its external inputs were checked against the original snapshot and
-        // confirmation policy. This output is signed in a preceding plan stage,
-        // not an allegedly confirmed UTXO received from an API.
-        return Ok(vec![planned.clone()]);
+        // External inputs were checked against the original snapshot and
+        // confirmation policy. Generated outputs are bound to preceding plan
+        // stages, not allegedly confirmed UTXOs received from an API.
+        return Ok(planned.to_vec());
     }
     let minimum = parse_decimal_u64(
         &material.policy.payload.min_confirmations,

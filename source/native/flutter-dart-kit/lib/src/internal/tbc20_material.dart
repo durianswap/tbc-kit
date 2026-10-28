@@ -347,7 +347,16 @@ class Tbc20MaterialReader {
                 ).compareTo(BigInt.parse(a['ftAmount']));
                 return c != 0 ? c : order(a, b);
               });
-              chosen.addAll(candidates.take(5));
+              // Five bounds one on-chain FT transaction, not the Engine plan.
+              // Read only enough selected inputs; Engine owns any dependent
+              // consolidation. Reserve one input for native fee funding.
+              var selectedAmount = BigInt.zero;
+              for (final row in candidates) {
+                if (chosen.length >= maxInputs - 1 || selectedAmount >= amount) break;
+                if (BigInt.parse(row['ftAmount']) <= BigInt.zero) continue;
+                chosen.add(row);
+                selectedAmount += BigInt.parse(row['ftAmount']);
+              }
             }
           }
           total = chosen.fold(

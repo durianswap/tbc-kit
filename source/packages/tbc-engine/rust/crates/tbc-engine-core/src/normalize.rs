@@ -387,6 +387,7 @@ pub(crate) fn validate_request(request: &CanonicalRequest) -> Result<(), EngineE
 }
 
 fn validate_intent_field_isolation(request: &CanonicalRequest) -> Result<(), EngineError> {
+    if request.intent.transfers.is_some(){return Err(error(ErrorCode::InvalidInput,"transfers requires tbc721.batchTransfer","request.intent.transfers"));}
     if LOP_INTENTS.contains(&request.intent.intent_type.as_str()){return crate::families::lop::validate_request_fields(request);}
     if request.intent.order.is_some(){return Err(error(ErrorCode::InvalidInput,"order requires tbc-lop-create","request.intent.order"));}
     if HTLC_INTENTS.contains(&request.intent.intent_type.as_str()){return crate::families::htlc::validate_htlc_request(request);}
@@ -719,7 +720,10 @@ fn validate_tbc721_media(value:&Value)->Result<(),EngineError> {
                 })
             });
             let data=o.get("data").and_then(Value::as_str).is_some_and(|s|{
-                if s.len()>2_796_204||s.len()%4!=0{return false;}
+                // Tape stores this text verbatim; the decoded media length is
+                // not the on-chain size. Exact metadata/transaction and plan
+                // budgets are enforced again by the keyless builder.
+                if s.len()>crate::protocols::tbc20_material::MAX_MATERIAL_TRANSACTION_BYTES||s.len()%4!=0{return false;}
                 let body=s.trim_end_matches('=');let padding=s.len()-body.len();
                 padding<=2&&body.bytes().all(|b|b.is_ascii_alphanumeric()||b==b'+'||b==b'/')
             });
@@ -776,8 +780,8 @@ fn validate_tbc721_request(request:&CanonicalRequest)->Result<(),EngineError> {
         }
         "tbc721-standard-batch-mint"=>{
             validate_contract_id(required(&intent.collection_id,"request.intent.collectionId")?,"request.intent.collectionId")?;
-            let items=intent.items.as_deref().filter(|v|!v.is_empty()&&v.len()<=32)
-                .ok_or_else(||error(ErrorCode::InvalidInput,"NFT mint batch must contain 1 to 32 items","request.intent.items"))?;
+            let items=intent.items.as_deref().filter(|v|!v.is_empty()&&v.len()<=100)
+                .ok_or_else(||error(ErrorCode::InvalidInput,"NFT construction batch must contain 1 to 100 items","request.intent.items"))?;
             let mut slots=BTreeSet::new();
             for item in items {
                 if item.slot==0||!slots.insert(item.slot) {return Err(error(ErrorCode::InvalidInput,"mint slots must be positive and unique","request.intent.items"));}

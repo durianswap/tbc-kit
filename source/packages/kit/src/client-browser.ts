@@ -19,6 +19,8 @@ export type {
   CreateTbcClientOptions,
   TbcClient,
   TbcConnectedWallet,
+  Tbc721MintJobInput,
+  Tbc721SingleBatchMintInput,
   TbcConnectOptions,
   TbcDappMultiRoundMergeInput,
   TbcDappMultiRoundMergeResult,

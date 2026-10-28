@@ -190,6 +190,19 @@ import CryptoKit
     try need(canonical(account)==canonical(selected.identity))
     guard let revision=a["revision"] as? NSNumber,CFGetTypeID(revision) != CFBooleanGetTypeID(),revision.doubleValue>=0,revision.doubleValue<=Double(Int32.max),revision.doubleValue==Double(revision.intValue)else{throw NativeCustodyFailure(code:"NATIVE_DENIED")}
     send(Self.snapshotWire(try custody.begin(owner:owner,scope:scope,id:id(),method:string(a["method"]),expectedRevision:revision.intValue,expectedAccount:selected)))
+   case "mintJob.begin":
+    try keys("operation","revision","account","consent");let account=try map(a["account"])
+    let selected=NativeAccount(address:try string(account["address"]),publicKey:try string(account["publicKey"]),chainId:try string(account["chainId"]))
+    try need(canonical(account)==canonical(selected.identity))
+    guard let revision=Int(try canonical(a["revision"])),revision>=0,revision<=Int32.max else{throw NativeCustodyFailure(code:"NATIVE_DENIED")}
+    try custody.beginMintJob(owner:owner,scope:scope,id:id(),expectedRevision:revision,expectedAccount:selected,consent:map(a["consent"])){r in do{send(try r.get())}catch{fail(error)}}
+   case "mintJob.batch":
+    try keys("operation","parent","offset","request")
+    guard let offset=Int(try canonical(a["offset"])),offset>=0,offset<2000 else{throw NativeCustodyFailure(code:"NATIVE_DENIED")}
+    send(Self.snapshotWire(try custody.beginMintBatch(owner:owner,scope:scope,parent:string(a["parent"]),id:id(),offset:offset,request:map(a["request"]))))
+   case "mintJob.result":try keys("operation");send(try custody.mintBatchResult(owner:owner,scope:scope,id:id()))
+   case "mintJob.finish":try keys("operation","reason");send(try custody.finishMintJob(owner:owner,scope:scope,id:id(),reason:string(a["reason"])))
+   case "mintJob.close":try keys("operation");try custody.closeMintJob(owner:owner,scope:scope,id:id());send(true)
    case "maintenance.begin","maintenance.noop":
     if method=="maintenance.noop"{try keys("operation","revision","account","consent","result")}else{try keys("operation","revision","account","consent")};let account=try map(a["account"])
     let selected=NativeAccount(address:try string(account["address"]),publicKey:try string(account["publicKey"]),chainId:try string(account["chainId"]))

@@ -13,6 +13,7 @@ import 'broadcast_port.dart';
 import 'native_broadcast_binding.dart';
 import 'wallet_protocol.dart';
 import 'maintenance_backend.dart';
+import 'nft_mint_job_backend.dart';
 
 /// Private Flutter transport only. The invoker must queue calls in order on the
 /// same native custody channel. It is never registered as a WebView handler.
@@ -38,7 +39,10 @@ final class _NativeCryptoUnavailable implements Exception {
 /// default account, key, grant, approval or network request is installed here.
 /// Native navigation/lock hooks fence custody *before* notifying this mirror.
 final class TbcNativeWalletBindings
-    implements TbcWalletSigningBackend, TbcMaintenanceBackend {
+    implements
+        TbcWalletSigningBackend,
+        TbcMaintenanceBackend,
+        TbcNftMintJobBackend {
   TbcNativeWalletBindings({
     required this.network,
     required TbcNativeWalletInvoke invoke,
@@ -235,10 +239,137 @@ final class TbcNativeWalletBindings
   }
 
   @override
+  Future<TbcNftMintJobOwner> beginNftMintJob(
+    TbcSigningRequestScope scope,
+    Map<String, dynamic> consent,
+  ) async {
+    final d = _document(scope.navigation);
+    d._signingScope(scope);
+    final stamp = d._captureNetwork(), owned = frozen(copied(consent));
+    try {
+      final reply = await d._call(
+        'mintJob.begin',
+        {
+          'operation': scope.operationId,
+          'revision': scope.revision,
+          'account': scope.account.toKitAccount(),
+          'consent': owned,
+        },
+        true,
+        stamp,
+      );
+      d._signingScope(scope);
+      d._requireNetwork(stamp);
+      if (reply is! Map ||
+          reply['status'] != 'approved' ||
+          reply['scopeHash'] != hashJson(owned))
+        throw TbcWireFailure.unavailable;
+      return _NativeMintJob(d, scope, stamp);
+    } catch (_) {
+      await d
+          ._call(
+            'mintJob.close',
+            {'operation': scope.operationId},
+            false,
+            stamp,
+          )
+          .catchError((_) => null);
+      rethrow;
+    }
+  }
+
+  @override
   void revokeOperation(TbcSigningRequestScope scope) {
     final d = _documents[_key(scope.navigation)];
     if (d != null) unawaited(d.cancel(scope.operationId).catchError((_) {}));
   }
+}
+
+final class _NativeMintJob implements TbcNftMintJobOwner {
+  _NativeMintJob(this.document, this.scope, this.stamp);
+  final TbcNativeDocumentControl document;
+  final TbcSigningRequestScope scope;
+  final Map<String, Object>? stamp;
+  bool finished = false;
+  Future<void>? closing;
+  void check() {
+    if (finished || closing != null) throw TbcWireFailure.unauthorized;
+    document._requireNetwork(stamp);
+    document._signingScope(scope);
+  }
+
+  @override
+  Future<TbcSigningOperation> beginBatch(
+    TbcSigningRequestScope child,
+    Map<String, dynamic> request,
+    int offset,
+  ) async {
+    check();
+    if (child.method != 'tbc_sendTransaction' ||
+        child.revision != scope.revision ||
+        !_sameAccount(child.account, scope.account) ||
+        !child.navigation.matches(scope.navigation.toWire()))
+      throw TbcWireFailure.unauthorized;
+    final operation = _NativeSigningOperation(document, child);
+    try {
+      final reply = await document._call(
+        'mintJob.batch',
+        {
+          'operation': child.operationId,
+          'parent': scope.operationId,
+          'offset': offset,
+          'request': frozen(copied(request)),
+        },
+        true,
+        stamp,
+      );
+      document._installActive(reply);
+      check();
+      document._signingScope(child);
+      return operation;
+    } catch (_) {
+      await operation.close().catchError((_) {});
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> batchResult() async {
+    check();
+    final result = await document._call(
+      'mintJob.result',
+      {'operation': scope.operationId},
+      true,
+      stamp,
+    );
+    check();
+    return copied(result as Map);
+  }
+
+  @override
+  Future<Map<String, dynamic>> finish(String reason) async {
+    check();
+    final result = await document._call(
+      'mintJob.finish',
+      {'operation': scope.operationId, 'reason': reason},
+      true,
+      stamp,
+    );
+    check();
+    finished = true;
+    return copied(result as Map);
+  }
+
+  @override
+  Future<void> close() =>
+      closing ??= document
+          ._call(
+            'mintJob.close',
+            {'operation': scope.operationId},
+            false,
+            stamp,
+          )
+          .then<void>((_) {});
 }
 
 /// Private native consent lifetime. It holds neither keys nor a second
@@ -564,7 +695,7 @@ final class TbcNativeDocumentControl
 
   @override
   Future<void> acknowledgeDelivery(Object requestId) async {
-    if(await _call('delivery.acknowledge', {'requestId':requestId})!=true) {
+    if (await _call('delivery.acknowledge', {'requestId': requestId}) != true) {
       throw TbcWireFailure.unavailable;
     }
   }

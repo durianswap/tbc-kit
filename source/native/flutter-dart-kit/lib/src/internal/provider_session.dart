@@ -233,6 +233,50 @@ final class TbcProviderSession {
       wire.accept(text, source);
   Future<void> close() => wire.close();
 
+  /// Wallet-local operation, deliberately not a public Provider method. It uses
+  /// the same grants, account fence, worker and native authority as sendTransaction.
+  Future<Map<String, dynamic>> mintNftJob({
+    required String operation,
+    required String collectionId,
+    required List<Map<String, dynamic>> items,
+    required Map<String, dynamic> limits,
+  }) async {
+    final selected = worker,
+        account = control.selectedAccount,
+        revision = control.revision;
+    void authorized() {
+      _permission('tbc_sendTransaction');
+      if (!wire.isActive ||
+          walletProtocol != TbcNativeWalletProtocol.standard ||
+          worker != selected ||
+          control.revision != revision ||
+          canonical(control.selectedAccount.toKitAccount()) !=
+              canonical(account.toKitAccount()))
+        throw TbcWireFailure.unauthorized;
+    }
+
+    authorized();
+    if (!_supports('tbc_sendTransaction') || !selected.supportsNftMintJob)
+      throw TbcWireFailure.unsupported;
+    final result = await selected.executeNftMintJob(
+      scope: TbcSigningRequestScope(
+        operationId: operation,
+        method: 'tbc_sendTransaction',
+        navigation: navigation,
+        account: account,
+        revision: revision,
+      ),
+      collectionId: collectionId,
+      items: items,
+      limits: limits,
+      requireAuthorized: authorized,
+      isUnlocked: () => control.isUnlocked,
+      timing: timing,
+    );
+    authorized();
+    return result;
+  }
+
   /// Native authority notifications, not events supplied by the page.
   Future<void> authorityChanged() => wire.authorityChanged(_permissionEvents());
   // Worker is shared by the wallet/network and is not owned by one page.

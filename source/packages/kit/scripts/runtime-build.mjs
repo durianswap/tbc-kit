@@ -82,7 +82,7 @@ export async function buildKitRuntime({ root, packageRoot, minifyWhitespace = fa
     outdir: resolve(packageRoot, "dist/esm"), splitting: true, chunkNames: "chunk-[hash]",
     external: [...external, "./provider-transport.js"] });
   for (const entry of ["protocol-time", "business-capabilities", "contract-identification", "keyless", "amm-fee-policy", "amm-quote", "receipt-verification",
-    "timelock-query", "client", "client-browser", "wallet-standard-browser", "wallet-standard-native", "sign-in", "webview", "provider-transport"]) {
+    "timelock-query", "nft-query", "client", "client-browser", "wallet-standard-browser", "wallet-standard-native", "sign-in", "webview", "provider-transport"]) {
     await build({ ...esm, entryPoints: [resolve(sourceRoot, `src/${entry}.ts`)], outfile: resolve(packageRoot, `dist/esm/${entry}.js`) });
   }
   await build({ ...esm, entryPoints: { prepared: resolve(sourceRoot, "src/prepared.ts") },

@@ -17,23 +17,23 @@ const webviewEsmEntry = path.join(root, "packages", "provider", "dist", "esm", "
 const webviewCjsEntry = path.join(root, "packages", "provider", "dist", "cjs", "webview.cjs");
 
 export const PROVIDER_PORTABILITY_LIMITS = Object.freeze({
-  // Current dependency-inclusive baseline, user-approved 2026-10-21.
-  // Includes Prepared, reviewed/crypto, batch-send and WebView validation.
-  maxBundleBytes: 2_361_000,
-  maxGzipBytes: 234_000,
+  // Dependency-inclusive rc.11 NFT schema delta; no validators excluded.
+  // Exact comparison: ft-nft-rc11/evidence/size-source-comparison.json.
+  maxBundleBytes: 2_375_000,
+  maxGzipBytes: 235_000,
   maxInMemoryBundleBytes: 8_000,
   maxInMemoryGzipBytes: 2_500,
   // The standalone WebView entry carries the exact generated Provider
   // validators so native decoding cannot resolve a different package copy.
-  // ESM artifact: 778,979 / 79,827 bytes, same approved baseline.
-  maxWebViewArtifactBytes: 780_000,
-  maxWebViewArtifactGzipBytes: 81_000,
+  // The standalone artifacts include the same new NFT validators.
+  maxWebViewArtifactBytes: 785_000,
+  maxWebViewArtifactGzipBytes: 81_500,
 });
 
 export const PROVIDER_PACKAGE_LIMITS = Object.freeze({
-  // Includes source maps for both strict-validator-bearing WebView formats.
-  maxTarballBytes: 770_000,
-  maxUnpackedBytes: 6_800_000,
+  // rc.11 measured 772,054 / 6,802,115 bytes, including strict-validator maps.
+  maxTarballBytes: 773_000,
+  maxUnpackedBytes: 6_810_000,
 });
 
 const expectedRuntimeExports = Object.freeze([

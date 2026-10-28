@@ -147,6 +147,11 @@ function deferredInputs(
   sourceTransactionId: string;
   sourceOutputIndex: number;
 }>[] {
+  // Same 2MiB structural budget as the Kit transaction decoder. Contract
+  // families may impose smaller whole-transaction limits (NFT: 1MiB).
+  if (transaction.unsignedTransaction.length > 2 * 2 * 1024 * 1024) {
+    throw new TwsEngineError("ENGINE_ARTIFACT_MISMATCH", "prepared transaction exceeds byte budget");
+  }
   const bytes = hexToBytes(transaction.unsignedTransaction);
   let offset = 0;
   const take = (length: number): Uint8Array => {
@@ -190,7 +195,6 @@ function deferredInputs(
     const previous = take(32);
     const sourceOutputIndex = uint32();
     const scriptLength = compact();
-    if (scriptLength > 10_000) throw new TwsEngineError("ENGINE_ARTIFACT_MISMATCH", "prepared transaction input script is too large");
     take(scriptLength);
     uint32();
     if (previous.every((byte) => byte === 0)) zeroInputs.push({ inputIndex, sourceOutputIndex });
@@ -202,7 +206,6 @@ function deferredInputs(
   for (let index = 0; index < outputCount; index += 1) {
     uint64();
     const scriptLength = compact();
-    if (scriptLength > 10_000) throw new TwsEngineError("ENGINE_ARTIFACT_MISMATCH", "prepared transaction output script is too large");
     take(scriptLength);
   }
   uint32();

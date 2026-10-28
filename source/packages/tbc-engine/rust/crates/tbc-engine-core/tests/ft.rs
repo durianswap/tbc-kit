@@ -1437,6 +1437,65 @@ fn ft_public_finalize_rejects_tampered_swapped_and_out_of_order_continuations() 
 }
 
 #[test]
+fn fragmented_ft_reuses_one_fee_change_across_merge_levels() {
+    for (count, expected_transactions) in [(20, 5), (31, 9)] {
+        let (assets, parents, contract) = asset_material(&vec![100; count]);
+        let mut input = base_plan_input();
+        input["request"]["intent"] = json!({"type":"tbc.ft.transfer","version":"1.0",
+            "contractId":contract["contractId"],"to":"1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP",
+            "amount":(count * 100 - 50).to_string()});
+        input["request"]["constraints"]["maxFee"] = json!("100000");
+        input["policy"]["payload"]["maxBundleTransactions"] = json!(64);
+        input["policy"]["payload"]["amountLimits"] = json!([]);
+        input["snapshot"]["payload"]["utxos"].as_array_mut().unwrap().extend(assets);
+        input["snapshot"]["payload"]["parents"].as_array_mut().unwrap().extend(parents);
+        input["snapshot"]["payload"]["contracts"] = json!([contract]);
+        replace_native_funding(&mut input, "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+            "0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798",
+            "751e76e8199196d454941c45d1b3a323f1433bd6", 1_000_000);
+        let input = bind_request(input);
+        let planned = call_ok(EngineMethod::Plan, &input);
+        let mut validation = public_finalize_input(&input, &planned);
+        let mut rounds = 1;
+        let result = loop {
+            let result = call_ok(EngineMethod::Finalize, &validation);
+            if result.get("bundle").is_some() { break result; }
+            validation["continuation"] = result["continuation"].clone();
+            validation["signatures"] = sign_public_tasks(&result["signingRequests"]);
+            rounds += 1;
+        };
+        let txs = result["bundle"]["transactions"].as_array().unwrap();
+        assert_eq!(txs.len(), expected_transactions);
+        assert_eq!(rounds, expected_transactions, "one fee change implies sequential dependency stages, not extra approval");
+        validation["phase"] = json!("finalized");
+        validation["bundle"] = result["bundle"].clone();
+        let validated = call_ok(EngineMethod::Validate, &validation);
+        assert_eq!(validated["valid"], true, "{validated}");
+        let mut spent = std::collections::BTreeSet::new();
+        let mut prior: Option<Transaction> = None;
+        for record in txs {
+            let tx = Transaction::from_hex(record["rawTransaction"].as_str().unwrap()).unwrap();
+            for i in &tx.inputs { assert!(spent.insert((i.previous_output.txid.to_string(), i.previous_output.vout)), "no reused fee or asset input"); }
+            if let Some(parent) = prior {
+                assert_eq!(tx.inputs.last().unwrap().previous_output, OutPoint { txid: parent.txid(), vout: 2 });
+            }
+            prior = Some(tx);
+        }
+        let last = prior.unwrap();
+        assert_eq!(tbc_sdk::contracts::ft::amount::balance_from_tape(&last.outputs[1].script_pubkey).unwrap(), (count * 100 - 50) as u128);
+        // Rehashing a replacement deferred fee edge cannot change approved bytes.
+        let mut changed = validation.clone();
+        changed["plan"]["payload"]["transactions"][1]["deferredInputs"] = json!([{
+            "inputIndex": 5, "sourceTransactionId": "ft-merge-1", "sourceOutputIndex": 0
+        }]);
+        changed["plan"]["planHash"] = json!(canonical_hash(&changed["plan"]["payload"]));
+        assert_ne!(call(EngineMethod::Validate, &changed).get("result").map(|r| &r["valid"]), Some(&json!(true)));
+        let mut low_cap = input.clone(); low_cap["request"]["constraints"]["maxFee"] = json!("1");
+        assert_eq!(call_error(EngineMethod::Plan, &bind_request(low_cap))["code"], "FEE_CAP_EXCEEDED");
+    }
+}
+
+#[test]
 fn ft_realistic_500_input_plan_and_continuation_fit_bounded_wire_sizes() {
     let balances = vec![1u64; 500];
     let (asset_utxos, asset_parents, contract) = asset_material_seed(&balances, 0xa5);

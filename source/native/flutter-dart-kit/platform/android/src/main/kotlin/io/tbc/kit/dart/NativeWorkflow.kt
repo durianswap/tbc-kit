@@ -66,10 +66,10 @@ internal object NativeWorkflow {
  }
  // Shared worker already ran Rust final validation; bind its result to the
  // consumed native child and raw-derived IDs before exposing a later source.
- fun completedBundle(result:Map<String,Any?>,account:NativeAccount,requestHash:String,approvalId:String,fee:String,transactions:List<Map<String,Any?>>?,reviewed:NativeReviewed.Bound?):List<Map<String,Any?>>{
+ fun completedBundle(result:Map<String,Any?>,account:NativeAccount,requestHash:String,approvalId:String,fee:String,transactions:List<Map<String,Any?>>?,reviewed:NativeReviewed.Bound?,limit:Int=32):List<Map<String,Any?>>{
   shape(result,setOf("version","chainId","from","requestHash","approvalId","totalFee","transactions"),setOf("artifacts","detachedSignatures"))
   need(result["version"]=="1.0"&&result["chainId"]==account.chainId&&result["from"]==account.address&&result["requestHash"]==requestHash&&result["approvalId"]==approvalId&&result["totalFee"]==fee)
-  val values=rows(result["transactions"]);val count=reviewed?.transactionCount?:transactions?.size?:0;need(count in 1..32&&values.size==count)
+  val values=rows(result["transactions"]);val count=reviewed?.transactionCount?:transactions?.size?:0;need(count in 1..limit&&values.size==count)
   val seen=mutableSetOf<String>()
   for((i,t) in values.withIndex()){
    shape(t,setOf("id","role","dependsOn","rawTransaction","txid"))

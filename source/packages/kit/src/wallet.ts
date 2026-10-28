@@ -1,6 +1,8 @@
 import { configureSha256Backend } from "@tbc-wallet/core";
 
 export type TbcKitSha256Backend = (bytes: Uint8Array) => Uint8Array;
+export type { TbcNftMintJobScope, TbcNftMintJobLimits, TbcNftMintJobApproval,
+  TbcNftMintJobResult, TbcNftMintJobBatchResult } from "./nft-mint-job.js";
 
 /**
  * Configure the SHA-256 primitive used by the Core bundled in this wallet

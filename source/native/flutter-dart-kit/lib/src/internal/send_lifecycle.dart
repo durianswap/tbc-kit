@@ -16,10 +16,12 @@ final class TbcSendLifecycle {
     required this.custody,
     required this.receipt,
     required this.receiptCheck,
+    this.maxTransactions = 32,
   });
   final TbcBroadcastSigningOperation custody;
   final TbcSigningReceipt receipt;
   final void Function() receiptCheck;
+  final int maxTransactions;
 
   Future<void> _fresh() async {
     receiptCheck();
@@ -44,7 +46,7 @@ final class TbcSendLifecycle {
     final txs = (bundle['transactions'] as List).cast<Map<String, dynamic>>();
     need(
       txs.isNotEmpty &&
-          txs.length <= 32 &&
+          txs.length <= maxTransactions &&
           txs.map((t) => t['txid']).toSet().length == txs.length,
       'BROADCAST_BATCH_BOUNDS',
     );

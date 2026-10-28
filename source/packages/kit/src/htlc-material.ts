@@ -1,5 +1,6 @@
-import type { TbcOfficialApiClient } from "./official-api.js";
+import type { TbcOfficialApiClient, TbcApiTxoStatus } from "./official-api.js";
 import type { TestnetTip } from "./testnet-client.js";
+import { forEachTxoStatusBatch } from "./txo-status-batches.js";
 
 type Point = Readonly<{ txid: string; vout: number }>;
 type Parent = Readonly<{ txid: string; rawTransaction: string; confirmations?: string;
@@ -44,27 +45,31 @@ export async function resolveHtlcMaterial(input: Readonly<{
       !/^76a914[0-9a-f]{40}88ac$/u.test(ownerScript) || !UINT.test(minimumConfirmations)) {
     throw new TypeError("Invalid HTLC material request");
   }
-  const [node, status] = await Promise.all([
+  const readStatuses = async () => {
+    const rows: TbcApiTxoStatus[] = [];
+    await forEachTxoStatusBatch(api, points.map(p => ({ txid: p.txid, index: p.vout })), result => {
+      if (result.status === "rejected") throw result.reason;
+      const { requested, response } = result.value;
+      const remaining = new Set(requested.map(p => `${p.txid}:${p.index}`));
+      if (!Array.isArray(response.txos) || response.txos.length !== requested.length) throw new TypeError("Invalid HTLC status batch");
+      for (const row of response.txos) {
+        if (!HASH.test(row.txid) || !UINT.test(row.index) || BigInt(row.index) > 0xffff_ffffn ||
+            !UINT.test(row.value) || BigInt(row.value) < 1n || BigInt(row.value) > BigInt(Number.MAX_SAFE_INTEGER) ||
+            !remaining.delete(`${row.txid}:${row.index}`) || row.spent !== false) throw new Error("HTLC selected output unavailable or inconsistent");
+        rows.push(Object.freeze({ ...row }));
+      }
+    }, { category: "asset-index", concurrencyGroup: "htlc-index" });
+    return rows;
+  };
+  const [node, rows] = await Promise.all([
     branch === "refund" || BigInt(minimumConfirmations) > 0n ? api.nodeInfo({ category: "tip", concurrencyGroup: "htlc-index" }) : undefined,
-    api.txoStatus({ txos: points.map(p => ({ txid: p.txid, index: p.vout })) },
-      { category: "asset-index", concurrencyGroup: "htlc-index" }),
+    readStatuses(),
   ]);
   if (node !== undefined && (!UINT.test(node.blocks) || BigInt(node.blocks) >= 500_000_000n || !HASH.test(node.bestblockhash) ||
-      (node.mediantime !== undefined && !UINT.test(node.mediantime))) ||
-      !Array.isArray(status.txos) || status.txos.length !== points.length) throw new TypeError("Invalid HTLC status or tip");
+      (node.mediantime !== undefined && !UINT.test(node.mediantime)))) throw new TypeError("Invalid HTLC status or tip");
   const tip: TestnetTip | undefined = node === undefined ? undefined : Object.freeze({ height: node.blocks, hash: node.bestblockhash,
     ...(node.mediantime === undefined ? {} : { medianTimePast: node.mediantime }) });
-  const selected = new Set(points.map(p => `${p.txid}:${p.vout}`));
-  const seen = new Set<string>();
-  // Copy mutable API rows too: only this observation may inform this snapshot.
-  const rows = status.txos.map(row => Object.freeze({ ...row }));
-  for (const row of rows) {
-    const key = `${row.txid}:${row.index}`;
-    if (!HASH.test(row.txid) || !UINT.test(row.index) || BigInt(row.index) > 0xffff_ffffn ||
-        !UINT.test(row.value) || BigInt(row.value) < 1n || BigInt(row.value) > BigInt(Number.MAX_SAFE_INTEGER) ||
-        !selected.has(key) || seen.has(key) || row.spent !== false) throw new Error("HTLC selected output unavailable or inconsistent");
-    seen.add(key);
-  }
+  // API rows were copied in each batch before any subsequent read window.
   const floor = BigInt(minimumConfirmations), at = tip === undefined ? undefined : BigInt(tip.height);
   const needDecoded = new Set(rows.filter(row => row.height === undefined && floor > 0n).map(row => row.txid));
   const parents = new Map<string, Parent>();

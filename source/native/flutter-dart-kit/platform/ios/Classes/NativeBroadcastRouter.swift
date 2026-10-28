@@ -51,7 +51,7 @@ struct NativeBroadcastConfiguration {
    guard let scope=input["scope"] as? [String:String]else{throw NativeCustodyFailure(code:"NATIVE_DENIED")}
    let index:Int?
    if input["index"] is NSNull{index=nil}
-   else if let n=input["index"] as? NSNumber,CFGetTypeID(n) != CFBooleanGetTypeID(),n.doubleValue==Double(n.intValue),(0..<32).contains(n.intValue){index=n.intValue}
+   else if let n=input["index"] as? NSNumber,CFGetTypeID(n) != CFBooleanGetTypeID(),n.doubleValue==Double(n.intValue),(0..<100).contains(n.intValue){index=n.intValue}
    else{throw NativeCustodyFailure(code:"NATIVE_DENIED")}
    func keys(_ fields:String...)throws{try need(Set(input.keys)==Set(["ownerId","scope","operation","receipt","index"]+fields))}
    // Scope/receipt equality is rechecked by every attached adapter fence.

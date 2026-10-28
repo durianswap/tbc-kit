@@ -305,7 +305,9 @@ fn computation_material(
     };
     // The on-demand wrapper preserves successful plans and explicitly selects
     // new-profile dust/fee assembly; legacy fee reconciliation remains separate.
-    if crate::business::is_unified(&params.request.intent.intent_type) {
+    if params.request.intent.intent_type == "tbc721.batchTransfer" {
+        crate::families::nft_batch::plan(params.request, &material, &public_signing_context(&material)?)
+    } else if crate::business::is_unified(&params.request.intent.intent_type) {
         let resolved = crate::business::resolve(params.request, &material)?;
         let mut planned = crate::funding_fallback::plan_with_funding(&resolved, &material, dispatch_business)?;
         // Derivation occurs before approval and is repeatable at every validation

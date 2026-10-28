@@ -2,6 +2,7 @@ import { canonicalize } from "./canonical-json.js";
 import { verifiedCheckpoints as verifiedSnapshots } from "./checkpoint-ownership.js";
 import { TwsCheckpointError } from "./errors.js";
 import { hashCanonical } from "./hash.js";
+import { ownedJsonValues as ownedValues } from "./immutable-json-ownership.js";
 import { deriveCallId, deriveOperationId } from "./identifiers.js";
 import { TWS_RELEASE } from "./release.js";
 import type { AnyPortCall } from "./ports.js";
@@ -39,7 +40,6 @@ export interface OperationCheckpoint {
 
 // Only snapshots cloned, fully checked and deeply frozen by this module enter
 // this set. A caller's Object.freeze(), deserialized copy or Proxy is not proof.
-const ownedValues = new WeakSet<object>();
 
 function verifiedSnapshot(checkpoint: OperationCheckpoint): OperationCheckpoint {
   const frozen = deepFreeze(checkpoint);
@@ -153,7 +153,9 @@ function verifyInternalBindings(checkpoint: OperationCheckpoint): void {
 export function createCheckpoint(
   payload: OperationCheckpointPayload,
 ): OperationCheckpoint {
-  const clonedPayload = cloneJson(payload);
+  // Ownership means immutable JSON only. Full Schema and binding validation
+  // still run below before verifiedSnapshot records protocol validity.
+  const clonedPayload = deepFreeze(cloneJson(payload));
   const checkpoint = {
     payload: clonedPayload,
     checkpointHash: hashCanonical(clonedPayload),

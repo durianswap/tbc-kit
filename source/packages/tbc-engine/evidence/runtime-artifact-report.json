@@ -1,0 +1,178 @@
+{
+  "version": "1.0",
+  "actualArtifactExecution": {
+    "native": "aarch64-apple-darwin dylib loaded by a compiled C ABI consumer",
+    "wasm": "wasm32-unknown-unknown module instantiated with zero imports through the shipped TypeScript adapter"
+  },
+  "checks": [
+    {
+      "label": "tbc.transfer plan",
+      "method": "plan",
+      "resultSha256": "4a370e4a672947bda52033c3ad732d7ebfa37e3bde4b927d5cd074a84fecd61c"
+    },
+    {
+      "label": "tbc.transfer validate",
+      "method": "validate",
+      "resultSha256": "2c38e9be4ad50da2953a9252e055e22d675e28986dfd608bdc259234a15c6d66"
+    },
+    {
+      "label": "tbc.transfer externally signed finalize",
+      "method": "finalize",
+      "resultSha256": "e7de565df9d77c7f5f8657ef789fce7989d848c6d6a6259847e5fe42033b3e46"
+    },
+    {
+      "label": "fee cap rejects an otherwise fundable transfer",
+      "method": "plan",
+      "errorCode": "FEE_CAP_EXCEEDED",
+      "resultSha256": "a65d5b1206ae274ffdad3851979c3c2e2dd52439467b29065d446fea24cea626"
+    },
+    {
+      "label": "tbc.ft.create staged plan, finalize, and pre-broadcast validate",
+      "method": "plan/finalize/validate",
+      "stages": 2,
+      "resultSha256": "34f84c0a544da730bda2061cb5568b7816fb06e22766dae9c90a0a22cae23ffa"
+    },
+    {
+      "label": "Core-valid optional account label",
+      "method": "plan",
+      "resultSha256": "0853e47215297a1279d0c696c15ae3ee4b6f535f4c306251a762c37f392a74d6"
+    },
+    {
+      "label": "tbc.ft.transfer plan",
+      "method": "plan",
+      "transactions": 1,
+      "resultSha256": "fb8bf17dd48e0dd91d1cd30fb00ec5051ce7f79af2b949bdd7ff541bd1b8f91a"
+    },
+    {
+      "label": "tbc.ft.transfer maintenance-to-primary parent-child plan",
+      "method": "plan",
+      "transactions": 2,
+      "resultSha256": "a56135cc99267aabb94e821b31b6c02a372de9afb9de7c8a0e2f90dd5f40481d"
+    },
+    {
+      "label": "tbc.pool.liquidity.add four-method external-signature lifecycle",
+      "method": "normalizeRequest/plan/validate/finalize",
+      "stages": 1,
+      "transactions": 1,
+      "resultSha256": "af5e36c39154bf174e4a75afd2c1b25e3bf94ef5c9237b8b6c50dea65c3a84fc"
+    },
+    {
+      "label": "tokenSwap Pool-held FT native/WASM external-signature lifecycle",
+      "method": "plan/finalize/validate",
+      "stages": 1,
+      "transactions": 1,
+      "resultSha256": "3b1f4215a425a905b84a88ff2ce468a85dff7e8030df48a11b26651d33b25f27"
+    },
+    {
+      "label": "fragmentedRemove Pool-held FT native/WASM external-signature lifecycle",
+      "method": "plan/finalize/validate",
+      "stages": 1,
+      "transactions": 1,
+      "resultSha256": "a5b5e2c45a482999cb3f548c4f8fdaefefb3180352defd0812b8ceab2612f110"
+    },
+    {
+      "label": "maintenanceRemove Pool-held FT native/WASM external-signature lifecycle",
+      "method": "plan/finalize/validate",
+      "stages": 1,
+      "transactions": 1,
+      "resultSha256": "8f70fdc56f1f49a2d7e7d9ad7b860f210d9fd381ae2e0291a38faf427a6019c5"
+    },
+    {
+      "label": "ftlpBurn Pool-held FT native/WASM external-signature lifecycle",
+      "method": "plan/finalize/validate",
+      "stages": 1,
+      "transactions": 1,
+      "resultSha256": "627759178086be3f80aa0b5219a34f6a0ea8c2ae3b0a30ac33b620a2f35f481f"
+    },
+    {
+      "label": "tbc.pool.liquidity.remove four-method external-signature lifecycle",
+      "method": "normalizeRequest/plan/validate/finalize",
+      "stages": 1,
+      "transactions": 1,
+      "resultSha256": "31228f49359ebd2dfadc0f87f838eabd58372552a7fb245cd81f20e84fe7605b"
+    },
+    {
+      "label": "historical Pool2 issuance rejected",
+      "method": "plan",
+      "resultSha256": "e6af40ad9b588ec75259f570fb64839488e580de7a3ebc061853e9edd94cce1d"
+    },
+    {
+      "label": "historical Pool2 issuance rejected",
+      "method": "plan",
+      "resultSha256": "e6af40ad9b588ec75259f570fb64839488e580de7a3ebc061853e9edd94cce1d"
+    },
+    {
+      "label": "historical Pool2 issuance rejected",
+      "method": "plan",
+      "resultSha256": "e6af40ad9b588ec75259f570fb64839488e580de7a3ebc061853e9edd94cce1d"
+    },
+    {
+      "label": "tbc.pool.swap.exactTbcForToken plan",
+      "method": "plan",
+      "transactions": 1,
+      "resultSha256": "8bddebbd3e027cf7d1fe701e6c8b1570b6e587539143c276eb48efc9341c19ee"
+    },
+    {
+      "label": "tbc.pool.swap.exactTbcForToken externally signed finalize",
+      "method": "finalize",
+      "resultSha256": "2e36e55b935371d4d8b508d82dcff34ccc7987137d9ae17f4b9ec30210ce6fc2"
+    },
+    {
+      "label": "Host/Core/WASM FT create approval-bound staged send lifecycle",
+      "method": "host.startOperation",
+      "stages": 2,
+      "resultSha256": "0a735cf4c284f1bc31683b976b545de589165739be98a87c6bb8a4680f5dcf25"
+    },
+    {
+      "label": "Host/Core/WASM FT create recovers a known source prefix without duplicate posts",
+      "method": "host.startOperation",
+      "sourcePosts": 1,
+      "suffixPosts": 1,
+      "resultSha256": "25d47a12afa6a6051ca303463d1bc2c38ad6712cdc2a297745af0061ec9a9730"
+    },
+    {
+      "label": "Host/Core rejection prevents sign finalize and broadcast",
+      "method": "host.startOperation",
+      "resultSha256": "acd68af9e5f3eb388808bf33624e4ce793b450f28a67a3cbe845089d1d1dd3cf"
+    },
+    {
+      "label": "Host/Core/WASM Pool LP increase approval-bound sign-only lifecycle",
+      "method": "host.startOperation",
+      "stages": 1,
+      "signerCalls": 2,
+      "broadcasts": 0,
+      "resultSha256": "7649f8b0e52e6c2ea100f9e4bf495b2dba5c663a175933821738192f2a4e54f9"
+    },
+    {
+      "label": "Host/Core/WASM pool-ftlp-burn approval-bound sign-only lifecycle",
+      "method": "host.startOperation",
+      "stages": 1,
+      "signerCalls": 3,
+      "broadcasts": 0,
+      "resultSha256": "4743f1b31d058b996653b529c3dfbef43efc7624b51a2321a4993d44bbd0e795"
+    },
+    {
+      "label": "Wallet Standard/Provider/Core/Host/WASM Pool LP decrease approval and rejection",
+      "method": "tbc:provider/tbc_signTransaction/host.startOperation",
+      "stages": 1,
+      "signerCalls": 3,
+      "broadcasts": 0,
+      "resultSha256": "d6c459d964ff3cc0abb06d1851ee40b109449f11a02251bf75d3498a9a3f0e5e"
+    },
+    {
+      "label": "Core exact FT and Pool chain-data requirements",
+      "method": "core.start/resume",
+      "resultSha256": "e9892f3213b979894d16c71329f080ec7426b813cd3e8dbcf3749886fcff7963"
+    }
+  ],
+  "mobileArtifacts": {
+    "ios": "built and packaged as device/simulator XCFramework; not executed inside the downstream app in this stage",
+    "android": "built as three jniLibs ABIs; not executed inside the downstream app in this stage"
+  },
+  "sharedCoreEvidence": "All family, signing, continuation, and fee-envelope suites execute the same tbc-engine-core linked into these artifacts.",
+  "artifacts": {
+    "nativeSha256": "bb80cab7679bd44f2813c94780496424662f8f3d03c57378df5b9aa9b19804e8",
+    "wasmSha256": "1e5e9749e6e3b4ef8228513133ef621024aa0fad0eb10df3cd7be6bb1b2d3642",
+    "wasmImports": []
+  }
+}

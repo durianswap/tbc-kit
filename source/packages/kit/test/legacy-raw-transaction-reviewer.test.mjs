@@ -269,7 +269,7 @@ test("default raw reviewer rejects stale material and missing contract dependenc
   missingTape = true;
   await assert.rejects(
     reviewer.review({ request: base, context: CONTEXT, transactionIds: [txid] }),
-    /contract context unavailable/u,
+    /dependency status material incomplete/u,
   );
   await assert.rejects(
     reviewer.review({ request: base, context: { ...CONTEXT, chainId: "tbc:wrong" }, transactionIds: [txid] }),

@@ -51,6 +51,7 @@ export function preparedChainDataRequirement(request: KitTransactionRequest<KitS
   assets: readonly AssetRequirement[];
 }> {
   const intent = request.intent;
+  if (intent.type === "tbc721.batchTransfer") return chainDataRequirement(request);
   if (intent.type.startsWith("tbc20Lp.") || ["amm.mergeToken", "amm.swap", "amm.addLiquidity", "amm.removeLiquidity", "tbc721.transfer", "tbc20.transfer", "tbc20.merge", "tbc20Stablecoin.transfer", "tbc20Stablecoin.merge"].includes(intent.type)) {
     return chainDataRequirement(request);
   }
@@ -93,7 +94,7 @@ export function preparedChainDataRequirement(request: KitTransactionRequest<KitS
     case "tbc721-standard-mint":
     case "tbc721-standard-batch-mint": {
       const slots = intent.type === "tbc721-standard-mint" ? [intent.slot] : intent.items.map(item => item.slot);
-      if (slots.length < 1 || slots.length > 32 || new Set(slots).size !== slots.length ||
+      if (slots.length < 1 || slots.length > 100 || new Set(slots).size !== slots.length ||
           slots.some(slot => !Number.isSafeInteger(slot) || slot < 1 || slot > 0xffff_ffff)) throw new TypeError("invalid NFT mint slots");
       return Object.freeze({ intentType: intent.type, includeAncestry: true, ...newStandardInputs,
         contractIds: Object.freeze([intent.collectionId]), collectionSlots: Object.freeze(slots),

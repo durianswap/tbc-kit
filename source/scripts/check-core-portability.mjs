@@ -10,10 +10,10 @@ const root = repositoryRoot(import.meta.url);
 const coreSourceRoot = path.join(root, "packages", "core", "src");
 
 export const PORTABILITY_LIMITS = Object.freeze({
-  // Current full schema surface, user-approved rebaseline 2026-10-21.
-  // Includes dependencies and unchanged validators; narrow fixed headroom.
-  maxBundleBytes: 1_748_000,
-  maxGzipBytes: 196_000,
+  // rc.11 adds NFT multi-contract/100-item validation, not a runtime exclusion.
+  // Measured source delta and strict bounds: ft-nft-rc11/evidence/size-source-comparison.json.
+  maxBundleBytes: 1_757_000,
+  maxGzipBytes: 197_000,
 });
 
 const ALLOWED_RUNTIME_DEPENDENCIES = Object.freeze({

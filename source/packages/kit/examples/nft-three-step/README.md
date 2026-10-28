@@ -1,5 +1,14 @@
 # NFT three-step example
 
+`batch.mjs` exports `mintNftJob` and `transferNftBatch` using the same public
+client. Importing it does not request permissions or perform transactions.
+For hundreds of mints, pass the entire ordered item list, `maxTotalFee` in
+atomic units and an explicit `expiresAt`. The wallet must configure the
+whole-job review and exact per-plan credential hooks described in
+[the NFT guide](../../docs/nft.md). Inspect partial/uncertain results rather
+than automatically running the job again. Batch transfers share one plan;
+neither helper promises atomic chain execution or block confirmation.
+
 `run.mjs` uses only the public `@tbc/kit` DApp API:
 
 1. `wallet.tbc721.createCollection(...)`

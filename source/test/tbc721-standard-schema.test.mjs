@@ -56,7 +56,7 @@ test("new NFT action names and optional atomic payment on both network IDs", () 
     { ...mint, attributes: [{ traitType: "x", value: 1.5 }] },
     { ...mint, attributes: [{ traitType: "x", value: null }] },
     { ...transfer, payment: { to: address, amount: "01" } },
-    { ...batch, items: [] }, { ...batch, items: Array(33).fill(batch.items[0]) },
+    { ...batch, items: [] }, { ...batch, items: Array(101).fill(batch.items[0]) },
   ]) assert.equal(intent(action), false);
 });
 
@@ -67,6 +67,31 @@ test("new NFT metadata media has the same bounded shape as Rust normalization", 
     { kind: "base64", mediaType: "image/png", data: "not base64", sha256: id },
     { kind: "base64", mediaType: "Image/PNG", data: "eA==", sha256: id },
     { kind: "uri", uri: `ipfs://${"x".repeat(2048)}` }]) assert.equal(intent({ ...mint, media }), false);
+});
+
+test('NFT construction accepts 100 exact items while transport batch and ordinary workflows keep their bounds', () => {
+  valid(intent, { ...batch, items: Array.from({length:100},(_,i)=>({...batch.items[0],slot:i+1})) });
+  assert.equal(intent({...batch,items:Array.from({length:101},(_,i)=>({...batch.items[0],slot:i+1}))}),false);
+  const schemasByName = Object.fromEntries(schemas.map(s=>[s.$id.split('/').at(-1),s]));
+  const integration=schemasByName['integration.schema.json'].$defs;
+  assert.equal(integration.executionPlanPayload.properties.transactions.maxItems,100);
+  assert.equal(integration.finalizeContinuation.properties.stage.maximum,100);
+  assert.equal(integration.broadcastSubmitBatchParams.properties.transactions.maxItems,32);
+  assert.equal(integration.broadcastSubmitBatchResult.properties.transactions.maxItems,32);
+  assert.equal(schemasByName['reviewed-transaction.schema.json'].$defs.rawPayload.properties.transactions.maxItems,32);
+});
+
+test('inline NFT media is bounded by encoded Tape bytes, not decoded file bytes', () => {
+  const media = { kind: 'base64', mediaType: 'image/png', sha256: id, data: 'AAAA'.repeat(262144) };
+  // Schema is an early ceiling. Exact transaction overhead can still make
+  // this boundary value too large to construct; it is not a size guarantee.
+  for (const action of [{ ...create, media }, { ...mint, media },
+    { ...batch, items: batch.items.map(item => ({ ...item, media })) }]) {
+    valid(intent, action);
+    const tooLarge = structuredClone(action);
+    if (tooLarge.items) tooLarge.items[0].media.data += 'AAAA'; else tooLarge.media.data += 'AAAA';
+    assert.equal(intent(tooLarge), false);
+  }
 });
 
 test("new NFT identity cannot be mislabeled FT or stablecoin", () => {

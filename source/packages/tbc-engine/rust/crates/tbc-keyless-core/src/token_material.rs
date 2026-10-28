@@ -72,6 +72,7 @@ struct InputLock {sequence:u32,transaction_lock_time:u32}
 #[derive(Deserialize)]
 #[serde(tag="phase",rename_all="camelCase",deny_unknown_fields)]
 enum Request{InspectCodes{scripts:Vec<String>},InspectPairs{pairs:Vec<Pair>},IdentifyPairs{pairs:Vec<Pair>},
+    InspectCollection{#[serde(rename="contractId")]contract_id:String,#[serde(rename="rawTransaction")]raw_transaction:String},
     CheckHistoricalIssuance{transactions:Vec<crate::issuance_policy::PolicyTransaction>,
         #[serde(rename="resolvedOutputs")]resolved_outputs:Vec<crate::issuance_policy::ResolvedOutput>},
     IdentifyNftOrigin{#[serde(rename="contractId")]contract_id:String,#[serde(rename="rawTransaction")]raw_transaction:String},
@@ -116,6 +117,18 @@ pub fn inspect(request:&str)->Result<String,String>{
     if request.len()>8*1_048_576{return Err("Token material request exceeds byte bound".into());}
     let r:Request=serde_json::from_str(request).map_err(|_|"Invalid Token material request")?;
     let result=match r{
+        Request::InspectCollection{contract_id,raw_transaction}=>{
+            use tbc_engine_core::protocols::nft_origin::inspect_collection_origin;
+            if contract_id.len()!=64 || !contract_id.bytes().all(|b|b.is_ascii_digit()||(b'a'..=b'f').contains(&b))
+                || raw_transaction.len()>2*1_048_576 { return Err("Collection origin encoding or size invalid".into()); }
+            let id=contract_id.parse().map_err(|_|"Collection origin ID invalid")?;
+            let raw=hex::decode(&raw_transaction).map_err(|_|"Collection origin hex invalid")?;
+            if hex::encode(&raw)!=raw_transaction {return Err("Collection origin hex must be canonical".into());}
+            let layout=inspect_collection_origin(&id,&raw)?;
+            json!({"collectionId":contract_id,"ownerAddress":layout.owner.to_string(),"supply":layout.metadata.supply,
+                "slotScript":hex::encode(tbc_sdk::contracts::nft::scripts::mint_script(&layout.owner).as_bytes()),
+                "verification":"collection-template","generation":"shared"})
+        },
         Request::CheckHistoricalIssuance{transactions,resolved_outputs}=>crate::issuance_policy::check(transactions,resolved_outputs)?,
         Request::IdentifyNftOrigin{contract_id,raw_transaction}=>{
             use tbc_engine_core::protocols::nft_origin::{inspect_nft_origin,NftOriginProfile};

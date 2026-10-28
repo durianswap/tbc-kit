@@ -74,6 +74,10 @@ import {
   TbcMultiRoundMergeInputError,
 } from "./multi-round-merge.js";
 import type { TbcKitBroadcastJournalRecord } from "./broadcast-journal.js";
+import { createWalletNftMintJob } from "./nft-mint-job-wallet.js";
+import { createTbcNftMintJobScope, type TbcNftMintJobScope, type TbcNftMintJobApproval,
+  type TbcNftMintJobLimits, type TbcNftMintJobResult } from "./nft-mint-job.js";
+import type { TbcNftMintJobMaterial } from "./nft-mint-job-material.js";
 import type { TestnetClient } from "./testnet-client.js";
 import type { PoolMergeIndex } from "./pool-material.js";
 import { createLegacyKitFacade, type LegacyKitFacade, type LegacyKitOptions } from "./legacy-mapper.js";
@@ -245,6 +249,13 @@ export interface KitWalletOptions {
       txid: string;
     }>) => Promise<void>;
   }>;
+  /** One bounded review for hundreds of NFTs; Kit owns slicing and execution. */
+  readonly nftMintJob?: Readonly<{
+    approve: (input: Readonly<{ scope: TbcNftMintJobScope; scopeHash: string }>) => Promise<TbcNftMintJobApproval>;
+    /** Exact Core credential for a validated sub-batch, without another UI. */
+    authorizeBatch: (input: Readonly<{ scope: TbcNftMintJobScope; scopeHash: string;
+      approval: Extract<TbcNftMintJobApproval, { status: "approved" }>; params: unknown }>, call: KitHostPortCall) => Promise<unknown>;
+  }>;
   /** Shared early-display/decision lifecycle for every current approval method. */
   readonly approvalPreparation?: StandardApprovalPreparationPresentation;
   readonly signer: Readonly<{
@@ -315,6 +326,7 @@ export interface KitWalletNetwork {
     account?: KitWalletAccount,
   ) => Promise<unknown>;
   readonly resolvePolicy: (params: unknown, call?: KitHostPortCall) => Promise<unknown>;
+  readonly prepareNftMintJob?: (scope: TbcNftMintJobScope, account: KitWalletAccount) => Promise<TbcNftMintJobMaterial>;
   readonly broadcastSubmit: (params: unknown, call?: KitHostPortCall) => Promise<unknown>;
   readonly broadcastSubmitBatch: (params: unknown, call?: KitHostPortCall) => Promise<unknown>;
   readonly broadcastReconcile: (params: unknown, call?: KitHostPortCall) => Promise<unknown>;
@@ -401,6 +413,12 @@ export interface KitWalletSession {
     signal?: AbortSignal;
     onProgress?: (progress: TbcMultiRoundMergeProgress) => void;
   }>) => Promise<TbcMultiRoundMergeResult>;
+  readonly runNftMintJob: (input: Readonly<{
+    collectionId: string;
+    items: readonly import("./public-types.js").Tbc721StandardMintItem[];
+    limits: TbcNftMintJobLimits;
+    signal?: AbortSignal;
+  }>) => Promise<TbcNftMintJobResult>;
   /** Wallet-owned Legacy bridge only; never expose this method to page code. */
   readonly handleLegacyRequest: (request: Readonly<{
     id: string | number;
@@ -1073,6 +1091,7 @@ export function createTbcWallet(options: KitWalletOptions): KitWalletRuntime {
             params.request.intent.type === "amm.addLiquidity" ||
             params.request.intent.type === "amm.removeLiquidity" ||
             params.request.intent.type === "tbc721.transfer" ||
+            params.request.intent.type === "tbc721.batchTransfer" ||
             params.request.intent.type === "tbc20.transfer" ||
             params.request.intent.type === "tbc20.merge" ||
             params.request.intent.type === "tbc20Stablecoin.transfer" ||
@@ -1927,6 +1946,7 @@ export function createTbcWallet(options: KitWalletOptions): KitWalletRuntime {
     }> | undefined;
     let activeMultiRoundBroadcast: "not-started" | "started" | "accepted" | "known" | "rejected" = "not-started";
     let activeMultiRoundRun = false;
+    let activeNftMintJob = false;
 
     async function invokePort(
       call: AnyPortCall,
@@ -2312,6 +2332,7 @@ export function createTbcWallet(options: KitWalletOptions): KitWalletRuntime {
     }>();
     const dappMultiRoundAbortByRequest = new Map<TbcJsonRpcId, AbortController>();
     let runMultiRoundMerge!: KitWalletSession["runMultiRoundMerge"];
+    let runNftMintJob!: KitWalletSession["runNftMintJob"];
     const hostByOperation = new Map<string, ReturnType<typeof createHost>>();
     const startWalletOperation = async (
       request: KitWalletRequest,
@@ -2558,6 +2579,25 @@ export function createTbcWallet(options: KitWalletOptions): KitWalletRuntime {
         return response({ error: immutable({ code, message }) });
       }
     };
+    async function executeDappNftMintJobRequest(request: TbcJsonRpcRequest): Promise<TbcTransportDelivery> {
+      let body: { result: TbcNftMintJobResult } | { error: { code: -32603; message: string } };
+      const abort = new AbortController();
+      try {
+        const p = request.params as { version: string; chainId: string; from: string; collectionId: string;
+          items: Parameters<KitWalletSession["runNftMintJob"]>[0]["items"]; limits: TbcNftMintJobLimits };
+        const account = activeAccountView().accounts[0]!;
+        if (!p || typeof p !== "object" || Array.isArray(p) || p.version !== "1.0" ||
+            p.chainId !== account.chainId || p.from !== account.address ||
+            Object.keys(p).some(k => !["version", "chainId", "from", "collectionId", "items", "limits"].includes(k))) {
+          throw new Error("Invalid NFT mint job request");
+        }
+        dappMultiRoundAbortByRequest.set(request.id, abort);
+        body = { result: await runNftMintJob({ collectionId: p.collectionId, items: p.items, limits: p.limits, signal: abort.signal }) };
+      } catch { body = { error: { code: -32603, message: "NFT mint job unavailable or invalid; no automatic retry" } }; }
+      finally { if (dappMultiRoundAbortByRequest.get(request.id) === abort) dappMultiRoundAbortByRequest.delete(request.id); }
+      return immutable({ deliveryId: hashCanonical({ request, body, sessionId }),
+        response: { jsonrpc: "2.0" as const, id: request.id, ...body }, events: [] });
+    }
     const handleProviderRequest = (
       request: TbcJsonRpcRequest,
       providedWorkflowPreparation?: StandardApprovalPreparationHandle,
@@ -2591,7 +2631,9 @@ export function createTbcWallet(options: KitWalletOptions): KitWalletRuntime {
         authoritySnapshotIdentity?: string;
       };
       const promise = (
-        request.method === "tbc_runMultiRoundMerge"
+        request.method === "tbc_runNftMintJob"
+          ? executeDappNftMintJobRequest(request)
+          : request.method === "tbc_runMultiRoundMerge"
           ? executeDappMultiRoundMergeRequest(request)
           : executeProviderRequest(request, providedWorkflowPreparation)
       ).then(
@@ -2645,7 +2687,7 @@ export function createTbcWallet(options: KitWalletOptions): KitWalletRuntime {
       ...(sessionOptions.requestIdFactory === undefined ? {} : { requestIdFactory: sessionOptions.requestIdFactory }),
     }) as unknown as KitProvider;
     runMultiRoundMerge = async (input) => {
-      if (activeMultiRoundRun) {
+      if (activeMultiRoundRun || activeNftMintJob) {
         const error = new Error("A multi-round merge is already active in this wallet session") as Error & { code: number };
         error.code = -32002;
         throw error;
@@ -3044,6 +3086,58 @@ export function createTbcWallet(options: KitWalletOptions): KitWalletRuntime {
         activeMultiRoundRun = false;
       }
     };
+    runNftMintJob = async (input) => {
+      if (activeNftMintJob || activeMultiRoundRun) throw new Error("A bounded wallet job is already active");
+      const view = activeAccountView(), account = view.accounts[0]!;
+      const authority = { chainId: account.chainId, accountId: account.accountId, address: account.address,
+        origin: boundAuthority.currentContext.origin, sessionId: boundAuthority.currentContext.sessionId };
+      // Validate and own every item before awaiting permission or account reads.
+      const scope = createTbcNftMintJobScope({ authority, collectionId: input.collectionId, items: input.items, limits: input.limits });
+      const expectedAuthority = immutable(clone(boundAuthority));
+      activeNftMintJob = true;
+      try {
+        const permissions = await provider.request({ method: "wallet_getPermissions" });
+        const permits = (capability: string) => Array.isArray(permissions) && permissions.some(value => {
+          if (!value || typeof value !== "object") return false;
+          const p = value as { parentCapability?: string; caveats?: { type: string; value: unknown }[] };
+          const ids = p.caveats?.find(c => c.type === "restrictAccounts")?.value;
+          return p.parentCapability === capability && Array.isArray(ids) && ids.includes(account.accountId);
+        });
+        if (!permits("tbc_accounts") || !permits("tbc_sendTransaction")) throw new Error("NFT mint job is not authorized for this account");
+        const initial = checkedAuthority(await authoritySource.read());
+        if (!same(initial, expectedAuthority) || initial.currentSession.state.connected !== true) {
+          throw new Error("NFT mint job authority changed before authorization");
+        }
+        const assertLive = async () => {
+          if (closed || !same(initial, checkedAuthority(await authoritySource.read())) || activeAccountView().network !== view.network) {
+            throw new Error("NFT mint job authority changed");
+          }
+          const current = await options.accounts.current();
+          if (!current.some(a => same(a, account))) throw new Error("NFT mint job account changed");
+        };
+        await assertLive();
+        let started = 0, elapsed = performanceNow();
+        const refreshTime = async () => {
+          const sampledAt = performanceNow();
+          const sample = Date.parse(await (options.clock?.() ?? new Date().toISOString()));
+          if (!Number.isFinite(sample) || sample < started) throw new Error("Invalid wallet clock");
+          started = sample; elapsed = sampledAt;
+        };
+        await refreshTime();
+        const runner = createWalletNftMintJob({ account, network: view.network, engine: officialEngine, wallet: options,
+          now: () => started + Math.max(0, performanceNow() - elapsed), refreshTime, assertAuthority: assertLive,
+          authority: { read: async () => {
+            const live = checkedAuthority(await authoritySource.read());
+            if (closed || !same(initial, live)) throw new Error("NFT job authority changed");
+            return live;
+          },
+            compareAndSwapSession: async () => { throw new Error("NFT mint job cannot mutate its authority"); } },
+          openExecution: (childOptions, childAuthority) => createTbcWallet(childOptions).openSession({ authority: childAuthority }),
+        });
+        return await runner.run({ authority: scope.authority, collectionId: scope.collectionId, items: scope.items,
+          limits: scope.limits, ...(input.signal ? { signal: input.signal } : {}) });
+      } finally { activeNftMintJob = false; }
+    };
     const handleLegacyRequest: KitWalletSession["handleLegacyRequest"] =
       async (request) => {
         if (!legacyEnabled || legacyDigest === undefined || legacyRouteToken === undefined) {
@@ -3205,6 +3299,7 @@ export function createTbcWallet(options: KitWalletOptions): KitWalletRuntime {
       provider,
       legacy,
       runMultiRoundMerge,
+      runNftMintJob,
       prefetchRequest,
       beginApprovalPreparation,
       handleRequest: (request: Parameters<KitWalletSession["handleRequest"]>[0]) => handleProviderRequest({

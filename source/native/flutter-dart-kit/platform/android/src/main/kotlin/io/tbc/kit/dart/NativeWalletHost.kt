@@ -192,6 +192,16 @@ class NativeWalletHost(private val custody:NativeCustody,
      send(snapshotWire(custody.begin(owner,scope,id(),a["method"] as String,revision.toInt(),selected)))
     }
     "signing.check"->{keys("operation");custody.check(owner,scope,id());send(true)}
+    "mintJob.begin"->{
+     keys("operation","revision","account","consent");val account=map(a["account"])
+     val selected=NativeAccount(account["address"] as String,account["publicKey"] as String,account["chainId"] as String)
+     need(canonical(account)==canonical(selected.identity()));val revision=canonical(a["revision"]).toInt();need(revision>=0)
+     custody.beginMintJob(owner,scope,id(),revision,selected,map(a["consent"])){r->try{send(r.getOrThrow())}catch(e:Exception){fail(e)}}
+    }
+    "mintJob.batch"->{keys("operation","parent","offset","request");val offset=canonical(a["offset"]).toInt();need(offset in 0..1999);send(snapshotWire(custody.beginMintBatch(owner,scope,a["parent"] as String,id(),offset,map(a["request"]))))}
+    "mintJob.result"->{keys("operation");send(custody.mintBatchResult(owner,scope,id()))}
+    "mintJob.finish"->{keys("operation","reason");send(custody.finishMintJob(owner,scope,id(),a["reason"] as String))}
+    "mintJob.close"->{keys("operation");custody.closeMintJob(owner,scope,id());send(true)}
     "maintenance.begin","maintenance.noop"->{
      if(method=="maintenance.noop")keys("operation","revision","account","consent","result")else keys("operation","revision","account","consent");val account=map(a["account"])
      val selected=NativeAccount(account["address"] as String,account["publicKey"] as String,account["chainId"] as String)

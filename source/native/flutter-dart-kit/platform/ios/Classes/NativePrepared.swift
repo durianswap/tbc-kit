@@ -56,8 +56,8 @@ enum NativePrepared {
   var r=try Reader(raw);try need(r.uint(4)==10);let count=try r.compact();try need((1...1024).contains(count));var result=[String]()
   for _ in 0..<count{let tx=try r.take(32).reversed().map{String(format:"%02x",$0)}.joined(),vout=try r.uint(4);try r.script();_ = try r.take(4);result.append("\(tx):\(vout)")};return result
  }
- private static func transactions(_ value:Any?)throws->[[String:Any]]{
-  guard let txs=value as? [[String:Any]],(1...32).contains(txs.count)else{throw NativeCustodyFailure(code:"NATIVE_PREPARED_BINDING")}
+ private static func transactions(_ value:Any?,limit:Int)throws->[[String:Any]]{
+  guard let txs=value as? [[String:Any]],(1...limit).contains(txs.count)else{throw NativeCustodyFailure(code:"NATIVE_PREPARED_BINDING")}
   var known=Set<String>(),result=[[String:Any]]()
   for tx in txs{
    guard let id=tx["id"] as? String,let parents=tx["dependsOn"] as? [String]else{throw NativeCustodyFailure(code:"NATIVE_PREPARED_BINDING")}
@@ -89,8 +89,8 @@ enum NativePrepared {
   }
   return result
  }
- static func bind(_ proposal:[String:Any],plan:[String:Any],expiry:Date)throws{
+ static func bind(_ proposal:[String:Any],plan:[String:Any],expiry:Date,limit:Int=32)throws{
   try need(expiry<=date(proposal["expiresAt"]) && Date()<date(proposal["expiresAt"]))
-  try need(equal(proposal["transactions"],transactions(plan["transactions"])) && equal(proposal["estimatedTotalFee"],map(plan["preview"])["totalFee"]))
+  try need(equal(proposal["transactions"],transactions(plan["transactions"],limit:limit)) && equal(proposal["estimatedTotalFee"],map(plan["preview"])["totalFee"]))
  }
 }

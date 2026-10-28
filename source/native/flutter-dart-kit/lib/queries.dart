@@ -2,3 +2,4 @@
 /// implicit refresh, polling, automatic retries or broadcast.
 export 'src/configuration.dart' show TbcNetwork, TbcNetworkConfiguration;
 export 'src/query_client.dart';
+export 'src/nft_query.dart';

@@ -3,6 +3,7 @@
 // Rust plan, validation, signature and continuation lifecycle stays mandatory.
 import 'dart:typed_data';
 import 'protocol_codec.dart';
+import 'transaction_profiles.dart' show transactionBundleLimit;
 
 enum PreparedRefusal { invalid, expired, mismatch }
 
@@ -119,7 +120,11 @@ Map<String, dynamic> checkedPreparedRequest(Map request, DateTime now) {
     _hash(p['intentHash']);
     _amount(p['estimatedTotalFee']);
     final created = _time(p['createdAt']), expires = _time(p['expiresAt']);
-    for (final value in _array(p['transactions'], 1, 32)) {
+    for (final value in _array(
+      p['transactions'],
+      1,
+      transactionBundleLimit(request),
+    )) {
       need(value is Map, 'PROPOSAL_TRANSACTION');
       final fixed = value['kind'] == 'fixed';
       final tx = _object(value, {

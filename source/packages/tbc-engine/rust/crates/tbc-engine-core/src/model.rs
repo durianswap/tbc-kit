@@ -100,6 +100,8 @@ pub(crate) struct TransferIntent {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub items: Option<Vec<NftMintItem>>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub transfers: Option<Vec<NftTransferItem>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub payment: Option<NativePayment>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub target_outpoints: Option<Vec<RequestedOutpoint>>,
@@ -223,6 +225,15 @@ pub(crate) struct NftMintItem {
 pub(crate) struct NativePayment {
     pub to: String,
     pub amount: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub(crate) struct NftTransferItem {
+    pub contract_id: String,
+    pub to: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub payment: Option<NativePayment>,
 }
 
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -543,8 +554,9 @@ pub(crate) struct AssetFlow {
 pub(crate) struct WalletMaterial<'a> {
     pub snapshot: &'a ChainSnapshot,
     pub policy: &'a ExecutionPolicy,
-    // Internal-only output of a bound funding prerequisite; never wire material.
-    pub planned_native: Option<&'a crate::funding::NativeFundingUtxo>,
+    // Internal-only funding already checked by the outer planner, including
+    // outputs of bound prerequisites; never caller-supplied wire material.
+    pub planned_native: Option<&'a [crate::funding::NativeFundingUtxo]>,
 }
 
 pub(crate) struct PlannedTransfer {

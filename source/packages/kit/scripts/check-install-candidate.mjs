@@ -109,8 +109,10 @@ for (const condition of [undefined, "browser", "react-native"]) {
     const root = await import('@tbc/kit');
     assert.equal(typeof root.composeTbcWorkflow, 'function');
     assert.equal(typeof root.createTimelockReader, 'function');
+    assert.equal(typeof root.createTbc721Reader, 'function');
     const api = await import('@tbc/kit/api');
     assert.equal(typeof api.createTimelockReader, 'function');
+    assert.equal(typeof api.createTbc721Reader, 'function');
     const timelock = api.createTimelockReader({ api: {
       nodeInfo() { throw new Error('Reader construction must not fetch'); },
       timelockUtxosByAddress() { throw new Error('Reader construction must not fetch'); },
@@ -160,6 +162,16 @@ declare const handle: StandardApprovalPreparationHandle;
 declare const connected: root.TbcConnectedWallet;
 declare const preparedNetwork: Parameters<typeof root.prepareTbcTransaction>[0]['network'];
 declare const transactionEngine: Parameters<typeof root.prepareTbcTransaction>[0]['engine'];
+declare const nftItems: root.Tbc721MintJobInput['items'];
+declare const nftLimits: root.TbcNftMintJobLimits;
+const nftJob: Promise<root.TbcNftMintJobResult> = connected.tbc721.batchMint({
+  collectionId: '21'.repeat(32), items: nftItems, limits: nftLimits,
+});
+void nftJob.then(result => result.minted);
+void session.runNftMintJob({ collectionId: '21'.repeat(32), items: nftItems, limits: nftLimits });
+void connected.tbc721.batchMint({ collectionId: '21'.repeat(32), items: nftItems });
+void connected.tbc721.batchTransfer({ transfers: [{ contractId: '21'.repeat(32), to: connected.account }] });
+void root.createTbcClient({ network: 'testnet' }).tbc721.getMintStatus({ collectionId: '21'.repeat(32), address: connected.account });
 void session.handleLegacyWorkflowRequest({ ...input, approvalPreparation: handle });
 const stablecoinIntent = {
   type: 'tbc.stablecoin.transfer', version: '1.0', contractId: '21'.repeat(32),
@@ -260,6 +272,9 @@ execFileSync(process.execPath, [
   resolve(installed, "examples/approval-presentation/run.mjs"),
 ], { cwd: consumer, stdio: "inherit", timeout: 60000 });
 await import(resolve(installed, "examples/approval-presentation/host-reader-callback.mjs"));
+const nftExample = await import(resolve(installed, "examples/nft-three-step/batch.mjs"));
+assert.equal(typeof nftExample.mintNftJob, "function");
+assert.equal(typeof nftExample.transferNftBatch, "function");
 execFileSync(process.execPath, [
   resolve(installed, "examples/backend-node/run.mjs"),
 ], { cwd: consumer, stdio: "inherit", timeout: 60000 });

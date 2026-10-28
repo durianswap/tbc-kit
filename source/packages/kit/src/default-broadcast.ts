@@ -144,7 +144,7 @@ function validReconcileParams(value: unknown): value is Readonly<{
     params.version === "1.0" &&
     typeof params.chainId === "string" && /^tbc:[a-z0-9_-]{1,32}$/u.test(params.chainId) &&
     Array.isArray(params.txids) &&
-    params.txids.length >= 1 && params.txids.length <= 32 &&
+    params.txids.length >= 1 && params.txids.length <= 100 &&
     new Set(params.txids).size === params.txids.length &&
     params.txids.every((txid) => typeof txid === "string" && /^[0-9a-f]{64}$/u.test(txid));
 }
@@ -498,7 +498,7 @@ export function createDefaultTbcBroadcast(
 
   async function recover(txids: readonly string[]): Promise<unknown> {
     if (
-      !Array.isArray(txids) || txids.length < 1 || txids.length > 32 ||
+      !Array.isArray(txids) || txids.length < 1 || txids.length > 100 ||
       new Set(txids).size !== txids.length ||
       txids.some((txid) => typeof txid !== "string" || !/^[0-9a-f]{64}$/u.test(txid))
     ) return fail("INVALID_INPUT");

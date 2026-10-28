@@ -135,6 +135,36 @@ function batchParams(idempotencyKey = "default-batch-1") {
   };
 }
 
+test('100 NFT transaction outcomes reconcile read-only; POST batch stays limited to 32', async () => {
+  const sqlite = openDriver();
+  try {
+    const journal = await createTbcKitSqliteBroadcastJournal({ driver: sqlite.driver });
+    const observed = [], txids = Array.from({ length: 100 }, (_, i) => (i + 1).toString(16).padStart(64, '0'));
+    for (const [i,txid] of txids.entries()) {
+      const identity = { idempotencyKey: `nft-reconcile-${i}`, rawHash: txid, txid };
+      await journal.beginSubmit(identity); await journal.markUncertain(identity);
+    }
+    const broadcast = createDefaultTbcTestnetBroadcast({ journal, client: client({
+      async getTransactionStatus(txid) { observed.push(txid); return { txid, status: 'mempool', confirmations: '0' }; },
+      async broadcast() { throw new Error('Read-only recovery must not submit'); },
+      async broadcastBatch() { throw new Error('Over-limit batch must not submit'); },
+    }) });
+    const params = { version: '1.0', chainId: CHAIN_ID, txids };
+    const result = await broadcast.reconcile(params, call('broadcast.reconcile', params));
+    assert.equal(result.portError, undefined, JSON.stringify(result));
+    assert.equal(result.transactions.length, 100);
+    assert.deepEqual(observed, txids);
+    assert.equal((await journal.readByTxids(txids)).length, 100);
+    const over = { ...params, txids: [...txids, 'ff'.repeat(32)] };
+    assert.equal((await broadcast.reconcile(over, call('broadcast.reconcile', over))).portError.name, 'INVALID_INPUT');
+    assert.equal(observed.length, 100);
+    const submit = { ...batchParams(), transactions: Array.from({ length: 33 }, (_, i) => ({
+      ...batchParams().transactions[0], id: `mint-${i}`, txid: txids[i],
+    })) };
+    assert.equal((await broadcast.submitBatch(submit, call('broadcast.submitBatch', submit))).portError.name, 'INVALID_INPUT');
+  } finally { await sqlite.driver.close(); }
+});
+
 test("Kit batch broadcast performs one ordered POST and replays without resending", async () => {
   const sqlite = openDriver();
   const journal = await createTbcKitSqliteBroadcastJournal({ driver: sqlite.driver });

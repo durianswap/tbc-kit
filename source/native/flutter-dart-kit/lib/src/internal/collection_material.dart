@@ -6,6 +6,7 @@ import 'native_material.dart';
 import 'nft_material.dart' show ApiTxoStatus, tbc721TemplateRevision;
 import 'protocol_codec.dart';
 import 'transaction_read.dart';
+import 'txo_status_batches.dart';
 import 'tbc20_material.dart' show ApiRead;
 
 final class CollectionMaterialReader {
@@ -51,7 +52,7 @@ final class CollectionMaterialReader {
     final items =
         intent['type'] == 'tbc721-standard-mint' ? [intent] : intent['items'];
     need(
-      items is List && items.isNotEmpty && items.length <= 32,
+      items is List && items.isNotEmpty && items.length <= 100,
       'COLLECTION_SLOT_BOUND',
     );
     final slots = <int>[];
@@ -130,7 +131,7 @@ final class CollectionMaterialReader {
     }
     final missing = slots.where((s) => !bySlot.containsKey(s)).toList();
     if (missing.isNotEmpty) {
-      final reply = await status([
+      final reply = await readTxoStatusBatches(status, [
         for (final s in missing) {'txid': id, 'index': s},
       ]);
       final canonicalStatus = reply['txos'] is List;

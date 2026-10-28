@@ -5,9 +5,9 @@ use crate::{EngineError, ErrorCode, model::{CanonicalRequest, WalletMaterial, er
     normalize::{validate_request, hex}, families::ft::decode_hex,
     protocols::fungible_change::{inspect_fungible_pair, FungibleProtocol}};
 
-pub(crate) const INTENTS: [&str; 14] = [
+pub(crate) const INTENTS: [&str; 15] = [
     "tbc20.transfer", "tbc20.merge", "tbc20Stablecoin.transfer", "tbc20Stablecoin.merge",
-    "tbc721.transfer",
+    "tbc721.transfer", "tbc721.batchTransfer",
     "amm.swap", "amm.addLiquidity", "amm.removeLiquidity",
     "amm.mergeToken", "tbc20Lp.transfer", "tbc20Lp.lock", "tbc20Lp.unlock", "tbc20Lp.merge", "tbc20Lp.burn",
 ];
@@ -18,6 +18,9 @@ fn material_error(message: &str) -> EngineError { error(ErrorCode::InvalidAncest
 /// Reuse supported parameter validation without claiming a template before
 /// material exists. Concrete validation is repeated AFTER exact resolution.
 pub(crate) fn validate(request: &CanonicalRequest) -> Result<(), EngineError> {
+    if request.intent.intent_type == "tbc721.batchTransfer" {
+        return crate::families::nft_batch::validate_request(request);
+    }
     if request.intent.intent_type.starts_with("tbc20Lp.") || request.intent.intent_type=="amm.mergeToken" {
         // Validate the actual operation shape without choosing a template.
         let current=request.intent.intent_type!="tbc20Lp.burn" && request.intent.intent_type!="amm.mergeToken";

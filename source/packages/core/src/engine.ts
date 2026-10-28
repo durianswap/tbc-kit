@@ -41,6 +41,7 @@ export type LegacyBitcoinMessageDigest = (
 
 export type TwsCapabilityIntent =
   | "tbc721.transfer"
+  | "tbc721.batchTransfer"
   | "amm.swap"
   | "amm.mergeToken"
   | "tbc20Lp.transfer"
@@ -131,6 +132,7 @@ export interface TwsCoreDependencies {
 
 export const TWS_CAPABILITY_INTENTS = Object.freeze([
   "tbc721.transfer",
+  "tbc721.batchTransfer",
   "amm.swap", "amm.addLiquidity", "amm.removeLiquidity",
   "amm.mergeToken", "tbc20Lp.transfer", "tbc20Lp.lock", "tbc20Lp.unlock", "tbc20Lp.merge", "tbc20Lp.burn",
   "tbc20.transfer",
@@ -274,7 +276,7 @@ export function normalizeCapabilityConfiguration(
     }
     const limits = scope.limits ?? {
       workflowSteps: 5,
-      transactionBundleSize: 32,
+      transactionBundleSize: intentSet.has("tbc721-standard-batch-mint") || intentSet.has("tbc721.batchTransfer") ? 100 : 32,
     };
     if (
       limits === null ||
@@ -289,7 +291,7 @@ export function normalizeCapabilityConfiguration(
       limits.workflowSteps > 5 ||
       !Number.isInteger(limits.transactionBundleSize) ||
       limits.transactionBundleSize < 1 ||
-      limits.transactionBundleSize > 32
+      limits.transactionBundleSize > 100
     ) {
       throw new TypeError("Invalid wallet capability limits");
     }

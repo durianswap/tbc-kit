@@ -534,7 +534,7 @@ final class TbcSigningExecutor {
         preview['operationKind'] == 'transaction' &&
             preview['transactionCount'] is int &&
             preview['transactionCount'] >= 1 &&
-            preview['transactionCount'] <= maxTransactionBundleSize &&
+            preview['transactionCount'] <= transactionBundleLimit(request) &&
             coveredTransactionWarnings(request, p),
         'CONSENT_SCOPE_EXPANDED',
       );
@@ -784,6 +784,7 @@ final class TbcSigningExecutor {
     receiptCheck();
     if (sending) {
       result = await TbcSendLifecycle(
+        maxTransactions: transactionBundleLimit(request),
         custody: signer as TbcBroadcastSigningOperation,
         receipt: issued,
         receiptCheck: receiptCheck,

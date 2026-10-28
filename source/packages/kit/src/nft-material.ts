@@ -1,5 +1,6 @@
 import { bytesToHex, hexToBytes, sha256Bytes } from "./network-bytes.js";
-import type { TbcOfficialApiClient } from "./official-api.js";
+import type { TbcOfficialApiClient, TbcApiTxoStatus } from "./official-api.js";
+import { forEachTxoStatusBatch } from "./txo-status-batches.js";
 
 /** Matches the same-source Rust NFT mint/hold script markers. */
 const MINT_SUFFIX = "6a0d5630204d696e74204e486f6c64";
@@ -107,7 +108,7 @@ export async function resolveNftMaterial(input: Readonly<{
     if (new Set(candidates.map(c=>c.vout)).size !== candidates.length) throw new Error("Duplicate collection slots");
     if (input.standardId === "tbc721-standard") {
       const slots = input.collectionSlots;
-      if (slots === undefined || slots.length < 1 || slots.length > 32 || new Set(slots).size !== slots.length ||
+      if (slots === undefined || slots.length < 1 || slots.length > 100 || new Set(slots).size !== slots.length ||
           slots.some(slot => !Number.isSafeInteger(slot) || slot < 1 || slot > 0xffff_ffff)) throw new Error("Invalid requested collection slots");
       const bySlot = new Map(candidates.map(candidate => [candidate.vout, candidate.row]));
       for (const slot of slots) {
@@ -116,20 +117,23 @@ export async function resolveNftMaterial(input: Readonly<{
       }
       const missing = slots.filter(slot => !bySlot.has(slot));
       if (missing.length > 0) {
-        // Index lag: query only missing requested slots in one read, never all
+        // Index lag: query only missing requested slots in API-sized batches, never all
         // collection slots or substitutes that change the approved mint set.
-        const response = await api.txoStatus({ txos: missing.map(slot => ({ txid: contractId, index: slot })) }, { category: "asset-index" });
-        if (!Array.isArray(response.txos) || response.txos.length > missing.length) throw new Error("Invalid selected slot status list");
-        const seen = new Set<number>();
-        for (const status of response.txos) {
-          const slot = index(status.index); const output = creation.outputs[slot];
-          if (status.txid !== contractId || !missing.includes(slot) || seen.has(slot) || status.value !== "100" ||
-              (status.scriptPubKey !== undefined && status.scriptPubKey !== output!.scriptPubKey)) throw new Error("Selected slot status mismatch");
-          seen.add(slot);
-          if (status.spent !== false) throw new Error("Requested collection slot has been spent");
-          bySlot.set(slot, status);
-        }
-        if (seen.size !== missing.length) throw new NftMaterialUnavailableError("Requested collection slots are not indexed yet");
+        await forEachTxoStatusBatch(api, missing.map(slot => ({ txid: contractId, index: slot })), result => {
+          if (result.status === "rejected") throw result.reason;
+          const { response, requested } = result.value;
+          if (!response || !Array.isArray(response.txos) || response.txos.length > requested.length) throw new Error("Invalid selected slot status list");
+          const wanted = new Set(requested.map(p => p.index)), seen = new Set<number>();
+          for (const status of response.txos) {
+            const slot = index(status.index); const output = creation.outputs[slot];
+            if (status.txid !== contractId || !wanted.has(slot) || seen.has(slot) || status.value !== "100" ||
+                (status.scriptPubKey !== undefined && status.scriptPubKey !== output!.scriptPubKey)) throw new Error("Selected slot status mismatch");
+            seen.add(slot);
+            if (status.spent !== false) throw new Error("Requested collection slot has been spent");
+            bySlot.set(slot, status);
+          }
+          if (seen.size !== requested.length) throw new NftMaterialUnavailableError("Requested collection slots are not indexed yet");
+        });
       }
       const utxos = await Promise.all(slots.map(async slot => {
         const row = bySlot.get(slot)!;
@@ -148,24 +152,24 @@ export async function resolveNftMaterial(input: Readonly<{
         .filter(output => output.vout > 0 && output.scriptPubKey === script && output.satoshis === "100")
         .sort((left, right) => left.vout - right.vout);
       if (expected.length === 0) throw new Error("Collection creation has no valid slots");
-      const response = await api.txoStatus({
-        txos: expected.map(output => ({ txid: contractId, index: output.vout })),
-      }, { category: "asset-index" });
-      if (!Array.isArray(response.txos) || response.txos.length > expected.length) throw new Error("Invalid collection slot status list");
       const expectedByVout = new Map(expected.map(output => [output.vout, output]));
-      const statusByVout = new Map<number, (typeof response.txos)[number]>();
-      for (const status of response.txos) {
-        const vout = index(status.index);
-        const output = expectedByVout.get(vout);
-        if (status.txid !== contractId || output === undefined || status.value !== output.satoshis ||
-          (status.scriptPubKey !== undefined && status.scriptPubKey !== output.scriptPubKey) || statusByVout.has(vout)) {
-          throw new Error("Collection slot status mismatch");
+      const statusByVout = new Map<number, TbcApiTxoStatus>();
+      await forEachTxoStatusBatch(api, expected.map(output => ({ txid: contractId, index: output.vout })), result => {
+        if (result.status === "rejected") throw result.reason;
+        const { response, requested } = result.value;
+        if (!response || !Array.isArray(response.txos) || response.txos.length > requested.length) throw new Error("Invalid collection slot status list");
+        const wanted = new Set(requested.map(p => p.index));
+        for (const status of response.txos) {
+          const vout = index(status.index);
+          const output = expectedByVout.get(vout);
+          if (status.txid !== contractId || !wanted.has(vout) || output === undefined || status.value !== output.satoshis ||
+            (status.scriptPubKey !== undefined && status.scriptPubKey !== output.scriptPubKey) || statusByVout.has(vout) || typeof status.spent !== "boolean") {
+            throw new Error("Collection slot status mismatch");
+          }
+          statusByVout.set(vout, status);
         }
-        statusByVout.set(vout, status);
-      }
-      if (statusByVout.size !== expected.length) {
-        throw new NftMaterialUnavailableError("Collection slot status is not indexed yet");
-      }
+        if (response.txos.length !== requested.length) throw new NftMaterialUnavailableError("Collection slot status is not indexed yet");
+      });
       const available = expected.find(output => statusByVout.get(output.vout)?.spent === false);
       if (available === undefined) throw new Error("No unspent collection slot");
       const status = statusByVout.get(available.vout)!;

@@ -44,10 +44,18 @@ const transactionTaskLimits = {
   'tbc.transfer': 128,
   'tbc.maintenance.merge': 100,
   'tbc721.transfer': 128,
+  'tbc721.batchTransfer': 128,
   'tbc20Stablecoin.transfer': 128,
   'tbc20Stablecoin.merge': 128,
 };
 const maxTransactionBundleSize = 32;
+int transactionBundleLimit(Map request) =>
+    {
+          'tbc721.batchTransfer',
+          'tbc721-standard-batch-mint',
+        }.contains(request['intent']?['type'])
+        ? 100
+        : maxTransactionBundleSize;
 
 // Frozen Pool plans may omit aggregate signingTaskCount. Their transaction
 // graph still has one validated signing stage per transaction. Do not mistake
@@ -78,6 +86,20 @@ bool coveredTransactionWarnings(Map request, Map payload) {
         preview['transactionCount'] == 1;
   }
   if (warnings.isEmpty) return true;
+  if (request['intent']?['type'] == 'tbc721.batchTransfer') {
+    final transactions = payload['transactions'];
+    return warnings.length == 1 &&
+        warnings.single == 'MULTI_TRANSACTION' &&
+        transactions is List &&
+        transactions.length >= 2 &&
+        transactions.length <= transactionBundleLimit(request) &&
+        transactions.where((t) => t['role'] == 'primary').length ==
+            request['intent']['transfers'].length &&
+        transactions.every(
+          (t) => ['primary', 'maintenance'].contains(t['role']),
+        ) &&
+        preview['transactionCount'] == transactions.length;
+  }
   final transactions = payload['transactions'];
   if (poolContinuationProfiles.contains(request['intent']?['type'])) {
     return warnings.length == 2 &&

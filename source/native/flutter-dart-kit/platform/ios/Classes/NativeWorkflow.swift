@@ -88,11 +88,11 @@ enum NativeWorkflow {
  // The shared worker has already run Engine/Reviewed final validation. Bind
  // its result metadata and raw-derived IDs to the native-consumed child before
  // allowing those IDs to become a later workflow source. This is not a VM.
- static func completedBundle(_ result:[String:Any],account:NativeAccount,requestHash:String,approvalId:String,fee:String,transactions:[[String:Any]]?,reviewed:NativeReviewed.Bound?)throws->[[String:Any]]{
+ static func completedBundle(_ result:[String:Any],account:NativeAccount,requestHash:String,approvalId:String,fee:String,transactions:[[String:Any]]?,reviewed:NativeReviewed.Bound?,limit:Int=32)throws->[[String:Any]]{
   try shape(result,["version","chainId","from","requestHash","approvalId","totalFee","transactions"],["artifacts","detachedSignatures"])
   try need(result["version"] as? String=="1.0" && result["chainId"] as? String==account.chainId && result["from"] as? String==account.address && result["requestHash"] as? String==requestHash && result["approvalId"] as? String==approvalId && result["totalFee"] as? String==fee)
   let values=try rows(result["transactions"]),count=reviewed?.transactionCount ?? transactions?.count ?? 0
-  try need((1...32).contains(count) && values.count==count)
+  try need((1...limit).contains(count) && values.count==count)
   var seen=Set<String>()
   for (i,t) in values.enumerated(){
    try shape(t,["id","role","dependsOn","rawTransaction","txid"])

@@ -416,7 +416,7 @@
               { "pattern": "^tbc\\.[A-Za-z][A-Za-z0-9.]*$" },
               { "enum": ["amm.swap", "amm.addLiquidity", "amm.removeLiquidity",
                 "amm.mergeToken", "tbc20Lp.transfer", "tbc20Lp.lock", "tbc20Lp.unlock", "tbc20Lp.merge", "tbc20Lp.burn",
-                "tbc721.transfer", "tbc20.transfer", "tbc20.merge", "tbc20Stablecoin.transfer", "tbc20Stablecoin.merge",
+                "tbc721.transfer", "tbc721.batchTransfer", "tbc20.transfer", "tbc20.merge", "tbc20Stablecoin.transfer", "tbc20Stablecoin.merge",
                 "tbc20-standard-create", "tbc20-standard-transfer", "tbc20-standard-merge",
                 "tbc20-stablecoin-create", "tbc20-stablecoin-transfer", "tbc20-stablecoin-merge",
                 "tbc20-stablecoin-mint", "tbc20-stablecoin-freeze", "tbc20-stablecoin-unfreeze",
@@ -444,7 +444,7 @@
           "required": ["workflowSteps", "transactionBundleSize"],
           "properties": {
             "workflowSteps": { "type": "integer", "minimum": 0, "maximum": 5 },
-            "transactionBundleSize": { "type": "integer", "minimum": 1, "maximum": 32 }
+            "transactionBundleSize": { "type": "integer", "minimum": 1, "maximum": 100 }
           }
         },
         "profiles": {

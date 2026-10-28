@@ -9,6 +9,7 @@ void need(bool value, String code) {
 }
 
 void scalarString(String s) {
+  if (!RegExp(r'[\uD800-\uDFFF]').hasMatch(s)) return;
   for (var i = 0; i < s.length; i++) {
     final c = s.codeUnitAt(i);
     if (c >= 0xd800 && c <= 0xdbff) {
@@ -24,7 +25,15 @@ void scalarString(String s) {
   }
 }
 
-String canonical(Object? value) {
+// Same scope as rc.13 Core: serialization reuse only for SDK-owned, recursively
+// immutable DTOs. Never cache validation, authorization, hash results or caller
+// objects. Expando does not keep operation material alive.
+final _ownedJson = Expando<bool>();
+var _serializedJson = Expando<String>();
+var _cachedCharacters = 0, _cachedEntries = 0;
+String canonical(Object? value) => _canonical(value, Set<Object>.identity());
+
+String _canonical(Object? value, Set<Object> ancestors) {
   if (value == null || value is bool) return jsonEncode(value);
   if (value is String) {
     scalarString(value);
@@ -34,11 +43,35 @@ String canonical(Object? value) {
     need(value.abs() <= 9007199254740991, 'UNSAFE_INTEGER');
     return '$value';
   }
-  if (value is List) return '[${value.map(canonical).join(',')}]';
-  if (value is Map) {
-    need(value.keys.every((k) => k is String), 'INVALID_JSON_KEY');
-    final keys = value.keys.cast<String>().toList()..sort();
-    return '{${keys.map((k) => '${canonical(k)}:${canonical(value[k])}').join(',')}}';
+  if (value is Map || value is List) {
+    final owned = _ownedJson[value] == true;
+    final cached = owned ? _serializedJson[value] : null;
+    if (cached != null) return cached;
+    need(ancestors.add(value), 'CYCLIC_JSON');
+    try {
+      late final String text;
+      if (value is List) {
+        text = '[${value.map((v) => _canonical(v, ancestors)).join(',')}]';
+      } else {
+        final map = value as Map;
+        need(map.keys.every((k) => k is String), 'INVALID_JSON_KEY');
+        final keys = map.keys.cast<String>().toList()..sort();
+        text = '{${keys.map((k) => '${_canonical(k, ancestors)}:${_canonical(map[k], ancestors)}').join(',')}}';
+      }
+      if (owned && text.length <= 256 * 1024) {
+        if (_cachedCharacters + text.length > 2 * 1024 * 1024 || _cachedEntries >= 4096) {
+          _serializedJson = Expando<String>();
+          _cachedCharacters = 0;
+          _cachedEntries = 0;
+        }
+        _serializedJson[value] = text;
+        _cachedCharacters += text.length;
+        _cachedEntries++;
+      }
+      return text;
+    } finally {
+      ancestors.remove(value);
+    }
   }
   throw StateError('UNSUPPORTED_JSON_VALUE');
 }
@@ -57,11 +90,20 @@ String rpcOperationId(String sessionId, Object? id) => base64Url
 Map<String, dynamic> copied(Map value) =>
     jsonDecode(canonical(value)) as Map<String, dynamic>;
 Object? frozen(Object? value) {
-  if (value is Map)
-    return Map<String, dynamic>.unmodifiable({
+  if (value is Map) {
+    if (_ownedJson[value] == true) return value;
+    final result = Map<String, dynamic>.unmodifiable({
       for (final k in value.keys) k as String: frozen(value[k]),
     });
-  if (value is List) return List<dynamic>.unmodifiable(value.map(frozen));
+    _ownedJson[result] = true;
+    return result;
+  }
+  if (value is List) {
+    if (_ownedJson[value] == true) return value;
+    final result = List<dynamic>.unmodifiable(value.map(frozen));
+    _ownedJson[result] = true;
+    return result;
+  }
   return value;
 }
 

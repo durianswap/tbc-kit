@@ -32,6 +32,31 @@ test("one material scope shares in-flight and completed identical reads, never l
   assert.equal(scoped.api.broadcast, value.api.broadcast);
 });
 
+test('NFT collection index is reused inside one job scope, not across later jobs', async () => {
+  const {value,calls}=client();
+  value.api.utxosByScriptHash=async (...args)=>{calls.push(args);return{utxos:[]}};
+  const scoped=createChainDataReadScope(value),query={scriptpubkeyhash:'ab'.repeat(32)};
+  await Promise.all([scoped.api.utxosByScriptHash(query,{category:'asset-index'}),
+    scoped.api.utxosByScriptHash({...query},{category:'asset-index'})]);
+  assert.equal(calls.length,1);
+  await createChainDataReadScope(value).api.utxosByScriptHash(query,{category:'asset-index'});
+  assert.equal(calls.length,2);
+});
+
+test("omitted optional native-read options share prefetch, distinct limits never do", async () => {
+  const { value, calls } = client();
+  value.getNativeUtxos = async (...args) => { calls.push(['native', args]); return []; };
+  value.getTip = async () => ({ height: '100', hash: '11'.repeat(32) });
+  const scoped = createChainDataReadScope(value);
+  const prefetch = scoped.getNativeUtxos('owner');
+  assert.equal(scoped.getNativeUtxos('owner', undefined), prefetch);
+  await Promise.all([prefetch, scoped.getUtxos('owner'), scoped.getNativeUtxos('owner', { limit: 100 }),
+    scoped.getNativeUtxos('owner', { limit: 500 })]);
+  assert.equal(calls.length, 3);
+  await createChainDataReadScope(value).getNativeUtxos('owner');
+  assert.equal(calls.length, 4, 'a later preparation observes mutable native UTXOs again');
+});
+
 test("account, contract and query scopes stay separate; decode feeds immutable bytes", async () => {
   const { value, calls } = client(), scoped = createChainDataReadScope(value);
   await Promise.all([scoped.getUtxos("a"), scoped.getUtxos("b"), scoped.getRawTransaction("tx"), scoped.getRawTransactionBytes("tx"),

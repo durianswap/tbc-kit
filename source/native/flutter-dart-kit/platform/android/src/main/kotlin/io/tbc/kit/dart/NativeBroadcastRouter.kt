@@ -55,7 +55,7 @@ class NativeBroadcastRouter(private val custody:NativeCustody,private val config
    need(Thread.currentThread()===executor&&!closed)
    val owner=string(input["ownerId"]);val operation=string(input["operation"]);val receipt=map(input["receipt"])
    val scope=map(input["scope"]).mapValues{string(it.value)}
-   val index=when(val raw=input["index"]){null->{need(input.containsKey("index"));null};is Int->{need(raw in 0..31);raw};is Long->{need(raw in 0..31);raw.toInt()};else->throw NativeCustodyFailure("NATIVE_DENIED")}
+   val index=when(val raw=input["index"]){null->{need(input.containsKey("index"));null};is Int->{need(raw in 0..99);raw};is Long->{need(raw in 0..99);raw.toInt()};else->throw NativeCustodyFailure("NATIVE_DENIED")}
    fun keys(vararg names:String){need(input.keys==setOf("ownerId","scope","operation","receipt","index")+names)}
    fun current(){custody.broadcastAuthorization(owner,scope,operation,receipt)}
    val key=PermissionJson.id("broadcast",owner,PermissionJson.canonical(scope),operation,index?.toString()?:"batch")
