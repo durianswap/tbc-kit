@@ -101,7 +101,7 @@
     "evidence": "Every object in both iOS archives passed minimum-OS auditing; four successful Engine calls and four error calls match frozen Native and bundled WASM byte-for-byte on iOS 26.5 Simulator. This is not an iOS 15.1 device claim.",
     "networkSigningBroadcast": "No network reads, keys, approvals, persistence, retry or broadcast are added to the bridge. Native identity changes require an app rebuild."
   },
-  "package": "@tbc/kit@0.1.0-rc.17",
+  "package": "@tbc/kit@0.1.0-rc.18",
   "createdAt": "2026-09-25T00:00:00.000Z",
   "candidateDelta": {
     "baseline": "@tbc/kit@0.1.0-candidate.167",
@@ -621,48 +621,48 @@
     {
       "role": "transaction-engine",
       "path": "artifacts/wasm/tbc_engine_wasm.wasm",
-      "sha256": "578b8a69026ce46b68f281f4016b91cd11e3a43ee457d9cdd63a1fdcd2a25211"
+      "sha256": "51acae70cfa76de5a31f81af1d56d8d4cfc91e2c8851be07b9c7734eee3bf819"
     },
     {
       "role": "transaction-engine-wallet-private-native",
       "path": "artifacts/native/aarch64-apple-darwin/libtbc_engine_native.dylib",
-      "sha256": "24165fcbc4e76633a887636ee0b2af3b1ae9e330b5a8bf37016f7d573b807f7d",
+      "sha256": "0789ac4bcbb747c7d5bf792524d733c789a41bdedd9f6213ca86d74970ab0c82",
       "target": "aarch64-apple-darwin"
     },
     {
       "role": "transaction-engine-wallet-private-native",
       "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/libtbc_engine_native.a",
-      "sha256": "dfe7bef473e9c3c66e15a811153f42f83b347ebd88b7a3ba2b80e96b204c0942",
+      "sha256": "622a20f40e5390eaa4740749a9e3634b0e722da24fd8039638ebedaf1aa37507",
       "target": "aarch64-apple-ios"
     },
     {
       "role": "transaction-engine-wallet-private-native",
       "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/libtbc_engine_native.a",
-      "sha256": "aab49e70c6ae0027194fff6f96429b31ed89c58e747448b0c5c9d37b63278900",
+      "sha256": "eb01d1a03dca9ff8f1d06800ad43ca2bf9e7ecea3c5b90956f2f15e4c761246f",
       "target": "aarch64-apple-ios-sim"
     },
     {
       "role": "transaction-engine-wallet-private-native",
       "path": "artifacts/native/android/jniLibs/arm64-v8a/libtbc_engine_native.so",
-      "sha256": "e430f19aa8d83193cbc74c30314f24695277f875843e8498f429efc90059cb0c",
+      "sha256": "6269ef876d01fcf780b0f52d2e3182dfaddd44bafaa47a5ae1d46d51068bbca2",
       "target": "aarch64-linux-android"
     },
     {
       "role": "transaction-engine-wallet-private-native",
       "path": "artifacts/native/android/jniLibs/armeabi-v7a/libtbc_engine_native.so",
-      "sha256": "9bff0582b21ad1bfce7606e6b22cab5b685522c78de7dd3dc7e57358c3df6886",
+      "sha256": "803beb1507fc3c8a49d577acba1eb0eee91720e43bed9af4c7e6f6c2bd24cb9d",
       "target": "armv7-linux-androideabi"
     },
     {
       "role": "transaction-engine-wallet-private-native",
       "path": "artifacts/native/android/jniLibs/x86_64/libtbc_engine_native.so",
-      "sha256": "20e2d7e9eb75f252732bf860eceff3e61dc3c05971d9cb417a3fb86428478b06",
+      "sha256": "104ea629274a87df6c9a7d3305355741be1a0fa78ccee5984d4682d23479615f",
       "target": "x86_64-linux-android"
     },
     {
       "role": "keyless-pool-preparation",
       "path": "artifacts/wasm/tbc_keyless_wasm.wasm",
-      "sha256": "cb0f7bb4855a9fc885e49badb4ac0d5e842f65e29ded9c9d5ea10114dcdd2cdb",
+      "sha256": "738f7f6a2135c5aec28abc233b068b8fcc15eb66abc21fd2bdaf0b22ca3d776e",
       "operations": [
         "preparePoolNft",
         "prepareAssetAncestry",
@@ -675,7 +675,7 @@
     {
       "role": "keyless-pool-preparation-native",
       "path": "artifacts/keyless-native/aarch64-apple-darwin/libtbc_keyless_native.dylib",
-      "sha256": "87beaeeb9a85e6ce5eae838d3840c33d0cc252ec5582616dd3e48893f20886dd",
+      "sha256": "70cc8bbb2f2086192f2fe84d5e8821cc58de9e4cb831b5a55da3a6b0637ba890",
       "target": "aarch64-apple-darwin",
       "operations": [
         "preparePoolNft",
@@ -726,9 +726,9 @@
       "schemas/integration.schema.json": "1c694ea1439b771dd9114bd357388dbe6be9ae7b7466b8b938ad7c0e8abb45b2"
     },
     "nativeDelivery": {
-      "iosArm64Sha256": "dfe7bef473e9c3c66e15a811153f42f83b347ebd88b7a3ba2b80e96b204c0942",
-      "iosSimulatorArm64Sha256": "aab49e70c6ae0027194fff6f96429b31ed89c58e747448b0c5c9d37b63278900",
-      "wasmSha256": "578b8a69026ce46b68f281f4016b91cd11e3a43ee457d9cdd63a1fdcd2a25211"
+      "iosArm64Sha256": "622a20f40e5390eaa4740749a9e3634b0e722da24fd8039638ebedaf1aa37507",
+      "iosSimulatorArm64Sha256": "eb01d1a03dca9ff8f1d06800ad43ca2bf9e7ecea3c5b90956f2f15e4c761246f",
+      "wasmSha256": "51acae70cfa76de5a31f81af1d56d8d4cfc91e2c8851be07b9c7734eee3bf819"
     }
   },
   "publicFtlpBurn": {

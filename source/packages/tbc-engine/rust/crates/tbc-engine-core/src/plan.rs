@@ -309,7 +309,7 @@ fn computation_material(
         crate::families::nft_batch::plan(params.request, &material, &public_signing_context(&material)?)
     } else if crate::business::is_unified(&params.request.intent.intent_type) {
         let resolved = crate::business::resolve(params.request, &material)?;
-        let mut planned = crate::funding_fallback::plan_with_funding(&resolved, &material, dispatch_business)?;
+        let mut planned = dispatch_with_funding(&resolved, &material)?;
         // Derivation occurs before approval and is repeatable at every validation
         // and finalization boundary. Never replace the caller's canonical request.
         planned.result.plan.payload.request_hash = params.request_hash.to_owned();
@@ -325,7 +325,15 @@ fn computation_material(
         planned.resolved_request = Some(resolved);
         Ok(planned)
     } else {
-        crate::funding_fallback::plan_with_funding(params.request, &material, dispatch_business)
+        dispatch_with_funding(params.request, &material)
+    }
+}
+
+fn dispatch_with_funding(request:&CanonicalRequest,material:&WalletMaterial<'_>)->Result<crate::model::PlannedTransfer,EngineError> {
+    if matches!(request.intent.intent_type.as_str(),"tbc20-stablecoin-transfer"|"tbc20-stablecoin-merge") {
+        crate::families::coin::plan_coin_with_funding(request,material,&public_signing_context(material)?)
+    } else {
+        crate::funding_fallback::plan_with_funding(request,material,dispatch_business)
     }
 }
 

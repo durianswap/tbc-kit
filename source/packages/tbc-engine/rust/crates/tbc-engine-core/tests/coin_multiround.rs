@@ -154,6 +154,24 @@ fn coin_six_required_inputs_use_bound_multi_round_plan() {
         2
     );
 }
+
+#[cfg(feature="coin-planning-profile")]
+#[test]
+fn coin_funding_reuses_material_only_inside_one_authenticated_computation() {
+    let p=exact(fee_fragments(input(6,false),12,500));
+    tbc_engine_core::planning_profile::take();
+    let plan=ok(EngineMethod::Plan,&p);
+    let stages=tbc_engine_core::planning_profile::take();
+    assert_eq!(stages["coin_material_prepare"].calls,1);
+    assert_eq!(plan["plan"]["payload"]["transactions"].as_array().unwrap().len(),3);
+    // A new call must authenticate its own material, not reuse the previous
+    // successful call's holder/issuer/account authorization.
+    let mut altered=p.clone();
+    altered["snapshot"]["payload"]["utxos"][0]["satoshis"]=json!("501");
+    let result=call(EngineMethod::Plan,&bind(altered));
+    assert_eq!(result["ok"],false);
+    assert_eq!(result["error"]["code"],"INVALID_ANCESTRY");
+}
 #[test]
 fn coin_exact_fragmented_native_funding_uses_existing_prerequisite() {
     let p = exact(fee_fragments(input(1, false), 12, 100));

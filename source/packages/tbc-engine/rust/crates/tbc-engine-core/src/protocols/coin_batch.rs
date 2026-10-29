@@ -11,7 +11,7 @@ use super::{
 };
 use crate::{
     signing::{
-        bind_funding_recipe, materialize_unsigned_preview, remap_fungible_evidence, UnsignedPlan,
+        materialize_unsigned_preview, rebind_coin_evidence, TransactionSource, UnsignedPlan,
     },
     EngineError, ErrorCode,
 };
@@ -223,6 +223,7 @@ fn build(options: BatchOptions<'_>, merge: bool) -> Result<BatchPlan, EngineErro
                 if entry.raw_transaction != prior.raw {
                     return Err(invalid("Coin planned evidence differs from its preview"));
                 }
+                indices.insert(i as u32, TransactionSource::Planned(prior.id.clone()));
                 continue;
             }
             let global = if let Some(&n) = evidence.get(&entry.txid) {
@@ -236,7 +237,7 @@ fn build(options: BatchOptions<'_>, merge: bool) -> Result<BatchPlan, EngineErro
                 evidence.insert(entry.txid.clone(), n);
                 n
             };
-            indices.insert(i as u32, global);
+            indices.insert(i as u32, TransactionSource::Evidence(global));
         }
         let transaction = &mut round.unsigned_plan.transactions[0];
         transaction.transaction_id = id.clone();
@@ -254,19 +255,9 @@ fn build(options: BatchOptions<'_>, merge: bool) -> Result<BatchPlan, EngineErro
             if input.unlocking_script.is_empty() {
                 continue;
             }
-            for (txid, prior) in &previews {
-                let local: Vec<_> = round
-                    .unsigned_plan
-                    .evidence_table
-                    .iter()
-                    .enumerate()
-                    .filter(|(_, e)| &e.txid == txid)
-                    .map(|(i, _)| i as u32)
-                    .collect();
-                input.unlocking_script =
-                    bind_funding_recipe(&input.unlocking_script, &prior.raw, &local, &prior.id)?;
-            }
-            input.unlocking_script = remap_fungible_evidence(&input.unlocking_script, &indices)?;
+            #[cfg(feature="coin-planning-profile")]
+            let _remap_timer=crate::planning_profile::Span::new("coin_recipe_remap");
+            input.unlocking_script = rebind_coin_evidence(&input.unlocking_script, &indices)?;
         }
         transaction.depends_on = dependencies;
         transaction.stage = transaction

@@ -70,7 +70,7 @@ pub(crate) fn trusted_issuer(id:&str,material:&WalletMaterial<'_>,parents:&mut P
     }
 }
 
-pub(crate) fn plan_coin(request:&CanonicalRequest,material:&WalletMaterial<'_>,signing:&PublicSigningContext)->Result<PlannedTransfer,EngineError> {
+fn coin_account(request:&CanonicalRequest,material:&WalletMaterial<'_>,signing:&PublicSigningContext)->Result<(PublicKey,[u8;21]),EngineError> {
     validate_request(request)?;validate_material_identity(request,material)?;
     let policy=&material.policy.payload;
     if policy.chain_id!=request.chain_id || policy.fee_rate_sat_per_kb!="80" || policy.dust_threshold!="24" || policy.sighash_type!=65 {
@@ -79,6 +79,14 @@ pub(crate) fn plan_coin(request:&CanonicalRequest,material:&WalletMaterial<'_>,s
     let public=PublicKey::from_slice(&decode_hex(&signing.public_key,"snapshot.payload.account.publicKey")?).map_err(|_|invalid("Coin public key invalid"))?;
     let owner_hash=Address::from_string(&request.from).map_err(|_|invalid("Coin account address invalid"))?.hash160();
     let mut owner=[0;21];owner[..20].copy_from_slice(&owner_hash);
+    Ok((public,owner))
+}
+
+pub(crate) fn plan_coin(request:&CanonicalRequest,material:&WalletMaterial<'_>,signing:&PublicSigningContext)->Result<PlannedTransfer,EngineError> {
+    if matches!(request.intent.intent_type.as_str(),"tbc20-stablecoin-transfer"|"tbc20-stablecoin-merge") {
+        return build_holder(request,material,signing,&prepare_holder(request,material,signing)?);
+    }
+    let (public,_)=coin_account(request,material,signing)?;
     if request.intent.intent_type=="tbc20-stablecoin-create" {
         return plan_create(request,material,&public,signing);
     }
@@ -88,6 +96,32 @@ pub(crate) fn plan_coin(request:&CanonicalRequest,material:&WalletMaterial<'_>,s
     if matches!(request.intent.intent_type.as_str(),"tbc20-stablecoin-mint"|"tbc20-stablecoin-freeze"|"tbc20-stablecoin-unfreeze") {
         return plan_management(request,material,signing,&public,&issuer,&mut parents);
     }
+    Err(error(ErrorCode::UnsupportedIntent,"unsupported Coin operation","request.intent.type"))
+}
+
+// Private, owned, non-serializable material. Constructed from the original
+// authenticated snapshot exactly once per plan computation. Only the trusted
+// funding wrapper may reuse it while replacing native fee inputs. Public plan,
+// validate and finalize calls each prepare their own material independently.
+struct HolderMaterial {
+    public:PublicKey,owner:[u8;21],identity:Vec<u8>,
+    selected:Vec<(coin_proof::ParentMaterial,Vec<Vec<u8>>)>,
+    receivers:Vec<Receiver>,payment:Option<(Address,u64)>,flows:Vec<AssetFlow>,
+}
+
+pub(crate) fn plan_coin_with_funding(request:&CanonicalRequest,material:&WalletMaterial<'_>,signing:&PublicSigningContext)->Result<PlannedTransfer,EngineError> {
+    let prepared=prepare_holder(request,material,signing)?;
+    crate::funding_fallback::plan_with_funding(request,material,|request,material|build_holder(request,material,signing,&prepared))
+}
+
+fn prepare_holder(request:&CanonicalRequest,material:&WalletMaterial<'_>,signing:&PublicSigningContext)->Result<HolderMaterial,EngineError> {
+    #[cfg(feature="coin-planning-profile")]
+    let _prepare_timer=crate::planning_profile::Span::new("coin_material_prepare");
+    let (public,owner)=coin_account(request,material,signing)?;
+    let id=request.intent.contract_id.as_deref().ok_or_else(||invalid("Coin contract ID missing"))?;
+    let mut parents=Parents::new(material)?;
+    let issuer=trusted_issuer(id,material,&mut parents)?;
+    let policy=&material.policy.payload;
     let is_merge=request.intent.intent_type=="tbc20-stablecoin-merge";
     let recipients=if is_merge {vec![]}else{tbc20_transfer_recipients(request)?};
     let amount=recipients.iter().map(|r|r.amount).sum::<u128>();
@@ -142,10 +176,21 @@ pub(crate) fn plan_coin(request:&CanonicalRequest,material:&WalletMaterial<'_>,s
     }
     if is_merge && selected.len()<2 {return Err(error(ErrorCode::InvalidInput,"Coin merge requires at least two outputs","snapshot.payload.utxos"));}
     let receivers=if is_merge {vec![Receiver{controller:owner,amount:total}]}else{recipients.iter().map(|r|Receiver{controller:r.controller,amount:r.amount}).collect()};
-    let raw_refs:Vec<Vec<_>>=selected.iter().map(|(_,raws)|raws.iter().map(Vec::as_slice).collect()).collect();
-    let inputs:Vec<_>=selected.iter().zip(&raw_refs).map(|((parent,_),raws)|CoinInput {parent,ancestor_raws:raws,public_key:&public}).collect();
     let payment=request.intent.payment.as_ref().map(|p|Ok((Address::from_string(&p.to).map_err(|_|invalid("Coin payment address invalid"))?,
         parse_decimal_u64(&p.amount,"request.intent.payment.amount")?))).transpose()?;
+    let mut flows=if is_merge {vec![AssetFlow {kind:"stablecoin".into(),direction:"merge".into(),amount:total.to_string(),
+        contract_id:Some(id.into()),from:request.from.clone(),to:Some(request.from.clone())}]}else{
+        recipients.iter().map(|r|AssetFlow {kind:"stablecoin".into(),direction:"send".into(),amount:r.amount.to_string(),
+            contract_id:Some(id.into()),from:request.from.clone(),to:Some(r.to.into())}).collect()};
+    if let Some(p)=&request.intent.payment {flows.push(AssetFlow {kind:"native".into(),direction:"send".into(),amount:p.amount.clone(),
+        contract_id:None,from:request.from.clone(),to:Some(p.to.clone())});}
+    Ok(HolderMaterial{public,owner,identity:identity.unwrap(),selected,receivers,payment,flows})
+}
+
+fn build_holder(request:&CanonicalRequest,material:&WalletMaterial<'_>,signing:&PublicSigningContext,prepared:&HolderMaterial)->Result<PlannedTransfer,EngineError> {
+    let HolderMaterial{public,owner,identity,selected,receivers,payment,flows}=prepared;
+    let exact=request.constraints.as_ref().and_then(|c|c.input_outpoints.as_ref()).is_some();
+    let is_merge=request.intent.intent_type=="tbc20-stablecoin-merge";
     let mut funding=funding_candidates(material,signing)?;funding.retain(|u|permitted(request,&u.txid,u.vout));
     funding.sort_by(|a,b|(a.satoshis,&a.txid,a.vout).cmp(&(b.satoshis,&b.txid,b.vout)));
     if exact {
@@ -159,24 +204,20 @@ pub(crate) fn plan_coin(request:&CanonicalRequest,material:&WalletMaterial<'_>,s
             return Err(error(ErrorCode::InsufficientFunds,"Coin selected native funding requires a planned prerequisite","request.constraints.inputOutpoints"));
         }
     }
+    let raw_refs:Vec<Vec<_>>=selected.iter().map(|(_,raws)|raws.iter().map(Vec::as_slice).collect()).collect();
+    let inputs:Vec<_>=selected.iter().zip(&raw_refs).map(|((parent,_),raws)|CoinInput {parent,ancestor_raws:raws,public_key:public}).collect();
     let maximum=max_fee(request)?;let mut cap_failure=None;
     for f in funding {
         let fee_output=TxOut{satoshis:f.satoshis,script_pubkey:Script::from_bytes(decode_hex(&f.script,"snapshot.payload.utxos")?)};
-        let fee=FeeInput {outpoint:OutPoint{txid:f.txid.parse().map_err(|_|invalid("Coin fee txid invalid"))?,vout:f.vout},output:&fee_output,public_key:&public};
-        let options=TransferOptions {inputs:&inputs,fee_input:&fee,receivers:&receivers,expected_identity:identity.as_deref().unwrap(),
-            token_change_controller:owner,additional_payment:payment.as_ref().map(|(a,n)|(a,*n)),additional_info:None,max_fee:maximum};
-        let options=crate::protocols::coin_batch::BatchOptions{transfer:options,max_transactions:policy.max_bundle_transactions as usize};
+        let fee=FeeInput {outpoint:OutPoint{txid:f.txid.parse().map_err(|_|invalid("Coin fee txid invalid"))?,vout:f.vout},output:&fee_output,public_key:public};
+        let options=TransferOptions {inputs:&inputs,fee_input:&fee,receivers,expected_identity:identity,
+            token_change_controller:*owner,additional_payment:payment.as_ref().map(|(a,n)|(a,*n)),additional_info:None,max_fee:maximum};
+        let options=crate::protocols::coin_batch::BatchOptions{transfer:options,max_transactions:material.policy.payload.max_bundle_transactions as usize};
         let result=if is_merge {crate::protocols::coin_batch::build_batch_merge_plan(options)}else{crate::protocols::coin_batch::build_batch_transfer_plan(options)};
         let built=match result {Ok(v)=>v,Err(e) if e.code==ErrorCode::InsufficientFunds=>continue,
             Err(e) if e.code==ErrorCode::FeeCapExceeded=>{cap_failure=Some(e);continue;},Err(e)=>return Err(e)};
         for output in &built.token_outputs {check_policy(material,request,output.amount,output.amounts_by_input.into_iter())?;}
-        let mut flows=if is_merge {vec![AssetFlow {kind:"stablecoin".into(),direction:"merge".into(),amount:total.to_string(),
-            contract_id:Some(id.into()),from:request.from.clone(),to:Some(request.from.clone())}]}else{
-            recipients.iter().map(|r|AssetFlow {kind:"stablecoin".into(),direction:"send".into(),amount:r.amount.to_string(),
-                contract_id:Some(id.into()),from:request.from.clone(),to:Some(r.to.into())}).collect()};
-        if let Some(p)=&request.intent.payment {flows.push(AssetFlow {kind:"native".into(),direction:"send".into(),amount:p.amount.clone(),
-            contract_id:None,from:request.from.clone(),to:Some(p.to.clone())});}
-        return finish(request,material,built.unsigned_plan,built.fees,flows);
+        return finish(request,material,built.unsigned_plan,built.fees,flows.clone());
     }
     Err(cap_failure.unwrap_or_else(||error(ErrorCode::InsufficientFunds,"Coin requires one sufficient native fee output","snapshot.payload.utxos")))
 }

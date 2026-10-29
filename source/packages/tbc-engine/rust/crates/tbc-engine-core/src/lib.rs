@@ -12,6 +12,8 @@ mod funding_fallback;
 mod model;
 mod normalize;
 mod plan;
+#[cfg(feature = "coin-planning-profile")]
+pub mod planning_profile;
 mod output_review;
 pub mod protocols;
 pub mod signing;

@@ -213,6 +213,57 @@ pub(crate) fn remap_fungible_evidence(value: &str, indices: &std::collections::B
     else{tbc20_unlocking_descriptor(recipe)}
 }
 
+/// A Coin round emits only indexed evidence. Resolve its authenticated local
+/// table once, then rewrite each recipe once (including controller witnesses).
+/// No parsing/validation is skipped; no cache crosses a planning call.
+pub(crate) fn rebind_coin_evidence(value: &str, sources: &std::collections::BTreeMap<u32,TransactionSource>) -> Result<String,EngineError> {
+    if !value.starts_with(COIN_UNLOCK_PREFIX) { return Err(invalid_plan("expected Coin staged recipe")); }
+    let remap=|source:&mut TransactionSource|->Result<(),EngineError>{
+        match source {
+            TransactionSource::Evidence(index)=>*source=sources.get(index).ok_or_else(||invalid_plan("unbound staged evidence index"))?.clone(),
+            TransactionSource::Planned(_)=>{},
+            TransactionSource::Raw(_)=>return Err(invalid_plan("unexpected inline staged evidence")),
+        }Ok(())
+    };
+    let mut recipe=parse_fungible_unlock_recipe(value)?;
+    remap(&mut recipe.parent)?;
+    for proof in &mut recipe.proof_references {remap(&mut proof.source)?;}
+    if let Some(controller)=&mut recipe.contract_controller {remap(&mut controller.source)?;}
+    coin_unlocking_descriptor(recipe)
+}
+
+#[cfg(test)]
+mod coin_rebinding_tests {
+    use super::*;
+    use std::collections::BTreeMap;
+    fn recipe() -> CoinUnlockRecipe {
+        CoinUnlockRecipe {parent:TransactionSource::Evidence(1),
+            proof_references:vec![ProofReference{source:TransactionSource::Evidence(2),output_index:3},
+                ProofReference{source:TransactionSource::Evidence(3),output_index:0}],
+            output_groups:vec![Tbc20OutputGroup{code_vout:0,tape_vout:Some(1)}],
+            contract_controller:Some(Tbc20ContractControllerReference{source:TransactionSource::Evidence(1),current_input_index:2})}
+    }
+    #[test]
+    fn coin_single_rewrite_matches_repeated_binding_including_controller() {
+        let value=coin_unlocking_descriptor(recipe()).unwrap();
+        let prior=bind_funding_recipe(&value,"00",&[1],"round-1").unwrap();
+        let prior=bind_funding_recipe(&prior,"00",&[2],"round-2").unwrap();
+        let prior=remap_fungible_evidence(&prior,&BTreeMap::from([(3,0)])).unwrap();
+        let sources=BTreeMap::from([(1,TransactionSource::Planned("round-1".into())),
+            (2,TransactionSource::Planned("round-2".into())),(3,TransactionSource::Evidence(0))]);
+        assert_eq!(rebind_coin_evidence(&value,&sources).unwrap(),prior);
+    }
+    #[test]
+    fn coin_single_rewrite_rejects_missing_or_inline_evidence_and_wrong_family() {
+        let value=coin_unlocking_descriptor(recipe()).unwrap();
+        assert!(rebind_coin_evidence(&value,&BTreeMap::new()).is_err());
+        let mut inline=recipe();inline.parent=TransactionSource::Raw("00".into());
+        assert!(rebind_coin_evidence(&coin_unlocking_descriptor(inline).unwrap(),&BTreeMap::new()).is_err());
+        assert!(rebind_coin_evidence(&tbc20_unlocking_descriptor(recipe()).unwrap(),&BTreeMap::new()).is_err());
+        assert!(rebind_coin_evidence("tbc-coin:malformed",&BTreeMap::new()).is_err());
+    }
+}
+
 /// New Pool active-branch proof. No private keys or legacy Pool ABI fields.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]

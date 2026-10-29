@@ -5,6 +5,10 @@ edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
 
+[features]
+# Opt-in, host-only stage measurements; absent from production Native/WASM.
+coin-planning-profile = []
+
 [dependencies]
 serde.workspace = true
 serde_json.workspace = true
