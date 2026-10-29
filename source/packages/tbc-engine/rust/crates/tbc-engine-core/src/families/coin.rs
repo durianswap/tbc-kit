@@ -4,7 +4,7 @@ use std::collections::{BTreeMap,BTreeSet};
 use tbc_sdk::{Address,OutPoint,PublicKey,Transaction,TxOut,script::Script};
 use crate::{EngineError,ErrorCode,model::{AssetFlow,CanonicalRequest,PlannedTransfer,WalletMaterial,error},
     normalize::{hex,parse_decimal_u64,parse_decimal_u128,tbc20_transfer_recipients,validate_request},
-    protocols::{coin::LOCKTIME_THRESHOLD,coin_identity,coin_proof,coin_transfer::{self,CoinInput,FeeInput,Receiver,TransferOptions}},
+    protocols::{coin::LOCKTIME_THRESHOLD,coin_identity,coin_proof,coin_transfer::{CoinInput,FeeInput,Receiver,TransferOptions}},
     signing::PublicSigningContext};
 use super::{ft::{decode_hex,funding_candidates,validate_material_identity},tbc20::{Parents,max_fee,permitted,finish}};
 
@@ -101,7 +101,10 @@ pub(crate) fn plan_coin(request:&CanonicalRequest,material:&WalletMaterial<'_>,s
         if !seen.insert((&u.txid,u.vout)) {return Err(invalid("Coin asset input repeated"));}
         if !permitted(request,&u.txid,u.vout) {continue;}
         if u.classification!="stablecoin" {return Err(invalid("Coin UTXO classification must be stablecoin"));}
-        if !crate::confirmations::meets_minimum(u.confirmations.as_deref(),minimum,"snapshot.payload.utxos.confirmations")? {continue;}
+        if !crate::confirmations::meets_minimum(u.confirmations.as_deref(),minimum,"snapshot.payload.utxos.confirmations")? {
+            if exact {return Err(missing("Coin explicitly selected input does not satisfy the confirmation policy"));}
+            continue;
+        }
         if !is_merge && total>=amount && !exact {continue;}
         let point=OutPoint{txid:u.txid.parse().map_err(|_|invalid("Coin UTXO ID invalid"))?,vout:u.vout};
         let parent=coin_proof::inspect_parent(parents.bytes(&u.txid)?,&point,identity.as_deref())?;
@@ -126,7 +129,7 @@ pub(crate) fn plan_coin(request:&CanonicalRequest,material:&WalletMaterial<'_>,s
                 continue;
             }
         }
-        if selected.len()==5 {return Err(error(ErrorCode::UnsupportedIntent,"Coin holder multi-round material planning is not implemented yet","snapshot.payload.utxos"));}
+        if selected.len()==128 {return Err(error(ErrorCode::InvalidInput,"Coin maintenance exceeds the 128 asset input material bound","snapshot.payload.utxos"));}
         let required:BTreeSet<_>=parent.dependencies().iter().map(|p|p.txid.to_string()).collect();
         let raws=required.iter().map(|id|parents.bytes(id).map(Vec::from)).collect::<Result<Vec<_>,_>>()?;
         total+=parent.tape().balance;check_policy(material,request,total,parent.tape().amounts.into_iter())?;
@@ -145,14 +148,25 @@ pub(crate) fn plan_coin(request:&CanonicalRequest,material:&WalletMaterial<'_>,s
         parse_decimal_u64(&p.amount,"request.intent.payment.amount")?))).transpose()?;
     let mut funding=funding_candidates(material,signing)?;funding.retain(|u|permitted(request,&u.txid,u.vout));
     funding.sort_by(|a,b|(a.satoshis,&a.txid,a.vout).cmp(&(b.satoshis,&b.txid,b.vout)));
-    if exact && funding.len()!=1 {return Err(error(ErrorCode::UnsupportedIntent,"Coin exact native inputs require one fee output; consolidation is not implemented yet","request.constraints.inputOutpoints"));}
+    if exact {
+        let points=request.constraints.as_ref().unwrap().input_outpoints.as_ref().unwrap();
+        if points.len()!=selected.len()+funding.len() {
+            return Err(error(ErrorCode::MissingMaterial,"Coin exact inputs must all be available, owned and eligible","request.constraints.inputOutpoints"));
+        }
+        if funding.len()>1 {
+            // Internal signal to the common native-funding wrapper. Its exact
+            // remap and final external-input audit must consume every point.
+            return Err(error(ErrorCode::InsufficientFunds,"Coin selected native funding requires a planned prerequisite","request.constraints.inputOutpoints"));
+        }
+    }
     let maximum=max_fee(request)?;let mut cap_failure=None;
     for f in funding {
         let fee_output=TxOut{satoshis:f.satoshis,script_pubkey:Script::from_bytes(decode_hex(&f.script,"snapshot.payload.utxos")?)};
         let fee=FeeInput {outpoint:OutPoint{txid:f.txid.parse().map_err(|_|invalid("Coin fee txid invalid"))?,vout:f.vout},output:&fee_output,public_key:&public};
         let options=TransferOptions {inputs:&inputs,fee_input:&fee,receivers:&receivers,expected_identity:identity.as_deref().unwrap(),
             token_change_controller:owner,additional_payment:payment.as_ref().map(|(a,n)|(a,*n)),additional_info:None,max_fee:maximum};
-        let result=if is_merge {coin_transfer::build_merge_plan(options,owner)}else{coin_transfer::build_transfer_plan(options)};
+        let options=crate::protocols::coin_batch::BatchOptions{transfer:options,max_transactions:policy.max_bundle_transactions as usize};
+        let result=if is_merge {crate::protocols::coin_batch::build_batch_merge_plan(options)}else{crate::protocols::coin_batch::build_batch_transfer_plan(options)};
         let built=match result {Ok(v)=>v,Err(e) if e.code==ErrorCode::InsufficientFunds=>continue,
             Err(e) if e.code==ErrorCode::FeeCapExceeded=>{cap_failure=Some(e);continue;},Err(e)=>return Err(e)};
         for output in &built.token_outputs {check_policy(material,request,output.amount,output.amounts_by_input.into_iter())?;}
@@ -162,7 +176,7 @@ pub(crate) fn plan_coin(request:&CanonicalRequest,material:&WalletMaterial<'_>,s
                 contract_id:Some(id.into()),from:request.from.clone(),to:Some(r.to.into())}).collect()};
         if let Some(p)=&request.intent.payment {flows.push(AssetFlow {kind:"native".into(),direction:"send".into(),amount:p.amount.clone(),
             contract_id:None,from:request.from.clone(),to:Some(p.to.clone())});}
-        return finish(request,material,built.unsigned_plan,vec![built.fee],flows);
+        return finish(request,material,built.unsigned_plan,built.fees,flows);
     }
     Err(cap_failure.unwrap_or_else(||error(ErrorCode::InsufficientFunds,"Coin requires one sufficient native fee output","snapshot.payload.utxos")))
 }

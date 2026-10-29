@@ -21,6 +21,14 @@ fn new_tbc20_profile(request: &CanonicalRequest) -> bool {
         "tbc20-standard-create" | "tbc20-standard-transfer" | "tbc20-standard-merge")
 }
 
+fn coin_holder_profile(request: &CanonicalRequest) -> bool {
+    matches!(request.intent.intent_type.as_str(), "tbc20-stablecoin-transfer" | "tbc20-stablecoin-merge")
+}
+
+fn exact_profile(request: &CanonicalRequest) -> bool {
+    new_tbc20_profile(request) || coin_holder_profile(request)
+}
+
 pub(crate) fn plan_with_funding(
     request: &CanonicalRequest,
     material: &WalletMaterial<'_>,
@@ -31,6 +39,7 @@ pub(crate) fn plan_with_funding(
         Err(source) => source,
     };
     let tbc20 = new_tbc20_profile(request);
+    let coin = coin_holder_profile(request);
     if original.code != ErrorCode::InsufficientFunds
         || matches!(request.intent.intent_type.as_str(), "tbc.transfer" | "tbc.maintenance.merge")
         // New NFT already tries direct multi-input funding. A consolidation
@@ -54,20 +63,20 @@ pub(crate) fn plan_with_funding(
     // native consolidation, not a reason to grow ordinary transaction work.
     let limit = candidates.len().min(100);
     if limit < 2 { return Err(original); }
-    let exact_tbc20 = tbc20 && request.constraints.as_ref().and_then(|c| c.input_outpoints.as_ref()).is_some();
-    if exact_tbc20 && candidates.len() > limit {
+    let exact_external = exact_profile(request) && request.constraints.as_ref().and_then(|c| c.input_outpoints.as_ref()).is_some();
+    if exact_external && candidates.len() > limit {
         return Err(error(ErrorCode::InvalidInput, "specified native inputs exceed funding prerequisite limit", "request.constraints.inputOutpoints"));
     }
     let rate = fee_rate(material)?;
     let script = Address::from_string(&signing.address).expect("validated account").script_pubkey();
     // Geometric, bounded retries only on the failing path, using the same snapshot.
-    let mut count = if exact_tbc20 { limit } else { 2 };
+    let mut count = if exact_external { limit } else { 2 };
     loop {
         let selected = &candidates[..count];
         let sum = selected.iter().try_fold(0u64, |sum, item| sum.checked_add(item.satoshis))
             .ok_or_else(|| error(ErrorCode::InvalidInput, "native funding amount overflow", "snapshot.payload.utxos"))?;
         let fee = estimate_p2pkh_fee(count, &[TxOut { satoshis: 0, script_pubkey: script.clone() }], false, rate)?;
-        let dust = if tbc20 { 42 } else { tbc_sdk::SDK_DUST_SAT };
+        let dust = if tbc20 { 42 } else if coin { 24 } else { tbc_sdk::SDK_DUST_SAT };
         if let Some(amount) = sum.checked_sub(fee).filter(|amount| *amount >= dust) {
             let output = TxOut { satoshis: amount, script_pubkey: script.clone() };
             let preview = Transaction {
@@ -96,7 +105,7 @@ pub(crate) fn plan_with_funding(
             // native inputs already consumed by that prerequisite. Final compose
             // checks the original external set, never the transformed request.
             let mut remapped;
-            let business_request = if exact_tbc20 {
+            let business_request = if exact_external {
                 remapped = request.clone();
                 let points = remapped.constraints.as_mut().unwrap().input_outpoints.as_mut().unwrap();
                 points.retain(|point| !selected.iter().any(|native| native.txid == point.txid && native.vout == point.vout));
@@ -192,7 +201,7 @@ fn compose(
     for warning in ["MULTI_TRANSACTION", "MAINTENANCE_TRANSACTION"] {
         if !warnings.iter().any(|item| item == warning) { warnings.push(warning.to_owned()); }
     }
-    let mut result = if new_tbc20_profile(request) {
+    let mut result = if exact_profile(request) {
         if let Some(points) = request.constraints.as_ref().and_then(|c| c.input_outpoints.as_ref()) {
             let wanted: BTreeSet<_> = points.iter().map(|p| (p.txid.as_str(), p.vout)).collect();
             let ids: BTreeSet<_> = unsigned.transactions.iter().map(|tx| tx.transaction_id.as_str()).collect();
@@ -201,7 +210,7 @@ fn compose(
                 .map(|input| (input.previous_transaction_id.as_str(), input.previous_output_index)).collect();
             let actual: BTreeSet<_> = external.iter().copied().collect();
             if actual != wanted || actual.len() != external.len() {
-                return Err(error(ErrorCode::InvalidInput, "TBC20 funding plan must spend the exact external input set once", "request.constraints.inputOutpoints"));
+                return Err(error(ErrorCode::InvalidInput, "funding plan must spend the exact external input set once", "request.constraints.inputOutpoints"));
             }
         }
         finish_profile_plan(request, material, unsigned, previews, fees, warnings, flows)?

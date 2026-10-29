@@ -6,8 +6,16 @@ import { resolve, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { isDeepStrictEqual } from 'node:util';
 import { verifiedResourceRoot } from '../../../packages/kit/scripts/platform-resources.mjs';
+import { withOutputReview } from '../../../scripts/lib/reviewed-transfer-fixture.mjs';
 
 const args = process.argv.slice(2);
+const vectorsIndex = args.indexOf('--vectors');
+let extraVectorsArg;
+if (vectorsIndex >= 0) {
+  assert.ok(args[vectorsIndex + 1], '--vectors requires a public fixture file');
+  extraVectorsArg = args[vectorsIndex + 1];
+  args.splice(vectorsIndex, 2);
+}
 const resourceIndex = args.indexOf('--resources-root');
 let resourceArg;
 if (resourceIndex >= 0) {
@@ -49,7 +57,7 @@ const wasm = await createWasmTbcEngineBackend(await readFile(join(kit, 'artifact
 const fixtureBytes = await readFile(join(repo, 'packages/tbc-engine/rust/fixtures/tbc-transfer.json'));
 const fixture = JSON.parse(fixtureBytes);
 const pairs = [['normalizeRequest', fixture.normalizeInput], ['plan', fixture.planInput],
-  ['validate', fixture.validateInput], ['finalize', fixture.finalizeInput]];
+  ['validate', fixture.validateInput], ['finalize', withOutputReview(fixture.finalizeInput)]];
 const vectors = [];
 for (const [method, params] of pairs) {
   const input = JSON.stringify(params), expected = await wasm.call(method, input);
@@ -135,6 +143,17 @@ if (profile === '--lop-fee') {
   }
   specialContractVectors.push({target:'lop_public',selected:'different-committed-fee-recipients',count:4,counts:{plan:4}});
 }
+let extraVectors = 0;
+if (extraVectorsArg) {
+  const rows = JSON.parse(await readFile(resolve(extraVectorsArg), 'utf8'));
+  assert.ok(Array.isArray(rows) && rows.length > 0 && rows.length <= 512);
+  for (const row of rows) {
+    assert.ok(['normalizeRequest', 'plan', 'validate', 'finalize'].includes(row.method));
+    assert.equal(typeof row.input, 'string'); assert.equal(typeof row.expected, 'string');
+    assert.equal(await wasm.call(row.method, row.input), row.expected, 'Additional vector does not match frozen WASM');
+    vectors.push(row); extraVectors++;
+  }
+}
 await writeFile(join(scratch, 'vectors.json'), JSON.stringify(vectors));
 
 const headers = join(sdk, 'apple/Artifacts/TbcEngineNative.xcframework/ios-arm64/Headers');
@@ -189,7 +208,7 @@ for (const abi of identity.platforms.android) {
 }
 const report = { status: 'PASS', sdkVersion: identity.sdkVersion, kitTarSha256: identity.kitTarSha256,
   artifactSetId: identity.artifactSetId, fixtureSha256: sha(fixtureBytes), vectors: vectors.length, concurrentPerLanguage: 16,
-  timelockVectors, specialContractVectors,
+  timelockVectors, specialContractVectors, extraVectors,
   swiftHostExecution: true, kotlinJniHostExecution: true, iosDeviceLinked: true, iosSimulatorLinked: true,
   androidAarConsumerBuilt: true, androidAbis: identity.platforms.android, androidRustBytesPreserved: true,
   aarSha256: sha(await readFile(aar)), aarBytes: (await readFile(aar)).length,

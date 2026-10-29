@@ -1307,7 +1307,7 @@ export function createDefaultTbcChainDataResolver(
                 eligible = confirmed;
               }
               if (coin) return prepareCoinCandidates(eligible, minimumFt, stablecoinMerge, requestedInputOutpoints,
-                Math.min(maxInputs, MAX_FT_ASSET_INPUTS),
+                Math.min(maxInputs, htlcTokenLock ? MAX_FT_ASSET_INPUTS : MAX_TBC20_ASSET_INPUTS),
                 (txid) => minimumConfirmations === "0" || eligible.filter((item) => item.txid === txid).every((item) => item.height !== undefined)
                   ? readHistory(txid) : readFreshTbc20Parent(txid),
                 readTip, coinAdmin!, address.publicKeyHash, floor);

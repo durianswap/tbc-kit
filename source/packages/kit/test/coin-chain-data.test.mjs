@@ -26,13 +26,21 @@ const fixture = JSON.parse(await readFile(`${root}packages/tbc-engine/rust/fixtu
 const address = "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH";
 const account = { chainId: "tbc:testnet", address, accountId: `tbc:testnet:${address}`, publicKey: fixture.vectors[0].publicKeyHex };
 
-function setup(locks, median, floor = "0", reverseIndex = false) {
+function setup(locks, median, floor = "0", reverseIndex = false, fragments = 2) {
   // Synthetic already-indexed outputs. No signatures are created or submitted.
   const tx = new tbc.Transaction(fixture.vectors[0].signedRaw);
   for (const [i, lock] of locks.entries()) {
     const tape = tx.outputs[i * 2 + 1].script.toBuffer();
     tape.writeUInt32LE(lock, tape.length - 14);
     tx.outputs[i * 2 + 1].setScript(tbc.Script.fromBuffer(tape));
+  }
+  if (fragments > 2) {
+    const first=tx.outputs[0],tape=tx.outputs[1],fee=tx.outputs[4];tx.outputs=[];
+    for(let i=0;i<fragments;i++) {
+      tx.addOutput(new tbc.Transaction.Output({satoshis:500,script:first.script}));
+      tx.addOutput(new tbc.Transaction.Output({satoshis:0,script:tape.script}));
+    }
+    tx.addOutput(fee);
   }
   const raw = tx.uncheckedSerialize();
   const parent = kit.inspectTbcTransaction(raw);
@@ -45,9 +53,9 @@ function setup(locks, median, floor = "0", reverseIndex = false) {
     assert.equal(init?.method ?? "GET", "GET"); trace.push(url.pathname);
     let data;
     if (url.pathname === "/api/tbc/nodeinfo") data = { blocks: 100, bestblockhash: "aa".repeat(32), ...(median === undefined ? {} : { mediantime: median }) };
-    else if (url.pathname === `/api/tbc/utxo/address/${address}`) data = { utxos: [{ txid: parent.txid, index: 4, value: parent.transaction.outputs[4].satoshis.toString(), height: 99 }] };
+    else if (url.pathname === `/api/tbc/utxo/address/${address}`) data = { utxos: [{ txid: parent.txid, index: fragments*2, value: parent.transaction.outputs[fragments*2].satoshis.toString(), height: 99 }] };
     else if (url.pathname.includes("/stablecoin/utxo/")) {
-      const utxos = [0, 2].map((index, i) => ({ txid: parent.txid, index, tbc_value: "500", ft_value: i === 0 ? "250" : "750", height: 99,
+      const utxos = Array.from({length:fragments},(_,i)=>2*i).map((index, i) => ({ txid: parent.txid, index, tbc_value: "500", ft_value: fragments>2?"250":i === 0 ? "250" : "750", height: 99,
         lock_time: 0 })); // Deliberately false index hint: only actual Tape determines lock.
       data = { utxos: reverseIndex ? utxos.reverse() : utxos };
     } else if (url.pathname.includes('/stablecoin/info/')) {
@@ -76,6 +84,18 @@ test("Coin zero-lock hot path uses five SDK reads without a tip or issuer audit"
   assert.equal(result.payload.block, undefined);
   assert.deepEqual(result.payload.utxos.filter(u => u.classification === "stablecoin").map(u => u.vout), [0]);
   assert.equal(s.trace.length, 5); assert.equal(new Set(s.trace).size, 5);
+});
+
+test("Coin holder material selects six and twenty fragments without duplicate ancestry or tip reads", async () => {
+  for(const count of [6,20]) for(const merge of [false,true]) {
+    const s=setup([0,0],undefined,"0",false,count),request=s.request(merge);
+    if(!merge)request.requirement.assets[1].minimumAmount=String(count*250);
+    const result=await s.resolver.resolve(request,account);
+    assert.ok(result.snapshotHash,JSON.stringify(result));
+    assert.equal(result.payload.utxos.filter(u=>u.classification==="stablecoin").length,count);
+    assert.equal(s.trace.length,5);assert.equal(new Set(s.trace).size,5);
+    assert.ok(!s.trace.some(p=>p.includes('nodeinfo')));
+  }
 });
 
 test("Coin locked-first backfills without duplicate raw and ignores index lock hints", async () => {

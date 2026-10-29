@@ -29,6 +29,7 @@ pub mod coin;
 pub mod covenant_signature;
 pub mod coin_proof;
 pub mod coin_transfer;
+pub mod coin_batch;
 pub mod coin_identity;
 pub mod coin_issuance;
 pub mod coin_admin;
