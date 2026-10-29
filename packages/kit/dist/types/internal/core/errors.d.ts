@@ -23,3 +23,4 @@ export declare class TwsEngineError extends Error {
     readonly code: TwsEngineErrorCode;
     constructor(code: TwsEngineErrorCode, message: string);
 }
+//# sourceMappingURL=errors.d.ts.map

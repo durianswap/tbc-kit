@@ -92,6 +92,35 @@ export interface MultisigProposal {
     readonly fee: string;
     readonly tasks: readonly MultisigSigningTask[];
 }
+/** Rebuilt transaction outputs, including change, never an untrusted DApp label. */
+export interface MultisigReview {
+    readonly proposalId: string;
+    readonly chainId: "tbc:mainnet" | "tbc:testnet";
+    readonly groupAddress: string;
+    readonly requiredSignatures: number;
+    readonly publicKeys: readonly string[];
+    readonly operation: MultisigAction["type"];
+    readonly feeAtomic: string;
+    readonly maxFeeAtomic: string;
+    readonly includesChange: true;
+    /** A script fingerprint, not the API's origin transaction/contract ID. */
+    readonly assetIdentityKind: "locking-code-fingerprint";
+    readonly outputs: readonly Readonly<{
+        vouts: readonly number[];
+        kind: "native" | "token" | "member-hold" | "metadata";
+        assetFamily: "TBC" | "FT" | "STABLE_COIN";
+        assetVersion?: number;
+        assetIdentity: string;
+        amountAtomic: string;
+        recipient: string | null;
+        nativeValueAtomic: string;
+        memberPublicKey?: string;
+    }>[];
+}
+export interface ReviewedMultisigProposal {
+    readonly proposal: MultisigProposal;
+    readonly review: MultisigReview;
+}
 export interface MultisigSignature {
     readonly proposalId: string;
     readonly inputIndex: number;
@@ -113,7 +142,7 @@ export interface FinalizedMultisig {
 export interface MultisigSigner {
     readonly publicKey: string;
     /** UI approval or explicit backend policy; called once for the whole proposal. */
-    approve(proposal: MultisigProposal): Promise<boolean>;
+    approve(proposal: MultisigProposal, review: MultisigReview): Promise<boolean>;
     /** Sign digest32 directly, without a message prefix or another hash. */
     signDigest(task: Readonly<{
         proposalId: string;
@@ -126,7 +155,7 @@ export interface MultisigSigner {
     }>>;
 }
 export interface MultisigBatchSigner extends Omit<MultisigSigner, "approve"> {
-    approve(proposals: readonly MultisigProposal[]): Promise<boolean>;
+    approve(proposals: readonly MultisigProposal[], reviews: readonly MultisigReview[]): Promise<boolean>;
 }
 /**
  * Works in a DApp, wallet or backend with the same Native/WASM keyless engine.
@@ -140,6 +169,7 @@ export declare function createMultisigClient(engine: MultisigEngine): Readonly<{
     verifyAddress(address: string, group: MultisigGroup): Promise<boolean>;
     prepare: (request: MultisigRequest) => Promise<MultisigProposal>;
     inspect: (proposal: MultisigProposal) => Promise<MultisigProposal>;
+    review: (proposal: MultisigProposal) => Promise<ReviewedMultisigProposal>;
     verify: (proposal: MultisigProposal, signatures: readonly MultisigSignature[]) => Promise<MultisigProgress>;
     exportProposal(proposal: MultisigProposal): Promise<string>;
     importProposal(serialized: string): Promise<MultisigProposal>;

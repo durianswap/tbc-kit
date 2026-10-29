@@ -138,3 +138,4 @@ export interface ApprovalHostEvidenceReaderOptions<Request extends ApprovalHostR
  * outside this reader and must consume the returned exact payload and memory.
  */
 export declare function createApprovalHostEvidenceReader<Request extends ApprovalHostRequestShape>(options: ApprovalHostEvidenceReaderOptions<Request>): ApprovalHostEvidenceReader<Request>;
+//# sourceMappingURL=approval-host-evidence.d.ts.map

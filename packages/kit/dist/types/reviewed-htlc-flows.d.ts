@@ -52,3 +52,4 @@ export declare function reviewNativeHtlcFlow(row: HtlcReviewRow, options: HtlcRe
     htlcLocks: readonly Readonly<Record<string, unknown>>[];
     fee: bigint;
 } | undefined): Readonly<Record<string, unknown>> | undefined;
+//# sourceMappingURL=reviewed-htlc-flows.d.ts.map

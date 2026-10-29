@@ -178,3 +178,4 @@ export declare function createTransferVerifier(options: CreateTransferVerifierOp
  */
 export declare function verifyTransfer(options: VerifyTransferOptions): Promise<TransferVerificationResult>;
 export {};
+//# sourceMappingURL=receipt-verification.d.ts.map

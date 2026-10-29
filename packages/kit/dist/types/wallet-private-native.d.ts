@@ -50,3 +50,4 @@ export type TbcWalletPrivateNativeAdapters = Readonly<{
 /** Creates one-shot Standard/Legacy adapters over the shared restricted ABI. */
 export declare function createTbcWalletPrivateNativeAdapters(bridge: TbcWalletPrivateNativeBridge): TbcWalletPrivateNativeAdapters;
 export {};
+//# sourceMappingURL=wallet-private-native.d.ts.map

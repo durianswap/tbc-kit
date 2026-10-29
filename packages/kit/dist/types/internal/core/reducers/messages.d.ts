@@ -33,3 +33,4 @@ export declare function reduceMessageApproval(checkpoint: OperationCheckpoint, c
 export declare function assertRecoverableSignature(task: SigningTask, signatureHex: string): Uint8Array;
 export declare function reduceMessageSigningResponse(checkpoint: OperationCheckpoint, call: PortCall, resultValue: unknown): CoreTransition;
 export {};
+//# sourceMappingURL=messages.d.ts.map

@@ -14,3 +14,4 @@ export declare class TwsHostError extends Error {
         readonly metadata?: TwsHostErrorMetadata;
     });
 }
+//# sourceMappingURL=errors.d.ts.map

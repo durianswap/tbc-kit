@@ -32,3 +32,4 @@ export interface TbcWebViewNativeController {
     readonly destroy: () => Promise<void>;
 }
 export declare function createTbcWebViewNativeController(options: TbcWebViewNativeOptions): TbcWebViewNativeController;
+//# sourceMappingURL=webview-native.d.ts.map

@@ -194,3 +194,4 @@ export declare function createLegacyCryptoService(options: Readonly<{
 export declare function createLegacyTbcBalanceReader(options: Omit<CreateTbcOfficialApiOptions, "baseUrl" | "network" | "allowedOrigins"> & Readonly<{
     network: TbcNetworkContext;
 }>): LegacyTbcBalanceReader;
+//# sourceMappingURL=legacy-generic-capabilities.d.ts.map

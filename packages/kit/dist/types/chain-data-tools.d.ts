@@ -30,3 +30,4 @@ export declare function selectThenLoadAncestry<TCandidate, TParent>(options: Rea
 export declare function loadIndependentGroups<T extends Readonly<Record<string, () => Promise<unknown>>>>(groups: T): Promise<{
     readonly [K in keyof T]: Awaited<ReturnType<T[K]>>;
 }>;
+//# sourceMappingURL=chain-data-tools.d.ts.map

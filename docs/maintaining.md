@@ -37,4 +37,6 @@ npm run check:install
 
 包版本用于依赖锁定，文件名保持稳定。发布新版本时更新校验清单，不修改已经交付的包。
 
+将已验收归档提升为默认下载时，应逐字节复制该归档并同步 `packages/kit/`，不要重新打包。更新 `release/current.json`、Native 版本锁、源码清单与 `SHA256SUMS` 后执行上述检查。JS/Native 与 Flutter 独立配对；仅提升 JS/Native 时，不运行会重打包 Flutter 的 `scripts/package-release.mjs`。
+
 仓库可见性与注册表发布由维护者单独管理，代码推送不会触发发布。

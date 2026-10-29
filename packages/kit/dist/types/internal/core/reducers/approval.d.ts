@@ -14,3 +14,4 @@ export declare function prepareApproval(checkpoint: OperationCheckpoint, binding
 export declare function prepareApprovalWithMemory(checkpoint: OperationCheckpoint, bindingValue: ApprovalBinding, preview: unknown, additionalMemory: Readonly<Record<string, unknown>>, operationHashOverride?: string): CoreTransition;
 export declare function reduceApprovalClock(checkpoint: OperationCheckpoint, call: PortCall, resultValue: unknown): CoreTransition;
 export declare function readApprovalDecision(checkpoint: OperationCheckpoint, call: PortCall, resultValue: unknown): ApprovalDecision;
+//# sourceMappingURL=approval.d.ts.map

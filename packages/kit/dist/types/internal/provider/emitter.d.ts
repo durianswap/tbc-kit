@@ -7,3 +7,4 @@ export declare class TbcEventEmitter {
     clear(): void;
 }
 export {};
+//# sourceMappingURL=emitter.d.ts.map

@@ -6,3 +6,4 @@ export declare const decodeSqliteCall: (value: unknown) => TwsHostCallRecord;
 export declare const decodeSqliteSessionCommit: (value: unknown) => TwsHostSessionCommitRecord;
 export declare const decodeSqliteDelivery: (value: unknown) => TwsHostDeliveryRecord;
 export declare const decodeSqliteLease: (value: unknown) => TwsHostLeaseRecord;
+//# sourceMappingURL=sqlite-codec.d.ts.map

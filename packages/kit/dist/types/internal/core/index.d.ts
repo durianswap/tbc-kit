@@ -1,6 +1,7 @@
 export { TWS_PROTOCOL_COMMIT, TWS_RELEASE, TWS_RELEASE_FINGERPRINT, type TwsProtocolRelease, } from "./release.js";
 export type { AccountsResolveParams, AccountsResolveResult, ApprovalRequestParams, ApprovalRequestResult, BroadcastReconcileParams, BroadcastReconcileResult, BroadcastSubmitParams, BroadcastSubmitResult, BroadcastSubmitBatchParams, BroadcastSubmitBatchResult, CancelInput, ChainDataResolveParams, ChainDataResolveResult, ClockNowParams, ClockNowResult, CommitAckInput, DeepReadonly, EntropyRandomBytesParams, EntropyRandomBytesResult, FinalizeParams, FinalizeResult, NormalizeRequestParams, NormalizeRequestResult, PermissionStoreCommitParams, PermissionStoreCommitResult, PermissionStoreLoadParams, PermissionStoreLoadResult, PlanParams, PlanResult, PortError, PolicyResolveParams, PolicyResolveResult, ProtocolType, ResumeInput, SchemaCoreTransition, SchemaOperationCheckpoint, SignedTransactionBundle, SignerSignParams, SignerSignResult, StartInput, TransactionRequest, ValidateParams, ValidationResult, WorkflowResult, WorkflowSendResult, } from "./protocol-types.js";
 export { canonicalize } from "./canonical-json.js";
+export { cryptoInputHasValidByteBudget } from "./crypto-input-budget.js";
 export { parseProtocolTimestamp, formatProtocolTimestamp } from "./protocol-time.js";
 export { base64Decode, base64Encode, base64urlEncode, bytesToHex, concatBytes, hexToBytes, utf8, utf8Decode, } from "./encoding.js";
 export { canonicalSigningEnvelope, decodeSigningMessage, signingEnvelopeDigest, signingPayload, type EncodedSigningMessage, } from "./signing-artifacts.js";
@@ -31,3 +32,4 @@ export { chainDataRequirement, type ChainDataRequirement } from "./reducers/chai
 export { transactionSigningAccountIds, resolveTransactionSigningAccounts, assertTransactionSigningSnapshot, assertTransactionRoleTasks, type TransactionRoleAccount, type TransactionRoleRequest, type ResolvedTransactionSigningRole } from "./transaction-signing-roles.js";
 export { workflowSigningAccountIds, resolveWorkflowSigningAccounts, type WorkflowRoleRequest } from "./workflow-signing-roles.js";
 export { resolveReviewedSigningRoles, assertReviewedSigningRolePreview, type ReviewedRoleRequest } from "./reviewed-signing-roles.js";
+//# sourceMappingURL=index.d.ts.map

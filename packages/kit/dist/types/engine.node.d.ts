@@ -6,3 +6,4 @@ export declare function createTbcEngine(options?: Readonly<{
 }>): TbcTransactionEngine;
 export declare function createLazyBundledWasmTbcEngineBackend(options?: TbcWasmAssetOptions): TbcEngineBackend;
 export type { KitTransactionEngine } from "./public-types.js";
+//# sourceMappingURL=engine.node.d.ts.map

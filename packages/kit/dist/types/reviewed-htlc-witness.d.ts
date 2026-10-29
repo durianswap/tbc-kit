@@ -19,3 +19,4 @@ export declare function inspectAssociatedHtlcWitness(input: Readonly<{
     preimageVerified: boolean;
     disclosureWarning?: string;
 }>;
+//# sourceMappingURL=reviewed-htlc-witness.d.ts.map

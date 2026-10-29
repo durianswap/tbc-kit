@@ -68,6 +68,11 @@ export type Tbc20StandardTransferIntent = Readonly<{
     type: "tbc20-standard-transfer";
     version: "1.0";
     contractId: string;
+    /** Separate non-dust native payment in atomic units; not automatic change. */
+    payment?: Readonly<{
+        to: string;
+        amount: string;
+    }>;
 }> & (Readonly<{
     to: string;
     amount: string;
@@ -252,14 +257,30 @@ export type Tbc721StandardTransferIntent = Readonly<{
 export type Tbc721TransferIntent = Readonly<Omit<Tbc721StandardTransferIntent, "type"> & {
     type: "tbc721.transfer";
 }>;
+/** One approval-bound plan; settlement of its transactions is not atomic. */
+export type Tbc721BatchTransferIntent = Readonly<{
+    type: "tbc721.batchTransfer";
+    version: "1.0";
+    transfers: readonly Readonly<Omit<Tbc721StandardTransferIntent, "type" | "version">>[];
+}>;
 export type FtTransferIntent = Readonly<{
     type: "tbc.ft.transfer";
     version: "1.0";
     contractId: string;
+}> & (Readonly<{
     to: string;
     amount: string;
+    receivers?: never;
     attachedTbcAmount?: string;
-}>;
+}> | Readonly<{
+    receivers: readonly Readonly<{
+        to: string;
+        amount: string;
+    }>[];
+    to?: never;
+    amount?: never;
+    attachedTbcAmount?: never;
+}>);
 export type FtMergeIntent = Readonly<{
     type: "tbc.ft.merge";
     version: "1.0";
@@ -344,7 +365,7 @@ export type PoolFtlpBurnIntent = Readonly<{
     version: "1.0";
     poolContractId: string;
 }>;
-export type KitSupportedIntent = LopCreateIntent | LopCancelIntent | LopMatchIntent | HtlcLockIntent | HtlcClaimIntent | HtlcRefundIntent | TimelockLockIntent | TimelockUnlockIntent | AmmCreateIntent | AmmAddLiquidityIntent | AmmRemoveLiquidityIntent | AmmSwapIntent | UnifiedAmmSwapIntent | UnifiedAmmAddLiquidityIntent | UnifiedAmmRemoveLiquidityIntent | LpTransferIntent | LpLockIntent | LpMaintenanceIntent | UnifiedLpTransferIntent | UnifiedLpLockIntent | UnifiedPoolMaintenanceIntent | TbcTransferIntent | TbcMergeIntent | CollectionCreateIntent | NftMintIntent | NftTransferIntent | Tbc721StandardCollectionIntent | Tbc721StandardMintIntent | Tbc721StandardBatchMintIntent | Tbc721StandardTransferIntent | Tbc721TransferIntent | FtCreateIntent | FtTransferIntent | FtMergeIntent | Tbc20StandardCreateIntent | Tbc20StandardTransferIntent | Tbc20StandardMergeIntent | Tbc20TransferIntent | Tbc20MergeIntent | Tbc20StablecoinTransferIntent | Tbc20StablecoinMergeIntent | CoinTransferIntent | CoinMergeIntent | CoinCreateIntent | CoinMintIntent | CoinFreezeIntent | CoinUnfreezeIntent | StablecoinTransferIntent | StablecoinMergeIntent | PoolCreateIntent | PoolSwapIntent | PoolLiquidityIntent | PoolMergeIntent | PoolFtlpBurnIntent;
+export type KitSupportedIntent = LopCreateIntent | LopCancelIntent | LopMatchIntent | HtlcLockIntent | HtlcClaimIntent | HtlcRefundIntent | TimelockLockIntent | TimelockUnlockIntent | AmmCreateIntent | AmmAddLiquidityIntent | AmmRemoveLiquidityIntent | AmmSwapIntent | UnifiedAmmSwapIntent | UnifiedAmmAddLiquidityIntent | UnifiedAmmRemoveLiquidityIntent | LpTransferIntent | LpLockIntent | LpMaintenanceIntent | UnifiedLpTransferIntent | UnifiedLpLockIntent | UnifiedPoolMaintenanceIntent | TbcTransferIntent | TbcMergeIntent | CollectionCreateIntent | NftMintIntent | NftTransferIntent | Tbc721StandardCollectionIntent | Tbc721StandardMintIntent | Tbc721StandardBatchMintIntent | Tbc721StandardTransferIntent | Tbc721TransferIntent | Tbc721BatchTransferIntent | FtCreateIntent | FtTransferIntent | FtMergeIntent | Tbc20StandardCreateIntent | Tbc20StandardTransferIntent | Tbc20StandardMergeIntent | Tbc20TransferIntent | Tbc20MergeIntent | Tbc20StablecoinTransferIntent | Tbc20StablecoinMergeIntent | CoinTransferIntent | CoinMergeIntent | CoinCreateIntent | CoinMintIntent | CoinFreezeIntent | CoinUnfreezeIntent | StablecoinTransferIntent | StablecoinMergeIntent | PoolCreateIntent | PoolSwapIntent | PoolLiquidityIntent | PoolMergeIntent | PoolFtlpBurnIntent;
 /** New AMM immutable fee configuration. Four integer basis-point rates must
  * total less than 10000; the non-LP components share one P2PKH recipient.
  * Upstream swaps additionally require a positive retained fee after rounding. */
@@ -566,3 +587,4 @@ export interface KitTransactionEngine {
     finalize(params: unknown): unknown | Promise<unknown>;
 }
 export {};
+//# sourceMappingURL=public-types.d.ts.map

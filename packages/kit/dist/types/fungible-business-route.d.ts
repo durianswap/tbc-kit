@@ -35,3 +35,4 @@ export declare function resolveFungibleBusinessIntent(operation: FungibleBusines
     recognition: TbcFungibleContractIdentity;
 }>>;
 export {};
+//# sourceMappingURL=fungible-business-route.d.ts.map

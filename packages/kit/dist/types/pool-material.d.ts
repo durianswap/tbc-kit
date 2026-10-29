@@ -292,3 +292,4 @@ export declare function createLazyProductionPoolMaterialSource(options: {
     readonly confirmationPolicy?: Readonly<PoolMaterialConfirmationPolicy>;
 }): PoolMaterialSource;
 export {};
+//# sourceMappingURL=pool-material.d.ts.map

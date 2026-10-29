@@ -7,3 +7,4 @@ export declare class ProviderRpcError extends Error implements TbcProviderRpcErr
 export declare function internalProviderError(message?: string): ProviderRpcError;
 export declare function disconnectedProviderError(): ProviderRpcError;
 export declare function abortedProviderError(): ProviderRpcError;
+//# sourceMappingURL=errors.d.ts.map

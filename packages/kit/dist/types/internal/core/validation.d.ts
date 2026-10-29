@@ -16,3 +16,4 @@ export declare function isValidTws(name: TwsValidatorName, value: unknown): bool
 export declare function assertValidTws(name: TwsValidatorName, value: unknown): void;
 export declare function assertPortResult(operation: string, value: unknown): void;
 export declare function assertTwsMethodParams(method: string, value: unknown): void;
+//# sourceMappingURL=validation.d.ts.map

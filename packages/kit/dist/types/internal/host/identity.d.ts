@@ -9,3 +9,4 @@ export declare function deriveHostDeliveryId(input: {
     readonly operationId: string;
     readonly completionIdentity: string;
 }): string;
+//# sourceMappingURL=identity.d.ts.map

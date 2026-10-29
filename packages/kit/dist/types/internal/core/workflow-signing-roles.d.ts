@@ -27,3 +27,4 @@ export declare function resolveWorkflowSigningAccounts(request: WorkflowRoleRequ
         }>[];
     }>[];
 }>;
+//# sourceMappingURL=workflow-signing-roles.d.ts.map

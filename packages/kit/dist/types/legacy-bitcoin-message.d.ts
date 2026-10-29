@@ -13,3 +13,4 @@ export declare function prepareTbcLegacyBitcoinMessage(input: Readonly<{
     encoding: "utf8" | "hex" | "base64";
     digest: string;
 }>>;
+//# sourceMappingURL=legacy-bitcoin-message.d.ts.map

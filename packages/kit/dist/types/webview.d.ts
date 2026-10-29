@@ -20,3 +20,4 @@ export declare const TBC_KIT_WEBVIEW_CHANNEL: "tws-webview/1";
  * installed @tbc-wallet/provider artifact.
  */
 export declare function createTbcKitWebViewPageProvider(options: TbcKitWebViewPageProviderOptions): TbcKitWebViewPageProvider;
+//# sourceMappingURL=webview.d.ts.map

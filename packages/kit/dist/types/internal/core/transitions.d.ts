@@ -22,3 +22,4 @@ export declare function continueTransition(checkpoint: OperationCheckpoint): Cor
 export declare function waitingTransition(checkpoint: OperationCheckpoint): CoreTransition;
 export declare function commitTransition(checkpoint: OperationCheckpoint, mutation: Readonly<Record<string, unknown>>): CoreTransition;
 export declare function completeTransition(checkpoint: OperationCheckpoint, completion: Readonly<Record<string, unknown>>): CoreTransition;
+//# sourceMappingURL=transitions.d.ts.map

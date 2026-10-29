@@ -17,6 +17,8 @@
 
 业务参数和使用示例见 [JavaScript 使用手册](../packages/kit/docs/usage.md)。
 
+新版 Coin 稳定币的多轮合并、exact 输入与结果处理见 [Coin 多轮交易](coin-multiround.md)。这些操作仍使用现有公开方法，不新增一套 Provider 协议。
+
 ## Flutter / Dart
 
 - [业务调用](flutter/BUSINESS_CALLS.md)：转账、资产、AMM/LP、锁定和批次。

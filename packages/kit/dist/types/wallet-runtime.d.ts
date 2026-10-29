@@ -5,6 +5,8 @@ import { type DefaultTbcNetworkOptions, type DefaultTbcTestnetNetworkOptions } f
 import { type TbcNetworkContext } from "./network-context.js";
 import { type TbcMultiRoundMergeApprovalDecision, type TbcMultiRoundMergeApprovalRequest, type TbcMultiRoundMergeAsset, type TbcMultiRoundMergeLimits, type TbcMultiRoundMergeProgress, type TbcMultiRoundMergeResult } from "./multi-round-merge.js";
 import type { TbcKitBroadcastJournalRecord } from "./broadcast-journal.js";
+import { type TbcNftMintJobScope, type TbcNftMintJobApproval, type TbcNftMintJobLimits, type TbcNftMintJobResult } from "./nft-mint-job.js";
+import type { TbcNftMintJobMaterial } from "./nft-mint-job-material.js";
 import type { PoolMergeIndex } from "./pool-material.js";
 import { type LegacyKitFacade, type LegacyKitOptions } from "./legacy-mapper.js";
 import type { StandardApprovalPreparationApproval, StandardApprovalPreparationHandle, StandardApprovalPreparationPresentation, StandardApprovalPreparationStart } from "./standard-approval-preparation.js";
@@ -118,6 +120,22 @@ export interface KitWalletOptions {
             txid: string;
         }>) => Promise<void>;
     }>;
+    /** One bounded review for hundreds of NFTs; Kit owns slicing and execution. */
+    readonly nftMintJob?: Readonly<{
+        approve: (input: Readonly<{
+            scope: TbcNftMintJobScope;
+            scopeHash: string;
+        }>) => Promise<TbcNftMintJobApproval>;
+        /** Exact Core credential for a validated sub-batch, without another UI. */
+        authorizeBatch: (input: Readonly<{
+            scope: TbcNftMintJobScope;
+            scopeHash: string;
+            approval: Extract<TbcNftMintJobApproval, {
+                status: "approved";
+            }>;
+            params: unknown;
+        }>, call: KitHostPortCall) => Promise<unknown>;
+    }>;
     /** Shared early-display/decision lifecycle for every current approval method. */
     readonly approvalPreparation?: StandardApprovalPreparationPresentation;
     readonly signer: Readonly<{
@@ -174,6 +192,7 @@ export interface KitWalletNetwork {
      */
     readonly resolveChainData: (params: unknown, call?: KitHostPortCall, account?: KitWalletAccount) => Promise<unknown>;
     readonly resolvePolicy: (params: unknown, call?: KitHostPortCall) => Promise<unknown>;
+    readonly prepareNftMintJob?: (scope: TbcNftMintJobScope, account: KitWalletAccount) => Promise<TbcNftMintJobMaterial>;
     readonly broadcastSubmit: (params: unknown, call?: KitHostPortCall) => Promise<unknown>;
     readonly broadcastSubmitBatch: (params: unknown, call?: KitHostPortCall) => Promise<unknown>;
     readonly broadcastReconcile: (params: unknown, call?: KitHostPortCall) => Promise<unknown>;
@@ -237,6 +256,12 @@ export interface KitWalletSession {
         signal?: AbortSignal;
         onProgress?: (progress: TbcMultiRoundMergeProgress) => void;
     }>) => Promise<TbcMultiRoundMergeResult>;
+    readonly runNftMintJob: (input: Readonly<{
+        collectionId: string;
+        items: readonly import("./public-types.js").Tbc721StandardMintItem[];
+        limits: TbcNftMintJobLimits;
+        signal?: AbortSignal;
+    }>) => Promise<TbcNftMintJobResult>;
     /** Wallet-owned Legacy bridge only; never expose this method to page code. */
     readonly handleLegacyRequest: (request: Readonly<{
         id: string | number;
@@ -302,3 +327,4 @@ export interface KitWalletRuntime {
     readonly standardWallet: (session: KitWalletSession) => Promise<Readonly<KitWalletStandardDescriptor>>;
 }
 export declare function createTbcWallet(options: KitWalletOptions): KitWalletRuntime;
+//# sourceMappingURL=wallet-runtime.d.ts.map

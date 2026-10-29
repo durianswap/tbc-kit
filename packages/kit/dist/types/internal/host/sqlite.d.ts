@@ -4,3 +4,4 @@ export type { TwsSqliteBindings, TwsSqliteDriver, TwsSqliteHostStore, TwsSqliteH
 export { TWS_HOST_SQLITE_SCHEMA_VERSION, TWS_HOST_SQLITE_TABLES, } from "./sqlite-schema.js";
 export { TWS_HOST_SQLITE_MAX_CANONICAL_JSON_BYTES } from "./sqlite-codec.js";
 export declare function createSqliteTwsHostStore(options: TwsSqliteHostStoreOptions): TwsHostStore;
+//# sourceMappingURL=sqlite.d.ts.map

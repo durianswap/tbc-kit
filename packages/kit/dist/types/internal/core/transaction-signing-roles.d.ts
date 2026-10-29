@@ -36,3 +36,4 @@ export declare function assertTransactionRoleTasks(request: TransactionRoleReque
     accountId?: unknown;
     publicKey?: unknown;
 }>[]): void;
+//# sourceMappingURL=transaction-signing-roles.d.ts.map

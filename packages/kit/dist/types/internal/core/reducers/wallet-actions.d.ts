@@ -66,3 +66,4 @@ export declare function assertWalletActionApprovalEvidence(input: WalletActionAp
 export declare function reduceWalletActionApproval(checkpoint: OperationCheckpoint, call: PortCall, value: unknown): CoreTransition;
 export declare function reduceWalletActionResult(checkpoint: OperationCheckpoint, call: PortCall, value: unknown): CoreTransition;
 export {};
+//# sourceMappingURL=wallet-actions.d.ts.map

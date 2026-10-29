@@ -35,6 +35,14 @@ interface TransactionIntent {
     readonly items?: readonly Readonly<{
         slot: number;
     }>[];
+    readonly transfers?: readonly Readonly<{
+        contractId: string;
+        to: string;
+        payment?: Readonly<{
+            to: string;
+            amount: string;
+        }>;
+    }>[];
     readonly payment?: Readonly<{
         to: string;
         amount: string;
@@ -103,3 +111,4 @@ export interface ChainDataRequirement {
 export declare function chainDataRequirement(request: TransactionRequestLike): ChainDataRequirement;
 export declare function workflowChainDataRequirement(requests: readonly TransactionRequestLike[]): ChainDataRequirement;
 export {};
+//# sourceMappingURL=chain-data-requirements.d.ts.map

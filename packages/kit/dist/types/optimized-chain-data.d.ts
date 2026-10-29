@@ -77,3 +77,4 @@ export declare function createOptimizedChainDataResolver<TTip, TNative extends O
     ledger?: KitRequestLedger;
     cache?: ImmutableTransactionCache;
 }>): OptimizedChainDataResolver<TResult>;
+//# sourceMappingURL=optimized-chain-data.d.ts.map

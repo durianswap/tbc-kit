@@ -182,3 +182,4 @@ export declare function reduceWorkflowReviewedTransactionResponse(checkpoint: Op
 export declare function reduceWorkflowSigningResponse(checkpoint: OperationCheckpoint, call: PortCall, resultValue: unknown, legacyBitcoinMessageDigest?: LegacyBitcoinMessageDigest): Promise<CoreTransition>;
 export declare function reduceWorkflowFinalizing(checkpoint: OperationCheckpoint, engine: TransactionEngine | undefined, legacyBitcoinMessageDigest?: LegacyBitcoinMessageDigest): Promise<CoreTransition>;
 export {};
+//# sourceMappingURL=workflows.d.ts.map

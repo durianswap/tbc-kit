@@ -95,3 +95,4 @@ export declare function resolveLpMaterial(input: MaterialInput & Readonly<{
     }[];
 }>;
 export {};
+//# sourceMappingURL=amm-material.d.ts.map

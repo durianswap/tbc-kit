@@ -48,3 +48,4 @@ export declare class TbcLegacyMetadataError extends Error {
  * single-flighted by the shared request ledger.
  */
 export declare function createTbcLegacyMetadataResolver(options: CreateTbcLegacyMetadataResolverOptions): TbcLegacyMetadataResolver;
+//# sourceMappingURL=legacy-metadata.d.ts.map

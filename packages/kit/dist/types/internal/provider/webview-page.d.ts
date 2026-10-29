@@ -10,3 +10,4 @@ export interface TbcWebViewPageController {
     readonly destroy: () => Promise<void>;
 }
 export declare function createTbcWebViewPageTransport(options: TbcWebViewPageOptions): TbcWebViewPageController;
+//# sourceMappingURL=webview-page.d.ts.map

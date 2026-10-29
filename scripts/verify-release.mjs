@@ -24,6 +24,7 @@ const manifest=json('release/current.json');
 assert.equal(manifest.publicRelease,false);
 assert.equal(manifest.registryPublished,false);
 const checks=[];
+assert.equal(readFileSync(safe('SHA256SUMS'),'utf8'),manifest.artifacts.map(a=>`${a.sha256}  ${a.path}`).join('\n')+'\n','Checksum index differs from current release');
 for(const a of manifest.artifacts){
  assert.equal(hash(safe(a.path)),a.sha256,'Artifact changed: '+a.path);
  assert.equal(lstatSync(safe(a.path)).size,a.bytes);
@@ -31,6 +32,11 @@ for(const a of manifest.artifacts){
 }
 assert.equal(json('packages/kit/package.json').version,manifest.pairing.kitVersion);
 assert.equal(json('packages/kit/package.json').private,true);
+const nativeLock=json(manifest.pairing.nativeSdkLock);
+assert.equal(nativeLock.sdkVersion,manifest.pairing.sdkVersion);
+assert.equal(nativeLock.artifactSetId,manifest.pairing.sdkArtifactSetId);
+assert.equal(nativeLock.protocolFingerprint,manifest.pairing.protocolFingerprint);
+assert.deepEqual(json('packages/kit/examples/react-native-engine/module/native-sdk-lock.json'),nativeLock,'RN template and published SDK lock differ');
 assert.match(readFileSync(safe('packages/flutter/pubspec.yaml'),'utf8'),/^publish_to: none$/m);
 const temp=mkdtempSync(join(tmpdir(),'tbc-kit-integrity-'));
 let expandedFiles=0;
@@ -44,6 +50,21 @@ try{
   assert.deepEqual(actual,expected,'Expanded package differs: '+id);
   expandedFiles+=actual.length;
  }
+ for(const id of manifest.selection.nativeSdk){
+  const a=manifest.artifacts.find(x=>x.id===id);
+  const list=execFileSync('tar',['-tzf',safe(a.path)],{encoding:'utf8'}).trim().split('\n');
+  assert(list.every(p=>!p.startsWith('/')&&!p.split('/').includes('..')),'Unsafe SDK archive path');
+  execFileSync('tar',['-xzf',safe(a.path),'-C',temp]);
+  const identity=JSON.parse(readFileSync(join(temp,'identity.json'),'utf8'));
+  assert.deepEqual(identity,json('release/native-sdk-identity.json'),'Published SDK identity differs: '+id);
+  assert.equal(identity.kitVersion,manifest.pairing.kitVersion);
+  assert.equal(identity.sdkVersion,manifest.pairing.sdkVersion);
+  assert.equal(identity.protocolFingerprint,nativeLock.protocolFingerprint);
+  assert.equal(identity.artifactSetId,nativeLock.artifactSetId);
+  assert.equal(identity.keylessArtifactSetId,manifest.pairing.keylessArtifactSetId);
+  assert.equal(identity.kitTarSha256,manifest.pairing.nativeBuildInputKitSha256);
+ }
+ for(const [p,h]of Object.entries(nativeLock.files))assert.equal(hash(join(temp,p)),h,'SDK lock mismatch: '+p);
 }finally{
  // Only the unique scratch directory created by this invocation is removed.
  assert(temp.startsWith(join(tmpdir(),'tbc-kit-integrity-')));
@@ -51,6 +72,11 @@ try{
 }
 const source=json('release/source-files.json');
 for(const f of source.files)assert.equal(hash(safe(f.path)),f.sha256,'Source differs from release inventory: '+f.path);
+const checkpoint=json(manifest.source.snapshotManifest);
+assert.equal(checkpoint.version,manifest.pairing.kitVersion);
+assert.equal(checkpoint.sourceDigest,manifest.source.sourceDigest);
+assert.equal(hash(safe(manifest.source.snapshot)),checkpoint.archiveSha256);
+for(const [p,h]of checkpoint.files)assert.equal(hash(safe('source/'+p)),h,'Source differs from accepted snapshot: '+p);
 
 const docs=['README.md','CONTRIBUTING.md','SUPPORT.md','SECURITY.md',...files(safe('docs')).filter(p=>p.endsWith('.md')).map(p=>'docs/'+p),...files(safe('packages/kit')).filter(p=>p.endsWith('.md')).map(p=>'packages/kit/'+p)];
 let links=0;

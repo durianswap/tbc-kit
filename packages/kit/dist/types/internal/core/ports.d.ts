@@ -90,3 +90,4 @@ export declare function createPortCall<K extends PortOperation>(input: {
     readonly operation: K;
     readonly params: PortOperationMap[K]["params"];
 }): PortCall<K>;
+//# sourceMappingURL=ports.d.ts.map

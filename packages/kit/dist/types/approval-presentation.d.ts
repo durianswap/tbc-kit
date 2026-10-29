@@ -40,6 +40,37 @@ export interface TbcApprovalPresentationStep {
     readonly assets: readonly TbcApprovalPresentationAsset[];
     readonly actualFeeAtomic: TbcApprovalPresentationField<string>;
     readonly signingTaskCount: TbcApprovalPresentationField<number>;
+    /** Step-local warnings. Never attribute a flattened batch warning to every step. */
+    readonly warnings: readonly string[];
+    /** Chain transactions, not workflow steps. Never duplicate aggregate flows. */
+    readonly transactions: readonly TbcApprovalPresentationTransaction[];
+    readonly transactionsStatus: "not-bound" | "available" | "not-available" | "not-applicable";
+}
+export interface TbcApprovalPresentationTransaction {
+    readonly id: string;
+    readonly role: TbcApprovalPresentationField<string>;
+    readonly dependsOn: readonly string[];
+    /** A template commitment, never presented as a broadcast txid. */
+    readonly templateHash: TbcApprovalPresentationField<string>;
+    readonly feeAtomic: TbcApprovalPresentationField<string>;
+    readonly assets: readonly TbcApprovalPresentationAsset[];
+    readonly assetsStatus: "available" | "step-summary-only";
+    readonly warnings: readonly string[];
+    /** Exact output balances, NOT net user debits. Includes change/internal/pool
+     * outputs; do not sum with the business summary or with network fees. */
+    readonly outputs: readonly TbcApprovalPresentationOutput[];
+    readonly outputsStatus: "available" | "partial" | "not-available";
+}
+export interface TbcApprovalPresentationOutput {
+    readonly outputIndices: readonly number[];
+    readonly kind: string;
+    /** Code identity / NFT origin, not an invented API contract ID. */
+    readonly assetIdentity: TbcApprovalPresentationField<string>;
+    readonly amountAtomic: TbcApprovalPresentationField<string>;
+    readonly recipient: TbcApprovalPresentationField<string>;
+    readonly nativeValueAtomic: string;
+    readonly lockTime: TbcApprovalPresentationField<number>;
+    readonly warnings: readonly string[];
 }
 export interface TbcApprovalPresentation {
     readonly version: "1.0";
@@ -79,6 +110,8 @@ export interface TbcApprovalPresentation {
     }>;
     readonly assets: readonly TbcApprovalPresentationAsset[];
     readonly steps: readonly TbcApprovalPresentationStep[];
+    readonly transactions: readonly TbcApprovalPresentationTransaction[];
+    readonly transactionsStatus: TbcApprovalPresentationStep["transactionsStatus"];
     readonly warnings: readonly string[];
     readonly binding: Readonly<{
         status: "not-created" | "verified";
@@ -118,3 +151,4 @@ export declare function projectTbcApprovalPresentation(evidence: ApprovalHostEvi
  * flows, actual fees or signing counts from business intent.
  */
 export declare function projectTbcApprovalPreparation(input: TbcApprovalPreparationPresentationInput): TbcApprovalPresentation;
+//# sourceMappingURL=approval-presentation.d.ts.map

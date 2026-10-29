@@ -32,3 +32,4 @@ export declare function createTbcRpcClient(options: KitFetchOptions & Readonly<{
     url: string;
     headers?: Readonly<Record<string, string>>;
 }>): TbcRpcClient;
+//# sourceMappingURL=network-client.d.ts.map

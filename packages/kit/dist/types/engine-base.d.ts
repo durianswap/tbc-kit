@@ -15,3 +15,4 @@ export declare function createTbcEngineWithBackend(backend: TbcEngineBackend): T
 export declare function createFetchLazyWasmBackend(options?: TbcWasmAssetOptions): TbcEngineBackend;
 export declare function createNativeTbcEngineBackend(call: TbcEngineBackend["call"]): TbcEngineBackend;
 export declare function createWasmTbcEngineBackend(source: ArrayBuffer | Uint8Array | WebAssembly.Module): Promise<TbcEngineBackend>;
+//# sourceMappingURL=engine-base.d.ts.map

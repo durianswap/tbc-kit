@@ -39,3 +39,4 @@ export type CanonicalBaselineARequest = Readonly<{
 }>;
 export declare function mapLegacyRequest(input: LegacyBaselineARequest): CanonicalBaselineARequest | undefined;
 export declare function mapLegacyResult(method: LegacyBaselineAMethod, result: unknown, context: LegacyMappingContext): unknown;
+//# sourceMappingURL=legacy-webview-baseline.d.ts.map

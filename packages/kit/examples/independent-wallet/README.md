@@ -32,7 +32,8 @@ hardware wallet, or audited native module. Kit passes only the approved digest
 and task identity to the private signer and never accepts a private key through
 the DApp request or public transaction builder.
 
-The transaction/message workflow performs two controlled chain reads. The
+The transaction/message workflow performs one controlled UTXO read. This
+ordinary transfer does not need a chain-height query. The
 separate legacy metadata mapping check performs two more reads, reusing FT
 metadata; it does not construct or sign a Pool swap. No old Pool creation is
 demonstrated. Both paths reject unexpected HTTP requests in the fixture.

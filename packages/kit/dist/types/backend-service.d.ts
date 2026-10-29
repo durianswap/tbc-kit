@@ -1,5 +1,6 @@
 import { type TbcPreparedTransactionRequest, type TbcPreparedWorkflowRequest, type TbcWorkflowRequest } from "./prepared.js";
 import type { KitSupportedIntent, KitTransactionEngine, KitTransactionRequest } from "./public-types.js";
+import type { TbcSecureOperationContext } from "./reviewed-transaction-types.js";
 import { type KitHostPortCall, type KitWalletAccount, type KitWalletNetwork, type KitWalletOptions } from "./wallet-runtime.js";
 export type TbcBackendAuthorizationDecision = Readonly<{
     status: "approved";
@@ -26,8 +27,16 @@ export interface CreateTbcBackendServiceOptions {
     readonly authorize?: (request: TbcBackendAuthorizationRequest) => Promise<TbcBackendAuthorizationDecision>;
     /** Opaque service-owned Signer. Private keys never enter Kit inputs. */
     readonly signer?: KitWalletOptions["signer"];
+    /** Shared reviewed raw/associated capability, not a second transaction builder.
+     * A factory receives the service-owned context; never use caller/page identity. */
+    readonly reviewedTransaction?: NonNullable<KitWalletOptions["reviewedTransaction"]> | ((context: TbcBackendReviewContext) => NonNullable<KitWalletOptions["reviewedTransaction"]> | Promise<NonNullable<KitWalletOptions["reviewedTransaction"]>>);
     readonly clock?: KitWalletOptions["clock"];
     readonly randomBytes?: KitWalletOptions["randomBytes"];
+}
+export interface TbcBackendReviewContext extends TbcSecureOperationContext {
+    readonly account: KitWalletAccount;
+    /** False after close; authority-aware shared adapters should check this. */
+    readonly isActive: () => boolean;
 }
 export type TbcBackendPreparedExecution = Readonly<{
     kind: "transaction";
@@ -58,3 +67,4 @@ export declare class TbcBackendServiceError extends Error {
  * service authorization callback and an external Signer are injected.
  */
 export declare function createTbcBackendService(options: CreateTbcBackendServiceOptions): TbcBackendService;
+//# sourceMappingURL=backend-service.d.ts.map

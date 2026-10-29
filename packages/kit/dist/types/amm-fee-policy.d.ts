@@ -17,3 +17,4 @@ export declare function describeAmmFeePolicy(value: unknown): Readonly<{
     nonLpFeeBps: number;
     feeAddress: string;
 }>;
+//# sourceMappingURL=amm-fee-policy.d.ts.map

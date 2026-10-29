@@ -8,3 +8,4 @@ export declare function resolvePreparedInputDependencies(zeroInputs: readonly Re
     inputIndex: number;
     sourceOutputIndex: number;
 }>[], dependsOn: readonly string[], knownIds: ReadonlySet<string>, explicit?: readonly PreparedInputDependency[]): readonly PreparedInputDependency[];
+//# sourceMappingURL=prepared-dependencies.d.ts.map

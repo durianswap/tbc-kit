@@ -99,3 +99,4 @@ export type TbcAmmQuote = QuoteIdentity & (Readonly<{
  * fresh state, input ownership, ancestry, authorization and minimum outputs. */
 export declare function quoteTbcAmm(input: TbcAmmQuoteInput, options: TbcAmmQuoteOptions): Promise<TbcAmmQuote>;
 export {};
+//# sourceMappingURL=amm-quote.d.ts.map

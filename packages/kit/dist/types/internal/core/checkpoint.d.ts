@@ -29,3 +29,4 @@ export interface OperationCheckpoint {
 export declare function createCheckpoint(payload: OperationCheckpointPayload): OperationCheckpoint;
 export declare function verifyCheckpoint(checkpoint: OperationCheckpoint, expectedRelease?: ProtocolReleaseIdentity): OperationCheckpoint;
 export declare function advanceCheckpoint(previousCheckpoint: OperationCheckpoint, nextPayload: OperationCheckpointPayload, expectedRelease?: ProtocolReleaseIdentity): OperationCheckpoint;
+//# sourceMappingURL=checkpoint.d.ts.map

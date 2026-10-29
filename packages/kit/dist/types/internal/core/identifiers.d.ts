@@ -30,3 +30,4 @@ export interface ProviderCommitIdInput {
     readonly mutationPayload: unknown;
 }
 export declare function deriveProviderCommitId(input: ProviderCommitIdInput): string;
+//# sourceMappingURL=identifiers.d.ts.map

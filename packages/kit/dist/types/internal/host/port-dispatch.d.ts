@@ -20,3 +20,4 @@ export declare const TWS_HOST_OPERATION_PORTS: Readonly<{
 export declare function assertHostPorts(value: TwsHostPorts): void;
 export declare function dispatchHostPort<K extends PortOperation>(ports: TwsHostPorts, call: PortCall<K>): Promise<PortResponse<K>>;
 export type { TwsHostPortOutcome };
+//# sourceMappingURL=port-dispatch.d.ts.map

@@ -16,3 +16,4 @@ export declare class LegacyStablecoinParameterError extends Error {
 }
 export declare function isLegacyStablecoinTransferRequest(value: unknown): boolean;
 export declare function createLegacyStablecoinTransferIntentResolver(options: CreateLegacyStablecoinTransferIntentResolverOptions): LegacyStablecoinTransferIntentResolver;
+//# sourceMappingURL=legacy-stablecoin-intent.d.ts.map

@@ -101,6 +101,7 @@ export interface DefaultTbcTestnetNetwork {
     readonly network: TbcNetworkContext;
     readonly client: TestnetClient;
     readonly chainData: DefaultTbcChainDataResolver;
+    readonly prepareNftMintJob: DefaultTbcChainDataResolver["prepareNftMintJob"];
     /** Initializes wallet-owned Pool native capability without chain reads. */
     readonly warmup: () => Promise<void>;
     /** Wallet-private authoritative Pool asset inventory for bounded maintenance. */
@@ -122,3 +123,4 @@ export interface DefaultTbcTestnetNetwork {
 export type DefaultTbcNetwork = DefaultTbcTestnetNetwork;
 export declare function createDefaultTbcNetwork(options: DefaultTbcNetworkOptions): DefaultTbcNetwork;
 export declare function createDefaultTbcTestnetNetwork(options: DefaultTbcTestnetNetworkOptions): DefaultTbcTestnetNetwork;
+//# sourceMappingURL=default-network.d.ts.map

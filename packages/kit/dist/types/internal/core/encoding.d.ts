@@ -7,3 +7,4 @@ export declare function base64urlDecode(value: string): Uint8Array;
 export declare function base64Encode(bytes: Uint8Array): string;
 export declare function base64Decode(value: string): Uint8Array;
 export declare function utf8Decode(bytes: Uint8Array): string;
+//# sourceMappingURL=encoding.d.ts.map

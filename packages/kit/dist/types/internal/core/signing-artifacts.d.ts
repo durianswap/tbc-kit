@@ -6,3 +6,4 @@ export interface EncodedSigningMessage {
 export declare function decodeSigningMessage(message: EncodedSigningMessage): Uint8Array;
 export declare function signingPayload(envelope: unknown): Uint8Array;
 export declare function signingEnvelopeDigest(envelope: unknown): string;
+//# sourceMappingURL=signing-artifacts.d.ts.map

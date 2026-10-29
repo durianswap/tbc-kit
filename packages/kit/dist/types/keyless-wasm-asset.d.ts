@@ -4,3 +4,4 @@ export interface KeylessWasmAssetOptions {
     readonly url?: string | URL;
 }
 export declare function readKeylessWasmAsset(url: string | URL, options: KeylessWasmAssetOptions): Promise<ArrayBuffer | Uint8Array>;
+//# sourceMappingURL=keyless-wasm-asset.d.ts.map

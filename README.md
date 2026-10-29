@@ -6,6 +6,8 @@
 
 [快速开始](#快速开始) · [文档](docs/README.md) · [示例](docs/examples.md) · [API 参考](docs/api-reference.md)
 
+当前 JavaScript / TypeScript 版本为 **0.1.0-rc.18**，配套 Native SDK 为 **0.1.0-rc.18.native.2**。下载、版本配对和升级步骤见 [安装与升级](docs/installation.md)。
+
 ## 快速开始
 
 下载 [JavaScript / TypeScript 包](artifacts/tbc-kit.tgz)，在应用中安装：
@@ -51,6 +53,8 @@ const wallet = await client.connect({ wallet: selected });
 
 JavaScript 各入口来自同一个 `@tbc/kit` 包，可按需导入。Flutter 插件包含 Dart 接口、原生计算库和 WebView 桥接，不需要额外安装 JavaScript 包。
 
+Flutter 是独立配套分发，保留现有版本；不要将 RC.18 独立 Native SDK 替换进 Flutter 插件。
+
 ## 主要能力
 
 - 钱包发现、账户授权、网络选择、消息与结构化数据签名。
@@ -61,6 +65,8 @@ JavaScript 各入口来自同一个 `@tbc/kit` 包，可按需导入。Flutter �
 - `window.Turing` 适配 TBC 历史接口和受支持的旧资产操作。
 
 钱包保留私钥管理、解锁和审批 UI；Kit 提供交易材料与执行流程。各平台的方法及使用方式见 [API 参考](docs/api-reference.md)。
+
+新版 Coin 稳定币支持多轮合并及指定原生手续费输入归集，沿用一次整批审批和原有顺序提交机制。接入要求及计划样例见 [Coin 多轮交易](docs/coin-multiround.md)。
 
 ## 示例
 

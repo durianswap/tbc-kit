@@ -65,3 +65,4 @@ export declare function assertProviderSessionMutation(checkpoint: OperationCheck
 export declare function reduceCommitClock(checkpoint: OperationCheckpoint, call: PortCall, resultValue: unknown): CoreTransition;
 export declare function reducePermissionCommit(checkpoint: OperationCheckpoint, call: PortCall, resultValue: unknown): CoreTransition;
 export {};
+//# sourceMappingURL=committing.d.ts.map

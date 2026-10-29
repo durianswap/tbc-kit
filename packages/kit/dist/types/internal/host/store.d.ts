@@ -122,3 +122,4 @@ export interface TwsHostStore {
         readonly lease: TwsHostLeaseRecord;
     }) => Promise<boolean>;
 }
+//# sourceMappingURL=store.d.ts.map

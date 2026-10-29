@@ -5,3 +5,4 @@ import type { CoreTransition } from "../transitions.js";
 export declare function reduceTransactionApproval(checkpoint: OperationCheckpoint, call: PortCall, resultValue: unknown, engine: TransactionEngine | undefined): Promise<CoreTransition>;
 export declare function reduceSigningClock(checkpoint: OperationCheckpoint, call: PortCall, resultValue: unknown): CoreTransition;
 export declare function reduceSigningResponse(checkpoint: OperationCheckpoint, call: PortCall, resultValue: unknown): CoreTransition;
+//# sourceMappingURL=signing.d.ts.map

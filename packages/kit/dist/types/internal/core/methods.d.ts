@@ -16,3 +16,4 @@ export interface TwsMethodDefinition {
 export declare const TWS_METHOD_DEFINITIONS: readonly TwsMethodDefinition[];
 export declare function getTwsMethod(name: string): TwsMethodDefinition;
 export declare function assertMethodParams(definition: TwsMethodDefinition, params: unknown): void;
+//# sourceMappingURL=methods.d.ts.map

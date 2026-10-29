@@ -6,3 +6,4 @@ export interface TwsIndexedDbHostStoreOptions {
     readonly now?: () => number;
 }
 export declare function createIndexedDbTwsHostStore(options: TwsIndexedDbHostStoreOptions): TwsHostStore;
+//# sourceMappingURL=indexeddb-store.d.ts.map

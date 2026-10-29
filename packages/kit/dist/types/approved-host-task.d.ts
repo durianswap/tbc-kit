@@ -44,3 +44,4 @@ export declare function createApprovedHostTaskReader(options: Readonly<{
         task: Readonly<Record<string, unknown>>;
     }>>;
 }>;
+//# sourceMappingURL=approved-host-task.d.ts.map

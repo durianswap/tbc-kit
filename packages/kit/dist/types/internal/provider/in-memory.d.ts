@@ -11,3 +11,4 @@ export interface TbcInMemoryTransportController {
     readonly close: (reason?: TbcTransportCloseReason) => void;
 }
 export declare function createInMemoryTransport(options: TbcInMemoryTransportOptions): TbcInMemoryTransportController;
+//# sourceMappingURL=in-memory.d.ts.map

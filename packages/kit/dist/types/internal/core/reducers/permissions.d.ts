@@ -52,3 +52,4 @@ export declare function disconnectCommitFromLoads(checkpoint: OperationCheckpoin
 }>;
 export declare function beginDisconnect(checkpoint: OperationCheckpoint, loads: readonly PermissionLoadArtifact[]): CoreTransition;
 export {};
+//# sourceMappingURL=permissions.d.ts.map

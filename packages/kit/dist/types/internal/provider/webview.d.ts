@@ -2,3 +2,4 @@ export { TBC_WEBVIEW_CHANNEL, TBC_WEBVIEW_MAX_MESSAGE_BYTES, type TbcWebViewDeli
 export { TbcWebViewValidationError, decodeTbcWebViewNativeMessage, decodeTbcWebViewPageMessage, digestTbcWebViewEnvelope, encodeTbcWebViewNativeMessage, encodeTbcWebViewPageMessage, type TbcWebViewValidationKind, } from "./webview-codec.js";
 export { createTbcWebViewPageTransport, type TbcWebViewPageController, type TbcWebViewPageOptions, } from "./webview-page.js";
 export { createTbcWebViewNativeController, type TbcWebViewNativeController, type TbcWebViewNativeDispatch, type TbcWebViewNativeHandlers, type TbcWebViewNativeOptions, type TbcWebViewPageInput, } from "./webview-native.js";
+//# sourceMappingURL=webview.d.ts.map

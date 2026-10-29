@@ -57,6 +57,16 @@
       "bytes": 7643
     },
     {
+      "path": "source/docs/coin-multiround.md",
+      "sha256": "8dff3f84e16855f1a099a19e9047b8ae856d5560fc5dd9105aafea03e009f20d",
+      "bytes": 5659
+    },
+    {
+      "path": "source/docs/ft-nft-completion-plan.md",
+      "sha256": "9801293ec9a46a816466e00e46a74028b55396f414b178ebb6bc48e284206559",
+      "bytes": 14908
+    },
+    {
       "path": "source/examples/standard-dapp/README.md",
       "sha256": "4aceace87077e0d62266a544ce5d5341da9b9f6abe7290f72fed1d84b458525a",
       "bytes": 2492
@@ -113,8 +123,8 @@
     },
     {
       "path": "source/examples/third-party-wallet-minimal/README.md",
-      "sha256": "d39065e9b787803df0d6c8911e22bb3c2d71119ac000ef1370f2f20ad61d2155",
-      "bytes": 6408
+      "sha256": "5dec5375b8e4c4653bdc172bde78da76a1ec68ff68a81577b508050e9c3f432d",
+      "bytes": 5989
     },
     {
       "path": "source/examples/third-party-wallet-minimal/package.json",
@@ -128,8 +138,8 @@
     },
     {
       "path": "source/examples/third-party-wallet-minimal/src/fixtures.ts",
-      "sha256": "158ebd11dc96563d1be951d192b786f48c7750ea967ba2b4ad079a5390b62b34",
-      "bytes": 4868
+      "sha256": "2160f7ce32c5b27b60e5deeff4edec26785be487fa2b9344414dbd4c07719cf7",
+      "bytes": 5007
     },
     {
       "path": "source/examples/third-party-wallet-minimal/src/testnet-adapter.ts",
@@ -153,8 +163,8 @@
     },
     {
       "path": "source/examples/third-party-wallet-minimal/test/testnet-acceptance-command.test.mjs",
-      "sha256": "dc15dcb5ed294eb5f2427715428de41f550da920afae9082141adc54dcc8b136",
-      "bytes": 12873
+      "sha256": "3643cfbbe8b69bf015355dc6ced2850d005e2ed9a186eb08a768d0705f7172cd",
+      "bytes": 13053
     },
     {
       "path": "source/examples/third-party-wallet-minimal/test/testnet-adapter.test.mjs",
@@ -598,8 +608,8 @@
     },
     {
       "path": "source/native/engine/scripts/check-native-engine-consumers.mjs",
-      "sha256": "39f9a421049fea4d891ddba69a10dde99a4d6087345f0ba1622e35d968f9df68",
-      "bytes": 13332
+      "sha256": "14695a589da38b1af45aa77abb3783c9d618c3199caf7ca63cad577b05334891",
+      "bytes": 14275
     },
     {
       "path": "source/native/engine/scripts/check-native-engine-devices.mjs",
@@ -697,6 +707,51 @@
       "bytes": 551
     },
     {
+      "path": "source/native/flutter-compat/compute-dedup/Cargo.toml",
+      "sha256": "e22103ea6d0df19dc39f3f5922ab9c832fa3c1a822c6a792631386774d3f4ab6",
+      "bytes": 400
+    },
+    {
+      "path": "source/native/flutter-compat/compute-dedup/src/lib.rs",
+      "sha256": "f256d31b377bdd88342391ab4eff393541b4d80ca1f8487c2828c55a5b3889e9",
+      "bytes": 555
+    },
+    {
+      "path": "source/native/flutter-dart-kit/docs/approval-presentation.md",
+      "sha256": "43f56a52e16f5692313f13ede335bac53d648576098471ec4faac45e7bdbdf9b",
+      "bytes": 6194
+    },
+    {
+      "path": "source/native/flutter-dart-kit/docs/nft-actions.dart",
+      "sha256": "b63a7e2179d1928ac5ba8ef9ad086b781f75da2b8690f9130a9edbfeea106017",
+      "bytes": 1576
+    },
+    {
+      "path": "source/native/flutter-dart-kit/docs/nft-batch-transfer.md",
+      "sha256": "7eb1788f00b07e0dbea1d3fcb8bc32335e88e43d512cca4436b63364774d632e",
+      "bytes": 1690
+    },
+    {
+      "path": "source/native/flutter-dart-kit/docs/nft-mint-job.md",
+      "sha256": "3144cf49e89a38bea7a6ebfa7843c5c3bbbdddcbb15cb0c9e08853fb8a66488a",
+      "bytes": 2707
+    },
+    {
+      "path": "source/native/flutter-dart-kit/docs/nft-queries.md",
+      "sha256": "60fac387c0a0866cc1a016630800a5f712c460610f9b163c8b5d8b2a1c27f385",
+      "bytes": 2116
+    },
+    {
+      "path": "source/native/flutter-dart-kit/examples/approval/PartnerApprovalPresenter.kt",
+      "sha256": "8e51fb124465925235fe3a4ddfae7387070a187cfa405202c3e7ef9aff0e8175",
+      "bytes": 2111
+    },
+    {
+      "path": "source/native/flutter-dart-kit/examples/approval/PartnerApprovalPresenter.swift",
+      "sha256": "0c770bc6e69429ed73bea048d8481b90ef441a3b1af412e7e0986068d4307087",
+      "bytes": 2593
+    },
+    {
       "path": "source/native/flutter-dart-kit/lib/flutter_wallet.dart",
       "sha256": "4a8e141fc43d1cc47e2bbba2f0eae5568ebbee6f4353e5ecdcd5ce4ae2438117",
       "bytes": 420
@@ -708,13 +763,13 @@
     },
     {
       "path": "source/native/flutter-dart-kit/lib/packaged_wallet.dart",
-      "sha256": "a24f472b0e49167648b280abdec794fe523996e6804de5cb064ea0f66074563a",
-      "bytes": 909
+      "sha256": "f780afb131a52702e8d1b0ad5f0d9707eb172b2c7fdbc376f4f3287aeac8c814",
+      "bytes": 2273
     },
     {
       "path": "source/native/flutter-dart-kit/lib/queries.dart",
-      "sha256": "4c0d94f8af2bd64aef1cb47c80ea9de469d87c0a3618ced24e6a34bc39e3af8a",
-      "bytes": 247
+      "sha256": "fb4110dd496376dfa87151d4d067f7a2f058100baa9cfefb9715aa4d272fd1b0",
+      "bytes": 276
     },
     {
       "path": "source/native/flutter-dart-kit/lib/signer_adapters.dart",
@@ -733,8 +788,8 @@
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/flutter/wallet_actions.dart",
-      "sha256": "b7fc83852a822e34611d5964b3f66e3bc65df4e046d0c661075907c3e3cdd096",
-      "bytes": 7110
+      "sha256": "e464ca94f482bc2ad5b48cb27dea419e47bcaebd473f0105a1ca9ba6012d5750",
+      "bytes": 7760
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/flutter/wallet_host.dart",
@@ -798,8 +853,8 @@
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/collection_material.dart",
-      "sha256": "c61f6648e0dc80ea0770b72fe8370d61298ec36f1e1d2a02ab07839d7af3dd0a",
-      "bytes": 8292
+      "sha256": "d3c697a9912a1f463b26043fc1a3ebbe42d4a388d40bffa66f113ef4c68f4081",
+      "bytes": 8349
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/crypto_action.dart",
@@ -813,8 +868,8 @@
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/htlc_material.dart",
-      "sha256": "80fffa8856e31bcdc28607cce9a6323153066a0ef2c395f2001335f6cd258de5",
-      "bytes": 9280
+      "sha256": "286d8dd6459295712a8be0e9918e97a115222cb21f48589f206b15c1399f18b2",
+      "bytes": 9336
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/htlc_token_material.dart",
@@ -888,13 +943,28 @@
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/native_wallet_binding.dart",
-      "sha256": "f0b0b930c1722bca01f7740f5d5542e0496fdfd2534fd2d35f9845e35c94ad2f",
-      "bytes": 45156
+      "sha256": "f5a9764bba70e372f1841dfc0fec43dd8a1475937e7e9916725fd3ea40fd2d53",
+      "bytes": 48566
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/nft_material.dart",
-      "sha256": "fc42abf95c4671b33375d5d2b581685129d69d6f096e34ac36ceb4066b721e5e",
-      "bytes": 11496
+      "sha256": "a96044ea6c70a49bf0d0523bca1721bd574269f07cfb4da6e918ce939118eead",
+      "bytes": 15496
+    },
+    {
+      "path": "source/native/flutter-dart-kit/lib/src/internal/nft_mint_job.dart",
+      "sha256": "d79994a21e6d1fc6d0eebbd215cde41894b26870d207420c39e3059c9f14cf7b",
+      "bytes": 7728
+    },
+    {
+      "path": "source/native/flutter-dart-kit/lib/src/internal/nft_mint_job_backend.dart",
+      "sha256": "9894bc197f6476fb1fa481e22f5eaa1f3cfd85a6ed4b9723270e8c86d57647b9",
+      "bytes": 492
+    },
+    {
+      "path": "source/native/flutter-dart-kit/lib/src/internal/nft_mint_job_material.dart",
+      "sha256": "a894214ceb2d89bea0fbeed147e4a013cfa502fd28e1d1d7c86e4ce788c95d31",
+      "bytes": 7611
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/operation_authority.dart",
@@ -908,13 +978,13 @@
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/prepared_proposal.dart",
-      "sha256": "5d5dd4c4afc0efd039eb929b8b3a89745ac098a350d36f21cced6fd7a09c095c",
-      "bytes": 13393
+      "sha256": "5d78189c9477846e3574a38a37ecc2a40c0012075273be7be3be74d2bf1851b6",
+      "bytes": 13511
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/protocol_codec.dart",
-      "sha256": "97df10b9c4ca9bf827858a5f7d49374b5e74aacdae695d31cca4e0e86d89112e",
-      "bytes": 5402
+      "sha256": "1e9951c6411ba735f965c5ec079e46cffa9126a0dcaedde74065922b4a335259",
+      "bytes": 6951
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/provider_control.dart",
@@ -923,13 +993,13 @@
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/provider_session.dart",
-      "sha256": "84dc99ce469701fd25ed506abadc886f9114f7f8a70915c3bab330c49d7e5131",
-      "bytes": 34138
+      "sha256": "3f4f3f32bd3592e9f011bdc9c5ccec63bd714704d70effa58768c06456785298",
+      "bytes": 35636
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/read_api.dart",
-      "sha256": "ae9adaa154461dbc6d683568a678f8f732445cf7bcbc2204110e482fc91b1cfa",
-      "bytes": 5202
+      "sha256": "33acb186d8785557a16da096624246a55457cc4a3317047dbab4e040cb7ced1e",
+      "bytes": 5308
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/reviewed_address.dart",
@@ -1023,8 +1093,8 @@
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/reviewed_status.dart",
-      "sha256": "480e78588b14352c12370d81f410ffb460f84d73081337d6fe5dcd224e968c44",
-      "bytes": 9046
+      "sha256": "5bec2e4f1b99b524fa2ad56de5663f5791db6cfacafd66f97f27e16966ce86f8",
+      "bytes": 9102
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/reviewed_token.dart",
@@ -1033,8 +1103,8 @@
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/send_lifecycle.dart",
-      "sha256": "d8d1971badcdf66320396befb19f9245a252f2989747dd2c09320da8648a9e9b",
-      "bytes": 7881
+      "sha256": "4bc54d62fcedd2dc09f3134f338853440943d87c37661c6f5aca440fd533afc2",
+      "bytes": 7954
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/signature_verification.dart",
@@ -1043,8 +1113,8 @@
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/signing_executor.dart",
-      "sha256": "7e7c0bed96116ab95f73a15ad9bd6b681aa9206d45ff4a9236f956d252a506ff",
-      "bytes": 27658
+      "sha256": "359000d412c6336cdf460df74d3f06b3043916032c23b86a90a6c6fcf09a156b",
+      "bytes": 27723
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/signing_stages.dart",
@@ -1053,8 +1123,8 @@
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/signing_worker.dart",
-      "sha256": "602be767830a33ac1a56047af4b94060ee5866ff1764f35fb0ae5944b73c8fbf",
-      "bytes": 77108
+      "sha256": "7203c2b8b8e6a034f5863380f8678ec5ad67fe6147b348c9d5c177d7ce85f41f",
+      "bytes": 91173
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/stablecoin_material.dart",
@@ -1063,8 +1133,8 @@
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/tbc20_material.dart",
-      "sha256": "2648a65ae5a02cfb3054f1cf9e410b8273903a5447c4f1d6fef510721165a31c",
-      "bytes": 20541
+      "sha256": "b2c930ada5f14664330e3e57a473a678db2c7258591c176b5dfa38477c900cbb",
+      "bytes": 21093
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/timelock_material.dart",
@@ -1073,13 +1143,13 @@
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/transaction_policy.dart",
-      "sha256": "9ef0bab341056448ac7a8f72d98a5d8fb3b91a1d68c65d148ffefd69183ac459",
-      "bytes": 10203
+      "sha256": "a2ba3a387efd548925007a28e0cba714176c5f7a18d80f4273787c718b09bf6b",
+      "bytes": 11365
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/transaction_profiles.dart",
-      "sha256": "a66cfa21e3fa84e8a91984445b6d5316b21cd66faada457bb17dbbc9a40c47ce",
-      "bytes": 4007
+      "sha256": "7897152c4e77fc5698682decdd84453994e6751ffe2dff52e3581df8ebcedebc",
+      "bytes": 4880
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/transaction_read.dart",
@@ -1090,6 +1160,11 @@
       "path": "source/native/flutter-dart-kit/lib/src/internal/transaction_signing_roles.dart",
       "sha256": "ca7fa97d6d98e97d7dd16326178fb09877a98347dca3a1e25cd00be201f7444c",
       "bytes": 3713
+    },
+    {
+      "path": "source/native/flutter-dart-kit/lib/src/internal/txo_status_batches.dart",
+      "sha256": "675da0c2829150ebd3d7aff09421f5fa628b2d87b60203bb68db6670fb72d7bf",
+      "bytes": 2832
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/internal/txo_status_reply.dart",
@@ -1140,6 +1215,11 @@
       "path": "source/native/flutter-dart-kit/lib/src/internal/workflow_request.dart",
       "sha256": "50036672356adfdfb1294191f4570326d68c9c1e2ad01b5f7c71d4d750583e44",
       "bytes": 10193
+    },
+    {
+      "path": "source/native/flutter-dart-kit/lib/src/nft_query.dart",
+      "sha256": "c232952d134eb5a8bae7b9ce433accf26217c9baca4dd25e67002482d119c113",
+      "bytes": 6789
     },
     {
       "path": "source/native/flutter-dart-kit/lib/src/permission_approval.dart",
@@ -1203,7 +1283,7 @@
     },
     {
       "path": "source/native/flutter-dart-kit/platform/android/src/main/kotlin/io/tbc/kit/dart/NativeBroadcastRouter.kt",
-      "sha256": "428e09cd368232223aeb5d5bda6215c0345d8b8b1484085ab1797f294c5cd863",
+      "sha256": "fd85a1255e76e2c2840fa91f114af3499d056522704a01f2dc578405168412ed",
       "bytes": 7591
     },
     {
@@ -1218,8 +1298,8 @@
     },
     {
       "path": "source/native/flutter-dart-kit/platform/android/src/main/kotlin/io/tbc/kit/dart/NativeCustody.kt",
-      "sha256": "40ef8456360e040ca7fef1afd131bd6db23da769c997cca28114a892fadb383e",
-      "bytes": 120320
+      "sha256": "47369f96d49edf0ee627bceaad25cd4bcf728697e6e70fc6cef79ae68d1f88d4",
+      "bytes": 145489
     },
     {
       "path": "source/native/flutter-dart-kit/platform/android/src/main/kotlin/io/tbc/kit/dart/NativeNetworkSessions.kt",
@@ -1238,8 +1318,8 @@
     },
     {
       "path": "source/native/flutter-dart-kit/platform/android/src/main/kotlin/io/tbc/kit/dart/NativePrepared.kt",
-      "sha256": "1fbe18ac346d21c0459e87bc3692bce330440ad6445b1b1baabeb558fd6e83f3",
-      "bytes": 5963
+      "sha256": "8d300f38e1cfc3de4c2872f10552cd29ca12f3fef2d0f3259af917098bcb2c97",
+      "bytes": 5995
     },
     {
       "path": "source/native/flutter-dart-kit/platform/android/src/main/kotlin/io/tbc/kit/dart/NativeProtocolWalletRouter.kt",
@@ -1258,13 +1338,13 @@
     },
     {
       "path": "source/native/flutter-dart-kit/platform/android/src/main/kotlin/io/tbc/kit/dart/NativeWalletHost.kt",
-      "sha256": "8d8f84d919ca900e039ea64043e82d5a1142b9fc90ecd99aef4d03d1a8050edd",
-      "bytes": 22357
+      "sha256": "4bfe11a15b98782e861d752f33b7526535542e18b1c43ef63cfce60eefa84be4",
+      "bytes": 23398
     },
     {
       "path": "source/native/flutter-dart-kit/platform/android/src/main/kotlin/io/tbc/kit/dart/NativeWorkflow.kt",
-      "sha256": "a219d0444fe0b92193cb4ba79e17fc19bd38c449194b08f280f9b754fb2d545d",
-      "bytes": 24039
+      "sha256": "16713f15ae1bbb5dc9d7ad350241eb4875cbb8d0608341e613670dfd6adb1afb",
+      "bytes": 24055
     },
     {
       "path": "source/native/flutter-dart-kit/platform/android/src/main/kotlin/io/tbc/kit/dart/TbcDartWalletHost.kt",
@@ -1288,8 +1368,8 @@
     },
     {
       "path": "source/native/flutter-dart-kit/platform/ios/Classes/NativeBroadcastRouter.swift",
-      "sha256": "7f3d0487a521cecce0da52d46695d3f78b3250574e912cea504e23d3c8abce83",
-      "bytes": 9015
+      "sha256": "add7f59d7fa1460e2e40078154ca1840a71e27ece891a1ce00cb46e29665eb05",
+      "bytes": 9016
     },
     {
       "path": "source/native/flutter-dart-kit/platform/ios/Classes/NativeBroadcastStore.swift",
@@ -1303,8 +1383,8 @@
     },
     {
       "path": "source/native/flutter-dart-kit/platform/ios/Classes/NativeCustody.swift",
-      "sha256": "96b33b3ca11054e5da0dee81c4395f3ee3040686f796af3992c1532d820678de",
-      "bytes": 131836
+      "sha256": "35823ba475bbfc09e7bc7904e2ec14d33346b19b3a2fa6a91c68fb1722d99a60",
+      "bytes": 158769
     },
     {
       "path": "source/native/flutter-dart-kit/platform/ios/Classes/NativeNetworkSessions.swift",
@@ -1323,8 +1403,8 @@
     },
     {
       "path": "source/native/flutter-dart-kit/platform/ios/Classes/NativePrepared.swift",
-      "sha256": "356091941c9dad75d8f770203bd0f899bcf8961e611f9c920aa586da45f6af38",
-      "bytes": 7489
+      "sha256": "06de51b7635c7d555c9651978c467d6b39ad9aaa2fc85036d779f682ae9cf25f",
+      "bytes": 7527
     },
     {
       "path": "source/native/flutter-dart-kit/platform/ios/Classes/NativeProtocolWalletRouter.swift",
@@ -1343,13 +1423,13 @@
     },
     {
       "path": "source/native/flutter-dart-kit/platform/ios/Classes/NativeWalletHost.swift",
-      "sha256": "28a98ebc1500599b90af8a70de62aeefae4108be6fa96de205c3ac73c777b864",
-      "bytes": 24784
+      "sha256": "e8c1297e1b8050e192ea591aeac65788643dc1dfab7b340372dae2151cb9f1cb",
+      "bytes": 26187
     },
     {
       "path": "source/native/flutter-dart-kit/platform/ios/Classes/NativeWorkflow.swift",
-      "sha256": "dbd0a42af5808441ad587fb31f17f1056e239c351199f635067fd31da4963014",
-      "bytes": 27705
+      "sha256": "c7e332b8e82cddec4ef5ac0ee5b20dde8a8d7452944d37beef1240a7325e3672",
+      "bytes": 27721
     },
     {
       "path": "source/native/flutter-dart-kit/platform/ios/Classes/TbcDartWalletHost.swift",
@@ -1722,6 +1802,26 @@
       "bytes": 2885959
     },
     {
+      "path": "source/native/flutter-dart-kit/test/fixtures/rc16-ft-signing.json",
+      "sha256": "a2418ac7d9ee72ab4473f9f28fb2284019ca5909a1d2caa056407e5aa3e7d889",
+      "bytes": 1247076
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/rc16-material.json",
+      "sha256": "44f6fdf3db83e0a4bafd6a8773b0245b6e282158c1492411e274777e01f8355e",
+      "bytes": 53411
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/rc16-nft-batch.json",
+      "sha256": "cdde6515cdf949fd7e2b2947ced0ee7f42495bf981c84f19731303582ecea6b6",
+      "bytes": 271897
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/rc16-nft-large.json",
+      "sha256": "008dabc9584cc44a0a575834e00e0122a08f3903056b913d8943567a710a4354",
+      "bytes": 13610297
+    },
+    {
       "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-associated-contract-dependency-lock.json",
       "sha256": "ec1e08a4717066dba14ddb6d3dda759bc4661a80dd26bf4eccbfa0c8e2d2e295",
       "bytes": 11170
@@ -1992,6 +2092,16 @@
       "bytes": 12028
     },
     {
+      "path": "source/native/flutter-dart-kit/test/native/ApprovalDisplayDevice.kt.inc",
+      "sha256": "13f1a3136e6d334f26042ca47bc2b654d7bd19cc55576abecd589309d845844b",
+      "bytes": 4736
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/native/ApprovalDisplayDevice.swift.inc",
+      "sha256": "c955ac1dd7027d15198c425c3111a0b7e93c769b24b3327c02a922d733732b11",
+      "bytes": 5990
+    },
+    {
       "path": "source/native/flutter-dart-kit/test/native/BroadcastHTTPCheck.kt",
       "sha256": "c5ad72368130646944c65f535a0a76f300b8b6f4610323d056799e3a3373fa75",
       "bytes": 5272
@@ -2052,6 +2162,16 @@
       "bytes": 21653
     },
     {
+      "path": "source/native/flutter-dart-kit/test/native/MintJobGuard.kt",
+      "sha256": "d3f6b80a153d8bea5f62b2e4c8f309c1d220f74f61d03c135f1de34c297e5e7f",
+      "bytes": 2986
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/native/MintJobGuard.swift",
+      "sha256": "227be415ce769319a093a3fa2f4064227c7cd9c0c2131adec7f17365a05606d4",
+      "bytes": 3498
+    },
+    {
       "path": "source/native/flutter-dart-kit/test/native/NetworkCheck.kt",
       "sha256": "0753de730bf8d28af35ea44546f599aa5054c185e947f5d1dc6130b39d368c1b",
       "bytes": 4470
@@ -2070,6 +2190,16 @@
       "path": "source/native/flutter-dart-kit/test/native/NetworkRouterCheck.swift",
       "sha256": "78acc538802c5f0829d7a819d30603f7f2a79bbd297581b515e1b050a8ca228b",
       "bytes": 25909
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/native/PartnerApprovalPresenterCheck.kt",
+      "sha256": "4f5d2408d6ba3890b9d1eacc4ca29e0e8a54188ce995cd90fb11ce1955a710d7",
+      "bytes": 1319
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/native/PartnerApprovalPresenterCheck.swift",
+      "sha256": "65bcc6b636da15f479134f38d45b2ad978a57a60563b439701075651348ae880",
+      "bytes": 1625
     },
     {
       "path": "source/native/flutter-dart-kit/test/native/PermissionCheck.kt",
@@ -2148,13 +2278,13 @@
     },
     {
       "path": "source/native/flutter-dart-kit/test/native/WorkflowConsentCheck.kt",
-      "sha256": "96bc2fdf1e17ec7e972b4690169dc1f58a121092efea06f41a029b2c2172583f",
-      "bytes": 19135
+      "sha256": "2fa60f2f9e74791635851373fd4a0e4402e37113031f3c40574eb57056138f92",
+      "bytes": 23570
     },
     {
       "path": "source/native/flutter-dart-kit/test/native/WorkflowConsentCheck.swift",
-      "sha256": "f10f4cd28377b4dfbf861c6d875971e2d297a8ae8b44ac370a419608bfa98260",
-      "bytes": 22627
+      "sha256": "2269d3fdf559d6fde5fe54963a9bd154c208afa0814dc56dc5a5e76d470b3321",
+      "bytes": 27259
     },
     {
       "path": "source/native/flutter-dart-kit/test/native_broadcast_binding_test.dart",
@@ -2187,6 +2317,16 @@
       "bytes": 27164
     },
     {
+      "path": "source/native/flutter-dart-kit/test/nft_mint_job_material_test.dart",
+      "sha256": "2635b2c9dfdc85840b59483120d9157d8703f22524fdf07b11835a20d499e04c",
+      "bytes": 4457
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/nft_mint_job_test.dart",
+      "sha256": "838b93384b0d9d05aadf1284faac7b1f8023aadefb7190e137b1ba551626108d",
+      "bytes": 4223
+    },
+    {
       "path": "source/native/flutter-dart-kit/test/nft_mint_signing_test.dart",
       "sha256": "6a65cfd63328b1c46047b1eda0cecbd62243415a0b430e432a7cd6fbda58d366",
       "bytes": 10900
@@ -2195,6 +2335,11 @@
       "path": "source/native/flutter-dart-kit/test/nft_signing_test.dart",
       "sha256": "03adbf0dca409cabcd2463d7ba2802161a5b20dd104d6f616b0a2de894393560",
       "bytes": 13224
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/owned_canonical_test.dart",
+      "sha256": "40666d88eef40aac00d6c551a4dbb00938e87cbb5d0cbeb3d9c985376862da2b",
+      "bytes": 2044
     },
     {
       "path": "source/native/flutter-dart-kit/test/packaged_wallet_test.dart",
@@ -2245,6 +2390,21 @@
       "path": "source/native/flutter-dart-kit/test/query_client_test.dart",
       "sha256": "3c0a485e08595ac88f861b3567451b0205be9d394d02e408588caf6c2c44b758",
       "bytes": 2677
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/rc16_ft_signing_test.dart",
+      "sha256": "fd0998acd0f6e2960a7f2557ddcdcfe51c335df0186ca3b87b2a993ec69a83f3",
+      "bytes": 3409
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/rc16_material_test.dart",
+      "sha256": "9b6420025ec0f67ecb7d4a6ef4e3bef0b16b1e8f5976cc08de36ffac96c427ae",
+      "bytes": 7892
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/rc16_nft_batch_test.dart",
+      "sha256": "48dff13afdc582712af3e5983e5f1f2b32a2f75cd361dc6bfdf1cceaedc90637",
+      "bytes": 5519
     },
     {
       "path": "source/native/flutter-dart-kit/test/read_api_get_test.dart",
@@ -2392,6 +2552,11 @@
       "bytes": 5825
     },
     {
+      "path": "source/native/flutter-dart-kit/test/txo_status_batches_test.dart",
+      "sha256": "7bfd81be9c7072b999e287fdda386aabb3a0a95926c9afff8fefe145081a7306",
+      "bytes": 3188
+    },
+    {
       "path": "source/native/flutter-dart-kit/test/txo_status_reply_test.dart",
       "sha256": "cf8be5c92fcd16809d322f5ec8be291f3c4134c51c1c9f67ffac255fa29d03f9",
       "bytes": 2354
@@ -2447,6 +2612,11 @@
       "bytes": 12208
     },
     {
+      "path": "source/native/flutter-dart-kit/test_flutter/rc16_packaged_query_test.dart",
+      "sha256": "22e9aeeb897beca0942d6f4c07cb654a179c9b246066fd4b799b598b2d7ccecf",
+      "bytes": 1597
+    },
+    {
       "path": "source/native/flutter-dart-kit/test_flutter/wallet_actions_test.dart",
       "sha256": "a86c6afd2aebfd6b3c889d574df38071fcd3cd5580f957e2d3a4bbf65e2ce552",
       "bytes": 2911
@@ -2455,6 +2625,11 @@
       "path": "source/native/flutter-dart-kit/tool/amm_alias_stage_oracle.mjs",
       "sha256": "9d71429061780b51c29440416079d47d27228f5be49d8dfe9692851f2f316f85",
       "bytes": 1363
+    },
+    {
+      "path": "source/native/flutter-dart-kit/tool/approval_display_fixture.mjs",
+      "sha256": "8a5a089d8d0ecfb845472a45b7936103b7654390c39328a42a87462c1cd89427",
+      "bytes": 6501
     },
     {
       "path": "source/native/flutter-dart-kit/tool/balance_oracle.mjs",
@@ -2477,6 +2652,11 @@
       "bytes": 9454
     },
     {
+      "path": "source/native/flutter-dart-kit/tool/build_approval_display_device.mjs",
+      "sha256": "0a3e956b7443d2ada11ae6d0ac38a83269e876279f27811c22fc00adca86cf46",
+      "bytes": 6155
+    },
+    {
       "path": "source/native/flutter-dart-kit/tool/build_page.mjs",
       "sha256": "3332fd79c7bbd6067a702a8095808652050703f7525817377e4457a90d5f3469",
       "bytes": 2974
@@ -2485,6 +2665,11 @@
       "path": "source/native/flutter-dart-kit/tool/check.mjs",
       "sha256": "18f5a949530ea7f99e8964898365e0f92c2015d8b68f28f63b99f78bfad7d61f",
       "bytes": 22719
+    },
+    {
+      "path": "source/native/flutter-dart-kit/tool/check_approval_display.mjs",
+      "sha256": "42c97c9b33dfdfeedbc5a6070950eaa65b95edcf4e6fc811d034a724ebd14e63",
+      "bytes": 7436
     },
     {
       "path": "source/native/flutter-dart-kit/tool/check_balance.mjs",
@@ -2767,6 +2952,11 @@
       "bytes": 3976
     },
     {
+      "path": "source/native/flutter-dart-kit/tool/collect_approval_display_devices.mjs",
+      "sha256": "31eed4f426eb4c1b66963061d3cdbf66c6cc1fb16fe8faa06ddc4aee7a1ac468",
+      "bytes": 3273
+    },
+    {
       "path": "source/native/flutter-dart-kit/tool/collect_consumer.mjs",
       "sha256": "c82a6769bcc5e9d2a19570bef7e6462177058f7bdc9e65c14a39da55475fbe1d",
       "bytes": 31505
@@ -2915,6 +3105,11 @@
       "path": "source/native/flutter-dart-kit/tool/prepare_amm_funding_fixture.mjs",
       "sha256": "1104be17c8bee7713ab17e3b59d1b21b4cb2070aface189647eb92c5e4a512b0",
       "bytes": 3936
+    },
+    {
+      "path": "source/native/flutter-dart-kit/tool/prepare_approval_display_devices.mjs",
+      "sha256": "45f30da1da0d174dc86c73c24d59ac3fa7a06753ed4e9c37ab60c3532acf8007",
+      "bytes": 1980
     },
     {
       "path": "source/native/flutter-dart-kit/tool/prepare_consumer.mjs",
@@ -3132,6 +3327,16 @@
       "bytes": 6761
     },
     {
+      "path": "source/native/flutter/ios/engine/TbcFlutterEngine.h",
+      "sha256": "4503420ecfb671d5ca23212aee8164989dddf9feac4bd57a4a98d0a87293c5ca",
+      "bytes": 285
+    },
+    {
+      "path": "source/native/flutter/ios/engine/TbcFlutterEngine.mm",
+      "sha256": "f40c279d76881a16bf84844ddcabb2481d34e1918ffe0fb3590bd054baa346bf",
+      "bytes": 1403
+    },
+    {
       "path": "source/native/flutter/scripts/build-tools.mjs",
       "sha256": "58bfd2b4e5711d91ed4689dd6482091f2ff077bbc27fff1b2259968466e2110c",
       "bytes": 535
@@ -3250,6 +3455,66 @@
       "path": "source/native/flutter/scripts/webview-source-identity.mjs",
       "sha256": "bba4db5ca38a8e02f28dac680e07d775954fa71d0cf30429db6218e1be6ff2d3",
       "bytes": 1395
+    },
+    {
+      "path": "source/native/runtime-support/FenceChecks.kt",
+      "sha256": "0cf1f67e7b1c75823994b561dbeb9f4101f23c18a07e7c81fbd48bdad3662d7a",
+      "bytes": 6789
+    },
+    {
+      "path": "source/native/runtime-support/FenceChecks.swift",
+      "sha256": "d4bc14ef570c644b35bba5bb06e6a7c57af7943677174943cfc8d98c0994f40a",
+      "bytes": 8251
+    },
+    {
+      "path": "source/native/runtime-support/NativeSessionFence.kt",
+      "sha256": "82dcb2749e1c187205871bf0c1b64883496150b346998a5be234adedf3b6c7c7",
+      "bytes": 6426
+    },
+    {
+      "path": "source/native/runtime-support/NativeSessionFence.swift",
+      "sha256": "bbba9b47e12c903bc0e365cbf3e73cd8d6d6da7e33d469d7df1db3df4883fce1",
+      "bytes": 7440
+    },
+    {
+      "path": "source/native/runtime-support/README.md",
+      "sha256": "43c330ca4e8c7b8fd6a7071462bd7c0e947b24866642d86341ce40900946c294",
+      "bytes": 4039
+    },
+    {
+      "path": "source/native/runtime-support/ascii-jsi.hpp",
+      "sha256": "72d30baa3db1fe7d62e7e88f18af2c94336102f66571b407618dace3d3ca233d",
+      "bytes": 1300
+    },
+    {
+      "path": "source/native/runtime-support/check-fence.mjs",
+      "sha256": "4e75df01e69c7692d75dc36732c6b1766147b8539a8bedd3500932becec3e22e",
+      "bytes": 3445
+    },
+    {
+      "path": "source/native/runtime-support/native-sha256.mjs",
+      "sha256": "1796859b4bd72281f682f4932f2e5f98372905d994ecff5957591fe01848627f",
+      "bytes": 629
+    },
+    {
+      "path": "source/native/runtime-support/native-sha256.test.mjs",
+      "sha256": "38d89c97eab0b38251578024404bceb5d9dd8fa7d3d3c3d4ed4943f0b34b3761",
+      "bytes": 1424
+    },
+    {
+      "path": "source/native/runtime-support/sha256-jsi.hpp",
+      "sha256": "0d9f9364e314612a3badaff3c5fe0cc15da17ff50614d4e180d920d8af09a4ba",
+      "bytes": 2792
+    },
+    {
+      "path": "source/native/runtime-support/utf8-encoder.js",
+      "sha256": "434af9dc998e65fc7dad942ce5bccd325dffda014bb61f35e00d569eacda2b5b",
+      "bytes": 802
+    },
+    {
+      "path": "source/native/runtime-support/utf8-encoder.test.mjs",
+      "sha256": "d061111065243688e6e3ef435bfd7a8a704ca0f46d00023dde4e1effc433e943",
+      "bytes": 2520
     },
     {
       "path": "source/native/signer/.gitignore",
@@ -4573,13 +4838,13 @@
     },
     {
       "path": "source/package-lock.json",
-      "sha256": "8583a66195aeae4906827aa793b6b566be99022273cd508cec6e022bd8da734e",
-      "bytes": 48537
+      "sha256": "7a39e3fff39181d982a1ea24a479707bff8f553a97e18c05b1a57ddcf18d21ea",
+      "bytes": 48540
     },
     {
       "path": "source/package.json",
-      "sha256": "67f24fe24e31ec9da139f4ed60f9d18996a529b5b75acf2605ad6ada62137e13",
-      "bytes": 8923
+      "sha256": "6c995348e4ffdb9dcbebc79593fc9a20401cc3ddc3dfe4f0adc0f69ab2c32203",
+      "bytes": 8972
     },
     {
       "path": "source/packages/core/LICENSE",
@@ -4588,8 +4853,8 @@
     },
     {
       "path": "source/packages/core/README.md",
-      "sha256": "c60d1e9a809a577522c7bd046783c79454f31c52488b525a27e113248e98054a",
-      "bytes": 6552
+      "sha256": "8c525f8af6432768b0075045ab5c00fdfe40cae49fc27902506f68d04974769f",
+      "bytes": 6546
     },
     {
       "path": "source/packages/core/package.json",
@@ -4613,8 +4878,8 @@
     },
     {
       "path": "source/packages/core/src/canonical-json.ts",
-      "sha256": "8b0e46ab32a305d595ed71dd8ff7edfd21aa4037428e4c33b0fa680523c70af5",
-      "bytes": 2454
+      "sha256": "b332bf7bf053befc7059a581a4cb1e204a130e66dc01ec75039af3d60092403d",
+      "bytes": 3702
     },
     {
       "path": "source/packages/core/src/checkpoint-ownership.ts",
@@ -4623,8 +4888,8 @@
     },
     {
       "path": "source/packages/core/src/checkpoint.ts",
-      "sha256": "bc26a94964c19e9f5375cd17a78efd5c577d4c4edf4ffe717dd226cd9882039d",
-      "bytes": 12157
+      "sha256": "fa24e97072302f6b20ef89ad3a3099deafe9d9a7870694dd5580018b14f05ab6",
+      "bytes": 12355
     },
     {
       "path": "source/packages/core/src/core.ts",
@@ -4643,8 +4908,8 @@
     },
     {
       "path": "source/packages/core/src/engine.ts",
-      "sha256": "283950611acf43159d0781fadf0164aab12633a2e07a75ee2499c5db520d12ff",
-      "bytes": 13117
+      "sha256": "f5b5f8292c909a685642438c9a9699bd59bb928373b12cb346a6f54712f3884b",
+      "bytes": 13264
     },
     {
       "path": "source/packages/core/src/errors.ts",
@@ -4653,8 +4918,8 @@
     },
     {
       "path": "source/packages/core/src/generated/protocol-types.ts",
-      "sha256": "53e022b5cf1e9a77ca403521831ccdd04b729841ebe09804e327ab4fb3343bb4",
-      "bytes": 103188
+      "sha256": "7ad0462fa139d815b8b9adc8f2b6c50f6f7fcaa4e95c6363a5bb675b65c3a55b",
+      "bytes": 104657
     },
     {
       "path": "source/packages/core/src/generated/public-integration-release.ts",
@@ -4663,13 +4928,13 @@
     },
     {
       "path": "source/packages/core/src/generated/v1-candidate-release.ts",
-      "sha256": "798a56cc3511be1f936ab1c00ef49aa1aab4ee5952f784fada792bb7baa212d5",
+      "sha256": "7360f9f6ad81b8f50167308a4a73e77df3769d4bdcaac50dd00e029c5900d148",
       "bytes": 454
     },
     {
       "path": "source/packages/core/src/generated/validators.ts",
-      "sha256": "1ebb9e3524ec487ec874eabbcc7ce0301a8a484eb76ff238a8e1e4341ae58e42",
-      "bytes": 2354243
+      "sha256": "bf32141900aac30230fb79945cc0a881d83117aab3a2cb3390a492b213db71dd",
+      "bytes": 2390929
     },
     {
       "path": "source/packages/core/src/hash.ts",
@@ -4680,6 +4945,11 @@
       "path": "source/packages/core/src/identifiers.ts",
       "sha256": "0bdc1828e5970cbf9e9ac7a7110c3ef614c9733398fdafb12a5f5ebd1b910931",
       "bytes": 4548
+    },
+    {
+      "path": "source/packages/core/src/immutable-json-ownership.ts",
+      "sha256": "faa2a15e5411b14f7761500afd5f4489c1efea48d4e4e8c75b60f66eb2a91222",
+      "bytes": 277
     },
     {
       "path": "source/packages/core/src/index.ts",
@@ -4738,8 +5008,8 @@
     },
     {
       "path": "source/packages/core/src/reducers/chain-data-requirements.ts",
-      "sha256": "3f71029a84365c92f083b3c322ee293bc49033fcf4fe50cd8e410f22953c1c68",
-      "bytes": 26637
+      "sha256": "b91bed1fc3e15fa66f38826628fd9080b8dbd22a25e10d3efc10634ca474e83a",
+      "bytes": 27817
     },
     {
       "path": "source/packages/core/src/reducers/committing.ts",
@@ -4763,8 +5033,8 @@
     },
     {
       "path": "source/packages/core/src/reducers/planning.ts",
-      "sha256": "5c8990c2fad6b54bdf52fbf2741979fc4113fafa38de5783c0159b8b1ec6ac08",
-      "bytes": 17351
+      "sha256": "1709786df4cfed12d3b8c84cbffef6f7967f65d71ae5dab9f8ae64778cd32a8c",
+      "bytes": 17401
     },
     {
       "path": "source/packages/core/src/reducers/private-action-kernel.ts",
@@ -4862,6 +5132,11 @@
       "bytes": 3118
     },
     {
+      "path": "source/packages/core/test/canonical-owned-cache.test.mjs",
+      "sha256": "7ad97d3228c0bb66cb6e5f94ea2e968202a6cedb6797cd78a482938c4a5bbc68",
+      "bytes": 5974
+    },
+    {
       "path": "source/packages/core/test/canonical-string-scan.test.mjs",
       "sha256": "d6c16f92e5aa508ebe556865de7dd814617a85842c8eaf5465ed926ff45e7c2c",
       "bytes": 1504
@@ -4873,8 +5148,8 @@
     },
     {
       "path": "source/packages/core/test/checkpoint-schema-ownership.test.mjs",
-      "sha256": "f3e857300ed12f6c8eedb3e61377b2bc989430ff724dc266f02e22d37fb5ed8b",
-      "bytes": 9038
+      "sha256": "0491c992d9c1e3703d5f4d656a64d463ce2e84a47698d0b08e2cd1fa30b77cca",
+      "bytes": 9006
     },
     {
       "path": "source/packages/core/test/checkpoint-sharing.test.mjs",
@@ -4948,8 +5223,8 @@
     },
     {
       "path": "source/packages/core/test/portability.test.mjs",
-      "sha256": "626aa0848b0e42d5d0b9586dd84244113d355f55e5b0e0773e69ce3b2c7d11b1",
-      "bytes": 2448
+      "sha256": "532a39a2a1f91fb4ed746c1536b918e013a7ea52680b9f639311ba07d4fbb4de",
+      "bytes": 2451
     },
     {
       "path": "source/packages/core/test/prepared-dependencies.test.mjs",
@@ -5008,13 +5283,13 @@
     },
     {
       "path": "source/packages/core/test/tbc20-shared-contract.test.mjs",
-      "sha256": "3d260c5ec4df36f42fcf37b6260c3eed2b11acaae984400e9477c9282ae3f727",
-      "bytes": 15190
+      "sha256": "304546a286e1bd4da4696bbddca77d69944d11e343915903003d35ad13734dce",
+      "bytes": 15645
     },
     {
       "path": "source/packages/core/test/transaction-lifecycle.test.mjs",
-      "sha256": "84f8b48dab7545756ed845b771ad67241804fa71380f12c75a07477ddcea1ecd",
-      "bytes": 42597
+      "sha256": "229475bb001b6edae8c681ca1aa2b1624c97180fac7e20b97ee7dcebbacc3876",
+      "bytes": 42702
     },
     {
       "path": "source/packages/core/test/transition.test.mjs",
@@ -5223,8 +5498,8 @@
     },
     {
       "path": "source/packages/host/test/real-transfer.test.mjs",
-      "sha256": "60ccf73b1a2e9e5bb61375b180031ade179bf349f56fee382c66942f0495546b",
-      "bytes": 12739
+      "sha256": "b5f12a89bfa441674343be76ff8e104275443f91d5e40819c39e224236d47497",
+      "bytes": 12907
     },
     {
       "path": "source/packages/host/test/session-commit.test.mjs",
@@ -5318,8 +5593,8 @@
     },
     {
       "path": "source/packages/kit/artifacts/.source-build-start.json",
-      "sha256": "1d6b80f2759ec4771fde32edde3a392ae65c2c4ec3450bfa081405dca8311cc9",
-      "bytes": 117
+      "sha256": "4f683e813de5ed561d7f7de335d22fdec9ffe68a1c2947790c11c84cc6289b35",
+      "bytes": 108
     },
     {
       "path": "source/packages/kit/artifacts/api-rpc-coverage.json",
@@ -5333,13 +5608,13 @@
     },
     {
       "path": "source/packages/kit/artifacts/provenance.json",
-      "sha256": "1cd22a031da76c6a834781f85539deb74df0e403446368750a4232f8d043054b",
-      "bytes": 167122
+      "sha256": "16a3f84b1498b20e3ecfdf97284140080317b51e4b6a4b6a15b5494ae8eaf6a7",
+      "bytes": 168126
     },
     {
       "path": "source/packages/kit/artifacts/source-build.json",
-      "sha256": "696d7dd34677b268773055a491270fd3de2a9d78af79a5c2ad7cb84895b5251f",
-      "bytes": 327
+      "sha256": "f24a2152f8ebc7c12f64bdc1bd00ec591be4b500a2c19ee0ecc85561be00a594",
+      "bytes": 318
     },
     {
       "path": "source/packages/kit/artifacts/transport-hardening-evidence.json",
@@ -5348,13 +5623,13 @@
     },
     {
       "path": "source/packages/kit/artifacts/wasm/tbc_engine_wasm.wasm",
-      "sha256": "6e7bc0f998319566269cdf09be4f1f390888a6c8f0b825e51ca54abb53690233",
-      "bytes": 3993566
+      "sha256": "51acae70cfa76de5a31f81af1d56d8d4cfc91e2c8851be07b9c7734eee3bf819",
+      "bytes": 4336732
     },
     {
       "path": "source/packages/kit/artifacts/wasm/tbc_keyless_wasm.wasm",
-      "sha256": "a49b8e2a220f2ff3ce743ed6e546ee225ebff242b5f034aeb3ab4ea00bb91168",
-      "bytes": 2033708
+      "sha256": "738f7f6a2135c5aec28abc233b068b8fcc15eb66abc21fd2bdaf0b22ca3d776e",
+      "bytes": 2347725
     },
     {
       "path": "source/packages/kit/conformance/controlled-standard-signature-verifier.d.mts",
@@ -5373,8 +5648,13 @@
     },
     {
       "path": "source/packages/kit/docs/multisig.md",
-      "sha256": "7e2e3826b9af8a7f4750539f0df85229c2a257cc4e5db1e397f336bc890dcad4",
-      "bytes": 7755
+      "sha256": "e892ac7647f1e026f2ebf9abfd822f7822d8ad7186a4cf4830f1a1ad4258c2e4",
+      "bytes": 9877
+    },
+    {
+      "path": "source/packages/kit/docs/nft.md",
+      "sha256": "2e4a95559c070b36e9db3e8794ee045f456f04f1b78d8c2ec082a4612f1af0e5",
+      "bytes": 9145
     },
     {
       "path": "source/packages/kit/docs/reference/amm-quotes.md",
@@ -5383,8 +5663,8 @@
     },
     {
       "path": "source/packages/kit/docs/reference/approval-presentation-coverage.md",
-      "sha256": "fd046c6b0f22cc94ded29ba2407c12bfdb0b2113adea8d615c4278231de5d138",
-      "bytes": 1856
+      "sha256": "0ecd4096e1be9f30d0d4b9a43f1dc47dc18b0c867baf546c66312f42cb694a12",
+      "bytes": 5515
     },
     {
       "path": "source/packages/kit/docs/reference/contract-identification.md",
@@ -5418,8 +5698,8 @@
     },
     {
       "path": "source/packages/kit/docs/usage.md",
-      "sha256": "300c4aa158254120e08c9fe4db0c4c1bbf4defdeb4e9e55742cdc01906eda455",
-      "bytes": 75061
+      "sha256": "b463ebbb619974cd9d9bb8b94d61508d19c75c41941e059dbb16379f58034e6a",
+      "bytes": 79207
     },
     {
       "path": "source/packages/kit/examples/amm-fee-policy.ts",
@@ -5438,8 +5718,8 @@
     },
     {
       "path": "source/packages/kit/examples/approval-presentation/README.md",
-      "sha256": "8e28526f13699f3d00b3da9a6f403afcccf44ee48bac61452cc27fcb7d0ca552",
-      "bytes": 3822
+      "sha256": "1de24ed4f781290519821501c84ad75ae8c5a15e06f0aed0b24100896eed2063",
+      "bytes": 5500
     },
     {
       "path": "source/packages/kit/examples/approval-presentation/host-reader-callback.mjs",
@@ -5448,8 +5728,8 @@
     },
     {
       "path": "source/packages/kit/examples/approval-presentation/renderer.mjs",
-      "sha256": "036b5a6e71738aa4ee6bcd2aa9a2f4b40e38e629e50a6d6d0c7e81c9d36a83f1",
-      "bytes": 3335
+      "sha256": "0c7d66e8b10af27696e0bec0c02c08cee2b7ab6be713fac5e73c2fc27e1fac40",
+      "bytes": 4433
     },
     {
       "path": "source/packages/kit/examples/approval-presentation/run.mjs",
@@ -5548,8 +5828,13 @@
     },
     {
       "path": "source/packages/kit/examples/nft-three-step/README.md",
-      "sha256": "7a0ad3bab8c7c2c4183089e6b2291d37ed6ee7b4fa9358df34da1f194e0f8f7a",
-      "bytes": 1328
+      "sha256": "7d1969610c546c4622b2453e0c5fe0d463b8bb9c0738b0cc2bbac529c62ade14",
+      "bytes": 1916
+    },
+    {
+      "path": "source/packages/kit/examples/nft-three-step/batch.mjs",
+      "sha256": "01a2dbfe5ca5993d5bf1986c42cdbfff446025eaa7d38ebc10655c1a8eb3667a",
+      "bytes": 789
     },
     {
       "path": "source/packages/kit/examples/nft-three-step/run.mjs",
@@ -5613,8 +5898,8 @@
     },
     {
       "path": "source/packages/kit/examples/react-native-engine/module/native-sdk-lock.json",
-      "sha256": "d598bac86207c7b078c593f9dd3ec1426429cf8e65dd04c7334ae07d8813fc52",
-      "bytes": 8696
+      "sha256": "751ca15cba7e4a546aa3d824edfacfaee791f81ccff76180bed9ea4bd8290a1e",
+      "bytes": 7917
     },
     {
       "path": "source/packages/kit/examples/react-native-engine/module/package.json",
@@ -5668,8 +5953,8 @@
     },
     {
       "path": "source/packages/kit/package.json",
-      "sha256": "2d6a0190d1f7c62d484cd8fa950803626c0eb68a0320d042f897fc4c2ae92a78",
-      "bytes": 3302
+      "sha256": "a7bea6c28e840ef77163f3933320b74a7c57d5b14087706f3cc29106df9508da",
+      "bytes": 3303
     },
     {
       "path": "source/packages/kit/scripts/benchmark-network-transport.mjs",
@@ -5683,8 +5968,13 @@
     },
     {
       "path": "source/packages/kit/scripts/build.mjs",
-      "sha256": "ef26284ca94173ac4bde16b5244187fe9194f8ce7a75fce67952af4cb01740ec",
-      "bytes": 21821
+      "sha256": "dc8423b4e2beafa2e9898558849947d4940435515857a05ffadf44c364de734f",
+      "bytes": 21991
+    },
+    {
+      "path": "source/packages/kit/scripts/check-approval-candidate.mjs",
+      "sha256": "645b37b7f8df3b1c294bff079bac2013f643ffbc8612eb493e8c3cec34844f4d",
+      "bytes": 7251
     },
     {
       "path": "source/packages/kit/scripts/check-approval-presentation-source.mjs",
@@ -5693,8 +5983,8 @@
     },
     {
       "path": "source/packages/kit/scripts/check-default-success-lifecycles.mjs",
-      "sha256": "4df79641518201ddf9479eca7537c5151b033a1880be82ce825193d58df4b7ae",
-      "bytes": 21724
+      "sha256": "5ede12c9b3d69cdcc7c3eff1cd3600fdafd594f2e89c00bdc19dd0f13e81f8d6",
+      "bytes": 22693
     },
     {
       "path": "source/packages/kit/scripts/check-demand-loading.mjs",
@@ -5708,8 +5998,8 @@
     },
     {
       "path": "source/packages/kit/scripts/check-install-candidate.mjs",
-      "sha256": "ec9de2bf5d558e037fce9aca2d8a0fba908db9ed01d987d72574f05b2b895cf6",
-      "bytes": 15823
+      "sha256": "016f5af7dfb3f19c23066c64c9454d562fe9cafba70fca87b122ee595cbc9d3b",
+      "bytes": 16887
     },
     {
       "path": "source/packages/kit/scripts/check-installed-prepared-failure.mjs",
@@ -5787,6 +6077,16 @@
       "bytes": 1839
     },
     {
+      "path": "source/packages/kit/scripts/finalize-approval-output-candidate.mjs",
+      "sha256": "de296bc6acd0be06347f12ed6fe8ab2834c10b9335a4e12a4857af0d2b208585",
+      "bytes": 4619
+    },
+    {
+      "path": "source/packages/kit/scripts/pair-approval-engine.mjs",
+      "sha256": "a3f6da8250eb5615f30bf6c8222259e46b410a43b1813bf1af29da435b89d0b7",
+      "bytes": 8253
+    },
+    {
       "path": "source/packages/kit/scripts/platform-resources.mjs",
       "sha256": "991b8f0bc8664ec0a8f6b7521cd023f324bde2ad840f258b29b4eed1a07643b3",
       "bytes": 3974
@@ -5795,6 +6095,11 @@
       "path": "source/packages/kit/scripts/portable-parser-dependencies.mjs",
       "sha256": "79328ce25db2dbbaf25fabeb5bda3f3d1395b72cfdab93e9723c696eeb0b7804",
       "bytes": 2203
+    },
+    {
+      "path": "source/packages/kit/scripts/prepare-approval-candidate.mjs",
+      "sha256": "f304595f423715f234e7145c2cb37bec2b8c0e523a82ce2ade484ec61d70e7c0",
+      "bytes": 11557
     },
     {
       "path": "source/packages/kit/scripts/prepare-deferred-legacy-candidate.mjs",
@@ -5833,8 +6138,8 @@
     },
     {
       "path": "source/packages/kit/scripts/runtime-build.mjs",
-      "sha256": "044fc4039209b0e83a83c21f3d1a8e8179fac7067c7cd4f5152474c70de91b2e",
-      "bytes": 7669
+      "sha256": "2a3e51cf9cdddeda702d571d3a87a34d78ab57a579a9684b13a5e966143f44f2",
+      "bytes": 7738
     },
     {
       "path": "source/packages/kit/scripts/save-platform-delivery.mjs",
@@ -5893,8 +6198,8 @@
     },
     {
       "path": "source/packages/kit/src/api.ts",
-      "sha256": "726a416fb82456231d569c6c8613eb56014381390ebd4a0a75ea6e3bf0c4a513",
-      "bytes": 2197
+      "sha256": "e0092bc467eb81fcf4b2ecb710acffc8baeec228cf8058d995e8270538d90186",
+      "bytes": 2380
     },
     {
       "path": "source/packages/kit/src/approval-host-evidence.ts",
@@ -5908,8 +6213,8 @@
     },
     {
       "path": "source/packages/kit/src/approval-presentation.ts",
-      "sha256": "228846d93740a460fe774f8aab177f34eb0bfe08eaa3a915e7ab5691a6b4474c",
-      "bytes": 34123
+      "sha256": "9b8c66026371f70446ba8cc7a0d3bebb33e1adf8779300ca378854a5f9559cda",
+      "bytes": 43199
     },
     {
       "path": "source/packages/kit/src/approved-host-task.ts",
@@ -5918,23 +6223,23 @@
     },
     {
       "path": "source/packages/kit/src/backend-service.ts",
-      "sha256": "0feb50d588248ff4b6974e90a6868563fa5965a97ed0c6ebb5034b47e88d6382",
-      "bytes": 13563
+      "sha256": "826195ad922a83d19930bf91e81a86211c20b9475eb5b7be9919467070cb808d",
+      "bytes": 15023
     },
     {
       "path": "source/packages/kit/src/broadcast-journal.ts",
-      "sha256": "cd2fdc97c12b2408f701eb442617dc10ffbf911b9642ce01807241e00084ebfd",
-      "bytes": 26746
+      "sha256": "d82d7604f3277c46fe5c697dadc29f4d316d175150b51d555c8b23853d4c6b85",
+      "bytes": 26747
     },
     {
       "path": "source/packages/kit/src/business-capabilities.ts",
-      "sha256": "26ba4288ac4196846abc0ed42845109bac47a25d03cb17e4066a52b1fe937c6c",
-      "bytes": 2958
+      "sha256": "56c19d71791e0d3cea677ada95ea1c7945f8c87194060375dde88e60af81d0a2",
+      "bytes": 3032
     },
     {
       "path": "source/packages/kit/src/chain-data-read-scope.ts",
-      "sha256": "3fdd162876c5a649465a12868d7beaae1bd83cd598743119d9da57e62494880d",
-      "bytes": 3513
+      "sha256": "c89d39d80e07a25e8b6f439192641a91487460c2019dd1b163bef850c66107a1",
+      "bytes": 3995
     },
     {
       "path": "source/packages/kit/src/chain-data-tools.ts",
@@ -5943,13 +6248,13 @@
     },
     {
       "path": "source/packages/kit/src/client-browser.ts",
-      "sha256": "78d766b453dc0403ff07f47a70b6ce8a8b016406f1fabc9eaa0838111a5ffeeb",
-      "bytes": 790
+      "sha256": "6408656aa0066dfb7780a72de4db5572dfb1ab3e408498f3b95a581b7e0ca417",
+      "bytes": 842
     },
     {
       "path": "source/packages/kit/src/client.ts",
-      "sha256": "424258ceb29881ca45a317c9394eb6f47fbda8c3156da39df5656591ee25926b",
-      "bytes": 58627
+      "sha256": "5e898a46ff0899f57c65ce1178a65e672544b22907cb1e4ad2268ea516753ae6",
+      "bytes": 61768
     },
     {
       "path": "source/packages/kit/src/coin-management-material.ts",
@@ -5968,18 +6273,18 @@
     },
     {
       "path": "source/packages/kit/src/default-broadcast.ts",
-      "sha256": "ad2cf81e3d42a86e3431db044b5f8e68e50f9f4ce350c28fa42cc9257ffd3d22",
-      "bytes": 22607
+      "sha256": "ce0d409fab5c6a5f0108a258a43099bb325c8ec6eb2bf5dbd0026e2e006564e1",
+      "bytes": 22609
     },
     {
       "path": "source/packages/kit/src/default-chain-data.ts",
-      "sha256": "72d9b23dacce036ffef6ddca270c7c2182891400c965c517b6442e179595f3fc",
-      "bytes": 115049
+      "sha256": "08c64f203a6e587ce42db1c1f7c44a77b1b51981d88f83b607fdc9752703080e",
+      "bytes": 122451
     },
     {
       "path": "source/packages/kit/src/default-network.ts",
-      "sha256": "ccf98e0f26666c9bc5188db12ba1452d34e335a1ff58571ebc31213a7dcbbaf2",
-      "bytes": 26892
+      "sha256": "fe9d0a09018ac51843c9c8099ada79d7112db8dc81984f03c65b7aaec71f6a2e",
+      "bytes": 27863
     },
     {
       "path": "source/packages/kit/src/engine-base.ts",
@@ -5998,8 +6303,8 @@
     },
     {
       "path": "source/packages/kit/src/fungible-business-route.ts",
-      "sha256": "599d3b569d9c0e4d7880706d9ea7917c040b0a0181178c960ede821b3b63c0b7",
-      "bytes": 6653
+      "sha256": "f578fc6fa80553d6089c234896e4e2a4e8227fc856c75bfeb59a793b1e629a0c",
+      "bytes": 6956
     },
     {
       "path": "source/packages/kit/src/host-runtime.ts",
@@ -6008,8 +6313,8 @@
     },
     {
       "path": "source/packages/kit/src/htlc-material.ts",
-      "sha256": "c91897ee3d4391d3a6e4f58f0b17225fe0067fc73cc92773567dabedd09d53d0",
-      "bytes": 6952
+      "sha256": "87942cc2524218a29a759973f70f0fb4508d120e1fc6629c1b4a7fc3b9635ac4",
+      "bytes": 7271
     },
     {
       "path": "source/packages/kit/src/htlc-privacy.ts",
@@ -6023,13 +6328,13 @@
     },
     {
       "path": "source/packages/kit/src/index.native.ts",
-      "sha256": "ff5c0eb6e26864f4f7e2bb21dba6c6677c351bb0523367c2e0a33ad691fe0bdd",
-      "bytes": 5449
+      "sha256": "f9c1003c40ff96c903afc803fd984a891669688b4e34a0bdf32bf77d2ab00b52",
+      "bytes": 5832
     },
     {
       "path": "source/packages/kit/src/index.ts",
-      "sha256": "85934592cac7f2c582b6dfeb7bc7694db9da45842f02946230d63acc1d2bcc2b",
-      "bytes": 5653
+      "sha256": "3e6a7827011d4ed12b88733b38c26779f7a2606357801308caafdfb44dd34014",
+      "bytes": 6036
     },
     {
       "path": "source/packages/kit/src/internal/core/index.ts",
@@ -6048,8 +6353,8 @@
     },
     {
       "path": "source/packages/kit/src/keyless.ts",
-      "sha256": "3d614aae233a08132f5d4e0751b00fb1f48ff893715c5aaa8addc57c266e7b32",
-      "bytes": 6469
+      "sha256": "ded317ded913a5482e9d99986ba150053fba62d500519c0deef277ace387305b",
+      "bytes": 6489
     },
     {
       "path": "source/packages/kit/src/legacy-associated-transaction.ts",
@@ -6083,8 +6388,8 @@
     },
     {
       "path": "source/packages/kit/src/legacy-ft-transfer-intent.ts",
-      "sha256": "7c4a1a29c9a89504858b94357f3dec03ee2b97109e1c07e7a8d3fa4c68d8beae",
-      "bytes": 10457
+      "sha256": "3f95acf01d9872f1492057d27c23243cf0a5a4f117ce2694cefa1fba1eacd7a9",
+      "bytes": 10454
     },
     {
       "path": "source/packages/kit/src/legacy-generic-batch.ts",
@@ -6183,8 +6488,8 @@
     },
     {
       "path": "source/packages/kit/src/multisig.ts",
-      "sha256": "ca82d0f01811a365ced50b8f1ff375b126c0c9dc2863364aad35e34d5b8dd0be",
-      "bytes": 11661
+      "sha256": "36205dd7aef4c13313002b7295429dc58c8f1f8b7d59616aec056775d73d2982",
+      "bytes": 13184
     },
     {
       "path": "source/packages/kit/src/network-bytes.ts",
@@ -6213,8 +6518,28 @@
     },
     {
       "path": "source/packages/kit/src/nft-material.ts",
-      "sha256": "aeeef851699c42d06a16b33f67adca2eca4f985ae06441b6431c8512c756f0b9",
-      "bytes": 14151
+      "sha256": "a5b7322afca33922a157797cdf6927d53d06d3ca494d63a228719c9d321b6edd",
+      "bytes": 14630
+    },
+    {
+      "path": "source/packages/kit/src/nft-mint-job-material.ts",
+      "sha256": "40fe713e0007428a44ba4b9094808dfb8b167f46f3c5d6ac743858501a0766d5",
+      "bytes": 10009
+    },
+    {
+      "path": "source/packages/kit/src/nft-mint-job-wallet.ts",
+      "sha256": "a160d5c5951981284ef92679b61e47783bd0ccd83428a3209d66f2296b43f742",
+      "bytes": 13454
+    },
+    {
+      "path": "source/packages/kit/src/nft-mint-job.ts",
+      "sha256": "6f1af9ee9b1922f3e1956679ef94286ce576d703bd7349e82530e19a70362861",
+      "bytes": 17812
+    },
+    {
+      "path": "source/packages/kit/src/nft-query.ts",
+      "sha256": "2b011c2ee6e630367a672993fe002794b1406bd3d593bb4387e39730ff3eefe6",
+      "bytes": 8974
     },
     {
       "path": "source/packages/kit/src/official-api.ts",
@@ -6258,8 +6583,8 @@
     },
     {
       "path": "source/packages/kit/src/prepared-chain-data.ts",
-      "sha256": "524352b151e24ea8f213b8e12bb9ac8cc7b29487761b74f1a3b9afb6a555bb89",
-      "bytes": 12804
+      "sha256": "d47c6fedbb802d1767dfcfcb923c784cf8a78be6057e08d8d509053b06eff41c",
+      "bytes": 13330
     },
     {
       "path": "source/packages/kit/src/prepared.ts",
@@ -6278,8 +6603,8 @@
     },
     {
       "path": "source/packages/kit/src/public-types.ts",
-      "sha256": "5a0a2c36395bd97d9eb9d210b9fad7b39e105bf924800f3cc3913e1380c4d96f",
-      "bytes": 17000
+      "sha256": "5cf6d311ee459c86df145e93b2d0daf7a164afa244d9103f471dce8e2e3d0819",
+      "bytes": 17608
     },
     {
       "path": "source/packages/kit/src/read-retry.ts",
@@ -6358,8 +6683,8 @@
     },
     {
       "path": "source/packages/kit/src/reviewed-transaction-reviewer.ts",
-      "sha256": "3b0ff529bd9b50f2b428b17f014e5641c1b4589d1067eb8b6325b5a4fcdacb4e",
-      "bytes": 42811
+      "sha256": "f30ba2146dbbcaa359cf1da7288e53cf483e6e2234f6314fba6d65320fcda1a0",
+      "bytes": 43372
     },
     {
       "path": "source/packages/kit/src/reviewed-transaction-types.ts",
@@ -6413,13 +6738,13 @@
     },
     {
       "path": "source/packages/kit/src/testnet-client.ts",
-      "sha256": "b020c649a0fa42823286ee91703fd58b3428ea0e344d18ca7cd11c6b9d12c498",
-      "bytes": 36699
+      "sha256": "2ea9d6af17d25176711699517d930149d7ac8efd2bed2f1eeb102c32bba1db5e",
+      "bytes": 37389
     },
     {
       "path": "source/packages/kit/src/testnet-validation.ts",
-      "sha256": "9ec083301614d728df58358daea3546bb1bb473e72744e7c02a4865707eb2a0b",
-      "bytes": 12431
+      "sha256": "939eeeb633f1ad590c7e924f712e6881497c10e337074bb4b2f51b68a32a7262",
+      "bytes": 12376
     },
     {
       "path": "source/packages/kit/src/timelock-material.ts",
@@ -6432,9 +6757,19 @@
       "bytes": 7135
     },
     {
+      "path": "source/packages/kit/src/txo-status-batches.ts",
+      "sha256": "aece2cc02f55cf51f4d66fa36f13ba836c0db136063d6d9a8a9d0235bfa0d339",
+      "bytes": 1480
+    },
+    {
       "path": "source/packages/kit/src/utxo-pages.ts",
       "sha256": "00afe349d741446746360cfe1603dac988e550deb298e8a4623d24b922d14567",
       "bytes": 2556
+    },
+    {
+      "path": "source/packages/kit/src/vendor/tbc-tx-parser/index.d.ts",
+      "sha256": "7a086135b43fb1dcde09e1338a790d50434c3ea9c96d032a1fce1b16941f7c74",
+      "bytes": 282
     },
     {
       "path": "source/packages/kit/src/wallet-private-native.ts",
@@ -6443,8 +6778,8 @@
     },
     {
       "path": "source/packages/kit/src/wallet-runtime.ts",
-      "sha256": "c43a6e867ce7af3bbea4549f73baf487b431130f0e8393dae220f279221ab0be",
-      "bytes": 151083
+      "sha256": "22f7e8cc687c2ca8435633fccdda321f355887119fe16325785800c51eadadad",
+      "bytes": 158339
     },
     {
       "path": "source/packages/kit/src/wallet-standard-browser.ts",
@@ -6468,8 +6803,8 @@
     },
     {
       "path": "source/packages/kit/src/wallet.ts",
-      "sha256": "20c22419f5d4f4d526f3ac5d792158371b2a35c34cbd824242d75d74bb0e0fb2",
-      "bytes": 19662
+      "sha256": "5a6c5a45198a79ea0d1583bbabe86e4fc221552c20e1c1932838e6eaa0cc6921",
+      "bytes": 19929
     },
     {
       "path": "source/packages/kit/src/webview.ts",
@@ -6493,8 +6828,8 @@
     },
     {
       "path": "source/packages/kit/test/approval-presentation.test.mjs",
-      "sha256": "d86aa1128ada65c7f6bdb3052591263ffa3cee9cba5f61bcfbf38cf9c973378d",
-      "bytes": 40076
+      "sha256": "58183cfd599396c3ddc3081206b4b14899c0def2000ecffe60da322f8408e2cf",
+      "bytes": 50599
     },
     {
       "path": "source/packages/kit/test/approved-host-task.test.mjs",
@@ -6503,8 +6838,8 @@
     },
     {
       "path": "source/packages/kit/test/backend-service.test.mjs",
-      "sha256": "77574b42905abeb76b10f95b360a4560b15282000607e2213418c1becef86955",
-      "bytes": 17246
+      "sha256": "6e2601db3554279648d50b308b9a33a886786cfced084660cc5fcfe3d28d2273",
+      "bytes": 18973
     },
     {
       "path": "source/packages/kit/test/bundle-module-identity.test.mjs",
@@ -6518,8 +6853,8 @@
     },
     {
       "path": "source/packages/kit/test/chain-data-read-scope.test.mjs",
-      "sha256": "e5bd44fbe1640d798b0e0a12724b50f79da0a646a5c62d64b3ea09a4ff739672",
-      "bytes": 6618
+      "sha256": "75a0051047d013edc0f8f4d3c31c6f0ff7a7b1c08adc455d4ad0de217da89cca",
+      "bytes": 8064
     },
     {
       "path": "source/packages/kit/test/chain-data-tools.test.mjs",
@@ -6528,8 +6863,8 @@
     },
     {
       "path": "source/packages/kit/test/client-and-network.test.mjs",
-      "sha256": "09a16b11d3aa9c59e2738b7eb5d7b851262e0bcde72e471bfe416112e5ec9695",
-      "bytes": 22843
+      "sha256": "200464363b2451c34ff1a77a6bfbe1f73436b29d890c77007b6f099be2d87e0e",
+      "bytes": 24372
     },
     {
       "path": "source/packages/kit/test/client-types.test.mjs",
@@ -6538,8 +6873,8 @@
     },
     {
       "path": "source/packages/kit/test/coin-chain-data.test.mjs",
-      "sha256": "d957e77bc40015e2289ecc5b871be2e52dca49b943f79e31df84e9dcbba93261",
-      "bytes": 7870
+      "sha256": "2a19218d3b33f2b9977712fc41a3059663bad0bb4d869355fe6802373f02d6d2",
+      "bytes": 8985
     },
     {
       "path": "source/packages/kit/test/contract-identification.test.mjs",
@@ -6563,8 +6898,8 @@
     },
     {
       "path": "source/packages/kit/test/core-host-runtime.test.mjs",
-      "sha256": "455295ee31b6379417fb5af14a1ef57cef02830b6f6425fc3c5b6503d3581aff",
-      "bytes": 3440
+      "sha256": "bf2285cbe44c60051952bd3faa58ee3520976851c394538c98f7d101c1fac3a9",
+      "bytes": 3500
     },
     {
       "path": "source/packages/kit/test/core-host-types.test.mjs",
@@ -6593,18 +6928,18 @@
     },
     {
       "path": "source/packages/kit/test/default-broadcast.test.mjs",
-      "sha256": "42f535f9cf437c78fc59f4d051bdcd29048549f5ee349549a06471b5b70e6840",
-      "bytes": 20347
+      "sha256": "c17c1807748de435186c1afee52bc72c78bbddda61d92f966a3626e6d0004872",
+      "bytes": 22262
     },
     {
       "path": "source/packages/kit/test/default-chain-data.test.mjs",
-      "sha256": "8ea74d53ea3fd4bc1f68d8476d393fad2a15b79886c794166a31581342900e3f",
-      "bytes": 61889
+      "sha256": "449bca780ac9b50a31dc9aa56116d0514018959a324b42d454d91bbaffb6d4d7",
+      "bytes": 64534
     },
     {
       "path": "source/packages/kit/test/default-success-lifecycles.test.mjs",
-      "sha256": "2eeac5b20aa91587432b271c135aaf800c348e2fa262b5bb13174fb598418269",
-      "bytes": 4268
+      "sha256": "8cbceb7e4751ecb9ad4750f78ee8011b22a673eff2014df731411083348c0783",
+      "bytes": 4538
     },
     {
       "path": "source/packages/kit/test/delete-safe-final-audit.test.mjs",
@@ -6677,14 +7012,19 @@
       "bytes": 5153
     },
     {
+      "path": "source/packages/kit/test/ft-fragmented-reader.test.mjs",
+      "sha256": "03f895e5a5f82ac25a97ecb742383b965325e9c627df6cfd9d7b57200362c76c",
+      "bytes": 9037
+    },
+    {
       "path": "source/packages/kit/test/ft-standard-fallback-gate.test.mjs",
       "sha256": "4eba4683ab49f5f20460557ae6edf3c69834798a403397aa739b61f803598da3",
       "bytes": 944
     },
     {
       "path": "source/packages/kit/test/fungible-business-route.test.mjs",
-      "sha256": "53f49047e32d313232b71923e0e69cc582aab7eff75a582d1e64cb6d6c1891d8",
-      "bytes": 4785
+      "sha256": "56eed6139fcb83c2eff7076b0109a7f6f5ca93aca1f03fb4afb2fbc5a1f2f3f5",
+      "bytes": 5313
     },
     {
       "path": "source/packages/kit/test/hermes-wallet-import.test.mjs",
@@ -6693,8 +7033,13 @@
     },
     {
       "path": "source/packages/kit/test/htlc-material.test.mjs",
-      "sha256": "f64ee2f8f7f4c7d208298f9cd069b21af6924fb580c386886b8ef085d731c37b",
-      "bytes": 18462
+      "sha256": "7fc50f0e50d8fffeda2fff7c84ee1c7435e2e8d20a827e66c783351221d23c2d",
+      "bytes": 18716
+    },
+    {
+      "path": "source/packages/kit/test/htlc-review-status-batching.test.mjs",
+      "sha256": "0e7625db33c50ef2944e553da1a4d67f8a558abb47b92378717881bac161e5c8",
+      "bytes": 12232
     },
     {
       "path": "source/packages/kit/test/independent-wallet-example.test.mjs",
@@ -6748,8 +7093,8 @@
     },
     {
       "path": "source/packages/kit/test/legacy-cleanup-audit.test.mjs",
-      "sha256": "b1dff28e4f3529e84128365fd289cf42a5026a5ed12f6cc041130511188a16ff",
-      "bytes": 2718
+      "sha256": "e94987e96e1f8079b0084f8fa2cf550a412ca4bdcc51ef4a55255abe21f56176",
+      "bytes": 2777
     },
     {
       "path": "source/packages/kit/test/legacy-dependent-batch.test.mjs",
@@ -6763,8 +7108,8 @@
     },
     {
       "path": "source/packages/kit/test/legacy-ft-transfer-intent.test.mjs",
-      "sha256": "9d606db2ab432b6c9fd73d84d8b58d011711fc1ca3809be3c9516a6dcf3031da",
-      "bytes": 7191
+      "sha256": "9b3ebb662123abdf6ff15b5ab10404840fe94da265ba7ba7e08586d79fc5d939",
+      "bytes": 7352
     },
     {
       "path": "source/packages/kit/test/legacy-generic-batch.test.mjs",
@@ -6793,8 +7138,8 @@
     },
     {
       "path": "source/packages/kit/test/legacy-pool-intent.test.mjs",
-      "sha256": "e471702886d57a08937f41f54361cf5917e2510ac6e7b13239d5806dcbe9a6df",
-      "bytes": 8562
+      "sha256": "ec1d5291896ab0e56cf5d32f93410e8ba724894083561b47eb6a8153a0219d0e",
+      "bytes": 8570
     },
     {
       "path": "source/packages/kit/test/legacy-raw-reviewer-no-global-buffer.test.mjs",
@@ -6803,8 +7148,8 @@
     },
     {
       "path": "source/packages/kit/test/legacy-raw-transaction-reviewer.test.mjs",
-      "sha256": "b7a931466624192e9a292ab09440a2e96cd75fe27f01672a0f51b23bae17e0cb",
-      "bytes": 13173
+      "sha256": "aef8aa83839d15ebd9694880b6ba7f71bc3c9824eac2217bdd90640d58083a56",
+      "bytes": 13182
     },
     {
       "path": "source/packages/kit/test/legacy-routing-boundaries.test.mjs",
@@ -6858,8 +7203,8 @@
     },
     {
       "path": "source/packages/kit/test/multi-round-merge-real-engine.test.mjs",
-      "sha256": "c93acc914d3aca91133f904bc877127ffe912adc39997ff8f49083270e404983",
-      "bytes": 36548
+      "sha256": "0e9faa9b6d2b630e095a8ca503accc48ed794546f3961eaddd7996c6489b7987",
+      "bytes": 41120
     },
     {
       "path": "source/packages/kit/test/multi-round-merge.test.mjs",
@@ -6873,8 +7218,8 @@
     },
     {
       "path": "source/packages/kit/test/multisig.acceptance.mjs",
-      "sha256": "4b03e6a0832db5ef4fcb807a27805146654587e4d86cc301bce336095c346320",
-      "bytes": 13254
+      "sha256": "90884c9b83988a1ddc0c1e6778767d5cfbd78c89e90e6752618d57f0fa42b887",
+      "bytes": 16303
     },
     {
       "path": "source/packages/kit/test/network-context.test.mjs",
@@ -6887,14 +7232,29 @@
       "bytes": 14609
     },
     {
+      "path": "source/packages/kit/test/nft-material-batching.test.mjs",
+      "sha256": "ac2819404f1879c0a01c7f02ff70a0aa284e162e6b01f1aa1bc7fb74ee7980fe",
+      "bytes": 12880
+    },
+    {
+      "path": "source/packages/kit/test/nft-mint-job.test.mjs",
+      "sha256": "d2b41c690e9d477e73e1540e3d08475230f2f52208aa355326ff56da6af884b3",
+      "bytes": 14152
+    },
+    {
       "path": "source/packages/kit/test/nft-public-example.test.mjs",
       "sha256": "543f6768618d12186b23a9bdb82eef393f4b4c3f715b3c05920524299d266565",
       "bytes": 3113
     },
     {
+      "path": "source/packages/kit/test/nft-query.test.mjs",
+      "sha256": "b70f2a6d3bad18a90b8df077dc6d4891f141df82ca3ef8e3b3c9e10eefdfcc98",
+      "bytes": 13691
+    },
+    {
       "path": "source/packages/kit/test/nft-three-step.test.mjs",
-      "sha256": "21a892bbf6c69d93b5c53c61632c15111a1e3bd32a218d64044e6d2c277640dc",
-      "bytes": 14617
+      "sha256": "331dabb20c53b120fdf9702f3d5d67742806a34747cdecef9b4fe4a333fb5ebc",
+      "bytes": 15128
     },
     {
       "path": "source/packages/kit/test/official-api-rpc.test.ts",
@@ -6908,8 +7268,8 @@
     },
     {
       "path": "source/packages/kit/test/package-boundary.test.mjs",
-      "sha256": "fe9d308d3c3881a90f0e9da6d607fce2816ad800881b6de8265b0e5ad89f9909",
-      "bytes": 3675
+      "sha256": "ffdf43d96f6d17b22e14d03c3dfceaadee27ea5fbc84ae11b64eff60649f7cdd",
+      "bytes": 3701
     },
     {
       "path": "source/packages/kit/test/platform-resources.test.mjs",
@@ -6918,8 +7278,8 @@
     },
     {
       "path": "source/packages/kit/test/pool-empty-lp-index.test.mjs",
-      "sha256": "ac0a540d46a7343601b1bbe4573efea4ba8204b0cddf139e608ef053c88c8bd1",
-      "bytes": 5122
+      "sha256": "db13eec075caa86d95103d56aa2e5dfac8c3469592437295333f7680e223271b",
+      "bytes": 5559
     },
     {
       "path": "source/packages/kit/test/pool-material-helpers.test.ts",
@@ -6948,8 +7308,8 @@
     },
     {
       "path": "source/packages/kit/test/prepared-template-parsing.test.mjs",
-      "sha256": "2ad22d0c864b6e55fb30ff7e01159ee9a2346b43f6a41bf7d7f84d3937ec5bb5",
-      "bytes": 2414
+      "sha256": "c8c59e9e924bd231c7d9456c4a51e73cd06ee8e44debe160ab81b77a9aa58210",
+      "bytes": 4051
     },
     {
       "path": "source/packages/kit/test/provider-transport.test.mjs",
@@ -6958,8 +7318,8 @@
     },
     {
       "path": "source/packages/kit/test/react-native-engine-template.test.mjs",
-      "sha256": "6794319334a9a687b8901a4adc9f4e2e047de4466e4e15f920962bfa86842e0c",
-      "bytes": 15209
+      "sha256": "b761959846ebdb7e51c879b4388a9dd782f7e4ca7e8de5cd98f589cd7f675418",
+      "bytes": 15598
     },
     {
       "path": "source/packages/kit/test/read-retry.test.mjs",
@@ -7012,6 +7372,11 @@
       "bytes": 4008
     },
     {
+      "path": "source/packages/kit/test/sdk-gaps-schema.test.mjs",
+      "sha256": "b60cd83236ec286464ee6f8d7fa53db2dcb27fbeda97d4c2236014ed46bba094",
+      "bytes": 3042
+    },
+    {
       "path": "source/packages/kit/test/session-account-order-source.test.mjs",
       "sha256": "0888c98e441cac62131a883ccc6777c831114f3397914871a76099e6de8a4f2b",
       "bytes": 3231
@@ -7048,8 +7413,8 @@
     },
     {
       "path": "source/packages/kit/test/standard-workflow-capabilities.test.mjs",
-      "sha256": "756e9e55d12260ca417ea159e43131575b08a52ea21f186b30e04da6890de3e1",
-      "bytes": 26415
+      "sha256": "1574afccc32867fffd9f955e4c311de27da0ed02ee77ade2d1281fba742de03f",
+      "bytes": 30180
     },
     {
       "path": "source/packages/kit/test/supported-capability-matrix.test.mjs",
@@ -7248,8 +7613,8 @@
     },
     {
       "path": "source/packages/provider/package.json",
-      "sha256": "a19a2bf0d3b93e6cde83e4c9281dbb25c3a1c07b5c25ca40810f7f5082653994",
-      "bytes": 1291
+      "sha256": "7bc4b423812b4bcbda216a9308e43e770db518aada7189299f16fa541832b2e4",
+      "bytes": 1271
     },
     {
       "path": "source/packages/provider/src/emitter.ts",
@@ -7263,18 +7628,18 @@
     },
     {
       "path": "source/packages/provider/src/generated/provider-types.ts",
-      "sha256": "af0f9478825c0c3b22dcaaa79b91196e1399c8e8720141ab6b2693fc73ff7306",
-      "bytes": 49987
+      "sha256": "d8b459f27fceabe72b7ac513e8dcb2bd07cc848943306180347eb186af63fc17",
+      "bytes": 50952
     },
     {
       "path": "source/packages/provider/src/generated/validators.ts",
-      "sha256": "eedf8b18772e8d31ba668d25c6c9ec1487ed6e58ef9f0840b65c84acd8141a75",
-      "bytes": 5308
+      "sha256": "b60cbe8c986437787319e8ad80d04dc1c94f8ae7e430e04787db65b5c236b783",
+      "bytes": 5324
     },
     {
       "path": "source/packages/provider/src/generated/validators/bundle.ts",
-      "sha256": "c7ffc72203c8d5a381409b3477ab3213e879e3904ce821544837b092207a07f5",
-      "bytes": 1200138
+      "sha256": "5a1df5aea5c89e5e0b2b5acd158d98317b602f93e586372a5613dca4c33a60e0",
+      "bytes": 1220585
     },
     {
       "path": "source/packages/provider/src/in-memory.ts",
@@ -7343,8 +7708,8 @@
     },
     {
       "path": "source/packages/provider/test/package-artifact.test.mjs",
-      "sha256": "56a708e45a3bc41ba124e8f64026d769f118171c4c05374528946e78f5d5068a",
-      "bytes": 15131
+      "sha256": "b1b939562792a92bacb67bd817e8cf659cb62506b0263de886a6a9450f56a63f",
+      "bytes": 14326
     },
     {
       "path": "source/packages/provider/test/portability.test.mjs",
@@ -7368,8 +7733,8 @@
     },
     {
       "path": "source/packages/provider/test/public-types.test.mjs",
-      "sha256": "ad917e413879ffe54eb3ff56cac467a15eefc6a5de90c4b4004988a561686c53",
-      "bytes": 3643
+      "sha256": "e6666e0451397a91ca2f56beef132cac2209eb25ab62429e9b78a0461fb70d81",
+      "bytes": 3623
     },
     {
       "path": "source/packages/provider/test/types/invalid.ts",
@@ -7438,13 +7803,18 @@
     },
     {
       "path": "source/packages/tbc-engine/README.md",
-      "sha256": "534389e90bf1d92b8bc86f47c96fc4b7ef0143e130992623a2370dee62f38fac",
-      "bytes": 4215
+      "sha256": "93e47c7fe6e137f8b201484ca709fdb7ee05d27aaac7f8620959b5c61f9235a3",
+      "bytes": 4020
     },
     {
       "path": "source/packages/tbc-engine/artifacts/wasm/tbc_engine_wasm.wasm",
-      "sha256": "c165dc938b56ece88628204bfa08215ceb180932bb6f523b8c604ccfb90ef17d",
-      "bytes": 4670507
+      "sha256": "2d99c8b97ae04d67328b5cb26c15c3cb864b3e603dec4832537b20073d2b518b",
+      "bytes": 5093270
+    },
+    {
+      "path": "source/packages/tbc-engine/evidence/runtime-artifact-report.json",
+      "sha256": "6e0e53e58d84f00d0acf96245beae16c9cee7ccf466cab6922026f504c6e504f",
+      "bytes": 6958
     },
     {
       "path": "source/packages/tbc-engine/package.json",
@@ -7723,8 +8093,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/Cargo.toml",
-      "sha256": "020c26e5f707c6c5d07842a164028b9f105100320a96adad5eb6a0a9b346ba7d",
-      "bytes": 603
+      "sha256": "354418df1b66a4be4d3395293df61040e88185fdf1625ba614586b79e75af76b",
+      "bytes": 718
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/examples/call_public_engine.rs",
@@ -7748,8 +8118,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/examples/export_runtime_vectors.rs",
-      "sha256": "274f6cec4e3594d3309d716d8a5936218f7972fca209c7620f904f2366ee3924",
-      "bytes": 5266
+      "sha256": "131279186122897a6ed64dda55d568a8164f5d3d5dfba5a90cf8a1251b679144",
+      "bytes": 4917
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/examples/lop_match_oracle.rs",
@@ -7763,8 +8133,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/business.rs",
-      "sha256": "058593dca44411a8c22e9330210cbc194195874503188a8ecd6ad9c68ba84dca",
-      "bytes": 13361
+      "sha256": "e75feab15fe6396be368807151343f97f9a9a283145fae7c492ce4e17f760822",
+      "bytes": 13672
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/confirmations.rs",
@@ -7788,13 +8158,13 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/families/coin.rs",
-      "sha256": "6e3dded5adc18cfe2c5da704cb8d4eec7f250f3ea0fe2061de4dd559b3381081",
-      "bytes": 25245
+      "sha256": "8aacafbfb4e40d3d733d96371f7d691ab4f506335c1754389020725e1306ab88",
+      "bytes": 28528
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/families/ft.rs",
-      "sha256": "2b9a656d7b0700f6773fcc75e9a1ada2ad1ee6c704594db61e56f5b3cdbc08bd",
-      "bytes": 71767
+      "sha256": "c7bf6a9b16c3b1d077dfc04b3a22a5034dfd6500b85d087a86699132b13fc00c",
+      "bytes": 74531
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/families/htlc.rs",
@@ -7818,13 +8188,18 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/families/mod.rs",
-      "sha256": "4883af46796b761ac44ec78f389a79b53a7b7fed5ebf2b6670f832aff2e07d58",
-      "bytes": 333
+      "sha256": "134c95c738c49938b13959694095aaca263cf64e5367a0e58c5cd4a61115f7c3",
+      "bytes": 359
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/families/nft.rs",
       "sha256": "5e851afef5e71ac5b5245dde518464d48f26b9e19f3f69b38d035b1dee1c84fa",
       "bytes": 29289
+    },
+    {
+      "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/families/nft_batch.rs",
+      "sha256": "692922d9f06828c80def689fc8fa230688613606e4ef0f5d544304e67ea3787b",
+      "bytes": 15475
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/families/pool.rs",
@@ -7838,13 +8213,13 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/families/tbc.rs",
-      "sha256": "ae570d8d5c7f2bb360737e22293736dab4efcb7eb41766d2fce89aa4536446de",
-      "bytes": 32309
+      "sha256": "15be559dfd144a1437d81161f671cf415752f0df25d1ba20f2298d97e6acd265",
+      "bytes": 33107
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/families/tbc20.rs",
-      "sha256": "310a033b017585bbc482cd7343da5478373ae75e8b595a7bd8a5e1f7a48f6667",
-      "bytes": 26643
+      "sha256": "4114d76d1e5c580e6c04fe3c55f017eddba63e3caa7fae013e081687f2682da3",
+      "bytes": 27299
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/families/tbc721.rs",
@@ -7873,28 +8248,38 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/funding_fallback.rs",
-      "sha256": "8c99f70de1e5521a60da6d15eedf5cfb51b28768fd603cd840ea22947e5fe3fc",
-      "bytes": 12345
+      "sha256": "7cfa7381aeba184b77fb5bc625ced5abbc3c427b8fd5becb2f759aec91c6212c",
+      "bytes": 12858
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/lib.rs",
-      "sha256": "850c26ba953494816b875546866e0a7caf3a814e5c49e9d1cbf2b8767ce0d407",
-      "bytes": 1524
+      "sha256": "c31f21d82857f6240a6f11410c6fe705bb317325a4997a165165842d5cff23c6",
+      "bytes": 1611
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/model.rs",
-      "sha256": "a1ed59dc5085b3c1aa51f56e0efa142fad4097bc7fdaafd65079819b279f8d5a",
-      "bytes": 27345
+      "sha256": "13f3aa8cac2417a79146fcc7cf082621bd0c763457cacfad449c7f29193332ef",
+      "bytes": 28104
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/normalize.rs",
-      "sha256": "f0623517f6673be426c39ba0346a6381bca26c4333b2f7949ba136969850e2f6",
-      "bytes": 45810
+      "sha256": "e1e200b6d2eecbe9537f0628f1a7eda786e4de1bfdff20e2229e1c2150e69326",
+      "bytes": 47022
+    },
+    {
+      "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/output_review.rs",
+      "sha256": "c0f8e5b219bf9368fee02fd5e609ea2fa80f9f4404e9643cf3d2b49d8458fd9e",
+      "bytes": 13685
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/plan.rs",
-      "sha256": "d2b8945d32aa75740a5e299d32dbc3b2a5e93e31d04ffb0ced3e1f1cdf260c94",
-      "bytes": 23788
+      "sha256": "6dd4cd26993de360a1c9462450b6e29986a03d45c53cffa6d62787b4bf94f2b5",
+      "bytes": 24347
+    },
+    {
+      "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/planning_profile.rs",
+      "sha256": "377612994ce91c105a6b14c4efb0727bd360dadb556ebec12b573f75453375a9",
+      "bytes": 888
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/amm-explicit173-pool.hex",
@@ -7933,8 +8318,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/amm_batch.rs",
-      "sha256": "abdcb128fd795f8875ddee74bac040715f28c313e64d00dd7527a4d3748ca0f0",
-      "bytes": 10127
+      "sha256": "377c90de58a51b6a1696811917914b89a41d2f2b9636e6d67e0017a2dada2e81",
+      "bytes": 10140
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/amm_business.rs",
@@ -8035,6 +8420,11 @@
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/coin_admin.rs",
       "sha256": "5aa86c48a0a41d881551b2c7a293e68039ca6c116cd2613d9f1d7f76510b98e7",
       "bytes": 4784
+    },
+    {
+      "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/coin_batch.rs",
+      "sha256": "5cfa46f97340c5b4625f2c15144cae4c7b9c98262ceda16004a0fef95121fead",
+      "bytes": 13218
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/coin_identity.rs",
@@ -8148,18 +8538,18 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/mod.rs",
-      "sha256": "5d215e61b6dd247a81d4485c08695917b18145633e82734db4370f13f2f42378",
-      "bytes": 1656
+      "sha256": "b4dcee8a87d157c968fd70501642d00aa3aa39d2b1c3fcd16a0bec9cf088edab",
+      "bytes": 1676
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/nft_metadata.rs",
-      "sha256": "310a3fb8fe6ebd36e5aeab79993a4c9fe1e068b11f3f610734e5bc9cd958d694",
-      "bytes": 2077
+      "sha256": "2e6c382364c663a3d551aae27e17a406491bfd73c3cddc94ceb79a9af8177352",
+      "bytes": 3069
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/nft_origin.rs",
-      "sha256": "318292f82296c1bb6ddf184952171b00cdba2d821506ff58ec1148fd0290d3fd",
-      "bytes": 2252
+      "sha256": "c6176f58d235e6437b9be5f998fe769644ace67869bc9e5b475d1b50ae00bebb",
+      "bytes": 4272
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/pool_origin.rs",
@@ -8178,8 +8568,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/tbc20_batch.rs",
-      "sha256": "37f3ce0f9ceacacd5c00a705c8ac7b2152df57456d8bb01bcd43a7492fbf3dbf",
-      "bytes": 13209
+      "sha256": "c468d24537014394a62bbdea4f157962f776c0e9007f48a030ba63ebd292f81f",
+      "bytes": 13418
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/tbc20_material.rs",
@@ -8198,8 +8588,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/tbc20_transfer.rs",
-      "sha256": "7f6ea24d88030f933bda8dba8dd62d65bff5a63cd7a0d3a93bc5b6c8b14ef2d2",
-      "bytes": 14171
+      "sha256": "f8a7118825c7d1c58b74d0eb57982714ef89621104c9e5c3ec174cf9088fc063",
+      "bytes": 15217
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/tbc721-lock-template.hex",
@@ -8218,8 +8608,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/tbc721_transaction.rs",
-      "sha256": "1a1e1fb1828b04ad7f4f7f7190fd282d09987a97ae624200476cef0c53ccede9",
-      "bytes": 14186
+      "sha256": "3c8719d1008be98f6f6a3cff5627f37f88c8036b1ff7e3cd8233b9100c83ce27",
+      "bytes": 13649
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/protocols/timelock.rs",
@@ -8238,8 +8628,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/signing.rs",
-      "sha256": "309e07f6c9d9357b2bf97d7f77a365e921fc5bfef9780b66dbdff5456cf714f1",
-      "bytes": 255044
+      "sha256": "95840c0b389311c9ec4fe4ece15ea8209f934840d65bbaefac1b33ea02a10a6a",
+      "bytes": 261522
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/signing_wire.rs",
@@ -8248,8 +8638,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/validate.rs",
-      "sha256": "d9e22ae1ff9c4dbf986e99c5616bc6e13bc4add48364840465c5d2def275837f",
-      "bytes": 17076
+      "sha256": "9cdba553378b5c2784118deea53272dc82e1cf9d46a1bab5abaa95b4e178c953",
+      "bytes": 17273
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/wire.rs",
@@ -8328,8 +8718,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/amm_public.rs",
-      "sha256": "c0a17f7f8a0c5591ad49b7d0a87b8f9c02891ff25f34b72d7c94221beae69d8d",
-      "bytes": 41228
+      "sha256": "7f10f4e93e93df9bee462aadc81e534f73f4e18cd2c81669f8c8c38185f40c5a",
+      "bytes": 41241
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/coin_admin.rs",
@@ -8357,6 +8747,16 @@
       "bytes": 11190
     },
     {
+      "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/coin_multiround.rs",
+      "sha256": "bcfc24827d0b64ee8c51a5513d880e4c63147c29c5e3eaa88f2718fd005cf342",
+      "bytes": 16248
+    },
+    {
+      "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/coin_planning_profile.rs",
+      "sha256": "40a8f9a3c2541bdf632ad824a3dbf946fa912a8ec4193c4e89da2169cb3c33c9",
+      "bytes": 2275
+    },
+    {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/coin_proof.rs",
       "sha256": "8ad1a2580e8fcf26d44a7e057be104669084c415e7aaeea017a7b11979bfbd9f",
       "bytes": 10365
@@ -8378,8 +8778,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/ft.rs",
-      "sha256": "344b60cba0c41fa50a44d2e5bee68a9ac4737253b51c32ff47a4c8e4d5dcd6e0",
-      "bytes": 99643
+      "sha256": "337c8acfb67ddc883ba31e3c12b35fe6de2089bdbde664bec85811818d26ea59",
+      "bytes": 111156
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/fungible_change.rs",
@@ -8438,8 +8838,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/lop_public.rs",
-      "sha256": "924df54e237c841b9e07af1e2ccbf63909b6a8f42558161168d819b365b913f6",
-      "bytes": 33121
+      "sha256": "100e2959a2fbd4564e1a4831d2aef682c6a4f0bbf54d88fc5fd28c774d5849c8",
+      "bytes": 33134
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/lop_settlement.rs",
@@ -8497,6 +8897,11 @@
       "bytes": 30776
     },
     {
+      "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/support/coin_fragments.rs",
+      "sha256": "950eba890419ce66cccba877a5dfbbf93dbaf2ebb3ece276d10b817adc814384",
+      "bytes": 5445
+    },
+    {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/support/fragmented_funding.rs",
       "sha256": "ee5273a8c96dc70d2d80935889236ea807202c13228563f71acd63074649fccc",
       "bytes": 1895
@@ -8513,8 +8918,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/tbc20_batch.rs",
-      "sha256": "d7c085f8f1686d27f6260581f971f0c9e115229caf1c55a4996ed85480e23d15",
-      "bytes": 12157
+      "sha256": "ea3f42705a42d6eb4890743bf94c53c0efa4e60dcad2093886094d1eff20c0a2",
+      "bytes": 13258
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/tbc20_external_proof.rs",
@@ -8533,8 +8938,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/tbc20_public.rs",
-      "sha256": "c7f37fe8d2242475b6402160fbaad787cf88bc9eb3149b881580f65b4093b6ac",
-      "bytes": 31952
+      "sha256": "91ed1972c0ba8bba6c8be706f97e5c0918089795d380de2f5aaf2ef1d8f6ce64",
+      "bytes": 33770
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/tbc20_signing.rs",
@@ -8543,8 +8948,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/tbc20_transfer.rs",
-      "sha256": "00e53dfcb22201f40972a15f85fdc8cea0623e81c8797bd31d00907db5406b90",
-      "bytes": 6540
+      "sha256": "d6c276ad200e7a060bf74549f25cc366194d83f5ce7a866e93f9e5a7f6ae8ac9",
+      "bytes": 7145
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/tbc721_proof.rs",
@@ -8553,8 +8958,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/tbc721_public.rs",
-      "sha256": "66b33858a7ad692d44a9d7124c3ae32ef343e4da4241f502ae321ff5d8021efc",
-      "bytes": 11736
+      "sha256": "993b888d3afe11af330021e774cd5b641b902592ec0c226678acafc60f653f57",
+      "bytes": 27856
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/tbc721_signing.rs",
@@ -8563,13 +8968,13 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/tbc721_transaction.rs",
-      "sha256": "6489bc4f52993f6cd103958aa0b1fa1b14f5a19237bad4eda48d944944cd481a",
-      "bytes": 11785
+      "sha256": "b325a29c89bba855ef13ffb5aba7a96b6cdae836afeae2da36168df46676978e",
+      "bytes": 14848
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/tbc_transfer.rs",
-      "sha256": "390e9e2f212701bd17e5d362afed1af1d2e72dd88c3dae6df0f8eda86294fa6b",
-      "bytes": 41036
+      "sha256": "653e5c640aa56b885a34a3c9dbcad499eb515147e8f126b0ba4fde7839428253",
+      "bytes": 47624
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/timelock.rs",
@@ -8643,8 +9048,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-keyless-core/src/lib.rs",
-      "sha256": "632150ec4980fd2f6816638b85e1cc2cd0730017c03dcda6977ce3557b398f11",
-      "bytes": 3766
+      "sha256": "03daa465f9b38ffed9c684edac6d36572e8872256208e60295afe965a2bc50cf",
+      "bytes": 3861
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-keyless-core/src/lop_material.rs",
@@ -8653,8 +9058,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-keyless-core/src/multisig.rs",
-      "sha256": "467d8fb67bb6c2fea3055c030b17bd042c823dda2897614cccc401fdc8115830",
-      "bytes": 30736
+      "sha256": "215af2e0c5bbe657eaadfab4d8242dbf94d8ca22d832fa5e43de8fc3791b40e9",
+      "bytes": 35003
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-keyless-core/src/pool_nft.rs",
@@ -8673,8 +9078,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-keyless-core/src/token_material.rs",
-      "sha256": "803bf429b828f7305521da0546dd54476392f2165cc67a5b26d139809ccf4a4d",
-      "bytes": 10596
+      "sha256": "aa2278cb09b91f4d7011ab50506e46b12daa61cfc3a6b89b78415c6c9062d2ec",
+      "bytes": 11789
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-keyless-core/src/token_receipt.rs",
@@ -8708,8 +9113,13 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-keyless-core/tests/multisig.rs",
-      "sha256": "001582df773da7c70c67b83c533e4415fb74a9a5e49815b2eb972e5a9b8d37ad",
-      "bytes": 17350
+      "sha256": "be4c54870497d182b974995c8bb6db6f220350debd97db69167ab18b60dcf93a",
+      "bytes": 19937
+    },
+    {
+      "path": "source/packages/tbc-engine/rust/crates/tbc-keyless-core/tests/nft_collection.rs",
+      "sha256": "26139b5aac1b9a51578e8a538145f6b920303c71dc0d8f6f44698e8e3c3af016",
+      "bytes": 3139
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-keyless-core/tests/reviewed.rs",
@@ -8957,9 +9367,24 @@
       "bytes": 29850
     },
     {
+      "path": "source/packages/tbc-engine/rust/provenance/originals/src/contracts/pool_nft_v2/builder.rs",
+      "sha256": "7566b8fa33454897bf38b44547d6b7bf3dc274f424b3d14102a25e3c7d926203",
+      "bytes": 283974
+    },
+    {
+      "path": "source/packages/tbc-engine/rust/provenance/originals/src/contracts/pool_nft_v2/data.rs",
+      "sha256": "267e17854dedb3260eb1123be385c3265c40d7f1554f21eabdedf358f8354186",
+      "bytes": 12666
+    },
+    {
+      "path": "source/packages/tbc-engine/rust/provenance/originals/src/contracts/pool_nft_v2/unlock.rs",
+      "sha256": "2bc9faddafc99a2d9c3da878bc721db5e15a53c539126997f1a132710a59d81e",
+      "bytes": 78778
+    },
+    {
       "path": "source/packages/tbc-engine/rust/provenance/patch-ledger.json",
-      "sha256": "4239b7bea04a6233a0ef9d11a5d8a69af46be1f65c4e84713069f0b2314df5bf",
-      "bytes": 15487
+      "sha256": "b6d1decc860b48777f6161c55456861b0afa08b8295ccad023602e53ec86e1f6",
+      "bytes": 18662
     },
     {
       "path": "source/packages/tbc-engine/rust/provenance/source-map.json",
@@ -9472,6 +9897,11 @@
       "bytes": 1042
     },
     {
+      "path": "source/packages/tbc-engine/scripts/approval-output-native-check.cpp",
+      "sha256": "1266a5cfe4f793789227d43644f0fac176815dc06dc270ad5770c1b16a3c8b71",
+      "bytes": 1381
+    },
+    {
       "path": "source/packages/tbc-engine/scripts/benchmark-amm-sdk226.mjs",
       "sha256": "ce40e7c920d1ccb355ce40dca1da207ab916713a1072829775dd713db94de5fe",
       "bytes": 10437
@@ -9495,6 +9925,16 @@
       "path": "source/packages/tbc-engine/scripts/benchmark-tbc20-sdk226.mjs",
       "sha256": "764d9048b79b1bee936a6263de02e94da154f90f21a5324e6bf5db8c9df1a4a7",
       "bytes": 15720
+    },
+    {
+      "path": "source/packages/tbc-engine/scripts/build-approval-engine-candidate.mjs",
+      "sha256": "0a727b97c726ba4c49d4831bc1de7159be13f9eb2a7d4012c79958e02d06f14d",
+      "bytes": 5197
+    },
+    {
+      "path": "source/packages/tbc-engine/scripts/build-approval-native-resources.mjs",
+      "sha256": "dd48e56689d90988090eb540ad58da0981121e1da3a54c0a9e7c3404bbc7a3fa",
+      "bytes": 2781
     },
     {
       "path": "source/packages/tbc-engine/scripts/build-fixed-delivery.mjs",
@@ -9587,14 +10027,24 @@
       "bytes": 5014
     },
     {
+      "path": "source/packages/tbc-engine/scripts/check-approval-output-engine.mjs",
+      "sha256": "779590ef03624498b12f9c53042000eba5b8fc3e920f33c3e6f379456bbc332d",
+      "bytes": 4002
+    },
+    {
+      "path": "source/packages/tbc-engine/scripts/check-approval-output-mobile.mjs",
+      "sha256": "c89344cfc758de7465886cc664e82dcbbdae678896772eaa11232b5c862cfbcf",
+      "bytes": 4824
+    },
+    {
       "path": "source/packages/tbc-engine/scripts/check-associated-browser216.mjs",
       "sha256": "6cfd4f3ec158c2aacd0a1454489712f49aa66b27dad7c799fdae3e2242785359",
       "bytes": 9591
     },
     {
       "path": "source/packages/tbc-engine/scripts/check-capability-matrix.mjs",
-      "sha256": "5e3b50ddd83e8544b5e6eaca6221a85197125fa3deafc56a3c8d0b9f91c87920",
-      "bytes": 6462
+      "sha256": "a4210a72bdb9af1aa38a67bb75916075e3d69bd0133fefc62da8b762e0a1877b",
+      "bytes": 4531
     },
     {
       "path": "source/packages/tbc-engine/scripts/check-coin-codec-source.mjs",
@@ -9610,6 +10060,11 @@
       "path": "source/packages/tbc-engine/scripts/check-coin-live-readonly.mjs",
       "sha256": "32f81c0b0c5fc26a196e9635ea20c45324113f9ad44716ab91fbb2a99b397e9b",
       "bytes": 4951
+    },
+    {
+      "path": "source/packages/tbc-engine/scripts/check-coin-multiround.mjs",
+      "sha256": "dd2be603293a76aa341c0a58feb7fde7e0819830040aa3b0af3a63124ebbf3a7",
+      "bytes": 13017
     },
     {
       "path": "source/packages/tbc-engine/scripts/check-coin-proof-source.mjs",
@@ -9772,6 +10227,26 @@
       "bytes": 6698
     },
     {
+      "path": "source/packages/tbc-engine/scripts/check-nft-batch-source.mjs",
+      "sha256": "4b7a472738ac9c1f0b1e24614d68dc4ac8bbf23c02be4b1258e3b0bbf4abac45",
+      "bytes": 24524
+    },
+    {
+      "path": "source/packages/tbc-engine/scripts/check-nft-collection-source.mjs",
+      "sha256": "edd81e3ea737b39460152baf1aefc92434b7cf923915bf2fc4582d603c27cfea",
+      "bytes": 2504
+    },
+    {
+      "path": "source/packages/tbc-engine/scripts/check-nft-media-vm.mjs",
+      "sha256": "991d052d6639b647aa8f24f79ebbfc824108682f0fd7fdb233d94d6ef12f9b32",
+      "bytes": 2943
+    },
+    {
+      "path": "source/packages/tbc-engine/scripts/check-nft-runtime-pairing.mjs",
+      "sha256": "8a8f5e3dac1950275709b85bb67a2b195d30f0929e3f7f90c6a5c7dd51180f7f",
+      "bytes": 3406
+    },
+    {
       "path": "source/packages/tbc-engine/scripts/check-released-pool-ft-wire.mjs",
       "sha256": "ba0ffb4df56380f3f0042c000f558146008c6bdefc603052e2b8973de4bfc6bf",
       "bytes": 3641
@@ -9828,8 +10303,13 @@
     },
     {
       "path": "source/packages/tbc-engine/scripts/check-rust-runtime-artifacts.mjs",
-      "sha256": "0ec2bc96f371be2e931eedc9c1d4afbe6da4e17d15e3d30e4c17537041a6a00e",
-      "bytes": 41442
+      "sha256": "08c0d9d52e074c096c7bf39b2a1a97f56ebd1f486575f8c5fdbd8d2cf90a688b",
+      "bytes": 38224
+    },
+    {
+      "path": "source/packages/tbc-engine/scripts/check-sdk-gaps.mjs",
+      "sha256": "c6d567f5639ef06964fc5399c9d1aae37d79e1a46b59b832b4d69b7a0ef0dd7a",
+      "bytes": 4477
     },
     {
       "path": "source/packages/tbc-engine/scripts/check-special-reviewed-installed.mjs",
@@ -9873,8 +10353,8 @@
     },
     {
       "path": "source/packages/tbc-engine/scripts/check-tbc721-kit-source.mjs",
-      "sha256": "c047db0627498398320fb0e5fb21b89a82bbdbe7dc2c712a8182a2d6114abf79",
-      "bytes": 31411
+      "sha256": "c982bffe7bff593a4d19a40f24348e2a893b78c5a282d82c8d4272fec1f2b65d",
+      "bytes": 32140
     },
     {
       "path": "source/packages/tbc-engine/scripts/check-tbc721-receipt-source.mjs",
@@ -9915,6 +10395,11 @@
       "path": "source/packages/tbc-engine/scripts/check-unified-pool-loader.mjs",
       "sha256": "ae398ed2cfdf175d0134e42bad02209be31e7616e00d9845d7c283282da67eca",
       "bytes": 15903
+    },
+    {
+      "path": "source/packages/tbc-engine/scripts/compare-coin-planning.mjs",
+      "sha256": "32fd7981d495d22279440dff82c5d3fb8d133b55622b08c286dfe9d366adfe88",
+      "bytes": 2243
     },
     {
       "path": "source/packages/tbc-engine/scripts/compare-rust-tbc-source-vector.mjs",
@@ -10028,8 +10513,8 @@
     },
     {
       "path": "source/packages/tbc-engine/scripts/native-artifact-runner.c",
-      "sha256": "a76531461cf9e1901bb2bd81e7cb5d5a6bf303b585ac62ebab754f25f9932be2",
-      "bytes": 651
+      "sha256": "8e83c1e7e01b3715e36bdc7fcec1f4d2108a0e02cf941c7271bf11aba8a6f050",
+      "bytes": 1530
     },
     {
       "path": "source/packages/tbc-engine/scripts/prepare-tbc20-live-readonly.mjs",
@@ -10058,8 +10543,8 @@
     },
     {
       "path": "source/packages/tbc-engine/scripts/verify-rust-provenance.mjs",
-      "sha256": "1bfd9da1d1be8e10362ccc183a6126bc8d1d76df7cdbabfc650d4544dc967941",
-      "bytes": 18441
+      "sha256": "bc9835e758d3ef92d8406676ee3f34ca60c4f85ec0456042d5a582ef56cd7e50",
+      "bytes": 19042
     },
     {
       "path": "source/packages/tbc-engine/src/backend.ts",
@@ -10133,13 +10618,13 @@
     },
     {
       "path": "source/packages/tbc-engine/test/portability.test.mjs",
-      "sha256": "85f3fb07c11b34fd63bcdff62fda2c54de15c94d58b15b908b3172ad2e353c26",
-      "bytes": 12920
+      "sha256": "c68d01692a3160bfc750a4cc50f66ddd038e7d296b10912d2e5e3258a389fd5a",
+      "bytes": 13025
     },
     {
       "path": "source/packages/tbc-engine/test/repository-invariants.test.mjs",
-      "sha256": "8c512bad470a1eff65051fe70eb834c6013aec61a5a8739eb31be8eeb06f59b4",
-      "bytes": 2142
+      "sha256": "e60e8d95e0784015dfbad8d700a897334030fcf45de118455d78a4f168a939ce",
+      "bytes": 2071
     },
     {
       "path": "source/packages/tbc-engine/test/retired-ts/bytes-address.reference",
@@ -10178,13 +10663,13 @@
     },
     {
       "path": "source/packages/tbc-engine/test/rust-facade.test.mjs",
-      "sha256": "4ac69bd2c989b81d87f90e28e0ef24eea4138317e9cb91b3fcbcdada56538aff",
-      "bytes": 2056
+      "sha256": "aceef9fdea279269cc6a4ee5e7ab86935b867591259abbde35324d5f8f5875c1",
+      "bytes": 2115
     },
     {
       "path": "source/packages/tbc-engine/test/rust-provenance.test.mjs",
-      "sha256": "016d8912f94bb6ffc540a2f0f56f7bc74071c386c9b7e8b15a048be503d1e34d",
-      "bytes": 45298
+      "sha256": "61816082235300319d5999ecda16f37a12d0fedc9a7370f3615873b6e57ebdaf",
+      "bytes": 45304
     },
     {
       "path": "source/packages/tbc-engine/tsconfig.json",
@@ -10288,12 +10773,12 @@
     },
     {
       "path": "source/release/kit-source-state.json",
-      "sha256": "ae66626d4d482a9ae721286ee8b83f67d89cb3a5cca44b6866cfd650d1db5a11",
-      "bytes": 63
+      "sha256": "741442c621d476567139ed21980460d16989ee8cc8457665481cc6f881f99e66",
+      "bytes": 64
     },
     {
       "path": "source/release/tws-v1-candidate.json",
-      "sha256": "bf49ae8005caa6590944790bb1f9b9aa7bb99e51a6fbd0feaaed46000bcb4bf7",
+      "sha256": "2a3d4c5137ca9cd00fdffe50968444362859fe8d9905f7cb4e17bb4f13a03d73",
       "bytes": 4265
     },
     {
@@ -10328,8 +10813,8 @@
     },
     {
       "path": "source/schemas/integration.schema.json",
-      "sha256": "6838c9ddaec2af8c1c6d88ea307b222b327c394cad0933d0dd9269b33116e933",
-      "bytes": 127282
+      "sha256": "1c694ea1439b771dd9114bd357388dbe6be9ae7b7466b8b938ad7c0e8abb45b2",
+      "bytes": 128882
     },
     {
       "path": "source/schemas/method-registry.schema.json",
@@ -10353,8 +10838,8 @@
     },
     {
       "path": "source/schemas/prepared-transaction.schema.json",
-      "sha256": "7d1a2bdb647486ecf7fa798ae3750477a613126f2771a8bf4ce44714b190d859",
-      "bytes": 9985
+      "sha256": "ca35846920b2a0f6836f840be6538e0619593e0e2b0f8702b9dbb6fac888f356",
+      "bytes": 9986
     },
     {
       "path": "source/schemas/prepared-workflow.schema.json",
@@ -10363,8 +10848,8 @@
     },
     {
       "path": "source/schemas/provider.schema.json",
-      "sha256": "f3cb286141fb8ff127c3b034d5d4f20b3de10f8c99dab0d0e7aec2dcf2d982ac",
-      "bytes": 14976
+      "sha256": "523f29a1f0d641c7390d5bd1ec84529a43fdb1a7fb47d6b15d48015915df791b",
+      "bytes": 15001
     },
     {
       "path": "source/schemas/reviewed-transaction.schema.json",
@@ -10378,8 +10863,8 @@
     },
     {
       "path": "source/schemas/transaction-request.schema.json",
-      "sha256": "31b2fc137a6e1953de25e9ef6dd0a762df5c2411bc0652f6ea8b34af84177837",
-      "bytes": 63390
+      "sha256": "e06045ecf39ec92576df450fd340846bd958001426d5f01844dfab45d737b396",
+      "bytes": 66209
     },
     {
       "path": "source/schemas/wallet-actions.schema.json",
@@ -10388,13 +10873,13 @@
     },
     {
       "path": "source/schemas/workflow.schema.json",
-      "sha256": "167515dde994a87a5e15751f4a45f739d1f10c2c6ebb2705fc16879c50e5b1a1",
-      "bytes": 21018
+      "sha256": "dbe0e75208fe78ef5b18105961e765e628c4b55ec874502d0e0a4e9dfe1d7f73",
+      "bytes": 21019
     },
     {
       "path": "source/scripts/check-core-portability.mjs",
-      "sha256": "e4a29aaa7ac05281b1ee8f2e2564b62380b7b30991426038c9acbca87e368dce",
-      "bytes": 8730
+      "sha256": "9e8282e9309e6695020b800d431b0d7e39d2c19237c2f9af049a5f88cf927609",
+      "bytes": 8636
     },
     {
       "path": "source/scripts/check-example-boundary.mjs",
@@ -10403,8 +10888,8 @@
     },
     {
       "path": "source/scripts/check-host-portability.mjs",
-      "sha256": "cc34ac0a13e2867fab0f21d4e53dcc3bd7fd26463765a4eae8435d15bc4a6bca",
-      "bytes": 13812
+      "sha256": "2c9f6a1dfb56f76bb4f28e4a913d59021bcd4a0aeb544ce221a94a6a793a9940",
+      "bytes": 13834
     },
     {
       "path": "source/scripts/check-kit-lightweight-footprint.mjs",
@@ -10448,8 +10933,8 @@
     },
     {
       "path": "source/scripts/check-provider-portability.mjs",
-      "sha256": "244709612f22b6163bdacf2eddd234a79ee32736b622484d36ef7e1886c74672",
-      "bytes": 17160
+      "sha256": "b0919ef82c8457bb83cb63830d1befc60bc51650ba8950bde9c0a660b154a085",
+      "bytes": 17173
     },
     {
       "path": "source/scripts/check-sdk-consumer.mjs",
@@ -10488,8 +10973,8 @@
     },
     {
       "path": "source/scripts/generate-provider-validators.mjs",
-      "sha256": "3674108dd96acd379c535211721a32aff579da733b40a8ac48bf80a92f04b834",
-      "bytes": 7402
+      "sha256": "9c250b0a0cebf36517788a3a0d33d9a0174f69012905f118ff30d58cb22c3179",
+      "bytes": 7418
     },
     {
       "path": "source/scripts/generate-v1-candidate.mjs",
@@ -10523,8 +11008,8 @@
     },
     {
       "path": "source/scripts/lib/document-conformance.mjs",
-      "sha256": "cf003f2c48303f99c251fdd104641603df3307694e6fea6d0b2dd03582648ccd",
-      "bytes": 9431
+      "sha256": "71c1b94b35ed114cd6ac8c8b85baaec17b2de9bcd30c1c87bc8716d4b9af949d",
+      "bytes": 9538
     },
     {
       "path": "source/scripts/lib/lifecycle-conformance.mjs",
@@ -10545,6 +11030,11 @@
       "path": "source/scripts/lib/repository.mjs",
       "sha256": "c474720239a69de7573958ab7a8eb22aeb7c5929389681da4dfbaf497ac90eed",
       "bytes": 1308
+    },
+    {
+      "path": "source/scripts/lib/reviewed-transfer-fixture.mjs",
+      "sha256": "5bfd5b69ec395dfbaaf0f41f9abe01f371c5e50cc406e9cd122254f0fec80cb7",
+      "bytes": 1332
     },
     {
       "path": "source/scripts/lib/schema-conformance.mjs",
@@ -10570,6 +11060,16 @@
       "path": "source/scripts/rebase-readable-chain-vectors.mjs",
       "sha256": "4eb5a97316ebd3f33359b8a1d5730227cb3083868a3a3c2a3f79d620e04b701d",
       "bytes": 6799
+    },
+    {
+      "path": "source/scripts/run-testnet-acceptance.mjs",
+      "sha256": "25a0d781db42c874d33bd1e687ac3a406607edb398db593adc260d2da6465167",
+      "bytes": 11252
+    },
+    {
+      "path": "source/standards/README.md",
+      "sha256": "c8dfd66d9ed00f59c35f01ebeb637301d04e292d11b4df92068b85bafaf112ac",
+      "bytes": 295
     },
     {
       "path": "source/standards/TWS-000-governance.md",
@@ -10637,6 +11137,11 @@
       "bytes": 4937
     },
     {
+      "path": "source/standards/protocol-compatibility.md",
+      "sha256": "7be42fdc6dea4a74eeb66d490f08786daca017407cf9ca7f23b441aa6b87863a",
+      "bytes": 752
+    },
+    {
       "path": "source/test-vectors/README.md",
       "sha256": "d9593dd8d0b3239bb29a59862430168ab57bdbd7034d5e4b6940ea7f4a736170",
       "bytes": 5428
@@ -10673,8 +11178,8 @@
     },
     {
       "path": "source/test-vectors/integration.json",
-      "sha256": "7fbc7f0091c40c7034e90bb5dcdc8b36f886a97934987ab68a874685a397d7f0",
-      "bytes": 52527
+      "sha256": "16ac9bbde0c4be2fb2f5de9011b28e0182dac905e83eb42b747d9933f5d5d62a",
+      "bytes": 52580
     },
     {
       "path": "source/test-vectors/intents.json",
@@ -10743,8 +11248,8 @@
     },
     {
       "path": "source/test/ci-contract.test.mjs",
-      "sha256": "97a5fde4b463063cf30d640dbdd087786ad6079ecbb143f79d307f0cdcd0bcb1",
-      "bytes": 3703
+      "sha256": "1d9191770ff205b89999ef1fe7cb6c4548c4815247577bb535739daac5b355ec",
+      "bytes": 2965
     },
     {
       "path": "source/test/closure-conformance.test.mjs",
@@ -10783,7 +11288,7 @@
     },
     {
       "path": "source/test/document-conformance.test.mjs",
-      "sha256": "11d951a4139164e6299f7bf098543b6350910a213cefaa7d137324c16d6e73ce",
+      "sha256": "0c780eede342ddf9e6f8d8c311bdcebefb6728319a37186efba306fcf0ea7c92",
       "bytes": 1742
     },
     {
@@ -10818,8 +11323,8 @@
     },
     {
       "path": "source/test/lp-standard-schema.test.mjs",
-      "sha256": "73a953cb9fd93b88a581ed955fd6aa34f48cc97add21b53bc4beff16823d1893",
-      "bytes": 7490
+      "sha256": "f52f6eee79e9953380382e28f5cfd1e37d22af663b85d1acce08ab17e921bdf3",
+      "bytes": 7783
     },
     {
       "path": "source/test/permission-atomicity.test.mjs",
@@ -10858,7 +11363,7 @@
     },
     {
       "path": "source/test/schema-conformance.test.mjs",
-      "sha256": "b736d7361eb1af92c839797eaef944d564df2a637df127013c3426278dad313d",
+      "sha256": "81f3e3b7c629a9f4046d10998a248023ab2a5aa0a5464b55175fe1a3854500e8",
       "bytes": 2361
     },
     {
@@ -10873,8 +11378,8 @@
     },
     {
       "path": "source/test/sdk-docs.test.mjs",
-      "sha256": "86c7c8944e30df3fd06619a07a9233f017cbb9787ae6abb39f8e62ca9be62105",
-      "bytes": 6994
+      "sha256": "467724ae13d4c962ea50fd757d5088a8fcddb01dd9d63bf2e8992b1742a4ef57",
+      "bytes": 3795
     },
     {
       "path": "source/test/semantic-conformance.test.mjs",
@@ -10888,18 +11393,18 @@
     },
     {
       "path": "source/test/tbc20-standard-schema.test.mjs",
-      "sha256": "308d1839f72c097e2a7d948ed681683ee5e667f2607c9961c7565b1ff2aa4222",
-      "bytes": 9320
+      "sha256": "b0efc755e106c60e208512399a9ecf75364ae968e87b4e6ab9ed080f0371323a",
+      "bytes": 9459
     },
     {
       "path": "source/test/tbc721-standard-schema.test.mjs",
-      "sha256": "bc514b45e32221bbce996f1381710e4e18315c8707c732abf0880da67557f002",
-      "bytes": 6111
+      "sha256": "f019001d643be48be662deb992d6600490b6d8b307a85edc750f5cad023b815f",
+      "bytes": 7786
     },
     {
       "path": "source/test/testnet-acceptance-contract.test.mjs",
-      "sha256": "791bf015d3428d0cb5e84c1e6090a56287509d3afa7e94a9b7f6c0c660e27ebd",
-      "bytes": 2551
+      "sha256": "0946e8f6b22952d3c64dc1f3cee4ac83d58483b8eb93c4862960f7224f5f1194",
+      "bytes": 1196
     },
     {
       "path": "source/test/timelock-standard-schema.test.mjs",

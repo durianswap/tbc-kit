@@ -16,3 +16,4 @@ export declare function assertTbcProviderRequest(value: unknown): TbcJsonRpcRequ
 export declare function assertTbcProviderResponse(value: unknown, method?: string): TbcJsonRpcResponse;
 export declare function assertTbcProviderEvent(value: unknown): TbcProviderEvent;
 export declare function assertTbcTransportDelivery(value: unknown, method?: string): TbcTransportDelivery;
+//# sourceMappingURL=validation.d.ts.map

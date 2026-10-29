@@ -175,3 +175,4 @@ export declare function composeTbcWorkflow<const TSteps extends readonly TbcWork
 export declare function prepareTbcTransaction<TIntent extends KitSupportedIntent>(options: PrepareTbcTransactionOptions<TIntent>): Promise<TbcPreparedTransactionRequest<TIntent>>;
 /** Prepares every transaction step and preserves typed-data dependencies. */
 export declare function prepareTbcWorkflow(options: PrepareTbcWorkflowOptions): Promise<TbcPreparedWorkflowRequest>;
+//# sourceMappingURL=prepared.d.ts.map

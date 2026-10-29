@@ -19,3 +19,4 @@ export declare function classifyAuthorityChange(expectedContextValue: unknown, e
 export declare function assertAuthorityUnchanged(expectedContext: unknown, expectedSession: unknown, currentContext: unknown, currentSession: unknown): void;
 export declare function assertProviderCommitAcknowledgment(mutationValue: unknown, acknowledgmentValue: unknown, currentSessionValue: unknown): void;
 export {};
+//# sourceMappingURL=authority.d.ts.map

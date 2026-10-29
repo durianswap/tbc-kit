@@ -587,14 +587,29 @@ type TransactionFtMergeIntent = ({
     readonly "type": "tbc.ft.merge";
     readonly "version": "1.0";
 });
-type TransactionFtTransferIntent = (TransactionFungibleTransferFields) & (({
-    readonly "amount"?: unknown;
-    readonly "attachedTbcAmount"?: unknown;
-    readonly "contractId"?: unknown;
-    readonly "to"?: unknown;
-    readonly "type"?: "tbc.ft.transfer";
-    readonly "version"?: unknown;
-}));
+type TransactionFtTransferIntent = (({
+    readonly "amount": unknown;
+    readonly "receivers"?: never;
+    readonly "to": unknown;
+    readonly [key: string]: unknown;
+}) | ({
+    readonly "amount"?: never;
+    readonly "attachedTbcAmount"?: never;
+    readonly "receivers": unknown;
+    readonly "to"?: never;
+    readonly [key: string]: unknown;
+})) & ({
+    readonly "amount"?: CommonPositiveAtomicAmount;
+    readonly "attachedTbcAmount"?: CommonAtomicAmount;
+    readonly "contractId": CommonContractId;
+    readonly "receivers"?: (readonly (({
+        readonly "amount": CommonPositiveAtomicAmount;
+        readonly "to": CommonAddress;
+    }))[]);
+    readonly "to"?: CommonAddress;
+    readonly "type": "tbc.ft.transfer";
+    readonly "version": "1.0";
+});
 type TransactionFungibleTransferFields = ({
     readonly "amount": CommonPositiveAtomicAmount;
     readonly "attachedTbcAmount"?: CommonAtomicAmount;
@@ -875,6 +890,7 @@ type TransactionTbc20StandardTransferIntent = (({
 })) & ({
     readonly "amount"?: (string);
     readonly "contractId": CommonContractId;
+    readonly "payment"?: TransactionNativePayment;
     readonly "receivers"?: (readonly (({
         readonly "amount": (string);
         readonly "to": CommonAddress;
@@ -883,6 +899,10 @@ type TransactionTbc20StandardTransferIntent = (({
     readonly "type": "tbc20-standard-transfer";
     readonly "version": "1.0";
 });
+type TransactionTbc721Media = (TransactionMedia) & (({
+    readonly "data"?: (string);
+    readonly [key: string]: unknown;
+}));
 type TransactionTbc721StandardBatchMintIntent = ({
     readonly "collectionId": CommonContractId;
     readonly "items": (readonly (TransactionTbc721StandardMintItem)[]);
@@ -891,7 +911,7 @@ type TransactionTbc721StandardBatchMintIntent = ({
 });
 type TransactionTbc721StandardCollectionIntent = ({
     readonly "description": (string);
-    readonly "media": TransactionMedia;
+    readonly "media": TransactionTbc721Media;
     readonly "name": (string);
     readonly "supply": (string);
     readonly "to"?: CommonAddress;
@@ -902,7 +922,7 @@ type TransactionTbc721StandardMintIntent = ({
     readonly "attributes": (readonly (TransactionAttribute)[]);
     readonly "collectionId": CommonContractId;
     readonly "description": (string);
-    readonly "media"?: TransactionMedia;
+    readonly "media"?: TransactionTbc721Media;
     readonly "name": (string);
     readonly "slot": (number);
     readonly "symbol": (string);
@@ -913,7 +933,7 @@ type TransactionTbc721StandardMintIntent = ({
 type TransactionTbc721StandardMintItem = ({
     readonly "attributes": (readonly (TransactionAttribute)[]);
     readonly "description": (string);
-    readonly "media"?: TransactionMedia;
+    readonly "media"?: TransactionTbc721Media;
     readonly "name": (string);
     readonly "slot": (number);
     readonly "symbol": (string);
@@ -926,7 +946,7 @@ type TransactionTbc721StandardTransferIntent = ({
     readonly "type": "tbc721-standard-transfer";
     readonly "version": "1.0";
 });
-type TransactionTbcIntent = (TransactionTransferIntent | TransactionTbcMergeIntent | TransactionCollectionCreateIntent | TransactionNftMintIntent | TransactionNftTransferIntent | TransactionTbc721StandardCollectionIntent | TransactionTbc721StandardMintIntent | TransactionTbc721StandardBatchMintIntent | TransactionTbc721StandardTransferIntent | TransactionUnifiedNftTransferIntent | TransactionUnifiedAmmAddIntent | TransactionUnifiedAmmRemoveIntent | TransactionUnifiedAmmSwapIntent | TransactionUnifiedLpTransferIntent | TransactionUnifiedLpLockIntent | TransactionUnifiedPoolMaintenanceIntent | TransactionFtCreateIntent | TransactionFtTransferIntent | TransactionFtMergeIntent | TransactionTbc20StandardCreateIntent | TransactionTbc20StandardTransferIntent | TransactionTbc20StandardMergeIntent | TransactionUnifiedFungibleTransferIntent | TransactionUnifiedFungibleMergeIntent | TransactionCoinCreateIntent | TransactionCoinMintIntent | TransactionCoinFreezeIntent | TransactionCoinUnfreezeIntent | TransactionCoinTransferIntent | TransactionCoinMergeIntent | TransactionLpStandardTransferIntent | TransactionLpStandardLockIntent | TransactionLpStandardMaintenanceIntent | TransactionTimelockLockIntent | TransactionTimelockUnlockIntent | TransactionLopCreateIntent | TransactionLopCancelIntent | TransactionLopMatchIntent | TransactionHtlcLockIntent | TransactionHtlcClaimIntent | TransactionHtlcRefundIntent | TransactionAmmStandardCreateIntent | TransactionAmmStandardAddIntent | TransactionAmmStandardRemoveIntent | TransactionAmmStandardSwapIntent | TransactionStablecoinTransferIntent | TransactionStablecoinMergeIntent | TransactionPoolCreateIntent | TransactionPoolLiquidityAddIntent | TransactionPoolLiquidityRemoveIntent | TransactionPoolLiquidityCloseIntent | TransactionPoolFtMergeIntent | TransactionPoolFtlpMergeIntent | TransactionPoolFtlpBurnIntent | TransactionSwapTbcForTokenIntent | TransactionSwapTokenForTbcIntent);
+type TransactionTbcIntent = (TransactionTransferIntent | TransactionTbcMergeIntent | TransactionCollectionCreateIntent | TransactionNftMintIntent | TransactionNftTransferIntent | TransactionTbc721StandardCollectionIntent | TransactionTbc721StandardMintIntent | TransactionTbc721StandardBatchMintIntent | TransactionTbc721StandardTransferIntent | TransactionUnifiedNftTransferIntent | TransactionUnifiedNftBatchTransferIntent | TransactionUnifiedAmmAddIntent | TransactionUnifiedAmmRemoveIntent | TransactionUnifiedAmmSwapIntent | TransactionUnifiedLpTransferIntent | TransactionUnifiedLpLockIntent | TransactionUnifiedPoolMaintenanceIntent | TransactionFtCreateIntent | TransactionFtTransferIntent | TransactionFtMergeIntent | TransactionTbc20StandardCreateIntent | TransactionTbc20StandardTransferIntent | TransactionTbc20StandardMergeIntent | TransactionUnifiedFungibleTransferIntent | TransactionUnifiedFungibleMergeIntent | TransactionCoinCreateIntent | TransactionCoinMintIntent | TransactionCoinFreezeIntent | TransactionCoinUnfreezeIntent | TransactionCoinTransferIntent | TransactionCoinMergeIntent | TransactionLpStandardTransferIntent | TransactionLpStandardLockIntent | TransactionLpStandardMaintenanceIntent | TransactionTimelockLockIntent | TransactionTimelockUnlockIntent | TransactionLopCreateIntent | TransactionLopCancelIntent | TransactionLopMatchIntent | TransactionHtlcLockIntent | TransactionHtlcClaimIntent | TransactionHtlcRefundIntent | TransactionAmmStandardCreateIntent | TransactionAmmStandardAddIntent | TransactionAmmStandardRemoveIntent | TransactionAmmStandardSwapIntent | TransactionStablecoinTransferIntent | TransactionStablecoinMergeIntent | TransactionPoolCreateIntent | TransactionPoolLiquidityAddIntent | TransactionPoolLiquidityRemoveIntent | TransactionPoolLiquidityCloseIntent | TransactionPoolFtMergeIntent | TransactionPoolFtlpMergeIntent | TransactionPoolFtlpBurnIntent | TransactionSwapTbcForTokenIntent | TransactionSwapTokenForTbcIntent);
 type TransactionTbcMergeIntent = ({
     readonly "type": "tbc.maintenance.merge";
     readonly "version": "1.0";
@@ -1029,6 +1049,15 @@ type TransactionUnifiedLpTransferIntent = ({
     readonly "poolContractId": CommonHash32;
     readonly "to": CommonAddress;
     readonly "type": "tbc20Lp.transfer";
+    readonly "version": "1.0";
+});
+type TransactionUnifiedNftBatchTransferIntent = ({
+    readonly "transfers": (readonly (({
+        readonly "contractId": CommonContractId;
+        readonly "payment"?: TransactionNativePayment;
+        readonly "to": CommonAddress;
+    }))[]);
+    readonly "type": "tbc721.batchTransfer";
     readonly "version": "1.0";
 });
 type TransactionUnifiedNftTransferIntent = ({
@@ -1259,3 +1288,4 @@ export interface TwsProviderSchema {
     readonly "capabilitiesChangedEvent": ProviderCapabilities;
 }
 export {};
+//# sourceMappingURL=provider-types.d.ts.map

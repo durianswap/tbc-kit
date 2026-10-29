@@ -17,7 +17,7 @@ Flutter partner delivery does not include or enable this feature.
 | `depositFt` | `p2pkhToMultiSig_transferFT`, optionally depositing TBC in the same transaction |
 | `transferFt` | `buildMultiSigTransaction_transferFT` |
 | `mergeFt` | Old wallet FT UTXO maintenance |
-| `sign`, `combine`, `verify`, `finalize` | Detached signing, signature collection, threshold validation and SDK finalization |
+| `review`, `sign`, `combine`, `verify`, `finalize` | Rebuilt-output approval data, detached signing, signature collection, threshold validation and SDK finalization |
 | `signBatch`, `finalizeBatch` | SDK batch signing/finalization, with one local approval per participant for the batch |
 | `exportProposal`, `importProposal` | Offline proposal exchange through files, QR framing or an optional coordinator |
 
@@ -97,6 +97,38 @@ material before approving. The proposal hash binds data; it does not prove an
 input exists or remains unspent. There is no new Provider permission grant or
 automatic routing of existing `window.Turing` methods in this change.
 
+`review(proposal)` returns `{proposal, review}` from the shared Native/WASM
+`reviewMultisig` operation. `sign` passes this review as the second argument to
+`approve`; `signBatch` passes one review per proposal as its second argument.
+This replaces the existing signing inspection, not an additional network read
+or a second reconstruction. The matching updated Engine is required; there is
+no fallback to an incomplete or caller-supplied summary.
+
+Render every `review.outputs` entry, including change, member Hold deposits,
+metadata and any TBC carried by a token contract. Each entry names its actual
+output indexes, asset family, exact atomic amount and full recipient. FT and
+legacy stablecoin are distinct families. `assetIdentity` is the authenticated
+locking-code fingerprint, **not** the API origin transaction/contract ID or a
+trusted ticker. Optional ticker/decimal metadata must be separately bound to
+that asset; when unavailable, show exact smallest units instead of guessing.
+The list includes change: do not label its total as the amount spent.
+
+Use a scrollable, non-truncating native view with all transactions and full
+addresses accessible before the single batch approval. Show the network,
+group, M-of-N threshold, local signer, per-transaction fees and batch total.
+There must be no enabled approval path when output classification fails.
+The client snapshots and recursively freezes both proposals and review data
+across the asynchronous approval boundary; changing the caller's array or
+objects after review cannot change the signed digests. Finalization validates
+signatures against the exact proposal again.
+
+These checks prevent hidden replacement, not social engineering. A valid
+transaction can deliberately pay an attacker; the wallet must not call an
+unknown recipient safe merely because the transaction validates. Independent
+batch transactions can be broadcast separately, so a batch is **not an atomic
+exchange or an all-or-nothing settlement**. Display this warning; use an
+appropriate atomic protocol when counterparty settlement depends on it.
+
 `signBatch` allows up to 32 independent proposals under one network and group.
 It rejects repeated proposals and inputs before approval. Each participant
 approves their batch once, then signs the bound digests. Parent-child workflows
@@ -138,17 +170,3 @@ These checks are **not real-chain broadcasts or iOS/Android wallet UI
 acceptance**. The local multisig candidate does not replace any frozen
 delivery. Its native resource identity and supported targets must be checked
 separately from a wallet's existing Engine installation.
-
-## Native distribution
-
-Use the Native SDK and resource archives pinned by this package's catalog and
-React Native template lock. The SDK has its own constituent version; it was
-built from the preceding immutable multisig runtime. This distribution changes
-resource catalogs and lock files, not that accepted JavaScript or WASM.
-
-iOS includes arm64 device and simulator slices (minimum build target 15.1).
-Android includes arm64-v8a, armeabi-v7a and x86_64 (minimum build target API 24).
-Runtime acceptance covers iOS 26.5 simulator and Android API 36 arm64 emulator;
-other architectures have build/link evidence, not physical-device proof.
-The macOS arm64 C ABI and matching WASM support the same six multisig operations.
-The frozen Flutter partner delivery remains outside this optional feature.

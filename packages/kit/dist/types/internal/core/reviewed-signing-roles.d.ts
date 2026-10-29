@@ -14,3 +14,4 @@ export declare function assertReviewedSigningRolePreview(request: ReviewedRoleRe
     role: "pool-controller" | "coin-admin";
     account: TransactionRoleAccount;
 }>[] | undefined;
+//# sourceMappingURL=reviewed-signing-roles.d.ts.map

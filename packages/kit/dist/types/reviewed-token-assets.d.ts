@@ -20,3 +20,4 @@ export declare function discoverReviewedTokenAssets(native: PoolMaterialNativePr
     txid: string;
     vout: number;
 }>[]): Promise<ReadonlyMap<string, ReviewedTokenAsset>>;
+//# sourceMappingURL=reviewed-token-assets.d.ts.map

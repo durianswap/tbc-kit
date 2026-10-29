@@ -51,3 +51,4 @@ export declare function matchesCurrentPoolUtxoEvidence(planned: Readonly<{
 export declare function collectTransactionInputOutpoints(transactions: readonly Readonly<{
     readonly unsignedTransaction: string;
 }>[]): readonly string[];
+//# sourceMappingURL=approval-material.d.ts.map

@@ -61,3 +61,4 @@ export declare function resolveAmmBusinessMaterial(input: Readonly<{
     }[];
 }>;
 export {};
+//# sourceMappingURL=amm-business-material.d.ts.map

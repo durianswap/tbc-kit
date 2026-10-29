@@ -46,3 +46,4 @@ export declare function resolveCoinManagementMaterial(input: Readonly<{
     }>[];
 }>>;
 export {};
+//# sourceMappingURL=coin-management-material.d.ts.map

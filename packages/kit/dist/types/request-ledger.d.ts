@@ -35,3 +35,4 @@ export declare function createRequestLedger(options?: Readonly<{
     enabled?: boolean;
     now?: () => number;
 }>): KitRequestLedger;
+//# sourceMappingURL=request-ledger.d.ts.map

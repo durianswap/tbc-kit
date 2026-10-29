@@ -10,3 +10,4 @@ export declare function configureSha256Backend(backend: Sha256Backend | undefine
 export declare function sha256Bytes(value: Uint8Array): Uint8Array;
 export declare function sha256Hex(value: Uint8Array): string;
 export declare function hashCanonical(value: unknown): string;
+//# sourceMappingURL=hash.d.ts.map

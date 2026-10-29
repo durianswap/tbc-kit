@@ -3,3 +3,4 @@ export type { ProviderSchemaType, TbcAccountsChangedEvent, TbcAccountsResult, Tb
 export { TBC_PROVIDER_MAX_MESSAGE_BYTES, TbcProviderValidationError, assertTbcProviderEvent, assertTbcProviderMethodParams, assertTbcProviderMethodResult, assertTbcProviderRequest, assertTbcProviderResponse, assertTbcTransportDelivery, canonicalTbcMessageBytes, type TbcProviderValidationKind, } from "./validation.js";
 export { ProviderRpcError } from "./errors.js";
 export { createTbcProvider } from "./provider.js";
+//# sourceMappingURL=index.d.ts.map

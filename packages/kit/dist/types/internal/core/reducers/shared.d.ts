@@ -29,3 +29,4 @@ export declare function operationOf(checkpoint: OperationCheckpoint): {
     readonly method: string;
     readonly params: unknown;
 };
+//# sourceMappingURL=shared.d.ts.map

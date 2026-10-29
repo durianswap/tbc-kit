@@ -1,4 +1,6 @@
 import type { KitWalletAccount } from "./wallet-runtime.js";
+import { type TbcNftMintJobMaterial } from "./nft-mint-job-material.js";
+import type { TbcNftMintJobScope } from "./nft-mint-job.js";
 import type { PoolMaterialNativeProviderInput } from "./pool-material-native.js";
 import { type TbcNetworkContext } from "./network-context.js";
 import type { TestnetClient } from "./testnet-client.js";
@@ -8,6 +10,8 @@ export interface DefaultTbcChainDataResolver {
     readonly network: TbcNetworkContext;
     /** The account is supplied by Kit after session binding when available. */
     readonly resolve: (params: unknown, account?: KitWalletAccount) => Promise<unknown>;
+    /** Private bounded job scope; no cross-request mutable cache or background work. */
+    readonly prepareNftMintJob: (scope: TbcNftMintJobScope, account: KitWalletAccount) => Promise<TbcNftMintJobMaterial>;
     /** Private read-plan selection, bound to this exact unexpired snapshot. */
     readonly readUnifiedIntent: (binding: Readonly<{
         snapshotHash: string;
@@ -67,3 +71,4 @@ export declare function inspectCoinAncestryReferences(transaction: ParsedTbcTran
     inputIndex: number;
 }>[];
 export declare function createDefaultTbcChainDataResolver(options: CreateDefaultTbcChainDataOptions): DefaultTbcChainDataResolver;
+//# sourceMappingURL=default-chain-data.d.ts.map

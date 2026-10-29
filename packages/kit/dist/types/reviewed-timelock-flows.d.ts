@@ -5,3 +5,4 @@ export declare function reviewNativeTimelockFlow(row: HtlcReviewRow, options: Re
     addressVersion: number;
     accountAddress: string;
 }>): Readonly<Record<string, unknown>> | undefined;
+//# sourceMappingURL=reviewed-timelock-flows.d.ts.map

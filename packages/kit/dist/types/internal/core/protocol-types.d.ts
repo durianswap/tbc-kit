@@ -52,3 +52,4 @@ export type EntropyRandomBytesParams = ProtocolType<"entropyRandomBytesParams">;
 export type EntropyRandomBytesResult = ProtocolType<"entropyRandomBytesResult">;
 export type WorkflowResult = ProtocolType<"workflowResult">;
 export type WorkflowSendResult = ProtocolType<"workflowSendResult">;
+//# sourceMappingURL=protocol-types.d.ts.map

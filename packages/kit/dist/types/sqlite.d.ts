@@ -96,7 +96,7 @@ export interface KitPostSignerRecoveryReader {
     /** Lists only post-Signer wallet-broadcast work; approval/signing is never selected. */
     readonly list: (limit?: number) => Promise<readonly KitPostSignerRecoveryCandidate[]>;
 }
-export declare const TBC_KIT_HOST_RELEASE_FINGERPRINT: "0aeafcba34416f10a4f127d9cd846b71a827289704f938fd2b695e64a5bf7223";
+export declare const TBC_KIT_HOST_RELEASE_FINGERPRINT: "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9";
 export declare const TBC_KIT_HOST_SQLITE_SCHEMA_VERSION = 1;
 export declare const TBC_KIT_HOST_SQLITE_TABLES: readonly ["tws_host_metadata", "tws_host_operations", "tws_host_calls", "tws_host_session_commits", "tws_host_deliveries", "tws_host_leases"];
 export declare const TBC_KIT_HOST_SQLITE_MAX_CANONICAL_JSON_BYTES: number;
@@ -111,3 +111,4 @@ export declare function createTbcKitMemoryHostStore(options?: KitMemoryHostStore
 export declare function createTbcKitHostEvidenceReader(store: KitHostStore): KitHostEvidenceReader;
 export declare function createTbcKitPostSignerRecoveryReader(store: KitHostStore): KitPostSignerRecoveryReader;
 export { TbcKitBroadcastConflictError, createTbcKitSqliteBroadcastJournal, type CreateTbcKitSqliteBroadcastJournalOptions, type TbcKitBroadcastIdentity, type TbcKitBroadcastJournal, type TbcKitBroadcastJournalRecord, type TbcKitBroadcastJournalSchema, type TbcKitBroadcastPreNetworkAbortEvidence, } from "./broadcast-journal.js";
+//# sourceMappingURL=sqlite.d.ts.map

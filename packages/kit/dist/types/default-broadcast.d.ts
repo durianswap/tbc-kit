@@ -25,3 +25,4 @@ export type DefaultTbcTestnetBroadcastOptions = Omit<DefaultTbcBroadcastOptions,
 export type DefaultTbcTestnetBroadcast = DefaultTbcBroadcast;
 export declare function createDefaultTbcBroadcast(options: DefaultTbcBroadcastOptions): DefaultTbcBroadcast;
 export declare function createDefaultTbcTestnetBroadcast(options: DefaultTbcTestnetBroadcastOptions): DefaultTbcTestnetBroadcast;
+//# sourceMappingURL=default-broadcast.d.ts.map

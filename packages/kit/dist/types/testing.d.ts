@@ -7,3 +7,4 @@ export interface RequestBudgetExpectation {
     readonly requireConcurrentGroups?: readonly string[];
 }
 export declare function assertRequestBudget(snapshot: import("./request-ledger.js").KitRequestLedgerSnapshot, expectation: RequestBudgetExpectation): void;
+//# sourceMappingURL=testing.d.ts.map

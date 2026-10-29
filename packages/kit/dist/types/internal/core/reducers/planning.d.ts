@@ -53,3 +53,4 @@ declare function artifacts(checkpoint: OperationCheckpoint): TransactionArtifact
 declare function validationParams(checkpoint: OperationCheckpoint, phase: "plan" | "pre-sign" | "finalized" | "pre-broadcast", additional?: Readonly<Record<string, unknown>>): Readonly<Record<string, unknown>>;
 export declare function reducePlanning(checkpoint: OperationCheckpoint, engine: TransactionEngine | undefined): Promise<CoreTransition>;
 export { artifacts as transactionArtifacts, validationParams as transactionValidationParams };
+//# sourceMappingURL=planning.d.ts.map

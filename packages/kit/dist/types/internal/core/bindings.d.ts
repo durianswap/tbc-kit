@@ -41,3 +41,4 @@ export declare function projectApprovalRequester(context: {
 export declare function createApprovalRequest(bindingValue: ApprovalBinding, previewValue: unknown, context: Parameters<typeof projectApprovalRequester>[0]): Readonly<Record<string, unknown>>;
 export declare function assertApprovalRequest(requestValue: unknown, expectedValue: unknown): Readonly<Record<string, unknown>>;
 export declare function assertApprovalReceipt(bindingValue: ApprovalBinding, receiptValue: ApprovalReceipt, trustedNow: string): ApprovalReceipt;
+//# sourceMappingURL=bindings.d.ts.map

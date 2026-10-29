@@ -1,11 +1,21 @@
-import type { CollectionCreateIntent, NftMintIntent, NftTransferIntent, Tbc721StandardCollectionIntent, Tbc721StandardMintIntent, Tbc721StandardBatchMintIntent, Tbc721TransferIntent, FtCreateIntent, FtMergeIntent, FtTransferIntent, Tbc20StandardCreateIntent, Tbc20StandardTransferIntent, Tbc20StandardMergeIntent, Tbc20TransferIntent, Tbc20MergeIntent, Tbc20StablecoinTransferIntent, Tbc20StablecoinMergeIntent, AmmCreateIntent, UnifiedAmmAddLiquidityIntent, UnifiedAmmRemoveLiquidityIntent, UnifiedAmmSwapIntent, UnifiedLpTransferIntent, UnifiedLpLockIntent, UnifiedPoolMaintenanceIntent, LpTransferIntent, LpLockIntent, LpMaintenanceIntent, TimelockLockIntent, LopCreateIntent, LopCancelIntent, LopMatchIntent, HtlcLockIntent, HtlcTokenTarget, CoinTransferIntent, CoinMergeIntent, CoinCreateIntent, CoinMintIntent, CoinFreezeIntent, CoinUnfreezeIntent, StablecoinMergeIntent, StablecoinTransferIntent, KitRequestOptions, KitExpiringTransactionConstraints, KitProvider, KitSupportedIntent, KitTransactionConstraints, KitTransactionRequest, KitWalletCatalogEntry, KitWalletDescriptor, KitWalletOption, PoolCreateIntent, PoolFtlpBurnIntent, PoolLiquidityIntent, PoolMergeIntent, PoolSwapIntent, TbcTransferIntent } from "./public-types.js";
+import type { CollectionCreateIntent, NftMintIntent, NftTransferIntent, Tbc721StandardCollectionIntent, Tbc721StandardMintIntent, Tbc721StandardBatchMintIntent, Tbc721TransferIntent, Tbc721BatchTransferIntent, FtCreateIntent, FtMergeIntent, FtTransferIntent, Tbc20StandardCreateIntent, Tbc20StandardTransferIntent, Tbc20StandardMergeIntent, Tbc20TransferIntent, Tbc20MergeIntent, Tbc20StablecoinTransferIntent, Tbc20StablecoinMergeIntent, AmmCreateIntent, UnifiedAmmAddLiquidityIntent, UnifiedAmmRemoveLiquidityIntent, UnifiedAmmSwapIntent, UnifiedLpTransferIntent, UnifiedLpLockIntent, UnifiedPoolMaintenanceIntent, LpTransferIntent, LpLockIntent, LpMaintenanceIntent, TimelockLockIntent, LopCreateIntent, LopCancelIntent, LopMatchIntent, HtlcLockIntent, HtlcTokenTarget, CoinTransferIntent, CoinMergeIntent, CoinCreateIntent, CoinMintIntent, CoinFreezeIntent, CoinUnfreezeIntent, StablecoinMergeIntent, StablecoinTransferIntent, KitRequestOptions, KitExpiringTransactionConstraints, KitProvider, KitSupportedIntent, KitTransactionConstraints, KitTransactionRequest, KitWalletCatalogEntry, KitWalletDescriptor, KitWalletOption, PoolCreateIntent, PoolFtlpBurnIntent, PoolLiquidityIntent, PoolMergeIntent, PoolSwapIntent, TbcTransferIntent } from "./public-types.js";
 import type { TbcPreparedProposal, TbcPreparedWorkflowRequest, TbcReviewedTransactionInput, TbcWorkflowComposition, TbcWorkflowStep } from "./prepared.js";
 import { type TimelockReader } from "./timelock-query.js";
+import { type Tbc721Reader, type CreateTbc721ReaderOptions } from "./nft-query.js";
+import type { TbcNftMintJobLimits, TbcNftMintJobResult } from "./nft-mint-job.js";
 import type { TbcMultiRoundMergeAsset, TbcMultiRoundMergeLimits, TbcMultiRoundMergeProgress, TbcMultiRoundMergeResult } from "./multi-round-merge.js";
 import { type TbcMessageSignatureResult, type TbcSignInInput, type TbcSignInResult } from "./sign-in.js";
 import { type CreateTransferVerifierOptions, type TransferVerificationResult, type VerifyTransferInput } from "./receipt-verification.js";
 import type { WorkflowSendResult } from "./core-runtime.js";
 export type TbcWorkflowSendResult = WorkflowSendResult;
+export type Tbc721MintJobInput = Omit<Tbc721StandardBatchMintIntent, "type" | "version"> & Readonly<{
+    limits: TbcNftMintJobLimits;
+    constraints?: never;
+}>;
+export type Tbc721SingleBatchMintInput = Omit<Tbc721StandardBatchMintIntent, "type" | "version"> & Readonly<{
+    constraints?: KitTransactionConstraints;
+    limits?: never;
+}>;
 export type TbcEncodedMessage = Readonly<{
     encoding: "utf8" | "hex" | "base64";
     data: string;
@@ -78,6 +88,8 @@ export interface CreateTbcClientOptions {
     readonly requestIdFactory?: () => string;
     /** HTTP chain API only. RPC configuration remains separate and is never guessed. */
     readonly api?: Omit<CreateTransferVerifierOptions, "network">;
+    /** Optional existing Native/WASM instance for local read-only material decoding. */
+    readonly materialEngine?: CreateTbc721ReaderOptions["engine"];
 }
 export interface TbcConnectOptions {
     /** Bind the exact discovered wallet/provider instance selected by the user. */
@@ -278,10 +290,15 @@ export interface TbcConnectedWallet {
         mint: (input: Omit<Tbc721StandardMintIntent, "type" | "version"> & Readonly<{
             constraints?: KitTransactionConstraints;
         }>) => Promise<unknown>;
-        batchMint: (input: Omit<Tbc721StandardBatchMintIntent, "type" | "version"> & Readonly<{
+        /** Add job limits for automatic resource-bounded sub-batches and one whole-job approval. */
+        batchMint: {
+            (input: Tbc721MintJobInput, options?: KitRequestOptions): Promise<TbcNftMintJobResult>;
+            (input: Tbc721SingleBatchMintInput, options?: KitRequestOptions): Promise<unknown>;
+        };
+        transfer: (input: Omit<Tbc721TransferIntent, "type" | "version"> & Readonly<{
             constraints?: KitTransactionConstraints;
         }>) => Promise<unknown>;
-        transfer: (input: Omit<Tbc721TransferIntent, "type" | "version"> & Readonly<{
+        batchTransfer: (input: Omit<Tbc721BatchTransferIntent, "type" | "version"> & Readonly<{
             constraints?: KitTransactionConstraints;
         }>) => Promise<unknown>;
     }>;
@@ -393,6 +410,7 @@ export interface TbcClient {
     readonly verifyTransfer: (input: VerifyTransferInput) => Promise<TransferVerificationResult>;
     /** Public chain query, no wallet connection or permission required. */
     readonly timelock: TimelockReader;
+    readonly tbc721: Tbc721Reader;
     readonly wallets: () => readonly KitWalletDescriptor[];
     readonly subscribeWallets: (listener: (wallets: readonly KitWalletDescriptor[]) => void) => () => void;
     readonly walletOptions: () => readonly KitWalletOption[];
@@ -422,3 +440,4 @@ export declare function createTbcClientWithWalletDiscovery(options: CreateTbcCli
 /** React Native-safe client. Browser discovery is supplied by the browser root. */
 export declare function createTbcClient(options: CreateTbcClientOptions): TbcClient;
 export {};
+//# sourceMappingURL=client.d.ts.map

@@ -18,3 +18,4 @@ export declare function collectTbcUtxoPages<T extends IndexedOutput>(readPage: (
     utxos: readonly T[];
 }>>;
 export {};
+//# sourceMappingURL=utxo-pages.d.ts.map

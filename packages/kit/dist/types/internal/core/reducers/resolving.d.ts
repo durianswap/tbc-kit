@@ -3,3 +3,4 @@ import type { LegacyBitcoinMessageDigest, TransactionEngine, TwsCapabilityConfig
 import type { PortCall } from "../ports.js";
 import type { CoreTransition } from "../transitions.js";
 export declare function reduceResolvingResponse(checkpoint: OperationCheckpoint, call: PortCall, resultValue: unknown, engine?: TransactionEngine, legacyBitcoinMessageDigest?: LegacyBitcoinMessageDigest, capabilityConfiguration?: TwsCapabilityConfiguration): CoreTransition | Promise<CoreTransition>;
+//# sourceMappingURL=resolving.d.ts.map

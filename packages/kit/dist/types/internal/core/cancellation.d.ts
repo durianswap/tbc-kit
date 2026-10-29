@@ -10,3 +10,4 @@ export interface CancellationPolicy {
 export declare function isCancelAuthorityOptional(reason: CancellationReason): boolean;
 export declare function cancellationPolicy(reason: CancellationReason, channelReachable: boolean): CancellationPolicy;
 export declare function providerCompletionForCancellation(reason: CancellationReason, requestId: unknown, channelReachable: boolean): Readonly<Record<string, unknown>>;
+//# sourceMappingURL=cancellation.d.ts.map

@@ -7,3 +7,4 @@ export declare function createTbcEngine(options?: Readonly<{
 /** Browser/React Native-safe loader. Native wallets normally inject their backend. */
 export declare function createLazyBundledWasmTbcEngineBackend(options?: TbcWasmAssetOptions): TbcEngineBackend;
 export type { KitTransactionEngine } from "./public-types.js";
+//# sourceMappingURL=engine.d.ts.map

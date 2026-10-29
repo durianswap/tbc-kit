@@ -4,3 +4,4 @@
  * successful result; every other call performs the cryptographic check.
  */
 export declare function verifyTwsRecoverableSignature(signatureHex: string, digest: string, publicKey: string): Uint8Array;
+//# sourceMappingURL=recoverable-signature.d.ts.map

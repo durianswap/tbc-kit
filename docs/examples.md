@@ -13,6 +13,7 @@
 | 创建、铸造和转移 NFT | [NFT](../packages/kit/examples/nft-three-step/README.md) |
 | 核验收款 | [Receipt verification](../packages/kit/examples/receipt-verification/README.md) |
 | 合并 UTXO | [维护操作](../packages/kit/examples/merge-maintenance/README.md) |
+| Coin 多轮合并与指定手续费输入 | [接入说明与计划样例](coin-multiround.md) |
 | React Native 接入 | [原生计算桥](../packages/kit/examples/react-native-engine/README.md) |
 | Flutter 原生业务页面 | [Dart 转账与资产页面](flutter/NATIVE_WALLET.md) |
 

@@ -115,3 +115,4 @@ export declare function reviewedSigningRoleContext(checkpoint: OperationCheckpoi
 export declare function reviewedTransactionTask(checkpoint: OperationCheckpoint, step: ReviewedTransactionStep, review: ReviewedTransactionReview, account: AccountIdentity, memory?: Readonly<Record<string, unknown>>): ReviewedTransactionTask;
 export declare function cryptoTask(step: CryptoStep, account: AccountIdentity, origin: string): CryptoTask;
 export {};
+//# sourceMappingURL=private-action-kernel.d.ts.map

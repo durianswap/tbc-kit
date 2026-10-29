@@ -4,6 +4,7 @@
 
 ## 开始接入
 
+- [安装与升级](installation.md)：当前版本、下载入口及 JS/Native 配对。
 - [Web DApp](dapp.md)：发现钱包、连接账户、请求交易与签名。
 - [JS/TS 钱包](wallet.md)：接入账户、审批、Signer 和平台通信。
 - [Flutter 钱包](flutter/README.md)：Dart 业务接口、原生页面与 WebView。
@@ -17,6 +18,7 @@
 - [TBC Legacy 兼容](legacy.md)
 - [账户与签名格式](flutter/ACCOUNT_AND_SIGNER.md)
 - [Flutter 业务调用](flutter/BUSINESS_CALLS.md)
+- [Coin 多轮交易](coin-multiround.md)：多轮合并、指定手续费输入与顺序提交。
 
 ## 参与开发
 

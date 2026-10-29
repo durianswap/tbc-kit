@@ -1,24 +1,34 @@
 {
   "name": "@tbc/kit",
-  "version": "0.1.0-rc.1",
+  "version": "0.1.0-rc.18",
   "description": "TBC SDK for applications, wallets and backends",
   "private": true,
   "type": "module",
   "sideEffects": false,
+  "scripts": {
+    "prepack": "node ../../scripts/check-kit-source-state.mjs --pack"
+  },
   "files": [
     "artifacts/api-rpc-coverage.json",
     "artifacts/provenance.json",
+    "artifacts/source-build.json",
     "artifacts/wasm",
+    "artifacts/keyless-native",
+    "artifacts/native",
     "dist",
     "docs",
     "examples",
     "README.md",
     "SUPPORT.md",
-    "LICENSE",
-    "artifacts/platform-resources.json",
-    "artifacts/distribution.json"
+    "LICENSE"
   ],
   "exports": {
+    "./multisig": {
+      "types": "./dist/types/multisig.d.ts",
+      "import": "./dist/esm/multisig.js",
+      "require": "./dist/cjs/multisig.cjs",
+      "default": "./dist/esm/multisig.js"
+    },
     ".": {
       "types": "./dist/types/index.d.ts",
       "react-native": "./dist/esm/index.native.js",
@@ -81,12 +91,6 @@
       "import": "./dist/esm/testing.js",
       "require": "./dist/cjs/testing.cjs",
       "default": "./dist/esm/testing.js"
-    },
-    "./multisig": {
-      "types": "./dist/types/multisig.d.ts",
-      "import": "./dist/esm/multisig.js",
-      "require": "./dist/cjs/multisig.cjs",
-      "default": "./dist/esm/multisig.js"
     }
   },
   "engines": {
@@ -97,14 +101,18 @@
     "@noble/curves": "1.9.7",
     "@noble/hashes": "1.8.0",
     "@wallet-standard/core": "1.1.2",
-    "buffer": "6.0.3",
     "bs58": "4.0.1",
+    "buffer": "6.0.3",
     "elliptic": "6.6.1",
-    "hash.js": "1.1.7"
+    "hash.js": "1.1.7",
+    "tbc-contract": "1.6.6",
+    "tbc-tx-parser": "0.1.10"
+  },
+  "devDependencies": {
+    "tbc-lib-js": "1.0.31"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/durianswap/tbc-kit.git"
-  },
-  "homepage": "https://github.com/durianswap/tbc-kit#readme"
+  }
 }

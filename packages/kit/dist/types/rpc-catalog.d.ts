@@ -909,3 +909,4 @@ export type TbcReadRpcMethodName = Extract<TbcRpcMethodDefinition, Readonly<{
 export type TbcNetworkRestrictedRpcMethodName = Extract<TbcRpcMethodDefinition, Readonly<{
     networks: readonly string[];
 }>>["method"];
+//# sourceMappingURL=rpc-catalog.d.ts.map

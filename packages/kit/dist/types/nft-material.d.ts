@@ -56,3 +56,4 @@ export declare function resolveNftMaterial(input: Readonly<{
         protocolVersion: "tbc721" | "2.0";
     }>[];
 }>>;
+//# sourceMappingURL=nft-material.d.ts.map

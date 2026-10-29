@@ -165,3 +165,4 @@ export interface TbcProviderOptions {
     readonly requestIdFactory?: () => TbcJsonRpcId;
 }
 export {};
+//# sourceMappingURL=types.d.ts.map

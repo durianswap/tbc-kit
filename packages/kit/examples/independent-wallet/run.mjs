@@ -171,7 +171,9 @@ export async function runIndependentWalletExample() {
   verifyTbcRecoverableSignature(Buffer.from(message.signature, "base64").toString("hex"), digest, PUBLIC_KEY);
   assert.equal(approvals.filter(kind => kind === "workflow").length, 1);
   const transactionGets = platform.http.length;
-  assert.equal(transactionGets, 2, "one node-info and one funding read for the workflow");
+  assert.deepEqual(platform.http, [
+    `GET /api/tbc/utxo/address/${ADDRESS}`,
+  ], "the ordinary transfer workflow reuses one funding read; no extra node-info");
 
   const metadata = createTbcLegacyMetadataResolver({ network, fetch: platform.fetch });
   const ftTransfers = createLegacyFtTransferIntentResolver({ chainId: CHAIN_ID, metadata });

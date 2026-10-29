@@ -10,3 +10,4 @@ export declare function decodeTbcWebViewPageMessage(serialized: string): TbcWebV
 export declare function encodeTbcWebViewNativeMessage(value: TbcWebViewNativeMessage): string;
 export declare function decodeTbcWebViewNativeMessage(serialized: string): TbcWebViewNativeMessage;
 export declare function digestTbcWebViewEnvelope(serialized: string): string;
+//# sourceMappingURL=webview-codec.d.ts.map

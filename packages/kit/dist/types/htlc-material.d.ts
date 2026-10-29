@@ -37,9 +37,9 @@ export declare function resolveHtlcMaterial(input: Readonly<{
     tip: TestnetTip | undefined;
     utxos: readonly Readonly<{
         confirmations?: string;
-        txid: any;
+        txid: string;
         vout: number;
-        satoshis: any;
+        satoshis: string;
         scriptPubKey: string;
         classification: "htlc";
     }>[];
@@ -55,3 +55,4 @@ export declare function resolveHtlcMaterial(input: Readonly<{
     }>[];
 }>>;
 export {};
+//# sourceMappingURL=htlc-material.d.ts.map

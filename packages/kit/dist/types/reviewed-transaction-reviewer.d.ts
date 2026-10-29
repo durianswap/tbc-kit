@@ -18,3 +18,4 @@ export declare function materializeAssociatedReviewRequest(request: Readonly<Rec
  */
 export declare function createTbcDefaultAssociatedTransactionReviewer(options: DefaultReviewOptions): TbcAssociatedTransactionReviewer;
 export {};
+//# sourceMappingURL=reviewed-transaction-reviewer.d.ts.map

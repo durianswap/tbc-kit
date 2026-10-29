@@ -50,3 +50,4 @@ export declare function createTbcNodeAdminRpcClient(options: TrustedTbcRpcOption
 export declare function createTbcWalletRpcClient(options: TrustedTbcRpcOptions): TbcWalletRpcClient;
 export type { TbcNetworkRestrictedRpcMethodName, TbcNodeRpcMethodName, TbcReadRpcMethodName, TbcRpcMethodDefinition, TbcRpcMethodName, TbcWalletRpcMethodName };
 export { TBC_NODE_SOURCE, TBC_RPC_METHODS };
+//# sourceMappingURL=official-rpc.d.ts.map

@@ -39,3 +39,4 @@ export declare function selectCanonicalPoolInput<Candidate extends Readonly<{
     outputIndex: number;
     balance: string;
 }>>(candidates: readonly Candidate[], requiredBalance: string): Candidate | undefined;
+//# sourceMappingURL=pool-material-helpers.d.ts.map

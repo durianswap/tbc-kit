@@ -128,3 +128,4 @@ export interface TwsHost {
     readonly cancelOperation: (input: TwsHostCancelInput) => Promise<TwsHostOperationResult>;
     readonly inspectOperation: (input: TwsHostInspectInput) => Promise<TwsHostOperationInspection>;
 }
+//# sourceMappingURL=types.d.ts.map

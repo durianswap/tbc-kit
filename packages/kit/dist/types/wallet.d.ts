@@ -1,4 +1,5 @@
 export type TbcKitSha256Backend = (bytes: Uint8Array) => Uint8Array;
+export type { TbcNftMintJobScope, TbcNftMintJobLimits, TbcNftMintJobApproval, TbcNftMintJobResult, TbcNftMintJobBatchResult } from "./nft-mint-job.js";
 /**
  * Configure the SHA-256 primitive used by the Core bundled in this wallet
  * entry. Call once from trusted wallet bootstrap; never derive it from DApp
@@ -27,7 +28,7 @@ export { poolServiceFeeRate } from "./pool-policy.js";
 export type { LegacyPoolFunding, LegacyPoolFundingSource, LegacyPoolSigningNativeEngine, LegacyPoolSigningProductionNativeEngine, } from "./pool-signing-loader.js";
 export { createPoolMaterialLoader } from "./pool-signing-loader.js";
 export type { LegacyKitFacade, LegacyKitOptions } from "./legacy-mapper.js";
-export { createTbcBackendService, TbcBackendServiceError, type CreateTbcBackendServiceOptions, type TbcBackendAuthorizationDecision, type TbcBackendAuthorizationRequest, type TbcBackendNetwork, type TbcBackendPreparedExecution, type TbcBackendService, } from "./backend-service.js";
+export { createTbcBackendService, TbcBackendServiceError, type CreateTbcBackendServiceOptions, type TbcBackendAuthorizationDecision, type TbcBackendAuthorizationRequest, type TbcBackendReviewContext, type TbcBackendNetwork, type TbcBackendPreparedExecution, type TbcBackendService, } from "./backend-service.js";
 export { createLegacyBatchRequestScope, matchesLegacyBatchRequest, withLegacyDependentTxids, type LegacyBatchRequestScope, } from "./legacy-batch.js";
 export { createLegacyDependentBatchCoordinator, type LegacyDependentBatchCoordinator, type LegacyDependentBatchFirstStep, type LegacyDependentBatchOutcome, type LegacyDependentBatchProgress, type LegacyDependentBatchSecondStep, } from "./legacy-dependent-batch.js";
 export { createLegacyGenericBatchExecutor, normalizeLegacyGenericBatchRequests, type LegacyGenericBatchExecution, type LegacyGenericBatchExecutor, type LegacyGenericBatchMethod, type LegacyGenericBatchOutcome, type LegacyGenericBatchProgress, type LegacyGenericBatchRequest, } from "./legacy-generic-batch.js";
@@ -41,7 +42,7 @@ export { createTbcStandardWorkflowCapabilities, normalizeTbcReviewedTransactionM
 export { createLegacyBatchConsentMachine, LegacyBatchConsentConflictError, type LegacyBatchConsentIntent, type LegacyBatchConsentJournal, type LegacyBatchConsentMachine, type LegacyBatchConsentMachineOptions, type LegacyBatchReview, type LegacyRequestBatchReview, } from "./legacy-batch-consent.js";
 export { collectPoolRemoveInputEvidence, collectTransactionInputOutpoints, containsCanonicalEvidence, createPoolApprovalMaterialReader, createPoolRemoveApprovalMaterialReader, matchesCurrentPoolUtxoEvidence, type PoolApprovalBinding, type PoolApprovalTransaction, type PoolApprovalUtxo, } from "./approval-material.js";
 export { ApprovalHostEvidenceConflictError, assertStablecoinApprovalEvidence, assertWalletActionApprovalEvidence, createApprovalHostEvidenceReader, type ApprovalHostEvidenceEnvelope, type ApprovalHostEvidencePerformanceEvent, type ApprovalHostEvidencePerformanceStage, type ApprovalHostEvidenceReader, type ApprovalHostEvidenceReaderOptions, type ApprovalHostEvidenceStoreReader, type ApprovalHostRequestShape, type StablecoinApprovalEvidence, type StablecoinApprovalHostRequest, type WalletActionApprovalEvidence, type WalletActionApprovalHostRequest, type WalletActionApprovalTaskSummary, } from "./approval-host-evidence.js";
-export { projectTbcApprovalPreparation, projectTbcApprovalPresentation, type TbcApprovalPreparationPresentationInput, type TbcApprovalContractExecution, type TbcApprovalPresentation, type TbcApprovalPresentationAmount, type TbcApprovalPresentationAsset, type TbcApprovalPresentationField, type TbcApprovalPresentationSource, type TbcApprovalPresentationStep, } from "./approval-presentation.js";
+export { projectTbcApprovalPreparation, projectTbcApprovalPresentation, type TbcApprovalPreparationPresentationInput, type TbcApprovalContractExecution, type TbcApprovalPresentation, type TbcApprovalPresentationAmount, type TbcApprovalPresentationAsset, type TbcApprovalPresentationField, type TbcApprovalPresentationSource, type TbcApprovalPresentationStep, type TbcApprovalPresentationTransaction, type TbcApprovalPresentationOutput, } from "./approval-presentation.js";
 export { createLegacyFtCreateIntentResolver, LegacyFtCreateParameterError, type LegacyFtCreateIntentResolver, } from "./legacy-ft-create-intent.js";
 export { createLegacyFtTransferIntentResolver, legacyAtomicAmount, legacyDisplayAmount, type LegacyFtContractMetadata, type LegacyFtTransferIntentResolver, } from "./legacy-ft-transfer-intent.js";
 export { inspectReviewedTokenCodes } from "./reviewed-token.js";
@@ -63,3 +64,4 @@ export type { AmmFeePolicy } from "./public-types.js";
 export type { TbcReviewedRoleSigner, TbcReviewedInputSigningTask } from "./reviewed-role-executor.js";
 export { quoteTbcAmm, type TbcAmmQuote, type TbcAmmQuoteInput, type TbcAmmQuoteOptions, type TbcAmmQuoteAction, type TbcAmmQuoteState, type TbcAmmQuoteFees, } from "./amm-quote.js";
 export { identifyTbcFungibleContracts, type TbcFungibleContractMaterial, type TbcFungibleContractIdentity, type IdentifyTbcFungibleContractsOptions, } from "./contract-identification.js";
+//# sourceMappingURL=wallet.d.ts.map

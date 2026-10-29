@@ -42,3 +42,4 @@ export type TbcChainChangedEvent = ProviderSchemaType<"chainChangedEvent">;
 export type TbcAccountsChangedEvent = ProviderSchemaType<"accountsChangedEvent">;
 export type TbcPermissionsChangedEvent = ProviderSchemaType<"permissionsChangedEvent">;
 export type TbcCapabilitiesChangedEvent = ProviderSchemaType<"capabilitiesChangedEvent">;
+//# sourceMappingURL=protocol-types.d.ts.map

@@ -8,3 +8,4 @@ export interface TwsCore {
     readonly cancel: (input: CancelInput) => Promise<CoreTransition>;
 }
 export declare function createTwsCore(dependencies?: TwsCoreDependencies): TwsCore;
+//# sourceMappingURL=core.d.ts.map

@@ -18,3 +18,4 @@ export declare function assertTbcSignInWalletContext(fields: TbcSignInMessageFie
     address: string;
     now: string;
 }>): void;
+//# sourceMappingURL=sign-in.d.ts.map

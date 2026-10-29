@@ -103,3 +103,4 @@ export declare function createTbcKitLegacyBatchSendResolver(options: Readonly<{
  * account, permission, approval, Host, Signer and platform authority injected.
  */
 export declare function createTbcKitLegacyWebViewNativeController(options: TbcKitLegacyWebViewNativeOptions): TbcKitLegacyWebViewNativeController;
+//# sourceMappingURL=legacy-webview-native.d.ts.map

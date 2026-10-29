@@ -104,12 +104,16 @@ export interface TestnetClient {
     /** Same-origin named API surface, sharing this client's transport and ledger. */
     readonly api?: TbcOfficialApiClient;
     readonly preflightBroadcast: (rawTransaction: string) => Promise<void>;
-    readonly getUtxos: (address: string) => Promise<Readonly<{
+    readonly getUtxos: (address: string, consolidation?: Readonly<{
+        limit: number;
+    }>) => Promise<Readonly<{
         tip: TestnetTip;
         utxos: readonly TestnetUtxo[];
     }>>;
     /** Fresh native index without a chain-tip query. No confirmation claim. */
-    readonly getNativeUtxos?: (address: string) => Promise<readonly TestnetUtxo[]>;
+    readonly getNativeUtxos?: (address: string, consolidation?: Readonly<{
+        limit: number;
+    }>) => Promise<readonly TestnetUtxo[]>;
     readonly getTip?: () => Promise<TestnetTip>;
     readonly getRawTransaction: (txid: string) => Promise<TestnetRawTransaction>;
     /** One decode query with local txid/output proof; null means the node did not find it. */
@@ -153,3 +157,4 @@ export interface CreateTestnetClientOptions {
 }
 export declare function createTestnetClient(options: CreateTestnetClientOptions): TestnetClient;
 export declare const createTbcChainClient: typeof createTestnetClient;
+//# sourceMappingURL=testnet-client.d.ts.map
