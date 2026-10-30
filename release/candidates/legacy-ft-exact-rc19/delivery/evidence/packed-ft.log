@@ -1,0 +1,64 @@
+TAP version 13
+# Subtest: public FT reader passes six required fragments to Engine maintenance then transfer
+ok 1 - public FT reader passes six required fragments to Engine maintenance then transfer
+  ---
+  duration_ms: 2756.392541
+  type: 'test'
+  ...
+# Subtest: twenty required FT fragments produce four merges and one transfer without duplicate reads
+ok 2 - twenty required FT fragments produce four merges and one transfer without duplicate reads
+  ---
+  duration_ms: 5493.9545
+  type: 'test'
+  ...
+# Subtest: FT one/five-input paths keep their read budgets and choose no unused fragments
+ok 3 - FT one/five-input paths keep their read budgets and choose no unused fragments
+  ---
+  duration_ms: 1677.020875
+  type: 'test'
+  ...
+# Subtest: FT six-input plan ignores surplus candidates and enforces parent identity
+ok 4 - FT six-input plan ignores surplus candidates and enforces parent identity
+  ---
+  duration_ms: 1901.183375
+  type: 'test'
+  ...
+# Subtest: FT insufficient balance and bounded input policy fail before parent downloads
+ok 5 - FT insufficient balance and bounded input policy fail before parent downloads
+  ---
+  duration_ms: 33.891334
+  type: 'test'
+  ...
+# Subtest: historical and unified FT exact paths keep all selected inputs with no duplicate or unrelated reads
+ok 6 - historical and unified FT exact paths keep all selected inputs with no duplicate or unrelated reads
+  ---
+  duration_ms: 5967.092084
+  type: 'test'
+  ...
+# Subtest: historical FT exact reader rejects unknown points instead of substituting available balance
+ok 7 - historical FT exact reader rejects unknown points instead of substituting available balance
+  ---
+  duration_ms: 16.424667
+  type: 'test'
+  ...
+# Subtest: exact FT Prepared through Host signs all stages under one complete approval, and rejection signs nothing
+ok 8 - exact FT Prepared through Host signs all stages under one complete approval, and rejection signs nothing
+  ---
+  duration_ms: 10703.418167
+  type: 'test'
+  ...
+# Subtest: automatic FT transaction bytes and digests match frozen RC18; optional paired timing
+ok 9 - automatic FT transaction bytes and digests match frozen RC18; optional paired timing
+  ---
+  duration_ms: 13616.754792
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 48112.2395

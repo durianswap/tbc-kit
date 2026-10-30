@@ -11,7 +11,7 @@ use crate::funding::NativeFundingUtxo;
 use crate::model::{CanonicalRequest, ParentTransaction, PlannedTransfer, WalletMaterial,
     WalletUtxo, RequestedOutpoint, error};
 use crate::normalize::hex;
-use crate::signing::{PlannedTransaction, bind_funding_recipe,
+use crate::signing::{PlannedTransaction, UnsignedPlan, bind_funding_recipe,
     materialize_unsigned_preview};
 
 const FUNDING_ID: &str = "native-funding-1";
@@ -27,6 +27,21 @@ fn coin_holder_profile(request: &CanonicalRequest) -> bool {
 
 fn exact_profile(request: &CanonicalRequest) -> bool {
     new_tbc20_profile(request) || coin_holder_profile(request)
+        || matches!(request.intent.intent_type.as_str(), "tbc.ft.transfer" | "tbc.ft.merge")
+}
+
+pub(crate) fn validate_exact_external_inputs(request: &CanonicalRequest, plan: &UnsignedPlan) -> Result<(), EngineError> {
+    let Some(points) = request.constraints.as_ref().and_then(|c| c.input_outpoints.as_ref()) else { return Ok(()); };
+    let wanted: BTreeSet<_> = points.iter().map(|p| (p.txid.as_str(), p.vout)).collect();
+    let ids: BTreeSet<_> = plan.transactions.iter().map(|tx| tx.transaction_id.as_str()).collect();
+    let external: Vec<_> = plan.transactions.iter().flat_map(|tx| &tx.inputs)
+        .filter(|input| !ids.contains(input.previous_transaction_id.as_str()))
+        .map(|input| (input.previous_transaction_id.as_str(), input.previous_output_index)).collect();
+    let actual: BTreeSet<_> = external.iter().copied().collect();
+    if actual != wanted || actual.len() != external.len() {
+        return Err(error(ErrorCode::InvalidInput, "plan must spend the exact external input set once", "request.constraints.inputOutpoints"));
+    }
+    Ok(())
 }
 
 pub(crate) fn plan_with_funding(
@@ -100,8 +115,7 @@ pub(crate) fn plan_with_funding(
             }
             snapshot.payload.parents.push(ParentTransaction { txid: txid.clone(), raw_transaction: raw.clone() });
             let internal = WalletMaterial { snapshot: &snapshot, policy: material.policy, planned_native: Some(std::slice::from_ref(&funding)) };
-            // Only the new profile has an exact external-input contract here.
-            // Its internal business sees the prerequisite output instead of the
+            // Exact-input business sees the prerequisite output instead of the
             // native inputs already consumed by that prerequisite. Final compose
             // checks the original external set, never the transformed request.
             let mut remapped;
@@ -201,18 +215,9 @@ fn compose(
     for warning in ["MULTI_TRANSACTION", "MAINTENANCE_TRANSACTION"] {
         if !warnings.iter().any(|item| item == warning) { warnings.push(warning.to_owned()); }
     }
-    let mut result = if exact_profile(request) {
-        if let Some(points) = request.constraints.as_ref().and_then(|c| c.input_outpoints.as_ref()) {
-            let wanted: BTreeSet<_> = points.iter().map(|p| (p.txid.as_str(), p.vout)).collect();
-            let ids: BTreeSet<_> = unsigned.transactions.iter().map(|tx| tx.transaction_id.as_str()).collect();
-            let external: Vec<_> = unsigned.transactions.iter().flat_map(|tx| &tx.inputs)
-                .filter(|input| !ids.contains(input.previous_transaction_id.as_str()))
-                .map(|input| (input.previous_transaction_id.as_str(), input.previous_output_index)).collect();
-            let actual: BTreeSet<_> = external.iter().copied().collect();
-            if actual != wanted || actual.len() != external.len() {
-                return Err(error(ErrorCode::InvalidInput, "funding plan must spend the exact external input set once", "request.constraints.inputOutpoints"));
-            }
-        }
+    if exact_profile(request) { validate_exact_external_inputs(request, &unsigned)?; }
+    // Input-selection semantics must not change historical fee reconciliation.
+    let mut result = if new_tbc20_profile(request) || coin_holder_profile(request) {
         finish_profile_plan(request, material, unsigned, previews, fees, warnings, flows)?
     } else {
         finish_plan(request, material, unsigned, previews, fees, warnings, flows)?

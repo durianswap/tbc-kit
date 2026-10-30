@@ -1,0 +1,298 @@
+{
+  "status": "TARGETED_PACKAGING_ACCEPTANCE_PASS",
+  "kitVersion": "0.1.0-rc.19",
+  "sdkVersion": "0.1.0-rc.19.native.2",
+  "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+  "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+  "finalKitSha256": "ed8f1ef7d66154067c7676308dde28cd77d5d6ceacb16daebb3d2951a20eee3a",
+  "allNativeResourcesMatchFinalKit": true,
+  "embeddedNativeLockMatches": true,
+  "date": "2026-10-30",
+  "changes": [
+    "Historical FT approval assetFlows includes authenticated contractId.",
+    "Historical FT exact original asset and native funding inputs are enforced through reader, planning, approval binding and finalize."
+  ],
+  "validation": {
+    "packedFt": 9,
+    "sourceFlowAndRn": 15,
+    "jsRegression": 25,
+    "rustRegression": {
+      "adjacentPassed": 28,
+      "coinPassed": 7,
+      "excluded": "The broader FT debug rerun was stopped during unchanged 31/500-input stress cases; partial suite results are not counted. Focused FT and platform replay are required separately."
+    },
+    "rustFocused": {
+      "passed": 8
+    },
+    "wireVectors": {
+      "focused": 63,
+      "totalPerPlatform": 71,
+      "focusedRejections": 18
+    },
+    "nativeConsumers": {
+      "swift": true,
+      "kotlinJni": true,
+      "iosDeviceBuild": true,
+      "iosSimulatorBuild": true,
+      "androidAbis": [
+        "arm64-v8a",
+        "armeabi-v7a",
+        "x86_64"
+      ]
+    },
+    "platforms": {
+      "ios": {
+        "udid": "DA8B84D5-FEFF-4F44-9A21-30E730076411",
+        "name": "TBC rc11 FT NFT 验收",
+        "runtime": "iOS Simulator arm64 process",
+        "output": "SWIFT_NATIVE_PROBE_PASS runtime=ios-simulator cases=71 concurrent=16"
+      },
+      "android": {
+        "serial": "emulator-5556",
+        "abi": "arm64-v8a",
+        "runtime": "Android ART shell process",
+        "output": "ANDROID_NATIVE_PROBE_PASS runtime=ART api=36 abi=arm64-v8a cases=71 concurrent=16",
+        "remote": "/data/local/tmp/tbc-engine-probe-device-check-t8l2FB",
+        "probeFilesCleaned": true
+      }
+    },
+    "cleanFinalPackageInstall": true,
+    "separateNativeArchiveInstall": [
+      {
+        "platform": "ios",
+        "status": "PASS",
+        "kitVersion": "0.1.0-rc.19",
+        "sdkVersion": "0.1.0-rc.19.native.2",
+        "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+        "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+        "sdkLockSha256": "1c1812792106b01591e51bd0d77c0b2e9f9d2e2f0c1dff7e9c772b735fc92558"
+      },
+      {
+        "platform": "android",
+        "status": "PASS",
+        "kitVersion": "0.1.0-rc.19",
+        "sdkVersion": "0.1.0-rc.19.native.2",
+        "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+        "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+        "sdkLockSha256": "1c1812792106b01591e51bd0d77c0b2e9f9d2e2f0c1dff7e9c772b735fc92558"
+      }
+    ],
+    "oneApproval": true,
+    "rejectionSignatures": 0,
+    "extraHttpRequests": 0,
+    "cases": [
+      "Direct and merge transfers",
+      "1/2/5/6/20 FT inputs",
+      "Exact subset and surplus selected inputs",
+      "Multiple native fee inputs",
+      "Missing, wrong contract, ownership, duplicates and confirmations",
+      "Whole-plan fees and transaction limits",
+      "Removed or changed contractId and changed input scope rejected",
+      "Original automatic-selection transaction bytes, fee outputs and digests match rc.18"
+    ]
+  },
+  "performance": {
+    "scope": "Local paired WASM plan/validate, synthetic prepared material; not mobile UI or network latency",
+    "runtime": "v22.23.2",
+    "methodology": "Three sequential rounds after candidate build and device checks finished; each round alternates versions, 10 warm-up + 40 measured pairs. Median of per-round medians and P90s; original rounds preserved.",
+    "hostCaveat": "Shared development host; no physical-device or end-to-end latency claim.",
+    "measurements": [
+      {
+        "amount": 100,
+        "method": "plan",
+        "before": {
+          "medianMs": 6.759375000000091,
+          "p90Ms": 38.29650000000038,
+          "samples": 120,
+          "rounds": 3
+        },
+        "after": {
+          "medianMs": 6.19512499999928,
+          "p90Ms": 48.88233300000047,
+          "samples": 120,
+          "rounds": 3
+        },
+        "apiReads": 5
+      },
+      {
+        "amount": 100,
+        "method": "validate",
+        "before": {
+          "medianMs": 10.125792000000729,
+          "p90Ms": 33.321625000000495,
+          "samples": 120,
+          "rounds": 3
+        },
+        "after": {
+          "medianMs": 8.463042000000314,
+          "p90Ms": 40.42516700000033,
+          "samples": 120,
+          "rounds": 3
+        },
+        "apiReads": 5
+      },
+      {
+        "amount": 550,
+        "method": "plan",
+        "before": {
+          "medianMs": 29.321875000000546,
+          "p90Ms": 78.52558300000055,
+          "samples": 120,
+          "rounds": 3
+        },
+        "after": {
+          "medianMs": 33.44024999999965,
+          "p90Ms": 72.66583399999945,
+          "samples": 120,
+          "rounds": 3
+        },
+        "apiReads": 10
+      },
+      {
+        "amount": 550,
+        "method": "validate",
+        "before": {
+          "medianMs": 36.260042000001704,
+          "p90Ms": 132.12329099999988,
+          "samples": 120,
+          "rounds": 3
+        },
+        "after": {
+          "medianMs": 37.70333399999981,
+          "p90Ms": 134.476375000002,
+          "samples": 120,
+          "rounds": 3
+        },
+        "apiReads": 10
+      }
+    ],
+    "cpuSupplement": {
+      "runtime": "v22.23.2",
+      "measurements": [
+        {
+          "amount": 100,
+          "method": "plan",
+          "before": {
+            "medianMs": 8.543290999999954,
+            "p90Ms": 69.63558300000022,
+            "samples": 40
+          },
+          "after": {
+            "medianMs": 6.078917000000729,
+            "p90Ms": 59.368124999999964,
+            "samples": 40
+          },
+          "cpuBefore": {
+            "medianMs": 5.981,
+            "p90Ms": 8.134,
+            "samples": 40
+          },
+          "cpuAfter": {
+            "medianMs": 5.665,
+            "p90Ms": 7.585,
+            "samples": 40
+          },
+          "apiReads": 5
+        },
+        {
+          "amount": 100,
+          "method": "validate",
+          "before": {
+            "medianMs": 10.008499999999913,
+            "p90Ms": 59.784874999999374,
+            "samples": 40
+          },
+          "after": {
+            "medianMs": 11.097791999998663,
+            "p90Ms": 89.36137500000041,
+            "samples": 40
+          },
+          "cpuBefore": {
+            "medianMs": 6.149,
+            "p90Ms": 8.041,
+            "samples": 40
+          },
+          "cpuAfter": {
+            "medianMs": 6.506,
+            "p90Ms": 17.687,
+            "samples": 40
+          },
+          "apiReads": 5
+        },
+        {
+          "amount": 550,
+          "method": "plan",
+          "before": {
+            "medianMs": 32.30595799999901,
+            "p90Ms": 115.83012500000041,
+            "samples": 40
+          },
+          "after": {
+            "medianMs": 31.152625000000626,
+            "p90Ms": 138.63845799999945,
+            "samples": 40
+          },
+          "cpuBefore": {
+            "medianMs": 18.543,
+            "p90Ms": 22.857,
+            "samples": 40
+          },
+          "cpuAfter": {
+            "medianMs": 18.439,
+            "p90Ms": 22.658,
+            "samples": 40
+          },
+          "apiReads": 10
+        },
+        {
+          "amount": 550,
+          "method": "validate",
+          "before": {
+            "medianMs": 44.315708000001905,
+            "p90Ms": 116.3123749999977,
+            "samples": 40
+          },
+          "after": {
+            "medianMs": 43.122957999999926,
+            "p90Ms": 68.7032500000023,
+            "samples": 40
+          },
+          "cpuBefore": {
+            "medianMs": 20.478,
+            "p90Ms": 23.47,
+            "samples": 40
+          },
+          "cpuAfter": {
+            "medianMs": 19.698,
+            "p90Ms": 24.136,
+            "samples": 40
+          },
+          "apiReads": 10
+        }
+      ]
+    },
+    "conclusion": "Wall-clock samples show substantial host contention and do not certify end-to-end performance parity. CPU supplement separates process computation from scheduling waits; no additional material fetches or signing algorithm changes."
+  },
+  "protection": {
+    "status": "PASS",
+    "files": 1362,
+    "partnerFiles": 174,
+    "allUnchanged": true
+  },
+  "broadcasts": 0,
+  "successfulTransactionsResent": 0,
+  "signingAlgorithmChanged": false,
+  "limits": [
+    "Standalone historical FT merge remains 2–5 asset inputs.",
+    "Existing maximum selected-input, funding-input and bundle policy limits remain.",
+    "No new real-node or real-chain acceptance this turn; synthetic fixture parents are not claimed as chain-valid.",
+    "Native runtime probes use iOS Simulator and Android ART, not physical devices or wallet UI.",
+    "No Flutter partner package replacement or publication."
+  ],
+  "source": {
+    "gitHead": "95b4d07d74131f766817bfddc07fdbcd0eb6564b",
+    "sourceDigest": "349fb97cdc18269e906866cf1c555fae3735893df0a6a64dfeedc22245e399b0",
+    "archiveSha256": "3d77c2936b9a5d607662ae6f2c6fb877d055c4c9305b7888a62246c759ae86e6"
+  },
+  "nativeBuildInputKitSha256": "b22d983433c5f18d2da88ad5cc605d5f1faccfc469256f55ab7fca7eebd78377"
+}

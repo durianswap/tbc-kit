@@ -1033,7 +1033,6 @@ export function createDefaultTbcChainDataResolver(
       const nativeMerge = requirement.intentType === "tbc.maintenance.merge" &&
         requirement.assets.length === 1 && nativeAsset?.kind === "native" &&
         nativeAsset.minimumAmount === undefined && requirement.nativeAmount === undefined && requirement.includeAncestry === false;
-      if (requestedInputOutpoints !== undefined && !nativeTransfer && !nativeMerge && !tbc20 && !tbc721 && !coin && !ammCreate && !lp && !ammBusiness && !timelockLock && !timelockUnlock && !htlcLock && !htlcSpend) return failure("INVALID_INPUT");
       const ftCreate = (requirement.intentType === "tbc.ft.create" || tbc20Create || coinCreate) &&
         requirement.assets.length === 1 && nativeAsset?.kind === "native" &&
         nativeAsset.minimumAmount === undefined && requirement.nativeAmount === undefined && requirement.includeAncestry === false;
@@ -1068,6 +1067,7 @@ export function createDefaultTbcChainDataResolver(
         typeof contractId === "string" && requirement.assets.length === 2 &&
         nativeAsset?.kind === "native" && nativeAsset.minimumAmount === undefined && requirement.nativeAmount === undefined &&
         ftAsset?.kind === "stablecoin" && ftAsset.contractId === contractId && ftAsset.minimumAmount === undefined;
+      if (requestedInputOutpoints !== undefined && !nativeTransfer && !nativeMerge && !ftTransfer && !ftMerge && !tbc20 && !tbc721 && !coin && !ammCreate && !lp && !ammBusiness && !timelockLock && !timelockUnlock && !htlcLock && !htlcSpend) return failure("INVALID_INPUT");
       const poolMint = requirement.intentType === "tbc.pool.create" &&
         requirement.includeAncestry === true && requirement.contractIds?.length === 1 &&
         typeof contractId === "string" && requirement.nativeAmount === undefined &&
@@ -1324,11 +1324,21 @@ export function createDefaultTbcChainDataResolver(
           ]).then(([selected, creation, source, stablecoinInfo]) => ({ ...selected, creation, source, stablecoinInfo }))
         : directFt
         ? ftIndex.then(async (candidates) => {
-            const selected = ftMerge || stablecoinMerge
+            // An explicit historical FT set is exact, not a balance hint. Keep
+            // every selected asset; Engine owns the bounded merge DAG. Reuse the
+            // existing indexes/parallel parent reads and their read-scope cache.
+            const selected = (ftTransfer || ftMerge) && requestedInputOutpoints !== undefined
+              ? candidates!.filter(candidate => requestedInputOutpoints.some(point => point.txid === candidate.txid && point.vout === candidate.vout))
+              : ftMerge || stablecoinMerge
               ? selectFtMergeCandidates(candidates!)
               : stablecoinTransfer
                 ? selectStablecoinCandidates(candidates!, minimumFt, Math.max(1, maxInputs - 1))
                 : selectFtCandidates(candidates!, minimumFt, maxInputs - 1);
+            if ((ftTransfer || ftMerge) && requestedInputOutpoints !== undefined &&
+                (selected.length < (ftMerge ? 2 : 1) || selected.length > (ftMerge ? 5 : maxInputs - 1) ||
+                 selected.reduce((sum, item) => sum + BigInt(item.ftAmount), 0n) < minimumFt)) {
+              throw new ChainDataConflictError("Selected FT inputs cannot satisfy the operation");
+            }
             const [selectedParents, creation, stablecoinInfo] = await Promise.all([
               Promise.all([...new Set(selected.map((item) => item.txid))].map((txid) =>
                 minimumConfirmations === "0" || selected.filter((item) => item.txid === txid).every((item) => item.height !== undefined)
@@ -1394,7 +1404,7 @@ export function createDefaultTbcChainDataResolver(
                   ? left.txid.localeCompare(right.txid) || left.vout - right.vout
                   : BigInt(left.satoshis) < BigInt(right.satoshis) ? -1 : 1)
                 .slice(0, Math.min(maxInputs, MAX_TBC_MERGE_INPUTS))
-            : (tbc20 || tbc721 || coin || ammCreate || lp || timelockLock || htlcLock) && requestedInputOutpoints !== undefined
+            : (tbc20 || tbc721 || coin || ftTransfer || ftMerge || ammCreate || lp || timelockLock || htlcLock) && requestedInputOutpoints !== undefined
               ? sortedNative.filter((candidate) => requestedInputOutpoints.some((item) => item.txid === candidate.txid && item.vout === candidate.vout))
               : sortedNative);
         if (nativeMerge && selectedNative.length < 2) throw new ChainDataConflictError("TBC merge requires at least two inputs");
@@ -1663,6 +1673,15 @@ export function createDefaultTbcChainDataResolver(
       }
 
       const allUtxos = Object.freeze([...nativeUtxos, ...assetUtxos, ...(poolMaterial?.utxos ?? []), ...(nftMaterial?.utxos ?? []), ...(coinManagementMaterial?.utxos ?? []), ...(ammMaterial?.utxos ?? []), ...(htlcTokenMaterial?.utxos ?? [])]);
+      if ((ftTransfer || ftMerge) && !tbc20 && requestedInputOutpoints !== undefined) {
+        const selected = new Set(allUtxos.map(value => {
+          const u = value as Readonly<{ txid: string; vout: number }>;
+          return `${u.txid}:${u.vout}`;
+        }));
+        if (selected.size !== requestedInputOutpoints.length || requestedInputOutpoints.some(p => !selected.has(`${p.txid}:${p.vout}`))) {
+          throw new ChainDataConflictError("FT exact inputs are missing or differ from the requested set");
+        }
+      }
       const inputBudget = tbc20 && directFt && !htlcTokenLock
         ? Math.min(nativeUtxos.length, assetUtxos.length > MAX_TBC20_INPUTS ? 1 : MAX_TBC20_INPUTS - assetUtxos.length) + assetUtxos.length
         : nativeInputBudget(nativeUtxos.length) + assetUtxos.length + (poolMaterial?.utxos.length ?? 0) + (nftMaterial?.utxos.length ?? 0) + (coinManagementMaterial?.utxos.length ?? 0) + (ammMaterial?.utxos.length ?? 0) + (htlcTokenMaterial?.utxos.length ?? 0);

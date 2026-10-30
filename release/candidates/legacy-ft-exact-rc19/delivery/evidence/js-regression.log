@@ -1,0 +1,160 @@
+TAP version 13
+# Subtest: capability profiles advertise current issuance and unified holders, never disabled historical issuance
+ok 1 - capability profiles advertise current issuance and unified holders, never disabled historical issuance
+  ---
+  duration_ms: 4.488625
+  type: 'test'
+  ...
+# Subtest: TBC20 create/transfer/merge share minimal chain-data requirements and preserve explicit inputs
+ok 2 - TBC20 create/transfer/merge share minimal chain-data requirements and preserve explicit inputs
+  ---
+  duration_ms: 1.067583
+  type: 'test'
+  ...
+# Subtest: LP holder operations share funding and ancestry without requesting mutable Pool reserves
+ok 3 - LP holder operations share funding and ancestry without requesting mutable Pool reserves
+  ---
+  duration_ms: 0.805666
+  type: 'test'
+  ...
+# Subtest: new empty Pool creation reads FT identity but does not require a holder FT balance
+ok 4 - new empty Pool creation reads FT identity but does not require a holder FT balance
+  ---
+  duration_ms: 0.091417
+  type: 'test'
+  ...
+# Subtest: AMM business reads current Pool but only requests holder assets that the operation spends
+ok 5 - AMM business reads current Pool but only requests holder assets that the operation spends
+  ---
+  duration_ms: 0.393875
+  type: 'test'
+  ...
+# Subtest: a workflow's sole NFT transaction retains exact mint slots alongside non-transaction steps
+ok 6 - a workflow's sole NFT transaction retains exact mint slots alongside non-transaction steps
+  ---
+  duration_ms: 0.121416
+  type: 'test'
+  ...
+# Subtest: same-collection workflow mint steps share exact slots without dropping per-step input scope
+ok 7 - same-collection workflow mint steps share exact slots without dropping per-step input scope
+  ---
+  duration_ms: 0.49875
+  type: 'test'
+  ...
+# Subtest: Prepared evidence binds every new-standard identity field even after attacker rehashes proposal
+ok 8 - Prepared evidence binds every new-standard identity field even after attacker rehashes proposal
+  ---
+  duration_ms: 15.93775
+  type: 'test'
+  ...
+# Subtest: historical Prepared contract evidence retains its old exact shape
+ok 9 - historical Prepared contract evidence retains its old exact shape
+  ---
+  duration_ms: 0.892458
+  type: 'test'
+  ...
+# Subtest: Prepared chronology allows independent clocks but preserves interval and material integrity
+ok 10 - Prepared chronology allows independent clocks but preserves interval and material integrity
+  ---
+  duration_ms: 6.788542
+  type: 'test'
+  ...
+# Subtest: one material scope shares in-flight and completed identical reads, never later scopes
+ok 11 - one material scope shares in-flight and completed identical reads, never later scopes
+  ---
+  duration_ms: 1.287333
+  type: 'test'
+  ...
+# Subtest: NFT collection index is reused inside one job scope, not across later jobs
+ok 12 - NFT collection index is reused inside one job scope, not across later jobs
+  ---
+  duration_ms: 0.394708
+  type: 'test'
+  ...
+# Subtest: omitted optional native-read options share prefetch, distinct limits never do
+ok 13 - omitted optional native-read options share prefetch, distinct limits never do
+  ---
+  duration_ms: 0.524458
+  type: 'test'
+  ...
+# Subtest: account, contract and query scopes stay separate; decode feeds immutable bytes
+ok 14 - account, contract and query scopes stay separate; decode feeds immutable bytes
+  ---
+  duration_ms: 0.547541
+  type: 'test'
+  ...
+# Subtest: decoded bytes are shared but raw-only observations never impersonate confirmations
+ok 15 - decoded bytes are shared but raw-only observations never impersonate confirmations
+  ---
+  duration_ms: 0.507125
+  type: 'test'
+  ...
+# Subtest: a failed observation is shared within the scope and does not poison a later request
+ok 16 - a failed observation is shared within the scope and does not poison a later request
+  ---
+  duration_ms: 1.068875
+  type: 'test'
+  ...
+# Subtest: read-only batch output status is shared only inside preparation, never broadcast
+ok 17 - read-only batch output status is shared only inside preparation, never broadcast
+  ---
+  duration_ms: 1.086708
+  type: 'test'
+  ...
+# Subtest: timelock deposits and tip share reads within one preparation, not across preparations
+ok 18 - timelock deposits and tip share reads within one preparation, not across preparations
+  ---
+  duration_ms: 0.420083
+  type: 'test'
+  ...
+# Subtest: real client shares nested native tip and direct timelock tip only in a bounded read scope
+ok 19 - real client shares nested native tip and direct timelock tip only in a bounded read scope
+  ---
+  duration_ms: 38.312
+  type: 'test'
+  ...
+# Subtest: Legacy FT transfer maps trusted metadata and attached TBC amounts
+ok 20 - Legacy FT transfer maps trusted metadata and attached TBC amounts
+  ---
+  duration_ms: 50.0825
+  type: 'test'
+  ...
+# Subtest: Legacy FT current-template mapping reuses one authenticated metadata read
+ok 21 - Legacy FT current-template mapping reuses one authenticated metadata read
+  ---
+  duration_ms: 20.364292
+  type: 'test'
+  ...
+# Subtest: Legacy FT historical-template mapping is unchanged and a failed classification is not cached
+ok 22 - Legacy FT historical-template mapping is unchanged and a failed classification is not cached
+  ---
+  duration_ms: 5.809958
+  type: 'test'
+  ...
+# Subtest: Legacy FT transfer never caches a failed metadata identity
+ok 23 - Legacy FT transfer never caches a failed metadata identity
+  ---
+  duration_ms: 5.283125
+  type: 'test'
+  ...
+# Subtest: Legacy FT transfer accepts historical broadcast modes and rejects invalid values
+ok 24 - Legacy FT transfer accepts historical broadcast modes and rejects invalid values
+  ---
+  duration_ms: 4.156208
+  type: 'test'
+  ...
+# Subtest: Legacy FT transfer rejects invalid source or recipient before metadata lookup
+ok 25 - Legacy FT transfer rejects invalid source or recipient before metadata lookup
+  ---
+  duration_ms: 0.271833
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 25
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 574.135416

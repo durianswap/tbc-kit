@@ -1,0 +1,44 @@
+{
+  "kitVersion": "0.1.0-rc.19",
+  "nativeSdkVersion": "0.1.0-rc.19.native.2",
+  "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+  "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+  "artifacts": {
+    "REPORT.json": {
+      "sha256": "1c43f31d9ea8ff5257d345e16d44d9182160e9d2405b9ae44480f9c468ddc7ee",
+      "bytes": 9658
+    },
+    "android-sdk-0.1.0-rc.19.native.2.tgz": {
+      "sha256": "4146851beb779b63c080057ec31c0a96ed2ca6a6a24c680e3eb4151a75b5f7b7",
+      "bytes": 36108577
+    },
+    "exact-plan-example.json": {
+      "sha256": "253eb5053ad126b3008d73c79388d916a8bf557cac5295742bf87894812ffbfa",
+      "bytes": 43219
+    },
+    "ios-sdk-0.1.0-rc.19.native.2.tgz": {
+      "sha256": "514b0922ffefdcfc0a8be13969fbfa76361ad0a1d977a82bdc2b3a2d5a4fa281",
+      "bytes": 43686738
+    },
+    "native-sdk-identity.json": {
+      "sha256": "9b82f5cfa0d6a5d262f896144a7d4563be8d691304a7420e6665666d2d16f39d",
+      "bytes": 5912
+    },
+    "native-sdk-lock.json": {
+      "sha256": "1c1812792106b01591e51bd0d77c0b2e9f9d2e2f0c1dff7e9c772b735fc92558",
+      "bytes": 7917
+    },
+    "source-manifest.json": {
+      "sha256": "f72823670b752503dbdd8588168c1f3d0ea3ceea74939c1c96bd660edfd6bbd7",
+      "bytes": 135065
+    },
+    "source.tgz": {
+      "sha256": "3d77c2936b9a5d607662ae6f2c6fb877d055c4c9305b7888a62246c759ae86e6",
+      "bytes": 3107337
+    },
+    "tbc-kit-0.1.0-rc.19.tgz": {
+      "sha256": "ed8f1ef7d66154067c7676308dde28cd77d5d6ceacb16daebb3d2951a20eee3a",
+      "bytes": 44021942
+    }
+  }
+}

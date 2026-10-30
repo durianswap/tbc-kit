@@ -353,6 +353,7 @@ pub(crate) fn validate_request(request: &CanonicalRequest) -> Result<(), EngineE
         .and_then(|constraints| constraints.input_outpoints.as_ref())
     {
         if !matches!(request.intent.intent_type.as_str(), "tbc.transfer" | "tbc.maintenance.merge"
+            | "tbc.ft.transfer" | "tbc.ft.merge"
             | "tbc20-standard-create" | "tbc20-standard-transfer" | "tbc20-standard-merge")
             && !TBC721_INTENTS.contains(&request.intent.intent_type.as_str()) && !COIN_INTENTS.contains(&request.intent.intent_type.as_str()) && !LP_INTENTS.contains(&request.intent.intent_type.as_str()) && !AMM_INTENTS.contains(&request.intent.intent_type.as_str()) && !TIMELOCK_INTENTS.contains(&request.intent.intent_type.as_str()) && !HTLC_INTENTS.contains(&request.intent.intent_type.as_str()) && !LOP_INTENTS.contains(&request.intent.intent_type.as_str()) {
             return Err(error(

@@ -5,6 +5,8 @@ mod optional_confirmations;
 mod fragmented_funding;
 #[path = "support/unified_business.rs"]
 mod unified_business;
+#[path = "support/legacy_ft_exact.rs"]
+mod legacy_ft_exact;
 
 #[test]
 fn unified_historical_ft_signing_rounds_match_concrete() {
@@ -83,8 +85,17 @@ fn base_plan_input() -> Value {
 }
 
 fn call(method: EngineMethod, input: &Value) -> Value {
-    serde_json::from_str(&call_json(method, &input.to_string()))
-        .expect("the Engine must always return JSON")
+    let method_name = match method {
+        EngineMethod::NormalizeRequest => "normalizeRequest", EngineMethod::Plan => "plan",
+        EngineMethod::Validate => "validate", EngineMethod::Finalize => "finalize",
+    };
+    let input = input.to_string();
+    let output = call_json(method, &input);
+    if std::env::var_os("TBC_FT_EXACT_DUMP_WIRE").is_some() {
+        // Only checked-in synthetic fixtures. No wallet or network material.
+        println!("FT_EXACT_WIRE:{}", json!({"method":method_name,"input":input,"expected":output}));
+    }
+    serde_json::from_str(&output).expect("the Engine must always return JSON")
 }
 
 fn call_ok(method: EngineMethod, input: &Value) -> Value {
@@ -389,6 +400,8 @@ fn ft_transfer_inserts_merge_only_when_selected_inputs_require_it() {
     // Keep the old vector immutable. The new local display projection is the
     // only added field; transaction bytes/fees/digests must still be identical.
     let mut direct_historical=direct["plan"]["payload"].clone();
+    assert_eq!(direct_historical["preview"]["assetFlows"][0]["contractId"], transfer_plan_input("direct")["request"]["intent"]["contractId"]);
+    direct_historical["preview"]["assetFlows"][0].as_object_mut().unwrap().remove("contractId");
     for t in direct_historical["transactions"].as_array_mut().unwrap(){t.as_object_mut().unwrap().remove("outputReview");}
     assert_eq!(canonical_hash(&direct_historical), vector("ft-transfer.json")["direct"]["expected"]["planHash"]);
     assert_eq!(
@@ -420,12 +433,14 @@ fn ft_transfer_inserts_merge_only_when_selected_inputs_require_it() {
         {"inputIndex":2,"sourceTransactionId":"ft-merge-1","sourceOutputIndex":2},
     ]));
     let mut historical_payload = merged["plan"]["payload"].clone();
+    assert_eq!(historical_payload["preview"]["assetFlows"][0]["contractId"], transfer_plan_input("mergeRequired")["request"]["intent"]["contractId"]);
+    historical_payload["preview"]["assetFlows"][0].as_object_mut().unwrap().remove("contractId");
     historical_payload["preview"].as_object_mut().unwrap().remove("signingTaskCount");
     for transaction in historical_payload["transactions"].as_array_mut().unwrap() {
         transaction.as_object_mut().unwrap().remove("deferredInputs");
         transaction.as_object_mut().unwrap().remove("outputReview");
     }
-    assert_eq!(canonical_hash(&historical_payload), vector("ft-transfer.json")["mergeRequired"]["expected"]["planHash"], "only signing count, deferred-input edges and bound output disclosure may change the historical hash");
+    assert_eq!(canonical_hash(&historical_payload), vector("ft-transfer.json")["mergeRequired"]["expected"]["planHash"], "only signing count, deferred-input edges, output disclosure and summary identity may change the historical hash");
     assert_eq!(merged["plan"]["planHash"], canonical_hash(&merged["plan"]["payload"]));
 }
 
@@ -2462,7 +2477,7 @@ fn fragmented_native_funding_can_pay_ft_transfer() {
     assert_eq!(call_error(EngineMethod::Plan, &bind_request(unconfirmed))["code"], "INSUFFICIENT_FUNDS");
     let mut restricted = input.clone();
     restricted["request"]["constraints"]["inputOutpoints"] = json!([{"txid": format!("{:064x}", 1), "vout": 0}]);
-    assert_eq!(call_error(EngineMethod::NormalizeRequest, &json!({"version":"1.0", "request":restricted["request"]}))["code"], "INVALID_INPUT");
+    assert_eq!(call(EngineMethod::Plan, &bind_request(restricted))["ok"], false, "exact fee-only selection cannot spend unspecified FT inputs");
     let mut tampered = validation;
     tampered["plan"]["payload"]["transactions"][0]["fee"] = json!("0");
     tampered["plan"]["planHash"] = json!(canonical_hash(&tampered["plan"]["payload"]));

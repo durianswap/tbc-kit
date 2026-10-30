@@ -1,0 +1,151 @@
+warning: unused variable: `index`
+    --> crates/tbc-engine-core/src/families/pool.rs:2135:10
+     |
+2135 |     for (index, item) in pool_ft.iter().enumerate() {
+     |          ^^^^^ help: if this is intentional, prefix it with an underscore: `_index`
+     |
+     = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+    --> crates/tbc-engine-core/src/families/pool.rs:2467:5
+     |
+2467 |     mut outputs: Vec<TxOut>,
+     |     ----^^^^^^^
+     |     |
+     |     help: remove this `mut`
+     |
+     = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `material`
+    --> crates/tbc-engine-core/src/families/pool.rs:3219:5
+     |
+3219 |     material: &WalletMaterial<'_>,
+     |     ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_material`
+
+warning: constant `MAX_UNLOCK_FTLP_INPUTS` is never used
+  --> crates/tbc-engine-core/src/families/pool.rs:55:7
+   |
+55 | const MAX_UNLOCK_FTLP_INPUTS: usize = 6;
+   |       ^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `kind` is never read
+   --> crates/tbc-engine-core/src/families/pool.rs:126:5
+    |
+125 | struct MaintenanceArtifacts {
+    |        -------------------- field in this struct
+126 |     kind: MaintenanceKind,
+    |     ^^^^
+
+warning: function `pool_recipe_after_maintenance` is never used
+    --> crates/tbc-engine-core/src/families/pool.rs:3836:4
+     |
+3836 | fn pool_recipe_after_maintenance(
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `pool_recipe_after_dual_maintenance` is never used
+    --> crates/tbc-engine-core/src/families/pool.rs:3890:4
+     |
+3890 | fn pool_recipe_after_dual_maintenance(
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `pool_swap_recipe_after_maintenance` is never used
+    --> crates/tbc-engine-core/src/families/pool.rs:3977:4
+     |
+3977 | fn pool_swap_recipe_after_maintenance(
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `tbc-engine-core` (lib) generated 8 warnings (run `cargo fix --lib -p tbc-engine-core` to apply 3 suggestions)
+   Compiling tbc-engine-core v0.1.0 (/Users/alex/Documents/Codex/2026-10-30/coin-multiround-kit/source/packages/tbc-engine/rust/crates/tbc-engine-core)
+warning: function `reject_unsupported_pool_operations` is never used
+  --> crates/tbc-engine-core/tests/support/unified_business.rs:81:8
+   |
+81 | pub fn reject_unsupported_pool_operations(concrete: Value, current: bool) {
+   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `exercise_pool` is never used
+   --> crates/tbc-engine-core/tests/support/unified_business.rs:115:8
+    |
+115 | pub fn exercise_pool(mut concrete: Value) {
+    |        ^^^^^^^^^^^^^
+
+warning: `tbc-engine-core` (test "ft") generated 2 warnings
+warning: `tbc-engine-core` (test "nft_stablecoin") generated 2 warnings (2 duplicates)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.79s
+     Running tests/coin_multiround.rs (target/debug/deps/coin_multiround-1e6aabd62048d3c8)
+
+running 7 tests
+test coin_exact_fragmented_native_funding_uses_existing_prerequisite ... ok
+test coin_limits_material_and_actual_balance_have_distinct_failures ... ok
+test coin_multi_round_and_native_funding_compose_without_extra_external_inputs has been running for over 60 seconds
+test coin_multiround_artifact_vectors has been running for over 60 seconds
+test coin_multi_round_and_native_funding_compose_without_extra_external_inputs ... ok
+test coin_nonexact_fragmented_native_funding_is_checked_through_public_entry ... ok
+test coin_multiround_artifact_vectors ... ok
+test coin_single_and_large_merge_transfer_exact_conserve_bound_inputs_outputs_and_fees has been running for over 60 seconds
+test coin_six_required_inputs_use_bound_multi_round_plan ... ok
+test coin_single_and_large_merge_transfer_exact_conserve_bound_inputs_outputs_and_fees ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 545.82s
+
+     Running tests/ft.rs (target/debug/deps/ft-202709ff03cc21ff)
+
+running 50 tests
+test fragmented_native_funding_can_pay_ft_transfer ... ok
+test fragmented_native_funding_does_not_reenable_historical_ft_create ... ok
+test ft_501_contract_candidates_fail_before_ancestry_parsing ... ok
+test ft_accepts_a_to_b_then_b_to_c_with_rewritten_sdk_receiver_script ... ok
+test ft_asset_inputs_obey_min_confirmations ... ok
+test ft_covenant_input_finalizes_from_an_external_signature_only ... ok
+test ft_create_and_token_change_boundaries_are_closed ... ok
+test ft_create_v4_is_disabled_without_rewriting_the_historical_fixture ... ok
+test ft_enforces_attached_tbc_dust_and_deterministic_planning ... ok
+test ft_exact_p2pkh_change_threshold_and_missing_25_byte_regression ... ok
+test ft_funding_skips_insufficient_candidates_and_breaks_equal_value_ties_by_outpoint ... ok
+test ft_mixed_contract_snapshot_plans_each_contract_independently ... ok
+test ft_pending_validates_as_a_typed_nonfinal_artifact ... ok
+test ft_public_finalize_rejects_tampered_swapped_and_out_of_order_continuations ... ok
+test ft_public_finalize_rejects_wrong_key_wrong_digest_and_high_s_covenant_signatures ... ok
+test ft_public_finalize_returns_pending_then_legacy_complete_bundle ... ok
+test ft_public_finalize_revalidates_compact_evidence_on_every_advance ... ok
+test ft_public_merge_is_one_primary_transaction_and_requires_multiple_inputs ... ok
+test fragmented_ft_reuses_one_fee_change_across_merge_levels has been running for over 60 seconds
+test fragmented_ft_reuses_one_fee_change_across_merge_levels ... ok
+test ft_rejects_duplicate_native_snapshot_outpoints_before_assignment ... ok
+test ft_rejects_regenerated_wrong_genesis_output_roles_and_rebased_origin ... ok
+test ft_rejects_tampered_ancestry_and_insufficient_token_balance ... ok
+test ft_rejects_transfer_state_relabelled_as_a_new_genesis ... ok
+test ft_rejects_wrong_contract_fee_cap_and_malformed_parent ... ok
+test ft_transfer_inserts_merge_only_when_selected_inputs_require_it ... ok
+test ft_validation_distinguishes_approval_failures_from_artifact_tampering ... ok
+test legacy_ft_exact::exact_does_not_drop_surplus_specified_assets_or_select_unspecified_fees ... ok
+test legacy_ft_exact::exact_fee_consolidation_is_bound_and_respects_limits ... ok
+test legacy_ft_exact::exact_input_scope_cannot_be_replaced_after_approval ... ok
+test legacy_ft_exact::exact_missing_ineligible_wrong_contract_and_duplicate_inputs_fail ... ok
+test legacy_ft_exact::exact_single_and_six_asset_inputs_finalize_with_no_extra_input ... ok
+test legacy_ft_exact::exact_subset_and_merge_preserve_selection ... ok
+test ft_realistic_500_input_plan_and_continuation_fit_bounded_wire_sizes has been running for over 60 seconds
+test legacy_ft_exact::exact_twenty_assets_and_fee_consolidation_keep_one_dependency_plan ... ok
+test legacy_ft_exact::legacy_ft_plan_timings ... ignored, local before/after benchmark; no network or production keys
+test legacy_ft_exact::summary_contract_id_is_complete_and_bound ... ok
+test native_funding_descriptors_allow_ft_direct_without_native_parents ... ok
+test native_funding_descriptors_allow_ft_merge_without_native_parents ... ok
+test native_funding_descriptors_do_not_reenable_historical_ft_create ... ok
+test native_funding_descriptors_do_not_relax_ft_ancestry ... ok
+test native_funding_descriptors_reject_invalid_txids_without_panicking ... ok
+test native_funding_descriptors_still_reject_foreign_script ... ok
+test native_funding_descriptors_still_reject_supplied_bad_parent ... ok
+test optional_confirmations_ft_thresholds_and_hash_binding ... ok
+test ordinary_ft_unlock_keeps_the_legacy_no_coin_marker_layout ... ok
+test pinned_source_comparator ... ignored, executed by scripts/compare-ft-source.sh against an exported pinned Git object
+test sdk_gap_ft_five_recipients_are_one_bound_transaction ... ok
+test staged_ft_output_review_binds_each_transaction_balance_and_destination ... ok
+test unified_ft_request_preserves_binding_and_legacy_transaction_bytes ... ok
+test unified_historical_ft_signing_rounds_match_concrete ... ok
+error: test failed, to rerun pass `-p tbc-engine-core --test ft`
+
+Caused by:
+  process didn't exit successfully: `/Users/alex/Documents/Codex/2026-10-30/coin-multiround-kit/source/packages/tbc-engine/rust/target/debug/deps/ft-202709ff03cc21ff --test-threads=2` (signal: 2, SIGINT: terminal interrupt signal)

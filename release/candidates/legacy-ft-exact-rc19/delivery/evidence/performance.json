@@ -1,0 +1,75 @@
+{
+  "runtime": "v22.23.2",
+  "methodology": "Three sequential rounds after candidate build and device checks finished; each round alternates versions, 10 warm-up + 40 measured pairs. Median of per-round medians and P90s; original rounds preserved.",
+  "hostCaveat": "Shared development host; no physical-device or end-to-end latency claim.",
+  "measurements": [
+    {
+      "amount": 100,
+      "method": "plan",
+      "before": {
+        "medianMs": 6.759375000000091,
+        "p90Ms": 38.29650000000038,
+        "samples": 120,
+        "rounds": 3
+      },
+      "after": {
+        "medianMs": 6.19512499999928,
+        "p90Ms": 48.88233300000047,
+        "samples": 120,
+        "rounds": 3
+      },
+      "apiReads": 5
+    },
+    {
+      "amount": 100,
+      "method": "validate",
+      "before": {
+        "medianMs": 10.125792000000729,
+        "p90Ms": 33.321625000000495,
+        "samples": 120,
+        "rounds": 3
+      },
+      "after": {
+        "medianMs": 8.463042000000314,
+        "p90Ms": 40.42516700000033,
+        "samples": 120,
+        "rounds": 3
+      },
+      "apiReads": 5
+    },
+    {
+      "amount": 550,
+      "method": "plan",
+      "before": {
+        "medianMs": 29.321875000000546,
+        "p90Ms": 78.52558300000055,
+        "samples": 120,
+        "rounds": 3
+      },
+      "after": {
+        "medianMs": 33.44024999999965,
+        "p90Ms": 72.66583399999945,
+        "samples": 120,
+        "rounds": 3
+      },
+      "apiReads": 10
+    },
+    {
+      "amount": 550,
+      "method": "validate",
+      "before": {
+        "medianMs": 36.260042000001704,
+        "p90Ms": 132.12329099999988,
+        "samples": 120,
+        "rounds": 3
+      },
+      "after": {
+        "medianMs": 37.70333399999981,
+        "p90Ms": 134.476375000002,
+        "samples": 120,
+        "rounds": 3
+      },
+      "apiReads": 10
+    }
+  ]
+}

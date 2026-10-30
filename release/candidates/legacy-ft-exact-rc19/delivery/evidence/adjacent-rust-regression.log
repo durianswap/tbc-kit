@@ -1,0 +1,116 @@
+warning: unused variable: `index`
+    --> crates/tbc-engine-core/src/families/pool.rs:2135:10
+     |
+2135 |     for (index, item) in pool_ft.iter().enumerate() {
+     |          ^^^^^ help: if this is intentional, prefix it with an underscore: `_index`
+     |
+     = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+    --> crates/tbc-engine-core/src/families/pool.rs:2467:5
+     |
+2467 |     mut outputs: Vec<TxOut>,
+     |     ----^^^^^^^
+     |     |
+     |     help: remove this `mut`
+     |
+     = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `material`
+    --> crates/tbc-engine-core/src/families/pool.rs:3219:5
+     |
+3219 |     material: &WalletMaterial<'_>,
+     |     ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_material`
+
+warning: constant `MAX_UNLOCK_FTLP_INPUTS` is never used
+  --> crates/tbc-engine-core/src/families/pool.rs:55:7
+   |
+55 | const MAX_UNLOCK_FTLP_INPUTS: usize = 6;
+   |       ^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: field `kind` is never read
+   --> crates/tbc-engine-core/src/families/pool.rs:126:5
+    |
+125 | struct MaintenanceArtifacts {
+    |        -------------------- field in this struct
+126 |     kind: MaintenanceKind,
+    |     ^^^^
+
+warning: function `pool_recipe_after_maintenance` is never used
+    --> crates/tbc-engine-core/src/families/pool.rs:3836:4
+     |
+3836 | fn pool_recipe_after_maintenance(
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `pool_recipe_after_dual_maintenance` is never used
+    --> crates/tbc-engine-core/src/families/pool.rs:3890:4
+     |
+3890 | fn pool_recipe_after_dual_maintenance(
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `pool_swap_recipe_after_maintenance` is never used
+    --> crates/tbc-engine-core/src/families/pool.rs:3977:4
+     |
+3977 | fn pool_swap_recipe_after_maintenance(
+     |    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `tbc-engine-core` (lib) generated 8 warnings (run `cargo fix --lib -p tbc-engine-core` to apply 3 suggestions)
+warning: function `reject_unsupported_pool_operations` is never used
+  --> crates/tbc-engine-core/tests/support/unified_business.rs:81:8
+   |
+81 | pub fn reject_unsupported_pool_operations(concrete: Value, current: bool) {
+   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: function `exercise_pool` is never used
+   --> crates/tbc-engine-core/tests/support/unified_business.rs:115:8
+    |
+115 | pub fn exercise_pool(mut concrete: Value) {
+    |        ^^^^^^^^^^^^^
+
+warning: `tbc-engine-core` (test "nft_stablecoin") generated 2 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.34s
+     Running tests/nft_stablecoin.rs (target/debug/deps/nft_stablecoin-aa84c84223eeeed9)
+
+running 24 tests
+test excluded_stablecoin_operations_remain_unsupported ... ok
+test every_task6_operation_completes_through_the_public_external_signer_facade ... ok
+test funding_and_media_limits_fail_closed ... ok
+test historical_issuance_rejects_and_holder_operations_dispatch_to_rust ... ok
+test independent_stablecoin_merge_is_one_bounded_primary_transaction ... ok
+test later_minted_stablecoin_tranche_plans_and_completes_from_authenticated_supply ... ok
+test nft_and_stablecoin_reject_forged_contract_and_parent_material ... ok
+test nft_transfer_plan_stays_compact_with_deduplicated_ancestry ... ok
+test optional_confirmations_nft_stablecoin_thresholds_and_hash_binding ... ok
+test fragmented_native_funding_nft_and_stablecoin_finalize_and_validate ... ok
+test public_family_specific_signature_negatives_cover_v0_v1_and_second_stage ... ok
+test public_rejects_cross_operation_and_cross_family_continuations ... ok
+test selected_contract_inputs_enforce_owner_confirmations_and_uniqueness ... ok
+test shared_collection_uses_full_public_plan_sign_finalize_validation ... ok
+test source_semantics_are_argument_derived_and_ignore_unrelated_holdings ... ok
+test stablecoin_merge_rejects_stale_and_tampered_continuations ... ok
+test stablecoin_merge_uses_maintenance_before_primary_and_preserves_coin_rules ... ok
+test stablecoin_transactions_preserve_source_locktime_and_sequence ... ok
+test public_second_stage_distinguishes_artifact_from_approval_mismatch ... ok
+test task6_family_signatures_reject_wrong_key_missing_and_duplicate_entries ... ok
+test stablecoin_unlocks_keep_the_coin_marker_and_fee_headroom_in_every_stage ... ok
+test unified_historical_nft_signing_matches_concrete ... ok
+test trusted_index_stablecoin_matches_full_history_and_preserves_local_checks has been running for over 60 seconds
+test unified_historical_stablecoin_signing_matches_concrete ... ok
+test trusted_index_stablecoin_matches_full_history_and_preserves_local_checks ... ok
+
+test result: ok. 24 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 196.00s
+
+     Running tests/tbc20_funding.rs (target/debug/deps/tbc20_funding-fdb3ae15b9193114)
+
+running 4 tests
+test tbc20_funding_keeps_sufficient_native_hot_path_without_maintenance ... ok
+test tbc20_create_native_prerequisite_three_external_signing_stages ... ok
+test tbc20_funding_preserves_total_limits_and_exact_external_selection ... ok
+test tbc20_transfer_native_prerequisite_does_not_spend_tokens_or_bypass_vin_limit ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 13.49s
+

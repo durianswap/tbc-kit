@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "sdkVersion": "0.1.0-rc.19.native.2",
+  "kitVersion": "0.1.0-rc.19",
+  "kitTarSha256": "b22d983433c5f18d2da88ad5cc605d5f1faccfc469256f55ab7fca7eebd78377",
+  "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+  "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+  "nativeHashes": {
+    "ios/TbcEngineNative.xcframework/Info.plist": "9a7a3843e141bf91da5590a98b1caf8f09d5ed69e42422039fc4112d654cf7da",
+    "ios/TbcEngineNative.xcframework/ios-arm64/Headers/module.modulemap": "b96481a446ba0a7f27e2a8ed084287e118aa39999b32ed4fee82d75d34c33556",
+    "ios/TbcEngineNative.xcframework/ios-arm64/Headers/tbc_engine.h": "d773d6a31b10fe5a5f7d780089aa89345b8d99df18e414ada58e4f716586c8bc",
+    "ios/TbcEngineNative.xcframework/ios-arm64/libtbc_engine_native.a": "ec601540fdfc1d64b08488dcd6615595a8ec295f368a0a48a17fa4f41af97713",
+    "ios/TbcEngineNative.xcframework/ios-arm64-simulator/Headers/module.modulemap": "b96481a446ba0a7f27e2a8ed084287e118aa39999b32ed4fee82d75d34c33556",
+    "ios/TbcEngineNative.xcframework/ios-arm64-simulator/Headers/tbc_engine.h": "d773d6a31b10fe5a5f7d780089aa89345b8d99df18e414ada58e4f716586c8bc",
+    "ios/TbcEngineNative.xcframework/ios-arm64-simulator/libtbc_engine_native.a": "128a8ba5d99ea076142c0a3035f874925846cceb0ab712a6542b281030435610",
+    "android/jniLibs/arm64-v8a/libtbc_engine_native.so": "ea6c0b224ab2e3be4ee7ebb579e4e29d30ab6ef811d15a61d6fa99176eef016a",
+    "android/jniLibs/armeabi-v7a/libtbc_engine_native.so": "dd856d184ae2297b6b3f0e0d00aec78c3468ac4d48fd7c1a18e72038776c1a23",
+    "android/jniLibs/x86_64/libtbc_engine_native.so": "0854e961b826b2ecce9ccb4eb6c596e7ad1f7f3a041bc1c2371e5cbdf80c67d1"
+  },
+  "bindingSourceHashes": {
+    "apple/Sources/TbcEngine/TbcEngine.swift": "4d6b5c1241be5e928d2602151f36457f49a77c1770257dcf28e4714db49b5272",
+    "apple/Sources/TbcEngine/TbcEngineIdentity.swift": "8aa1a91ea5172232507682ca8fe2da026fba544e069e4839262c84bb18135cc1",
+    "apple/Sources/TbcEngine/TbcKeylessEngine.swift": "899a49cc420277f33eb137ee19cc056f019881f69fb2eb42d9686d6874263585",
+    "android/engine/src/main/java/io/tbc/engine/TbcEngine.kt": "68e6138ccec3528e35c16c48af9d21d969d02ebee457783252b14976707258d4",
+    "android/engine/src/main/java/io/tbc/engine/TbcEngineIdentity.kt": "bb3125f57af9497204de39986b815b188747708033e4bf1d9cc9e782d5aef9ba",
+    "android/engine/src/main/java/io/tbc/engine/TbcKeylessEngine.kt": "2c08e4a83a19e0753367f069b89b70832064c3f03e42ff99be20d511811449a4",
+    "android/engine/src/main/cpp/CMakeLists.txt": "a45e3f43c2f832142c6dfa94d2763d43f3275dadfa4809ca0e2ecef7f58c2c3a",
+    "android/engine/src/main/cpp/bridge.cpp": "49fd6c555686ef1be05f3e89a5417588072754499d7f3b8bc41222ea6cd57ab8",
+    "android/engine/src/main/cpp/include/module.modulemap": "b96481a446ba0a7f27e2a8ed084287e118aa39999b32ed4fee82d75d34c33556",
+    "android/engine/src/main/cpp/include/tbc_engine.h": "d773d6a31b10fe5a5f7d780089aa89345b8d99df18e414ada58e4f716586c8bc",
+    "android/engine/src/main/cpp/include/tbc_keyless.h": "fe6e4e9d09016deb7d23aff96b24a10e65772f7cdc930ee9266e754788a01b4c",
+    "android/engine/src/main/cpp/keyless-bridge.cpp": "c3332c507c0b700ef816c078b0fbbc56bc821e1ccedd572eb9e5488e4b199cde",
+    "apple/Package.swift": "1b8a9bf7556ed70c5b342a92f7f4e2aa99dc4855c316039b05f154d240832924",
+    "android/engine/build.gradle": "0609b95cbc90b90d8449e9d796a93649c39ad1c060c23247276e67cb54e23c0d",
+    "android/build.gradle": "0b3046e2c603de96e95b68029293a6689e42966ef3c468b6833576c7e7f6659f",
+    "android/settings.gradle": "cf9f1025918fae7b588823aabeb5035741eb359364abe2d574ea3e9a7e285bef"
+  },
+  "platforms": {
+    "ios": [
+      "arm64-device",
+      "arm64-simulator"
+    ],
+    "android": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86_64"
+    ]
+  },
+  "scope": "Core Engine and keyless companion; native binding candidate, full wallet acceptance pending",
+  "coreArtifactSetId": "b96c3a155ad1632ae365a3e9f06b6f11066f4167ce10053d8a0b0d23bc77f9e7",
+  "keylessArtifactSetId": "f9fc9f34a1c289b63c09a4fff29e6d52f461f737d09f8f93154d84372d5f8c45",
+  "keylessSourceSha256": "86c752cbcc0dd4d0f6e85d66c1a1141fc949d047b38b9253c57e17a9d5662f90",
+  "keylessHashes": {
+    "TbcKeylessNative.xcframework/Info.plist": "cc4fd77145b6da90f5e27ad552142df83f37dbb04487a4eae2accc1ae18ad38e",
+    "TbcKeylessNative.xcframework/ios-arm64/Headers/TbcKeylessNative/module.modulemap": "724a835346769b0f8f9a5bfd76f0b1da665c705a890e658f335f00c31d50b361",
+    "TbcKeylessNative.xcframework/ios-arm64/Headers/tbc_keyless.h": "fe6e4e9d09016deb7d23aff96b24a10e65772f7cdc930ee9266e754788a01b4c",
+    "TbcKeylessNative.xcframework/ios-arm64/libtbc_keyless_native.a": "8e83a415c139db50099f4d0854bdd042669390c5098a6cedcd85b199ce107850",
+    "TbcKeylessNative.xcframework/ios-arm64-simulator/Headers/TbcKeylessNative/module.modulemap": "724a835346769b0f8f9a5bfd76f0b1da665c705a890e658f335f00c31d50b361",
+    "TbcKeylessNative.xcframework/ios-arm64-simulator/Headers/tbc_keyless.h": "fe6e4e9d09016deb7d23aff96b24a10e65772f7cdc930ee9266e754788a01b4c",
+    "TbcKeylessNative.xcframework/ios-arm64-simulator/libtbc_keyless_native.a": "eb1101d5c7efa2b273d226d03684aa79f010b022809cbc6af025e64c749455a2",
+    "android/arm64-v8a/libtbc_keyless_native.so": "eb808cbfb4196dc99a78cc8a85c8d4d10c8689a248179ae3bee643cd49f20f89",
+    "android/armeabi-v7a/libtbc_keyless_native.so": "b806ef2dbd0eaf8c42a7943a84233616cef06bff485c1b8614a002d001f89f81",
+    "android/x86_64/libtbc_keyless_native.so": "2a2ca9ef876e37ee8fb8f63340fa595a7f655ba712df7f3d4f7461cb830adf76",
+    "desktop/libtbc_keyless_native.dylib": "e3e81d29643cc3fb10690c3ce8e39b7d5fa1c2a0b1698634eacbd07dac812e3f",
+    "include/module.modulemap": "c49a057d74e3d73dbf29bf0df22557cd94b4644dcdb2909546c4778870af08a9",
+    "include/tbc_keyless.h": "fe6e4e9d09016deb7d23aff96b24a10e65772f7cdc930ee9266e754788a01b4c"
+  }
+}

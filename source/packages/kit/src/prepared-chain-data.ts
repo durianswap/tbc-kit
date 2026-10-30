@@ -51,7 +51,7 @@ export function preparedChainDataRequirement(request: KitTransactionRequest<KitS
   assets: readonly AssetRequirement[];
 }> {
   const intent = request.intent;
-  if (intent.type === "tbc721.batchTransfer") return chainDataRequirement(request);
+  if (["tbc721.batchTransfer", "tbc.ft.transfer", "tbc.ft.merge"].includes(intent.type)) return chainDataRequirement(request);
   if (intent.type.startsWith("tbc20Lp.") || ["amm.mergeToken", "amm.swap", "amm.addLiquidity", "amm.removeLiquidity", "tbc721.transfer", "tbc20.transfer", "tbc20.merge", "tbc20Stablecoin.transfer", "tbc20Stablecoin.merge"].includes(intent.type)) {
     return chainDataRequirement(request);
   }

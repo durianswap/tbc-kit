@@ -1,0 +1,105 @@
+{
+  "runtime": "v22.23.2",
+  "measurements": [
+    {
+      "amount": 100,
+      "method": "plan",
+      "before": {
+        "medianMs": 8.543290999999954,
+        "p90Ms": 69.63558300000022,
+        "samples": 40
+      },
+      "after": {
+        "medianMs": 6.078917000000729,
+        "p90Ms": 59.368124999999964,
+        "samples": 40
+      },
+      "cpuBefore": {
+        "medianMs": 5.981,
+        "p90Ms": 8.134,
+        "samples": 40
+      },
+      "cpuAfter": {
+        "medianMs": 5.665,
+        "p90Ms": 7.585,
+        "samples": 40
+      },
+      "apiReads": 5
+    },
+    {
+      "amount": 100,
+      "method": "validate",
+      "before": {
+        "medianMs": 10.008499999999913,
+        "p90Ms": 59.784874999999374,
+        "samples": 40
+      },
+      "after": {
+        "medianMs": 11.097791999998663,
+        "p90Ms": 89.36137500000041,
+        "samples": 40
+      },
+      "cpuBefore": {
+        "medianMs": 6.149,
+        "p90Ms": 8.041,
+        "samples": 40
+      },
+      "cpuAfter": {
+        "medianMs": 6.506,
+        "p90Ms": 17.687,
+        "samples": 40
+      },
+      "apiReads": 5
+    },
+    {
+      "amount": 550,
+      "method": "plan",
+      "before": {
+        "medianMs": 32.30595799999901,
+        "p90Ms": 115.83012500000041,
+        "samples": 40
+      },
+      "after": {
+        "medianMs": 31.152625000000626,
+        "p90Ms": 138.63845799999945,
+        "samples": 40
+      },
+      "cpuBefore": {
+        "medianMs": 18.543,
+        "p90Ms": 22.857,
+        "samples": 40
+      },
+      "cpuAfter": {
+        "medianMs": 18.439,
+        "p90Ms": 22.658,
+        "samples": 40
+      },
+      "apiReads": 10
+    },
+    {
+      "amount": 550,
+      "method": "validate",
+      "before": {
+        "medianMs": 44.315708000001905,
+        "p90Ms": 116.3123749999977,
+        "samples": 40
+      },
+      "after": {
+        "medianMs": 43.122957999999926,
+        "p90Ms": 68.7032500000023,
+        "samples": 40
+      },
+      "cpuBefore": {
+        "medianMs": 20.478,
+        "p90Ms": 23.47,
+        "samples": 40
+      },
+      "cpuAfter": {
+        "medianMs": 19.698,
+        "p90Ms": 24.136,
+        "samples": 40
+      },
+      "apiReads": 10
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "sdkVersion": "0.1.0-rc.19.native.2",
+  "kitTarSha256": "b22d983433c5f18d2da88ad5cc605d5f1faccfc469256f55ab7fca7eebd78377",
+  "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+  "aarSha256": "f0ec4170288c6662d7f601578a8a594cf3d961007230614b95203b07e7905fba",
+  "vectorsSha256": "a49be50e991395d2ae956efb7935f7884afb5ffb23e9de2e865ea8ca719810f9",
+  "ios": {
+    "udid": "DA8B84D5-FEFF-4F44-9A21-30E730076411",
+    "name": "TBC rc11 FT NFT 验收",
+    "runtime": "iOS Simulator arm64 process",
+    "output": "SWIFT_NATIVE_PROBE_PASS runtime=ios-simulator cases=71 concurrent=16"
+  },
+  "android": {
+    "serial": "emulator-5556",
+    "abi": "arm64-v8a",
+    "runtime": "Android ART shell process",
+    "output": "ANDROID_NATIVE_PROBE_PASS runtime=ART api=36 abi=arm64-v8a cases=71 concurrent=16",
+    "remote": "/data/local/tmp/tbc-engine-probe-device-check-t8l2FB",
+    "probeFilesCleaned": true
+  },
+  "methodVectors": 71,
+  "timelockVectors": 0,
+  "concurrentPerPlatform": 16,
+  "existingWalletChanged": false,
+  "appInstalled": false,
+  "physicalDevice": false,
+  "expoTemplateSwitched": false,
+  "fullNativeKit": false,
+  "broadcasts": 0,
+  "scratch": "/Users/alex/Documents/Codex/2026-10-30/coin-multiround-kit/release/candidates/legacy-ft-exact-rc19/native-sdk/device-check-t8l2FB"
+}

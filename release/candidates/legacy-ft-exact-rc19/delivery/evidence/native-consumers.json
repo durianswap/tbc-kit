@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "sdkVersion": "0.1.0-rc.19.native.2",
+  "kitTarSha256": "b22d983433c5f18d2da88ad5cc605d5f1faccfc469256f55ab7fca7eebd78377",
+  "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+  "fixtureSha256": "8246aced97a26d000266fc690a7a5852df3308fc6a718ccbea82cf9b450f2201",
+  "vectors": 71,
+  "concurrentPerLanguage": 16,
+  "timelockVectors": 0,
+  "specialContractVectors": [],
+  "extraVectors": 63,
+  "swiftHostExecution": true,
+  "kotlinJniHostExecution": true,
+  "iosDeviceLinked": true,
+  "iosSimulatorLinked": true,
+  "androidAarConsumerBuilt": true,
+  "androidAbis": [
+    "arm64-v8a",
+    "armeabi-v7a",
+    "x86_64"
+  ],
+  "androidRustBytesPreserved": true,
+  "aarSha256": "f0ec4170288c6662d7f601578a8a594cf3d961007230614b95203b07e7905fba",
+  "aarBytes": 18185408,
+  "actualIosRuntime": false,
+  "actualAndroidRuntime": false,
+  "expoTemplateSwitched": false,
+  "networkRequestsByEngine": 0,
+  "broadcasts": 0,
+  "fullNativeKit": false,
+  "scratch": "/Users/alex/Documents/Codex/2026-10-30/coin-multiround-kit/release/candidates/legacy-ft-exact-rc19/native-sdk/consumer-check-xlVKp0"
+}

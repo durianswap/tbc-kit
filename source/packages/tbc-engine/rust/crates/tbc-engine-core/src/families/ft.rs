@@ -1,4 +1,4 @@
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use std::ops::Bound::{Included, Unbounded};
 
 use sha2::{Digest, Sha256};
@@ -16,7 +16,7 @@ use tbc_sdk::{
     script::Script,
 };
 
-use crate::ancestry::{AssetSpend, FtMetadata, prepare_asset_ancestry, prepare_stablecoin_ancestry};
+use crate::ancestry::{AssetSpend, FtMetadata, prepare_asset_ancestry, prepare_selected_asset_ancestry, prepare_stablecoin_ancestry};
 use crate::funding::{NativeFundingUtxo, conservative_transaction_fee, native_funding_candidates};
 use crate::fee_envelope::reconcile_plan_fee_envelopes;
 use crate::model::{
@@ -185,7 +185,26 @@ pub(crate) fn plan_ft(
     validate_request(request)?;
     validate_material_identity(request, material)?;
     validate_policy(material)?;
-    match request.intent.intent_type.as_str() {
+    if let Some(points) = request.constraints.as_ref().and_then(|c| c.input_outpoints.as_ref()) {
+        let mut assets = 0;
+        for point in points {
+            let mut matches = material.snapshot.payload.utxos.iter()
+                .filter(|u| u.txid == point.txid && u.vout == point.vout);
+            let u = matches.next().ok_or_else(|| error(ErrorCode::MissingMaterial,
+                "FT selected input is absent from bound material", "request.constraints.inputOutpoints"))?;
+            if matches.next().is_some() || (u.classification != "native" &&
+                (u.classification != "ft" || u.contract_id != request.intent.contract_id)) {
+                return Err(error(ErrorCode::InvalidAncestry,
+                    "FT selected input is ambiguous or belongs to another asset", "request.constraints.inputOutpoints"));
+            }
+            assets += usize::from(u.classification == "ft");
+        }
+        if assets == 0 {
+            return Err(error(ErrorCode::MissingMaterial,
+                "FT exact selection must include its asset inputs and native funding", "request.constraints.inputOutpoints"));
+        }
+    }
+    let planned = match request.intent.intent_type.as_str() {
         "tbc.ft.create" => plan_create(request, material, signing),
         "tbc.ft.transfer" => plan_transfer(request, material, signing),
         "tbc.ft.merge" | "tbc.stablecoin.merge" => plan_merge(request, material, signing),
@@ -195,7 +214,45 @@ pub(crate) fn plan_ft(
             "unsupported FT intent",
             "request.intent.type",
         )),
+    }?;
+    if matches!(request.intent.intent_type.as_str(), "tbc.ft.transfer" | "tbc.ft.merge") {
+        crate::funding_fallback::validate_exact_external_inputs(request, &planned.unsigned_plan)?;
     }
+    Ok(planned)
+}
+
+fn permitted(request: &CanonicalRequest, txid: &str, vout: u32) -> bool {
+    request.constraints.as_ref().and_then(|c| c.input_outpoints.as_ref())
+        .is_none_or(|points| points.iter().any(|p| p.txid == txid && p.vout == vout))
+}
+
+// All listed original points must be eligible assets of this contract or native
+// fee funding. Reject omitted/misclassified/immature points instead of silently
+// replacing them. More than one fee input uses the common prerequisite planner.
+fn selected_funding(
+    request: &CanonicalRequest,
+    material: &WalletMaterial<'_>,
+    signing: &PublicSigningContext,
+    assets: &[AssetSpend],
+) -> Result<Vec<NativeFundingUtxo>, EngineError> {
+    let mut native = funding_candidates(material, signing)?;
+    if let Some(points) = request.constraints.as_ref().and_then(|c| c.input_outpoints.as_ref()) {
+        native.retain(|u| permitted(request, &u.txid, u.vout));
+        let actual: BTreeSet<_> = assets.iter().map(|u| (u.txid.as_str(), u.vout))
+            .chain(native.iter().map(|u| (u.txid.as_str(), u.vout))).collect();
+        let expected: BTreeSet<_> = points.iter().map(|p| (p.txid.as_str(), p.vout)).collect();
+        if actual != expected || actual.len() != assets.len() + native.len() {
+            return Err(error(ErrorCode::MissingMaterial,
+                "FT exact inputs must all be available, owned and eligible for this contract",
+                "request.constraints.inputOutpoints"));
+        }
+        if native.len() > 1 {
+            return Err(error(ErrorCode::InsufficientFunds,
+                "FT selected native funding requires a planned prerequisite",
+                "request.constraints.inputOutpoints"));
+        }
+    }
+    Ok(native)
 }
 
 pub(crate) fn validate_ft_plan(
@@ -449,6 +506,7 @@ fn plan_transfer(
         .filter(|utxo| {
             utxo.classification == classification
                 && utxo.contract_id.as_deref() == Some(contract_id)
+                && permitted(request, &utxo.txid, utxo.vout)
         })
         .count();
     if selected_contract_candidates > MAX_FT_INPUTS {
@@ -467,11 +525,18 @@ fn plan_transfer(
     )?;
     let ancestry = if coin_mode {
         prepare_stablecoin_ancestry(material.snapshot, contract_id, &owner_hash, min_confirmations)?
+    } else if let Some(points) = request.constraints.as_ref().and_then(|c| c.input_outpoints.as_ref()) {
+        prepare_selected_asset_ancestry(material.snapshot, contract_id, &owner_hash, min_confirmations, points)?
     } else {
         prepare_asset_ancestry(material.snapshot, contract_id, &owner_hash, min_confirmations)?
     };
     validate_metadata(&ancestry.metadata)?;
-    let selected = select_asset_inputs(&ancestry.spends, amount)?;
+    let selected = if request.constraints.as_ref().and_then(|c| c.input_outpoints.as_ref()).is_some() {
+        // Exact means every selected asset, even when a subset would suffice.
+        let mut spends = ancestry.spends;
+        spends.sort_by(|a, b| b.balance_raw.cmp(&a.balance_raw).then_with(|| a.txid.cmp(&b.txid)).then_with(|| a.vout.cmp(&b.vout)));
+        spends
+    } else { select_asset_inputs(&ancestry.spends, amount)? };
     if selected.len() > MAX_FT_INPUTS {
         return Err(error(
             ErrorCode::InvalidInput,
@@ -479,13 +544,13 @@ fn plan_transfer(
             "snapshot.payload.utxos",
         ));
     }
+    let native = selected_funding(request, material, signing, &selected)?;
     let mut evidence = EvidenceBuilder::default();
     let candidates = selected
         .into_iter()
         .map(|spend| asset_candidate(spend, &mut evidence, ancestry.metadata.is_coin))
         .collect::<Result<Vec<_>, EngineError>>()?;
     let fee_rate = fee_rate(material)?;
-    let native = funding_candidates(material, signing)?;
     build_transfer_with_funding(
         request,
         material,
@@ -516,6 +581,7 @@ fn plan_merge(
         .iter()
         .filter(|utxo| {
             utxo.classification == classification && utxo.contract_id.as_deref() == Some(contract_id)
+                && permitted(request, &utxo.txid, utxo.vout)
         })
         .count();
     if !(2..=MAX_FT_INPUTS_PER_TRANSACTION).contains(&selected_contract_candidates) {
@@ -544,6 +610,8 @@ fn plan_merge(
     )?;
     let ancestry = if coin_mode {
         prepare_stablecoin_ancestry(material.snapshot, contract_id, &owner_hash, min_confirmations)?
+    } else if let Some(points) = request.constraints.as_ref().and_then(|c| c.input_outpoints.as_ref()) {
+        prepare_selected_asset_ancestry(material.snapshot, contract_id, &owner_hash, min_confirmations, points)?
     } else {
         prepare_asset_ancestry(material.snapshot, contract_id, &owner_hash, min_confirmations)?
     };
@@ -555,6 +623,7 @@ fn plan_merge(
             "snapshot.payload.utxos",
         ));
     }
+    let native = selected_funding(request, material, signing, &ancestry.spends)?;
     let mut spends = ancestry.spends;
     spends.sort_by(|left, right| {
         left.balance_raw
@@ -580,8 +649,7 @@ fn plan_merge(
     let outputs = merge_outputs(&ancestry.metadata, signing, &tape_amount)?;
     let rate = fee_rate(material)?;
     let mut fees = FeePool::new(
-        funding_candidates(material, signing)?
-            .iter()
+        native.iter()
             .map(fee_candidate)
             .collect(),
     )?;
@@ -610,7 +678,7 @@ fn plan_merge(
             kind: classification.to_owned(),
             direction: "merge".to_owned(),
             amount: total.to_string(),
-            contract_id: None,
+            contract_id: Some(contract_id.to_owned()),
             from: request.from.clone(),
             to: Some(request.from.clone()),
         }],
@@ -836,7 +904,7 @@ fn build_transfer_with_funding(
         kind: if metadata.is_coin { "stablecoin" } else { "ft" }.to_owned(),
         direction: "send".to_owned(),
         amount: amount.to_string(),
-        contract_id: None,
+        contract_id: request.intent.contract_id.clone(),
         from: request.from.clone(),
         to: Some(recipient.to_string()),
     }).collect::<Vec<_>>();

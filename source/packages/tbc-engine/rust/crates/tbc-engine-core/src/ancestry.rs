@@ -19,7 +19,7 @@ use tbc_sdk::{
     script::Script,
 };
 
-use crate::model::{ChainSnapshot, ContractRecord, error};
+use crate::model::{ChainSnapshot, ContractRecord, RequestedOutpoint, error};
 use crate::normalize::hex;
 use crate::signing::{FtProofReference, FtTransactionSource};
 use crate::{EngineError, ErrorCode};
@@ -108,7 +108,19 @@ pub(crate) fn prepare_asset_ancestry(
     owner_hash: &[u8; 20],
     min_confirmations: u64,
 ) -> Result<AssetAncestry, EngineError> {
-    prepare_asset_ancestry_kind(snapshot, contract_id, owner_hash, min_confirmations, false)
+    prepare_asset_ancestry_kind(snapshot, contract_id, owner_hash, min_confirmations, false, None)
+}
+
+/// Select from the already-bound material before ancestry work. No snapshot
+/// clone, extra parent lookup, or change to the ordinary automatic path.
+pub(crate) fn prepare_selected_asset_ancestry(
+    snapshot: &ChainSnapshot,
+    contract_id: &str,
+    owner_hash: &[u8; 20],
+    min_confirmations: u64,
+    points: &[RequestedOutpoint],
+) -> Result<AssetAncestry, EngineError> {
+    prepare_asset_ancestry_kind(snapshot, contract_id, owner_hash, min_confirmations, false, Some(points))
 }
 
 pub(crate) fn prepare_stablecoin_ancestry(
@@ -117,7 +129,7 @@ pub(crate) fn prepare_stablecoin_ancestry(
     owner_hash: &[u8; 20],
     min_confirmations: u64,
 ) -> Result<AssetAncestry, EngineError> {
-    prepare_asset_ancestry_kind(snapshot, contract_id, owner_hash, min_confirmations, true)
+    prepare_asset_ancestry_kind(snapshot, contract_id, owner_hash, min_confirmations, true, None)
 }
 
 fn prepare_asset_ancestry_kind(
@@ -126,6 +138,7 @@ fn prepare_asset_ancestry_kind(
     owner_hash: &[u8; 20],
     min_confirmations: u64,
     coin_mode: bool,
+    points: Option<&[RequestedOutpoint]>,
 ) -> Result<AssetAncestry, EngineError> {
     let contract = unique_contract(&snapshot.payload.contracts, contract_id)?;
     let expected_family = if coin_mode { "stablecoin" } else { "ft" };
@@ -140,6 +153,9 @@ fn prepare_asset_ancestry_kind(
     }
     let mut candidates = Vec::new();
     for (index, utxo) in snapshot.payload.utxos.iter().enumerate() {
+        if points.is_some_and(|points| !points.iter().any(|p| p.txid == utxo.txid && p.vout == utxo.vout)) {
+            continue;
+        }
         if utxo.classification != expected_classification {
             continue;
         }

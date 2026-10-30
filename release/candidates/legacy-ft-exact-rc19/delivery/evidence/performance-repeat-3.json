@@ -1,0 +1,65 @@
+{
+  "runtime": "v22.23.2",
+  "measurements": [
+    {
+      "amount": 100,
+      "method": "plan",
+      "before": {
+        "medianMs": 5.487375000000611,
+        "p90Ms": 42.92500000000018,
+        "samples": 40
+      },
+      "after": {
+        "medianMs": 5.356249999999818,
+        "p90Ms": 49.934792000000016,
+        "samples": 40
+      },
+      "apiReads": 5
+    },
+    {
+      "amount": 100,
+      "method": "validate",
+      "before": {
+        "medianMs": 11.481958000000304,
+        "p90Ms": 22.449624999999287,
+        "samples": 40
+      },
+      "after": {
+        "medianMs": 9.387125000000196,
+        "p90Ms": 40.42516700000033,
+        "samples": 40
+      },
+      "apiReads": 5
+    },
+    {
+      "amount": 550,
+      "method": "plan",
+      "before": {
+        "medianMs": 30.51837499999965,
+        "p90Ms": 51.75079099999948,
+        "samples": 40
+      },
+      "after": {
+        "medianMs": 28.446916999999303,
+        "p90Ms": 72.66583399999945,
+        "samples": 40
+      },
+      "apiReads": 10
+    },
+    {
+      "amount": 550,
+      "method": "validate",
+      "before": {
+        "medianMs": 36.260042000001704,
+        "p90Ms": 282.3809999999994,
+        "samples": 40
+      },
+      "after": {
+        "medianMs": 37.70333399999981,
+        "p90Ms": 297.2835839999989,
+        "samples": 40
+      },
+      "apiReads": 10
+    }
+  ]
+}

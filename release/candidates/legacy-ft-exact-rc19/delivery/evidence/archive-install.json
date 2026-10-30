@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "separateArchives": true,
+  "checks": [
+    {
+      "platform": "ios",
+      "status": "PASS",
+      "kitVersion": "0.1.0-rc.19",
+      "sdkVersion": "0.1.0-rc.19.native.2",
+      "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+      "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+      "sdkLockSha256": "1c1812792106b01591e51bd0d77c0b2e9f9d2e2f0c1dff7e9c772b735fc92558"
+    },
+    {
+      "platform": "android",
+      "status": "PASS",
+      "kitVersion": "0.1.0-rc.19",
+      "sdkVersion": "0.1.0-rc.19.native.2",
+      "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+      "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+      "sdkLockSha256": "1c1812792106b01591e51bd0d77c0b2e9f9d2e2f0c1dff7e9c772b735fc92558"
+    }
+  ]
+}

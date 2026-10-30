@@ -1,0 +1,65 @@
+{
+  "runtime": "v22.23.2",
+  "measurements": [
+    {
+      "amount": 100,
+      "method": "plan",
+      "before": {
+        "medianMs": 6.759375000000091,
+        "p90Ms": 16.68145800000002,
+        "samples": 40
+      },
+      "after": {
+        "medianMs": 7.404416999999739,
+        "p90Ms": 16.051332999999886,
+        "samples": 40
+      },
+      "apiReads": 5
+    },
+    {
+      "amount": 100,
+      "method": "validate",
+      "before": {
+        "medianMs": 10.125792000000729,
+        "p90Ms": 33.321625000000495,
+        "samples": 40
+      },
+      "after": {
+        "medianMs": 8.223958999999923,
+        "p90Ms": 40.35291700000016,
+        "samples": 40
+      },
+      "apiReads": 5
+    },
+    {
+      "amount": 550,
+      "method": "plan",
+      "before": {
+        "medianMs": 29.321875000000546,
+        "p90Ms": 78.52558300000055,
+        "samples": 40
+      },
+      "after": {
+        "medianMs": 33.44024999999965,
+        "p90Ms": 64.89608299999963,
+        "samples": 40
+      },
+      "apiReads": 10
+    },
+    {
+      "amount": 550,
+      "method": "validate",
+      "before": {
+        "medianMs": 55.306125000000975,
+        "p90Ms": 132.12329099999988,
+        "samples": 40
+      },
+      "after": {
+        "medianMs": 47.65179100000023,
+        "p90Ms": 133.6303340000013,
+        "samples": 40
+      },
+      "apiReads": 10
+    }
+  ]
+}

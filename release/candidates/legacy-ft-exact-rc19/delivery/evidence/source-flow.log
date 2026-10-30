@@ -1,0 +1,117 @@
+TAP version 13
+# Subtest: public FT reader passes six required fragments to Engine maintenance then transfer
+ok 1 - public FT reader passes six required fragments to Engine maintenance then transfer
+  ---
+  duration_ms: 1625.966834
+  type: 'test'
+  ...
+# Subtest: twenty required FT fragments produce four merges and one transfer without duplicate reads
+ok 2 - twenty required FT fragments produce four merges and one transfer without duplicate reads
+  ---
+  duration_ms: 1558.345667
+  type: 'test'
+  ...
+# Subtest: FT one/five-input paths keep their read budgets and choose no unused fragments
+ok 3 - FT one/five-input paths keep their read budgets and choose no unused fragments
+  ---
+  duration_ms: 791.769125
+  type: 'test'
+  ...
+# Subtest: FT six-input plan ignores surplus candidates and enforces parent identity
+ok 4 - FT six-input plan ignores surplus candidates and enforces parent identity
+  ---
+  duration_ms: 441.286916
+  type: 'test'
+  ...
+# Subtest: FT insufficient balance and bounded input policy fail before parent downloads
+ok 5 - FT insufficient balance and bounded input policy fail before parent downloads
+  ---
+  duration_ms: 90.312542
+  type: 'test'
+  ...
+# Subtest: historical and unified FT exact paths keep all selected inputs with no duplicate or unrelated reads
+ok 6 - historical and unified FT exact paths keep all selected inputs with no duplicate or unrelated reads
+  ---
+  duration_ms: 1662.317666
+  type: 'test'
+  ...
+# Subtest: historical FT exact reader rejects unknown points instead of substituting available balance
+ok 7 - historical FT exact reader rejects unknown points instead of substituting available balance
+  ---
+  duration_ms: 16.311833
+  type: 'test'
+  ...
+# Subtest: exact FT Prepared through Host signs all stages under one complete approval, and rejection signs nothing
+ok 8 - exact FT Prepared through Host signs all stages under one complete approval, and rejection signs nothing
+  ---
+  duration_ms: 5449.154584
+  type: 'test'
+  ...
+# Subtest: automatic FT transaction bytes and digests match frozen RC18; optional paired timing
+ok 9 - automatic FT transaction bytes and digests match frozen RC18; optional paired timing
+  ---
+  duration_ms: 814.533708
+  type: 'test'
+  ...
+# Subtest: standalone SDK preparation is pinned, reproducible and fails before copying on corruption
+    # Subtest: only ios resources are required and verified
+    ok 1 - only ios resources are required and verified
+      ---
+      duration_ms: 32.003583
+      type: 'test'
+      ...
+    # Subtest: only android resources are required and verified
+    ok 2 - only android resources are required and verified
+      ---
+      duration_ms: 114.570917
+      type: 'test'
+      ...
+    1..2
+ok 10 - standalone SDK preparation is pinned, reproducible and fails before copying on corruption
+  ---
+  duration_ms: 1276.21925
+  type: 'test'
+  ...
+# ▲ [WARNING] Ignoring this import because "packages/kit/dist/esm/chunk-TUM5S3OF.js" was marked as having no side effects [ignored-bare-import]
+#     packages/kit/dist/esm/engine.js:12:7:
+#       12 │ import "./chunk-TUM5S3OF.js";
+#          ╵        ~~~~~~~~~~~~~~~~~~~~~
+#   "sideEffects" is false in the enclosing "package.json" file:
+#     packages/kit/package.json:7:2:
+#       7 │   "sideEffects": false,
+#         ╵   ~~~~~~~~~~~~~
+# Subtest: startup rejects missing/stale native; concurrent calls preserve receiver, bytes and errors
+ok 11 - startup rejects missing/stale native; concurrent calls preserve receiver, bytes and errors
+  ---
+  duration_ms: 594.232
+  type: 'test'
+  ...
+# Subtest: Expo glue reuses SDK and contains no duplicate JNI or buffer implementation
+ok 12 - Expo glue reuses SDK and contains no duplicate JNI or buffer implementation
+  ---
+  duration_ms: 15.745958
+  type: 'test'
+  ...
+# ▲ [WARNING] Ignoring this import because "packages/kit/dist/esm/chunk-TUM5S3OF.js" was marked as having no side effects [ignored-bare-import]
+#     packages/kit/dist/esm/engine.js:12:7:
+#       12 │ import "./chunk-TUM5S3OF.js";
+#          ╵        ~~~~~~~~~~~~~~~~~~~~~
+#   "sideEffects" is false in the enclosing "package.json" file:
+#     packages/kit/package.json:7:2:
+#       7 │   "sideEffects": false,
+#         ╵   ~~~~~~~~~~~~~
+# Subtest: Keyless bridge requires matching native identity, preserves concurrency and uses shared rejection semantics
+ok 13 - Keyless bridge requires matching native identity, preserves concurrency and uses shared rejection semantics
+  ---
+  duration_ms: 789.395917
+  type: 'test'
+  ...
+1..13
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 15140.611

@@ -504,6 +504,8 @@ export function chainDataRequirement(
     ...(base.nativeAmount === undefined ? {} : { nativeAmount: base.nativeAmount }),
     ...(base.lopAssets === undefined ? {} : { lopAssets: base.lopAssets }),
     ...(base.collectionSlots === undefined ? {} : { collectionSlots: base.collectionSlots }),
+    ...(["tbc.ft.transfer", "tbc.ft.merge"].includes(intent.type) && request.constraints?.inputOutpoints !== undefined
+      ? { inputOutpoints: Object.freeze(request.constraints.inputOutpoints.map(point => Object.freeze({ ...point }))) } : {}),
     ...(intent.type === "tbc721.batchTransfer" && request.constraints?.inputOutpoints !== undefined
       ? { inputOutpoints: Object.freeze(request.constraints.inputOutpoints.map(point => Object.freeze({ ...point }))) } : {}),
     ...(intent.targetOutpoints === undefined ? {} : { targetOutpoints: Object.freeze(intent.targetOutpoints.map(point => Object.freeze({ ...point }))) }),

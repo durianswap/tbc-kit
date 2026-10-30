@@ -1613,3 +1613,53 @@ been upgraded or that its transaction latency has been measured.
 
 See [supported functionality](../SUPPORT.md) for operation boundaries.
 For platform entry points and installation, see [`docs/reference/distribution-and-platform-integration.md`](reference/distribution-and-platform-integration.md).
+
+## Historical FT approval and selected inputs
+
+Use matching Kit and Native resources from the same candidate. Starting with
+`0.1.0-rc.19` / `0.1.0-rc.19.native.2`, historical FT transfer and merge approval
+flows include `preview.assetFlows[].contractId`. This identifies the asset before
+approval; it is not a broadcast receipt. Render the contract ID, atomic amount,
+recipient and fee alongside the existing per-transaction `outputReview`. Keep
+Kit's approval binding, validation and finalize checks. Do not replace missing
+identity with an unverified DApp-supplied value.
+
+For historical FT, `constraints.inputOutpoints` is an exact set of original
+asset **and native fee** inputs, not a candidate list. List every selected FT
+outpoint and its native fee funding outpoint(s). Kit spends each exactly once,
+rejects unavailable, foreign or wrong-contract inputs, and never substitutes
+an unlisted input. Omit this field to retain automatic selection.
+
+```ts
+const request = {
+  version: '1.0', chainId: 'tbc:testnet', from: account.address,
+  intent: {
+    version: '1.0', type: 'tbc20.transfer', contractId,
+    to: recipient, amount: '1000', // atomic units, not display units
+  },
+  constraints: {
+    maxFee: '50000',
+    inputOutpoints: [
+      { txid: selectedFtTxid, vout: selectedFtIndex },
+      { txid: selectedFeeTxid, vout: selectedFeeIndex },
+    ],
+  },
+};
+```
+
+The unified entry resolves the historical FT family from authenticated material;
+the concrete `tbc.ft.transfer` / `tbc.ft.merge` requests carry the same selection.
+If transfer needs more than five FT inputs, the existing bounded merge DAG is
+used. Multiple selected fee inputs use the common funding prerequisite. Generated
+intermediate outpoints are internal dependencies and must not be added to the
+original selection. Respect the existing whole-plan fee and transaction limits;
+standalone historical FT merge still accepts 2–5 asset inputs. This change does
+not add support for excluded historical FT generations.
+
+Keep the existing single approval for the full plan and sequential dependency
+signing/finalization. Reuse prepared material and existing read scopes; no new API
+endpoint, tip request, network lookup or confirmation barrier is required. An
+already approved/prepared old plan must not be migrated by editing its summary
+or inputs; prepare a new plan with the matched runtime instead. Pending broadcast
+records retain their original transaction identities for reconciliation, without
+resubmission.

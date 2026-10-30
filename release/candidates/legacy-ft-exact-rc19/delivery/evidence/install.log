@@ -1,0 +1,57 @@
+
+added 71 packages in 2m
+approval step=0 utxos=205
+preparing step=1 utxos=205
+executing step=1 utxos=205
+preparing step=2 utxos=106
+executing step=2 utxos=106
+preparing step=3 utxos=7
+executing step=3 utxos=7
+complete step=3 utxos=1
+{
+  "version": "1.0",
+  "status": "complete",
+  "reason": "target-reached",
+  "scopeHash": "94d905325cd3a50f1ceae386a37bf5e97bf6596af1eceb88e60a8145b794fe86",
+  "approvalId": "example-bounded-consent",
+  "initialUtxoCount": 205,
+  "finalUtxoCount": 1,
+  "totalFee": "300",
+  "steps": [
+    {
+      "stepId": "merge-1",
+      "txid": "41fd349e80d4fba36816c24290a0d297c3744512d6ca262038de70b2527fbf26",
+      "status": "accepted",
+      "fee": "100",
+      "inputCount": 100,
+      "outputCount": 1,
+      "dependsOn": []
+    },
+    {
+      "stepId": "merge-2",
+      "txid": "0b28ef8ba07799b3b1cd91baf4e5de30c97f6fbc6d05280c474ac27a446e6d47",
+      "status": "accepted",
+      "fee": "100",
+      "inputCount": 100,
+      "outputCount": 1,
+      "dependsOn": [
+        "41fd349e80d4fba36816c24290a0d297c3744512d6ca262038de70b2527fbf26"
+      ]
+    },
+    {
+      "stepId": "merge-3",
+      "txid": "b4e9cc62bfe6ec05888b1a09ce5c90b2e1299f509e7832d020515b695edd0cbe",
+      "status": "accepted",
+      "fee": "100",
+      "inputCount": 7,
+      "outputCount": 1,
+      "dependsOn": [
+        "0b28ef8ba07799b3b1cd91baf4e5de30c97f6fbc6d05280c474ac27a446e6d47"
+      ]
+    }
+  ]
+}
+{"preparation":{"phase":"preparation","trust":"intent-bounded","binding":"not-created","actualFee":"unknown"},"formal":{"phase":"formal","trust":"binding-verified","binding":"verified","actualFeeAtomic":"80","maximumFeeAtomic":"200","transactions":1,"signingTasks":1,"assetPrecision":"unknown","businessType":"tbc.transfer","businessAmount":"1000","renderedStepCount":0,"retainedSpecializedDetails":[]}}
+{"preparedProposalHash":"22b5055f0d2b0bc3455a9d723b44e899189a4d38336c501e8f24b2af2eb883f0","preparedSerializable":true,"action":"sign","transactions":1,"chainReads":2,"enginePlans":2,"authorizations":1,"signerCalls":1,"submitCalls":0,"reconcileCalls":0,"externalPosts":0}
+{"preparedProposalHash":"22b5055f0d2b0bc3455a9d723b44e899189a4d38336c501e8f24b2af2eb883f0","preparedSerializable":true,"action":"send","transactions":1,"chainReads":2,"enginePlans":2,"authorizations":1,"signerCalls":1,"submitCalls":1,"reconcileCalls":1,"externalPosts":0}
+{"status":"passed","consumer":"/var/folders/3b/09dp91rj013g4w55jfnwsq0c0000gn/T/tbc-kit-install-gate-SqlLbX","tar":"/Users/alex/Documents/Codex/2026-10-30/coin-multiround-kit/release/candidates/legacy-ft-exact-rc19/delivery/tbc-kit-0.1.0-rc.19.tgz","version":"0.1.0-rc.19","sha256":"ed8f1ef7d66154067c7676308dde28cd77d5d6ceacb16daebb3d2951a20eee3a","gates":["clean-install","exports","ESM/CJS","RN-condition-resolution","migration-contract","Host/Core-identity","packed-provenance","installed-public-types","DApp-browser-profile","wallet-RN-profile","public-entry-node-browser-RN-resolution","Node-ESM-CJS-package-WASM-load","multi-round-example","approval-presentation-example","approval-host-reader-callback-import","backend-sign-example","backend-explicit-send-example"],"deviceAcceptance":false}
