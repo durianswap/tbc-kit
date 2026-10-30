@@ -14,7 +14,10 @@ export interface KitTransactionConstraints {
     readonly expiresAt?: string;
     readonly maxFee?: string;
     readonly feePreference?: "economy" | "standard" | "priority";
-    /** Optional bounded candidate set. For native transfers the Engine may spend only these outpoints. */
+    /** For native transfers: allowed candidates. For historical FT transfer/merge:
+     * exact original asset AND native fee inputs, all spent once across the plan.
+     * Include fee funding explicitly; generated prerequisite outputs are resolved
+     * by Kit and must not be listed. Other families retain their documented rules. */
     readonly inputOutpoints?: readonly Readonly<{
         readonly txid: string;
         readonly vout: number;

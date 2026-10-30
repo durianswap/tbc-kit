@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "version": "0.1.0-rc.18",
-  "sourceDigest": "752c7582a33087927a368a3718a70e9e66529fd246fbb821ebf2fa3175a1130a",
-  "outputDigest": "54db125d84a0abe0af054adb01bbc99437e0fa3359ffea8d7424c68f9c8ef77f",
-  "createdAt": "2026-10-29T20:42:12.828Z",
+  "version": "0.1.0-rc.19",
+  "sourceDigest": "349fb97cdc18269e906866cf1c555fae3735893df0a6a64dfeedc22245e399b0",
+  "outputDigest": "c4b9f457c1b4c5fe83b0c3f9c07165eeb3fefa2f85d1d56b904d378f0d00e117",
+  "createdAt": "2026-10-29T22:08:37.831Z",
   "status": "built-not-device-or-chain-accepted"
 }

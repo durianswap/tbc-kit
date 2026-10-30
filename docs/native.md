@@ -2,7 +2,7 @@
 
 先执行根目录 `node scripts/verify-release.mjs`。下载必须按 `release/current.json` 配对，不能按版本后缀相似或文件名称猜测。
 
-当前配对为 `@tbc/kit 0.1.0-rc.18` 与 Native SDK `0.1.0-rc.18.native.2`，安装校验见 [安装与升级](installation.md)。[iOS SDK](../artifacts/native/ios-sdk.tgz)、[Android SDK](../artifacts/native/android-sdk.tgz) 和 [版本锁](../release/native-sdk-lock.json) 必须一起更新。
+当前配对为 `@tbc/kit 0.1.0-rc.19` 与 Native SDK `0.1.0-rc.19.native.2`，安装校验见 [安装与升级](installation.md)。[iOS SDK](../artifacts/native/ios-sdk.tgz)、[Android SDK](../artifacts/native/android-sdk.tgz) 和 [版本锁](../release/native-sdk-lock.json) 必须一起更新。
 
 ## Flutter
 
@@ -18,7 +18,7 @@ tar -xzf /path/to/tbc-kit/artifacts/native/ios-sdk.tgz -C vendor/tbc-native
 # Android 工程改用 android-sdk.tgz；跨端工程可解压两者。
 ```
 
-iOS 将 `apple/` 作为本地 Swift Package；Android 使用 `maven-repository/` 本地 Maven 仓库及坐标 `io.tbc.local:engine:0.1.0-rc.18.native.2`。SDK 的 `identity.json` 与 JS Kit 的 RN 模板锁应一致。
+iOS 将 `apple/` 作为本地 Swift Package；Android 使用 `maven-repository/` 本地 Maven 仓库及坐标 `io.tbc.local:engine:0.1.0-rc.19.native.2`。SDK 的 `identity.json` 与 JS Kit 的 RN 模板锁应一致。
 
 这份独立 SDK 是无私钥计算桥，不自动提供钱包账户、UI、Vault、网络或全部高层编排。接入方复用 Kit 编排或使用 Engine 协议时，仍需连接自己的平台 Host 和 Signer。不要把它误当成 Flutter 的完整插件。
 

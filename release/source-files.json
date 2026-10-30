@@ -4838,12 +4838,12 @@
     },
     {
       "path": "source/package-lock.json",
-      "sha256": "7a39e3fff39181d982a1ea24a479707bff8f553a97e18c05b1a57ddcf18d21ea",
+      "sha256": "3122db437d52fbca97bbcac295cf2ccb3995fe4500caf7c54d7981ab14f8370e",
       "bytes": 48540
     },
     {
       "path": "source/package.json",
-      "sha256": "6c995348e4ffdb9dcbebc79593fc9a20401cc3ddc3dfe4f0adc0f69ab2c32203",
+      "sha256": "bfefe5ef159c3f84a11535dc08e08280fdd71c2b7c6c3a34979bee5234316c7e",
       "bytes": 8972
     },
     {
@@ -5008,8 +5008,8 @@
     },
     {
       "path": "source/packages/core/src/reducers/chain-data-requirements.ts",
-      "sha256": "b91bed1fc3e15fa66f38826628fd9080b8dbd22a25e10d3efc10634ca474e83a",
-      "bytes": 27817
+      "sha256": "caa42066f34a83cde4055b3872e9d513376eda677af1f59a380e4571eaa3c5f0",
+      "bytes": 28063
     },
     {
       "path": "source/packages/core/src/reducers/committing.ts",
@@ -5593,7 +5593,7 @@
     },
     {
       "path": "source/packages/kit/artifacts/.source-build-start.json",
-      "sha256": "4f683e813de5ed561d7f7de335d22fdec9ffe68a1c2947790c11c84cc6289b35",
+      "sha256": "3d01216e763e49e649041ac1f48e148dfbcaca8c06d64dac14f076aa3e01dc50",
       "bytes": 108
     },
     {
@@ -5608,12 +5608,12 @@
     },
     {
       "path": "source/packages/kit/artifacts/provenance.json",
-      "sha256": "16a3f84b1498b20e3ecfdf97284140080317b51e4b6a4b6a15b5494ae8eaf6a7",
+      "sha256": "d9a15ac593004badb8149dd755903802c5bb577c6c4faa404fd0d26800d4549e",
       "bytes": 168126
     },
     {
       "path": "source/packages/kit/artifacts/source-build.json",
-      "sha256": "f24a2152f8ebc7c12f64bdc1bd00ec591be4b500a2c19ee0ecc85561be00a594",
+      "sha256": "8fee59472a1f62207a8ba226d70213355908da3aa5a41e0eec9f6f2db6f44cfd",
       "bytes": 318
     },
     {
@@ -5623,13 +5623,13 @@
     },
     {
       "path": "source/packages/kit/artifacts/wasm/tbc_engine_wasm.wasm",
-      "sha256": "51acae70cfa76de5a31f81af1d56d8d4cfc91e2c8851be07b9c7734eee3bf819",
-      "bytes": 4336732
+      "sha256": "686083cc06b9ac3e265f90f2ced0665f9e518394120f5fbefe365c647b2adeaf",
+      "bytes": 4357869
     },
     {
       "path": "source/packages/kit/artifacts/wasm/tbc_keyless_wasm.wasm",
-      "sha256": "738f7f6a2135c5aec28abc233b068b8fcc15eb66abc21fd2bdaf0b22ca3d776e",
-      "bytes": 2347725
+      "sha256": "703566ea81b25ed7a358a2942ff6f783fd4de8f718401ea336bfb79dc4151b93",
+      "bytes": 2357708
     },
     {
       "path": "source/packages/kit/conformance/controlled-standard-signature-verifier.d.mts",
@@ -5698,8 +5698,8 @@
     },
     {
       "path": "source/packages/kit/docs/usage.md",
-      "sha256": "b463ebbb619974cd9d9bb8b94d61508d19c75c41941e059dbb16379f58034e6a",
-      "bytes": 79207
+      "sha256": "4b230a5190cf0b5b5604ef7d253105693d0c9b436c219480cf3e33e49d198cef",
+      "bytes": 81700
     },
     {
       "path": "source/packages/kit/examples/amm-fee-policy.ts",
@@ -5898,7 +5898,7 @@
     },
     {
       "path": "source/packages/kit/examples/react-native-engine/module/native-sdk-lock.json",
-      "sha256": "751ca15cba7e4a546aa3d824edfacfaee791f81ccff76180bed9ea4bd8290a1e",
+      "sha256": "1c1812792106b01591e51bd0d77c0b2e9f9d2e2f0c1dff7e9c772b735fc92558",
       "bytes": 7917
     },
     {
@@ -5953,7 +5953,7 @@
     },
     {
       "path": "source/packages/kit/package.json",
-      "sha256": "a7bea6c28e840ef77163f3933320b74a7c57d5b14087706f3cc29106df9508da",
+      "sha256": "14a1ff34c76f970b4a279729840f96c00901a2bec2860693802efa481421fde8",
       "bytes": 3303
     },
     {
@@ -6278,8 +6278,8 @@
     },
     {
       "path": "source/packages/kit/src/default-chain-data.ts",
-      "sha256": "08c64f203a6e587ce42db1c1f7c44a77b1b51981d88f83b607fdc9752703080e",
-      "bytes": 122451
+      "sha256": "b493944a1401e6ccd8575a4610263beedd565538e1e0afc30f8ba8108d94e218",
+      "bytes": 123914
     },
     {
       "path": "source/packages/kit/src/default-network.ts",
@@ -6583,8 +6583,8 @@
     },
     {
       "path": "source/packages/kit/src/prepared-chain-data.ts",
-      "sha256": "d47c6fedbb802d1767dfcfcb923c784cf8a78be6057e08d8d509053b06eff41c",
-      "bytes": 13330
+      "sha256": "1dba380b5f46690a8671720d2eeaf94af2a1d4c3c7301b0b3fb73e80f4441a5c",
+      "bytes": 13373
     },
     {
       "path": "source/packages/kit/src/prepared.ts",
@@ -6603,8 +6603,8 @@
     },
     {
       "path": "source/packages/kit/src/public-types.ts",
-      "sha256": "5cf6d311ee459c86df145e93b2d0daf7a164afa244d9103f471dce8e2e3d0819",
-      "bytes": 17608
+      "sha256": "b5e175c89306d602b5ec4b1b74d098e114dced07371c9e8999266d0101f5ca24",
+      "bytes": 17832
     },
     {
       "path": "source/packages/kit/src/read-retry.ts",
@@ -7013,8 +7013,8 @@
     },
     {
       "path": "source/packages/kit/test/ft-fragmented-reader.test.mjs",
-      "sha256": "03f895e5a5f82ac25a97ecb742383b965325e9c627df6cfd9d7b57200362c76c",
-      "bytes": 9037
+      "sha256": "0246fa33fe1e4d90ab7da55141e4a10cd0383c615ea1a78ec5daa37ee0078d38",
+      "bytes": 17922
     },
     {
       "path": "source/packages/kit/test/ft-standard-fallback-gate.test.mjs",
@@ -7808,8 +7808,8 @@
     },
     {
       "path": "source/packages/tbc-engine/artifacts/wasm/tbc_engine_wasm.wasm",
-      "sha256": "2d99c8b97ae04d67328b5cb26c15c3cb864b3e603dec4832537b20073d2b518b",
-      "bytes": 5093270
+      "sha256": "35a03d2045f5b4d9ac8be754a51508d2ae8b6f43beb536e4b0fbbc4dfab3265d",
+      "bytes": 5125803
     },
     {
       "path": "source/packages/tbc-engine/evidence/runtime-artifact-report.json",
@@ -8128,8 +8128,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/ancestry.rs",
-      "sha256": "998b8127c02751f5674dfa8c4f576223b25ef06a76b29042f3a4c21e4437d4fb",
-      "bytes": 74318
+      "sha256": "822dd24ba8721c9eebffe32231cf249e2c714e7a10854a6281ff0424868d75af",
+      "bytes": 75024
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/business.rs",
@@ -8163,8 +8163,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/families/ft.rs",
-      "sha256": "c7bf6a9b16c3b1d077dfc04b3a22a5034dfd6500b85d087a86699132b13fc00c",
-      "bytes": 74531
+      "sha256": "89f2844315549659b3379b2d1e156f4f3fdf7903889d85f8298aa1c06a41a16a",
+      "bytes": 78712
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/families/htlc.rs",
@@ -8248,8 +8248,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/funding_fallback.rs",
-      "sha256": "7cfa7381aeba184b77fb5bc625ced5abbc3c427b8fd5becb2f759aec91c6212c",
-      "bytes": 12858
+      "sha256": "cc9cd46de399d9cf5138d6b47464e116819fb2b8f7e1655956ede2c8dbc14adf",
+      "bytes": 13143
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/lib.rs",
@@ -8263,8 +8263,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/normalize.rs",
-      "sha256": "e1e200b6d2eecbe9537f0628f1a7eda786e4de1bfdff20e2229e1c2150e69326",
-      "bytes": 47022
+      "sha256": "91a747340e2e706111efa0f5ef9cdb980d43b4b9931f0513363b11fa0e1a73c1",
+      "bytes": 47071
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/output_review.rs",
@@ -8778,8 +8778,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/ft.rs",
-      "sha256": "337c8acfb67ddc883ba31e3c12b35fe6de2089bdbde664bec85811818d26ea59",
-      "bytes": 111156
+      "sha256": "ad0b4302e85cba828801fd1ded02e798f8daace48cde5ee2949416f4b9c77071",
+      "bytes": 112223
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/fungible_change.rs",
@@ -8905,6 +8905,11 @@
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/support/fragmented_funding.rs",
       "sha256": "ee5273a8c96dc70d2d80935889236ea807202c13228563f71acd63074649fccc",
       "bytes": 1895
+    },
+    {
+      "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/support/legacy_ft_exact.rs",
+      "sha256": "d0998845fe221bcd606689262abdf551fa5a84ff78aecea9535657ede975f76d",
+      "bytes": 8771
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/support/optional_confirmations.rs",
@@ -10773,7 +10778,7 @@
     },
     {
       "path": "source/release/kit-source-state.json",
-      "sha256": "741442c621d476567139ed21980460d16989ee8cc8457665481cc6f881f99e66",
+      "sha256": "0bfb058609b3aadb40c5cc0d095a5331c6cd1aac11b8fce35ba9ad6da44db07f",
       "bytes": 64
     },
     {

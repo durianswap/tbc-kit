@@ -19,6 +19,7 @@
 - [账户与签名格式](flutter/ACCOUNT_AND_SIGNER.md)
 - [Flutter 业务调用](flutter/BUSINESS_CALLS.md)
 - [Coin 多轮交易](coin-multiround.md)：多轮合并、指定手续费输入与顺序提交。
+- [旧 FT 审批与指定输入](legacy-ft.md)：合约身份、精确输入集合及依赖交易。
 
 ## 参与开发
 

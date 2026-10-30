@@ -12,23 +12,23 @@
     ]
   },
   "pairing": {
-    "kitVersion": "0.1.0-rc.18",
-    "sdkVersion": "0.1.0-rc.18.native.2",
-    "sdkArtifactSetId": "d9ce3b742e1a3797c9b88549579e894bc48f29b8fd3734fa8f16be6dd6909619",
+    "kitVersion": "0.1.0-rc.19",
+    "sdkVersion": "0.1.0-rc.19.native.2",
+    "sdkArtifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
     "keylessArtifactSetId": "f9fc9f34a1c289b63c09a4fff29e6d52f461f737d09f8f93154d84372d5f8c45",
     "flutterIsIndependentPairedDistribution": true,
     "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
     "nativeSdkLock": "release/native-sdk-lock.json",
-    "nativeBuildInputKitSha256": "47fcd6b2837fc87a1141ae793d631bc0a746dee0db67fe2a7e11fac19fcff8e8",
+    "nativeBuildInputKitSha256": "b22d983433c5f18d2da88ad5cc605d5f1faccfc469256f55ab7fca7eebd78377",
     "flutterVersion": "0.1.0-rc.1"
   },
   "artifacts": [
     {
       "id": "kit",
       "path": "artifacts/tbc-kit.tgz",
-      "sha256": "a9914cbd050fe1276ad09ba101cd3c5a368af462d8cab1034bc621e8a5ccede7",
-      "bytes": 43909206,
-      "version": "0.1.0-rc.18",
+      "sha256": "ed8f1ef7d66154067c7676308dde28cd77d5d6ceacb16daebb3d2951a20eee3a",
+      "bytes": 44021942,
+      "version": "0.1.0-rc.19",
       "role": "JS/TS full Kit, including optional wallet-only multisig"
     },
     {
@@ -42,25 +42,25 @@
     {
       "id": "sdk-ios",
       "path": "artifacts/native/ios-sdk.tgz",
-      "sha256": "1e4e6ebf70b89dbdf80ff63676fa09ae7c7cd567cd059c647134f97b706d14db",
-      "bytes": 43633627,
-      "version": "0.1.0-rc.18.native.2",
+      "sha256": "514b0922ffefdcfc0a8be13969fbfa76361ad0a1d977a82bdc2b3a2d5a4fa281",
+      "bytes": 43686738,
+      "version": "0.1.0-rc.19.native.2",
       "role": "Standalone ios calculation SDK paired with the JS Kit"
     },
     {
       "id": "sdk-android",
       "path": "artifacts/native/android-sdk.tgz",
-      "sha256": "5fad73dc61048b82dc19d70dc072e3855ac4c700c2c1b495671393fe937fe5cd",
-      "bytes": 35997245,
-      "version": "0.1.0-rc.18.native.2",
+      "sha256": "4146851beb779b63c080057ec31c0a96ed2ca6a6a24c680e3eb4151a75b5f7b7",
+      "bytes": 36108577,
+      "version": "0.1.0-rc.19.native.2",
       "role": "Standalone android calculation SDK paired with the JS Kit"
     }
   ],
   "source": {
     "path": "source",
     "manifest": "release/source-files.json",
-    "snapshot": "release/candidates/coin-local-reuse/delivery/source.tgz",
-    "snapshotManifest": "release/candidates/coin-local-reuse/delivery/source-manifest.json",
-    "sourceDigest": "752c7582a33087927a368a3718a70e9e66529fd246fbb821ebf2fa3175a1130a"
+    "snapshot": "release/candidates/legacy-ft-exact-rc19/delivery/source.tgz",
+    "snapshotManifest": "release/candidates/legacy-ft-exact-rc19/delivery/source-manifest.json",
+    "sourceDigest": "349fb97cdc18269e906866cf1c555fae3735893df0a6a64dfeedc22245e399b0"
   }
 }

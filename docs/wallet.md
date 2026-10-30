@@ -2,7 +2,7 @@
 
 安装 `tbc-kit.tgz`，使用 `@tbc/kit/wallet` 创建钱包宿主；计算接口在 `@tbc/kit/engine`，只读查询在 `/api`、`/rpc`。它们是同一个安装包的入口。
 
-当前使用 RC.18；原生钱包同时更新配套 Native SDK 和版本锁，见 [安装与升级](installation.md)。新版 Coin 多轮交易不新增钱包执行器，按 [多轮接入说明](coin-multiround.md) 复用现有审批、finalize continuation 与顺序提交。
+当前使用 RC.19；原生钱包同时更新配套 Native SDK 和版本锁，见 [安装与升级](installation.md)。新版 Coin 多轮交易不新增钱包执行器，按 [多轮接入说明](coin-multiround.md) 复用现有审批、finalize continuation 与顺序提交。旧 FT 的审批资产身份与精确选币规则见 [旧 FT 接入说明](legacy-ft.md)。
 
 ## 钱包需要提供的适配
 

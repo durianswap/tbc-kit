@@ -19,6 +19,8 @@
 
 新版 Coin 稳定币的多轮合并、exact 输入与结果处理见 [Coin 多轮交易](coin-multiround.md)。这些操作仍使用现有公开方法，不新增一套 Provider 协议。
 
+旧 FT 的 `preview.assetFlows[].contractId` 和 `constraints.inputOutpoints` 规则见 [旧 FT 审批与指定输入](legacy-ft.md)。
+
 ## Flutter / Dart
 
 - [业务调用](flutter/BUSINESS_CALLS.md)：转账、资产、AMM/LP、锁定和批次。

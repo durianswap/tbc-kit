@@ -7,10 +7,10 @@ const root=new URL('../',import.meta.url);
 const read=p=>readFileSync(new URL(p,root));
 const json=p=>JSON.parse(read(p));
 const current=json('release/current.json');
-const frozen=json('release/candidates/coin-local-reuse/delivery/delivery-lock.json');
+const frozen=json('release/candidates/legacy-ft-exact-rc19/delivery/delivery-lock.json');
 
-test('default JS and Native downloads use the accepted RC18 bytes',()=>{
- for(const [id,file]of [['kit','tbc-kit-0.1.0-rc.18.tgz'],['sdk-ios','ios-sdk-0.1.0-rc.18.native.2.tgz'],['sdk-android','android-sdk-0.1.0-rc.18.native.2.tgz']]){
+test('default JS and Native downloads use the verified RC19 bytes',()=>{
+ for(const [id,file]of [['kit','tbc-kit-0.1.0-rc.19.tgz'],['sdk-ios','ios-sdk-0.1.0-rc.19.native.2.tgz'],['sdk-android','android-sdk-0.1.0-rc.19.native.2.tgz']]){
   const artifact=current.artifacts.find(a=>a.id===id),expected=frozen.artifacts[file];
   assert.equal(artifact.sha256,expected.sha256);
   assert.equal(artifact.bytes,expected.bytes);
@@ -35,4 +35,6 @@ test('landing and install guide identify the selected pair',()=>{
   assert(text.includes(frozen.nativeSdkVersion));
  }
  assert(read('docs/coin-multiround.md').toString().includes('constraints.inputOutpoints'));
+ const guide=read('docs/legacy-ft.md').toString();
+ for(const field of ['preview.assetFlows','contractId','constraints.inputOutpoints','outputReview'])assert(guide.includes(field));
 });

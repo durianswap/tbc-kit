@@ -1,6 +1,6 @@
 # Coin 多轮交易
 
-适用于 `@tbc/kit 0.1.0-rc.18` 和配套 `0.1.0-rc.18.native.2`，处理新版 `tbc20-stablecoin`（Coin）持有人转账与合并，不切换成历史稳定币协议。
+适用于当前配套 [JS 与 Native SDK](installation.md)，处理新版 `tbc20-stablecoin`（Coin）持有人转账与合并，不切换成历史稳定币协议。
 
 ## 业务调用不变
 
@@ -15,7 +15,7 @@
 - 不要把未签名预览哈希当成可消费的 txid，也不要修改 Kit 生成的 proposal。
 - 审阅所有步骤，包括维护交易；`preview.assetFlows` 是业务资产流，`preview.totalFee` 是整组费用，不能用最终收款摘要代替全部输出审阅。
 
-RC.18 在同一次规划内复用已验证 Coin 材料和证明引用映射。新的规划、validate、finalize 调用仍各自核对材料及绑定；不引入跨账户缓存，也不增加 API 请求。
+Kit 在同一次规划内复用已验证 Coin 材料和证明引用映射。新的规划、validate、finalize 调用仍各自核对材料及绑定；不引入跨账户缓存，也不增加 API 请求。
 
 ## 指定输入
 
