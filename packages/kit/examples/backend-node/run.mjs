@@ -1,4 +1,5 @@
 import { secp256k1 } from "@noble/curves/secp256k1.js";
+import { signControlledTask } from "../shared/controlled-signer.mjs";
 import { hashCanonical } from "@tbc/kit/wallet";
 import { createTbcEngine } from "@tbc/kit/engine";
 import { createTbcBackendService } from "@tbc/kit/wallet";
@@ -129,15 +130,7 @@ const executor = createTbcBackendService({
   signer: Object.freeze({
     async sign(params) {
       signerCalls += 1;
-      const signature = secp256k1.sign(params.task.digest, PRIVATE_KEY, { prehash: false, lowS: true });
-      const recoverable = params.task.signatureEncoding === "compact65-recoverable";
-      return Object.freeze({
-        taskId: params.task.taskId,
-        signatureEncoding: recoverable ? "compact65-recoverable" : "compact64",
-        signature: recoverable
-          ? `${(31 + signature.recovery).toString(16)}${signature.toCompactHex()}`
-          : signature.toCompactHex(),
-      });
+      return Object.freeze(signControlledTask(params.task, PRIVATE_KEY));
     },
   }),
   clock: () => NOW,

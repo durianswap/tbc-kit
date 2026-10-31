@@ -70,6 +70,8 @@ Base58Check(0x00 || RIPEMD160(SHA256(compressedPublicKey)))
 
 交易签名的返回值不带 DER 或 sighash 后缀；Kit/Engine 负责装配。消息签名也只签 Kit 传入的摘要，消息的域、前缀和返回形状由 Kit 处理。
 
+以上是当前 Flutter 接入配置的 ECDSA 格式，不代表完整 JS Kit 的所有合约都只需要 ECDSA。完整 Kit 的新版 Coin 创建/管理员任务还可能要求 `secp256k1-schnorr-bip340` / `schnorr64`，详见[完整签名适配指南](../../packages/kit/docs/signer-integration.md)。web3dart 的 ECDSA `r/s/v` 不能转换为 Schnorr；底层 Rust/Swift/Kotlin 签名原语已有独立 Schnorr 编码，但仅替换算法并不能自动扩大 Flutter 的业务及审批配置。本轮不改变已交付 Flutter 包的能力或二进制。
+
 如果直接使用未额外包装的 web3dart 2.7.3 `sign()`，它返回 `r`、`s`、`v`，其中 `v = recoveryId + 27`：
 
 ```text

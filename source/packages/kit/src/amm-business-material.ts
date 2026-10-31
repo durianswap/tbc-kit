@@ -16,6 +16,15 @@ export type AmmMaterialAction = Readonly<{
 type Utxo = Point & Readonly<{ satoshis: string; scriptPubKey: string; contractId: string;
   classification: "pool" | "pool-ft" | "ft" | "ftlp"; confirmations?: string }>;
 
+/** Expected quote rejection, not a transport or wallet implementation fault. */
+export class AmmBusinessMaterialError extends Error {
+  constructor(readonly reason: "AMM_RETAINED_FEE_ZERO" | "AMM_POOL_INACTIVE") {
+    super(reason === "AMM_RETAINED_FEE_ZERO"
+      ? "AMM swap leaves zero retained pool fee after integer rounding"
+      : "AMM Pool has no active liquidity");
+  }
+}
+
 /** Only mutable API discovery and bounded direct proofs live here. Quotes and
  * contract parsing use the same Rust codec as Engine, with no signing or UI. */
 export async function resolveAmmBusinessMaterial(input: Readonly<{
@@ -67,9 +76,23 @@ export async function resolveAmmBusinessMaterial(input: Readonly<{
   })();
   const {info,tx,ft}=await current;
   const indexedPool={ftCodeScript:ft.codeScript,ftTapeScript:ft.tapeScript};
-  const descriptor = await inspect({ phase: "describe", poolContractId:input.contractId,indexedPool,
-    publicKey: input.publicKey, currentPool: raw(tx), action: input.action,
-    ...(input.controllerPublicKey === undefined ? {} : { controllerPublicKey: input.controllerPublicKey }) });
+  const descriptor = await (async () => {
+    try {
+      return await inspect({ phase: "describe", poolContractId:input.contractId,indexedPool,
+        publicKey: input.publicKey, currentPool: raw(tx), action: input.action,
+        ...(input.controllerPublicKey === undefined ? {} : { controllerPublicKey: input.controllerPublicKey }) });
+    } catch (error) {
+      // Exact, pinned keyless-codec reasons only; never classify arbitrary
+      // network/parser errors by substring or relax the underlying quote rule.
+      if (error instanceof Error && error.message === "AMM swap requires positive retained pool fee") {
+        throw new AmmBusinessMaterialError("AMM_RETAINED_FEE_ZERO");
+      }
+      if (error instanceof Error && error.message === "Pool is not active") {
+        throw new AmmBusinessMaterialError("AMM_POOL_INACTIVE");
+      }
+      throw error;
+    }
+  })();
   if (descriptor.poolContractId !== input.contractId || descriptor.ftContractId !== info.ft_contract_id ||
       descriptor.currentOutpoint?.txid !== tx.txid || descriptor.currentOutpoint?.vout !== 0 ||
       descriptor.poolCodeScript !== info.pool_code_script || descriptor.state?.ftAmount !== info.token_balance ||

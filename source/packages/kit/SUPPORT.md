@@ -17,6 +17,14 @@
 Available operations depend on the recognized contract and account roles.
 For example, `amm.mergeToken` and `tbc20Lp.burn` are historical maintenance
 operations, not alternatives to withdrawing liquidity from a current AMM.
+On a current AMM use `amm.removeLiquidity` to redeem LP for pool assets, or
+`tbc20Lp.merge` to merge the holder's LP outputs. Neither is `amm.mergeToken`.
+An unsupported authenticated Pool template returns `INVALID_PARAMS` with
+`data.reason = UNSUPPORTED_POOL_OPERATION` before approval/signing.
+For very small swaps, integer rounding can leave zero retained Pool fee; the
+current upstream SDK also rejects this case. Kit reports `AMM_RETAINED_FEE_ZERO`
+without changing the requested amount, fee policy or minimum output. An emptied
+Pool is a separate `CONFLICT` with reason `AMM_POOL_INACTIVE`.
 New assets use current contract standards; supported historical assets retain
 holder operations. Legacy converts request and result formats into the same
 TBC execution path, without BTC/EVM namespaces.

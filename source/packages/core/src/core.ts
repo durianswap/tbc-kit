@@ -31,11 +31,13 @@ import {
 import { hashCanonical } from "./hash.js";
 import { deriveOperationId } from "./identifiers.js";
 import { createPortCall, type PortResponse } from "./ports.js";
+import { completeError } from "./reducers/shared.js";
 import type {
   CancelInput,
   CommitAckInput,
   ResumeInput,
   StartInput,
+  PortError,
 } from "./protocol-types.js";
 import { reduceAuthorizingResponse } from "./reducers/authorizing.js";
 import { reduceApprovalClock } from "./reducers/approval.js";
@@ -167,39 +169,45 @@ function assertNotTerminal(checkpoint: OperationCheckpoint): void {
   }
 }
 
-function failureCompletion(
-  checkpoint: OperationCheckpoint,
-  message: string,
-): Readonly<Record<string, unknown>> {
-  return Object.freeze({
-    delivery: "respond",
-    response: {
-      jsonrpc: "2.0",
-      id: checkpoint.payload.requestId,
-      error: { code: -32603, message },
-    },
-    events: [],
-  });
-}
-
 function failFromPort(
   checkpoint: OperationCheckpoint,
   operation: string,
+  error: PortError,
 ): CoreTransition {
-  const providerError = {
-    code: -32603,
-    message: `Required Host Port failed: ${operation}`,
-  };
-  const nextPayload = {
-    ...checkpoint.payload,
-    revision: String(BigInt(checkpoint.payload.revision) + 1n),
-    previousCheckpointHash: checkpoint.checkpointHash,
-    state: "failed",
-    pendingCalls: [],
-    data: { providerError },
-  } as OperationCheckpointPayload;
-  const next = advanceCheckpoint(checkpoint, nextPayload);
-  return completeTransition(next, failureCompletion(next, providerError.message));
+  // TWS-011 requires typed Port failures to remain typed at the Provider.
+  // Do not forward arbitrary adapter messages/details: those may contain Vault
+  // diagnostics, full materials or credentials. Only fixed public reasons pass.
+  const suppliedReason = operation === "chainData.resolve" ? error.details?.reason : undefined;
+  const publicReason = error.name === "INVALID_INPUT" && suppliedReason === "UNSUPPORTED_POOL_OPERATION"
+    ? { reason: suppliedReason, message: "Operation is not supported for the authenticated Pool template" }
+    : error.name === "INVALID_INPUT" && suppliedReason === "AMM_RETAINED_FEE_ZERO"
+      ? { reason: suppliedReason, message: "AMM swap leaves zero retained pool fee after integer rounding" }
+      : error.name === "CONFLICT" && suppliedReason === "AMM_POOL_INACTIVE"
+        ? { reason: suppliedReason, message: "AMM Pool has no active liquidity" } : undefined;
+  const details = { operation, portError: error.name,
+    ...(publicReason === undefined ? {} : { reason: publicReason.reason }) };
+  const finish = (code: number, message: string, data?: Readonly<Record<string, unknown>>) =>
+    completeError(checkpoint, code, message, checkpoint.payload.memory, data);
+  const execution = (name: string, stage: string, message: string) => finish(-32000, message,
+    { name, stage, retryable: error.retryable, details });
+  switch (error.name) {
+    case "INVALID_INPUT": return finish(-32602, publicReason?.message ?? `Invalid parameters for ${operation}`, { ...details, retryable: error.retryable });
+    case "UNAUTHORIZED": return finish(4100, "The requested operation is not authorized", details);
+    case "REJECTED": return finish(4001, "User rejected the request", details);
+    case "CONFLICT": return execution("CONFLICT", operation === "broadcast.reconcile" ? "reconciliation" : "validation",
+      publicReason?.message ?? "Required wallet state or transaction material conflicts with the request");
+    case "SIGNATURE_FAILED": return execution("SIGNING_FAILED", "signing", "The signer could not complete the request");
+    case "BROADCAST_REJECTED": return execution("BROADCAST_FAILED", "broadcast", "The transaction was rejected");
+    case "NOT_FOUND":
+    case "UNAVAILABLE": {
+      if (operation.startsWith("broadcast.")) return execution("BROADCAST_FAILED", "reconciliation", "Transaction status is unavailable");
+      if (["signer.sign", "crypto.execute", "reviewedTransaction.execute"].includes(operation)) {
+        return execution("SIGNING_FAILED", "signing", "Required signing capability is unavailable");
+      }
+      return execution("PLANNING_FAILED", "planning", "Required wallet capability or transaction material is unavailable");
+    }
+    case "INTERNAL_ERROR": return finish(-32603, `Required Host Port failed: ${operation}`);
+  }
 }
 
 function resumeClock(
@@ -345,7 +353,7 @@ async function resume(
         legacyBitcoinMessageDigest,
       );
     }
-    return failFromPort(checkpoint, call.operation);
+    return failFromPort(checkpoint, call.operation, response.error);
   }
   assertPortResult(call.operation, response.result);
   if (checkpoint.payload.memory.walletActionPlan !== undefined) {

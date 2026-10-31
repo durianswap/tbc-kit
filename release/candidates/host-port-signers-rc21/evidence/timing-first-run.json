@@ -1,0 +1,9 @@
+{
+  "scope": "First interleaved clean-process comparison, two controlled Coin creations per sample; Mac Node, not device or live API latency",
+  "baselineMs": [201.866625, 217.654083, 194.289542, 196.496167, 195.843167, 197.542417],
+  "candidateMs": [204.083, 195.859625, 202.261, 192.496417, 196.881833, 257.657959],
+  "baselineMedianMs": 197.019292,
+  "candidateMedianMs": 199.5714165,
+  "medianChangePercent": 1.295367816061388,
+  "secondRun": "installed-check.json"
+}

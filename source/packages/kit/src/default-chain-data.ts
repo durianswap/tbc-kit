@@ -25,7 +25,7 @@ import { resolveHtlcMaterial } from "./htlc-material.js";
 import { resolveHtlcTokenMaterial } from "./htlc-token-material.js";
 import { resolveLopMaterial } from "./lop-material.js";
 import { resolveAmmCreateMaterial, resolveLpMaterial } from "./amm-material.js";
-import { resolveAmmBusinessMaterial, type AmmMaterialAction } from "./amm-business-material.js";
+import { AmmBusinessMaterialError, resolveAmmBusinessMaterial, type AmmMaterialAction } from "./amm-business-material.js";
 import type { PoolMaterialNativeProviderInput } from "./pool-material-native.js";
 import { TbcTransportError } from "./network-transport.js";
 import {
@@ -688,7 +688,8 @@ export function createDefaultTbcChainDataResolver(
         ? add ? "tbc.pool.liquidity.add" : remove ? "tbc.pool.liquidity.remove" : buy ? "tbc.pool.swap.exactTbcForToken" : "tbc.pool.swap.exactTokenForTbc"
         : add ? "tbc-amm-add-liquidity" : remove ? "tbc-amm-remove-liquidity" : "tbc-amm-swap";
       if (intentType === undefined) return Object.freeze({ portError: Object.freeze({ name: "INVALID_INPUT", retryable: false,
-        message: "Operation is not supported for the authenticated Pool template" }) });
+        message: "Operation is not supported for the authenticated Pool template",
+        details: Object.freeze({ reason: "UNSUPPORTED_POOL_OPERATION" }) }) });
       if (historical) await options.poolMaterial?.rememberTransaction?.(stateId, origin.rawTransaction);
       const readClient = info === undefined ? scoped : Object.freeze({ ...scoped, api: Object.freeze({ ...scoped.api!,
         poolInfo: ((input, readOptions) => input.pool_id === contractId && readOptions?.signal === undefined
@@ -1756,6 +1757,10 @@ export function createDefaultTbcChainDataResolver(
       }
       return result;
     } catch (error) {
+      if (error instanceof AmmBusinessMaterialError) return Object.freeze({ portError: Object.freeze({
+        name: error.reason === "AMM_POOL_INACTIVE" ? "CONFLICT" : "INVALID_INPUT",
+        retryable: false, message: error.message, details: Object.freeze({ reason: error.reason }),
+      }) });
       if (error instanceof ChainDataAuthorizationError) return failure("UNAUTHORIZED");
       if (isTestnetNodeError(error) && error.code === "NODE_REQUEST_FAILED") return failure("UNAVAILABLE", true);
       if (error instanceof NftMaterialUnavailableError ||

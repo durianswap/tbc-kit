@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: Coin create 0/6 decimals completes the public client/Host/Engine staged path with one synthetic approval
+ok 1 - Coin create 0/6 decimals completes the public client/Host/Engine staged path with one synthetic approval
+  ---
+  duration_ms: 199.424666
+  type: 'test'
+  ...
+# Subtest: current AMM historical-only maintenance returns INVALID_PARAMS before approval or signer
+ok 2 - current AMM historical-only maintenance returns INVALID_PARAMS before approval or signer
+  ---
+  duration_ms: 47.886666
+  type: 'test'
+  ...
+# Subtest: small AMM sell preserves the actual fee rule but returns a precise typed reason
+ok 3 - small AMM sell preserves the actual fee rule but returns a precise typed reason
+  ---
+  duration_ms: 17.626625
+  type: 'test'
+  ...
+# Subtest: inactive pool remains a distinct conflict, not an internal failure
+ok 4 - inactive pool remains a distinct conflict, not an internal failure
+  ---
+  duration_ms: 11.085083
+  type: 'test'
+  ...
+# Subtest: ECDSA-only wallet reports a signing capability failure, does not publish the signed source
+ok 5 - ECDSA-only wallet reports a signing capability failure, does not publish the signed source
+  ---
+  duration_ms: 26.786666
+  type: 'test'
+  ...
+# Subtest: controlled signer dispatches exact ECDSA/recoverable/BIP340 profiles without fallback
+ok 6 - controlled signer dispatches exact ECDSA/recoverable/BIP340 profiles without fallback
+  ---
+  duration_ms: 5.514917
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 782.226166

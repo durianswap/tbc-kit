@@ -1,4 +1,4 @@
-import { secp256k1 } from "@noble/curves/secp256k1.js";
+import { signControlledTask } from "../shared/controlled-signer.mjs";
 
 export const CHAIN_ID = "tbc:testnet";
 export const ADDRESS = "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH";
@@ -57,18 +57,7 @@ export function createControlledPlatform() {
   const testOnlyKey = Uint8Array.from({ length: 32 }, (_, index) => (index === 31 ? 1 : 0));
   const signer = Object.freeze({
     async sign(params) {
-      const signature = secp256k1.sign(params.task.digest, testOnlyKey, {
-        prehash: false,
-        lowS: true,
-      });
-      const recoverable = params.task.signatureEncoding === "compact65-recoverable";
-      return Object.freeze({
-        taskId: params.task.taskId,
-        signatureEncoding: recoverable ? "compact65-recoverable" : "compact64",
-        signature: recoverable
-          ? `${(31 + signature.recovery).toString(16)}${signature.toCompactHex()}`
-          : signature.toCompactHex(),
-      });
+      return Object.freeze(signControlledTask(params.task, testOnlyKey));
     },
   });
 

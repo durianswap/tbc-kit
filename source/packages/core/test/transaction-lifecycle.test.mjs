@@ -370,6 +370,48 @@ async function rejectBeforePreparedSideEffects(params, engineFixture) {
   throw new Error("tampered prepared request unexpectedly completed");
 }
 
+test("typed material failures survive Core without approval or signing and without private diagnostics", async () => {
+  for (const [name, code, executionName] of [
+    ["INVALID_INPUT", -32602], ["UNAUTHORIZED", 4100], ["REJECTED", 4001],
+    ["CONFLICT", -32000, "CONFLICT"], ["NOT_FOUND", -32000, "PLANNING_FAILED"],
+    ["UNAVAILABLE", -32000, "PLANNING_FAILED"], ["INTERNAL_ERROR", -32603],
+  ]) {
+    const result = await drive("tbc_sendTransaction", createTbcTransferEngine(integration), {
+      "chainData.resolve": () => ({ portError: {
+        name, retryable: name === "UNAVAILABLE", message: "private-adapter-diagnostic",
+        details: { secret: "never-forward", reason: "arbitrary-untrusted-reason" },
+      } }),
+    });
+    const error = result.transition.completion.response.error;
+    assert.equal(error.code, code, name);
+    if (executionName !== undefined) {
+      assert.equal(error.data.name, executionName);
+      assert.equal(error.data.retryable, name === "UNAVAILABLE");
+    }
+    assert.equal(JSON.stringify(error).includes("private-adapter"), false);
+    assert.equal(JSON.stringify(error).includes("never-forward"), false);
+    assert.equal(JSON.stringify(error).includes("arbitrary-untrusted"), false);
+    assert.equal(result.ports.some(p => ["approval.request", "signer.sign", "broadcast.submit"].includes(p.operation)), false);
+    assertPersistableCheckpointChain(result.checkpoints);
+  }
+});
+
+test("unsupported Pool and zero-retained-fee reasons are safe typed Provider failures", async () => {
+  for (const reason of ["UNSUPPORTED_POOL_OPERATION", "AMM_RETAINED_FEE_ZERO", "AMM_POOL_INACTIVE"]) {
+    const result = await drive("tbc_sendTransaction", createTbcTransferEngine(integration), {
+      "chainData.resolve": () => ({ portError: {
+        name: reason === "AMM_POOL_INACTIVE" ? "CONFLICT" : "INVALID_INPUT", retryable: false,
+        message: "must-not-be-forwarded", details: { reason, privateValue: "must-not-be-forwarded" },
+      } }),
+    });
+    const error = result.transition.completion.response.error;
+    assert.equal(error.code, reason === "AMM_POOL_INACTIVE" ? -32000 : -32602);
+    assert.equal((error.data.details ?? error.data).reason, reason);
+    assert.equal(JSON.stringify(error).includes("must-not-be-forwarded"), false);
+    assert.equal(result.ports.some(p => p.operation === "signer.sign"), false);
+  }
+});
+
 async function reachPendingCall(method, engineFixture, targetOperation) {
   const core = tws.createTwsCore({ transactionEngine: engineFixture.engine });
   const clocks = [

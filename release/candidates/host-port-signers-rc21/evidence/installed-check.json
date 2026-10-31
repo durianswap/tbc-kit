@@ -1,0 +1,145 @@
+{
+  "status": "PASS",
+  "scratch": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-host-port-fixes/.verify/host-port-check-B8ontk",
+  "consumer": {
+    "dir": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-host-port-fixes/.verify/host-port-check-B8ontk/candidate",
+    "kit": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-host-port-fixes/.verify/host-port-check-B8ontk/candidate/node_modules/@tbc/kit"
+  },
+  "kit": {
+    "file": "tbc-kit.tgz",
+    "sha256": "a7df6f8b6f98dba2b4691dd854eacee5c344b4781422529cd195912cd0bb6c91",
+    "bytes": 5541374,
+    "unpackedBytes": 35671853
+  },
+  "publishedRc20SignerGap": {
+    "reproduced": true,
+    "originalEncoding": "compact64",
+    "originalSchnorrVerification": false,
+    "candidateSchnorrVerification": true
+  },
+  "esmEntrypoints": 8,
+  "cjsEntrypoints": 8,
+  "examples": [
+    {
+      "name": "independent-wallet/run.mjs",
+      "args": [],
+      "status": "PASS",
+      "outputSha256": "0ade90eea8a2408bf1d1e16bee147508cca4ae175fb5049a0db2a788b38589dd",
+      "identicalToBaseline": true
+    },
+    {
+      "name": "backend-node/run.mjs",
+      "args": [],
+      "status": "PASS",
+      "outputSha256": "4b7cfb237987284411f78b50305f675524803f1d2120798e67e1582d11fa3711",
+      "identicalToBaseline": true
+    },
+    {
+      "name": "backend-node/run.mjs",
+      "args": [
+        "--send"
+      ],
+      "status": "PASS",
+      "outputSha256": "2c1e1d92b86ee70a473e17e383e6f953adc46801b408dde268eb1bc998506d99",
+      "identicalToBaseline": true
+    },
+    {
+      "name": "sign-in/run.mjs",
+      "args": [],
+      "status": "PASS",
+      "outputSha256": "bd8073c26e70f34e420d5a1a568670298ff111c22239e2ac3e2f8951d5897c12",
+      "identicalToBaseline": true
+    },
+    {
+      "name": "approval-presentation/run.mjs",
+      "args": [],
+      "status": "PASS",
+      "outputSha256": "bdaef72ccb1b769154bfafbcfccdd1d0bb6e5f462c70319d31bf14b21b8aed83",
+      "identicalToBaseline": true
+    },
+    {
+      "name": "multi-wallet/run.mjs",
+      "args": [],
+      "status": "PASS",
+      "outputSha256": "ff7285cd43c35070aee26422aa189cc75298020fe75aadfcbc535ae74f438b08",
+      "identicalToBaseline": true
+    },
+    {
+      "name": "multi-round-merge/run.mjs",
+      "args": [],
+      "status": "PASS",
+      "outputSha256": "2680f1e9599d312f0f2c85a4a4c89293c5cf9c7c5c204553d5f2ec320a7a8b02",
+      "identicalToBaseline": true
+    }
+  ],
+  "profiles": {
+    "status": "SIGNER_PROFILES_PASS",
+    "verified": 3,
+    "mismatchedProfilesRejected": 6,
+    "bip340OfficialVector": true,
+    "alteredDigestRejected": true,
+    "networkRequests": 0,
+    "broadcasts": 0
+  },
+  "installedBusinessTests": 6,
+  "timing": {
+    "baseline": {
+      "samples": [
+        196.983,
+        197.414083,
+        197.833583,
+        193.336417,
+        195.069042,
+        189.913458
+      ],
+      "medianMs": 196.02602100000001,
+      "minMs": 189.913458,
+      "maxMs": 197.833583
+    },
+    "candidate": {
+      "samples": [
+        198.73925,
+        195.134417,
+        222.604208,
+        190.95075,
+        189.635583,
+        191.346292
+      ],
+      "medianMs": 193.24035450000002,
+      "minMs": 189.635583,
+      "maxMs": 222.604208
+    },
+    "scope": "Mac Node; two synthetic Coin creations per sample; excludes module import; no device or live API claim",
+    "medianChangePercent": -1.421069756856408
+  },
+  "sdkChecks": [
+    {
+      "platform": "ios",
+      "status": "PASS",
+      "identity": {
+        "kitVersion": "0.1.0-rc.21",
+        "sdkVersion": "0.1.0-rc.19.native.2",
+        "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+        "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+        "sdkLockSha256": "1c1812792106b01591e51bd0d77c0b2e9f9d2e2f0c1dff7e9c772b735fc92558",
+        "platform": "ios"
+      },
+      "deviceBuild": false
+    },
+    {
+      "platform": "android",
+      "status": "PASS",
+      "identity": {
+        "kitVersion": "0.1.0-rc.21",
+        "sdkVersion": "0.1.0-rc.19.native.2",
+        "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+        "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+        "sdkLockSha256": "1c1812792106b01591e51bd0d77c0b2e9f9d2e2f0c1dff7e9c772b735fc92558",
+        "platform": "android"
+      },
+      "deviceBuild": false
+    }
+  ],
+  "networkBusinessReads": 0,
+  "realBroadcasts": 0
+}

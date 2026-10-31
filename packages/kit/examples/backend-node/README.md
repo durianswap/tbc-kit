@@ -38,6 +38,12 @@ result or reconcile an uncertain result without another POST. Importing or
 constructing the service starts no network request, filesystem write, timer,
 worker or automatic broadcast.
 
+The shared fixture Signer dispatches ECDSA, recoverable ECDSA and BIP340 by the
+exact task algorithm/encoding. Keep `examples/shared/` when copying it; run
+`node node_modules/@tbc/kit/examples/shared/check-signer.mjs` and follow the
+[Signer guide](../../docs/signer-integration.md) for secure custody. An ECDSA-only
+HSM/MPC callback must not advertise support for Schnorr-dependent Coin operations.
+
 `createTbcBackendService` is a single-trusted-account facade. Its `account`
 does not implicitly include a separate Coin administrator or Pool controller.
 Keyless preparation can be handed to a wallet that independently supplies and

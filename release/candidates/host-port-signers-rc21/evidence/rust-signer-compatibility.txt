@@ -1,0 +1,10 @@
+
+running 6 tests
+test ffi_failure_clears_output_and_borrows_input ... ok
+test rejects_invalid_inputs_without_signing ... ok
+test schnorr_ffi_uses_explicit_tag_not_output_length ... ok
+test schnorr_bip340_vector_zero_and_algorithm_separation ... ok
+test independent_calls_are_deterministic ... ok
+test common_vectors_match_current_mobile_and_legacy_rust ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s

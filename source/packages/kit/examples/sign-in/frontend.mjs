@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { randomBytes } from "node:crypto";
 import { secp256k1 } from "@noble/curves/secp256k1.js";
+import { signControlledTask } from "../shared/controlled-signer.mjs";
 import { createTbcClient } from "@tbc/kit";
 import { createTbcWallet } from "@tbc/kit/wallet";
 
@@ -50,15 +51,7 @@ function createLocalWallet(address) {
     },
     signer: {
       async sign(params) {
-        const signature = secp256k1.sign(params.task.digest, PRIVATE_KEY, {
-          prehash: false,
-          lowS: true,
-        });
-        return {
-          taskId: params.task.taskId,
-          signatureEncoding: "compact65-recoverable",
-          signature: `${(31 + signature.recovery).toString(16)}${signature.toCompactHex()}`,
-        };
+        return signControlledTask(params.task, PRIVATE_KEY);
       },
     },
     storage: {

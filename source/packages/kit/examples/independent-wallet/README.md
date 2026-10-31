@@ -32,6 +32,13 @@ hardware wallet, or audited native module. Kit passes only the approved digest
 and task identity to the private signer and never accepts a private key through
 the DApp request or public transaction builder.
 
+All three task profiles (ECDSA, recoverable ECDSA, BIP340 Schnorr) are dispatched
+by `../shared/controlled-signer.mjs`. Keep `examples/shared/` when copying this
+example. Run `node node_modules/@tbc/kit/examples/shared/check-signer.mjs`, then
+verify your own custody implementation against the [Signer guide](../../docs/signer-integration.md).
+In particular, Coin creation's continuation can require Schnorr even after its
+ECDSA source transaction succeeds. Supporting one algorithm is not full support.
+
 The transaction/message workflow performs one controlled UTXO read. This
 ordinary transfer does not need a chain-height query. The
 separate legacy metadata mapping check performs two more reads, reusing FT
