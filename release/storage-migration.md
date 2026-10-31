@@ -26,7 +26,15 @@
 - 独立归档安装：8 个 ESM、8 个 CommonJS 入口和 2 个离线示例通过。
 - 未重复业务广播或模拟器功能测试；本次没有运行时内容变化。
 
-公开下载与远程主分支验证结果在发布附件完成后补记。
+## 公开下载验证
+
+- [RC19 Release](https://github.com/durianswap/tbc-kit/releases/tag/v0.1.0-rc.19) 已发布，保留预发布版本属性；8 个附件的 GitHub SHA256、字节数均与备份中的原文件一致。
+- Release 标签指向精简提交 `6fdae68edb57a010ccbff8bf0e626a7cc5b6ea49`，GitHub 自动生成的源码归档不再携带已外置的大文件。已验收源码基线仍是上方的 `2c1850f`。
+- 从公开 HTTPS 地址进行全新浅克隆，当前文件树 59.28 MiB，克隆的 `.git` 约 12 MiB。通过真实 Releases 下载恢复当前 6 份检查资源，而非使用本地镜像，全部 SHA256 匹配。
+- 在此干净克隆中执行安装、完整性检查、20 项分发/桥接测试，以及 8 个 ESM、8 个 CommonJS 入口与 2 个离线示例，全部通过。
+- [GitHub Distribution integrity](https://github.com/durianswap/tbc-kit/actions/runs/41194634035) 独立通过下载、安装、完整性、测试和入口检查。
+- [Source conformance](https://github.com/durianswap/tbc-kit/actions/runs/41194634126) 在 `android-actions/setup-android@v3` 工具安装步骤失败，未进入源码构建；不计为源码全量构建通过，本次也没有借此重建或替换已验收包。
+- 远程主分支使用普通快进提交更新，未重写旧提交或移动发布标签；完整历史仍在备份和 Git 中。
 
 ## 使用
 
