@@ -1,0 +1,19 @@
+{
+  "focusedTests": 17,
+  "failures": 0,
+  "pairedConsumerCheck": "installed-distribution.json",
+  "audit": {
+    "info": 0,
+    "low": 2,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 2
+  },
+  "frozenPartnerFiles": 174,
+  "frozenPartnerFilesMatch": true,
+  "runtimeRecompiled": false,
+  "realDeviceRun": false,
+  "realNetworkBusinessRun": false,
+  "broadcast": false
+}

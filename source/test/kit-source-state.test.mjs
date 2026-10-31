@@ -6,7 +6,8 @@ import { join, dirname } from 'node:path';
 import { createHash } from 'node:crypto';
 import { checkIdentity, verifyBuild, run } from '../scripts/check-kit-source-state.mjs';
 const state = { developmentVersion: '0.1.0-rc.1' };
-const pkg = { name: '@tbc/kit', version: state.developmentVersion, private: true };
+const pkg = { name: '@tbc/kit', version: state.developmentVersion, private: true,
+  files: ['dist', 'artifacts/provenance.json', 'artifacts/source-build.json', 'artifacts/platform-resources.json'] };
 const lock = { packages: { 'packages/kit': { version: pkg.version } } };
 test('separate development identity agrees with workspace lock', () => checkIdentity(state, pkg, lock));
 test('stale lock and mismatched source identity are rejected', () => {
@@ -36,7 +37,7 @@ test('real packlist binds source and output and rejects source edits during buil
   for (const d of ['scripts', 'schemas', 'registry', 'packages/kit/scripts', 'packages/tbc-engine/scripts', 'packages/tbc-engine/rust']) mkdirSync(join(root, d), { recursive: true });
   putJson('package.json', { name: 'source-state-test', private: true });
   putJson('package-lock.json', lock);
-  putJson('packages/kit/package.json', { ...pkg, files: ['dist', 'artifacts/provenance.json', 'artifacts/source-build.json'] });
+  putJson('packages/kit/package.json', pkg);
   put('packages/kit/dist/index.js', 'export {};');
   putJson('packages/kit/artifacts/provenance.json', { package: `${pkg.name}@${pkg.version}` });
   putJson('release/kit-source-state.json', state);

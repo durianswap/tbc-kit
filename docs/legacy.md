@@ -2,6 +2,15 @@
 
 Legacy 适配为已有 TBC DApp 保留 `window.Turing` 的调用与返回形式。新 DApp 使用 Wallet Standard 发现钱包，并通过 `@tbc/kit` 调用标准 Provider。
 
+| DApp | 钱包 | 支持情况 |
+| --- | --- | --- |
+| 新 Kit / 标准 Provider DApp | 实现 Wallet Standard 与 TBC Provider 的钱包 | 支持 |
+| 旧 `window.Turing` DApp | 启用 Legacy 的 Kit 钱包 | 支持已实现的旧接口映射 |
+| 新 Kit DApp | 仅注入 `window.Turing` 的旧钱包 | 不提供自动反向适配 |
+
+Legacy 位于钱包端，不是 DApp 端的旧钱包发现器。手动传入的 Provider
+也必须实现标准协议，不能直接把旧 `window.Turing` 当作标准 Provider。
+
 ## 保留的接口
 
 - 连接与查询：`connect`、`disconnect`、`isConnected`、`getAddress`、`getPubKey`、`getNetwork`、`getInfo`、`getBalance`。

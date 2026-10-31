@@ -1,0 +1,139 @@
+{
+  "status": "PASS",
+  "sizes": {
+    "baselineKit": 139077225,
+    "candidateKit": 35623609,
+    "baselineDependencies": 154533428,
+    "candidateDependencies": 39860698
+  },
+  "bundles": [
+    {
+      "name": "api",
+      "sha256": "fa75af19d5f2648abf005e15c2f418a767f6ceadf9b02c5ef378fc30ec76f8fb",
+      "bytes": 42614,
+      "gzipBytes": 9339,
+      "byteIdentical": true
+    },
+    {
+      "name": "rpc",
+      "sha256": "135cab77379647aac11c2370f4efdebd11dac06d7a9cc078d517ae7e269af087",
+      "bytes": 30612,
+      "gzipBytes": 7218,
+      "byteIdentical": true
+    },
+    {
+      "name": "connect",
+      "sha256": "33702d221ec5cc7ef79ec05359473d20c1a2123801b58e57ff25721558a7e756",
+      "bytes": 106864,
+      "gzipBytes": 28721,
+      "byteIdentical": true
+    },
+    {
+      "name": "wallet",
+      "sha256": "73b43dbe397caafadb2a18ff97e363e6ba1a0ed13a1719aec0a8ac1abe598bab",
+      "bytes": 2936398,
+      "gzipBytes": 377552,
+      "byteIdentical": true
+    },
+    {
+      "name": "prepared",
+      "sha256": "7e35f5cf626d5c323d822fa46617f3e5e77cf33ab69a8bf97675610588dc484a",
+      "bytes": 1576152,
+      "gzipBytes": 147653,
+      "byteIdentical": true
+    }
+  ],
+  "dependencyCount": 25,
+  "eagerCalls": 0,
+  "wasmFetches": {
+    "engine": 1,
+    "keyless": 1
+  },
+  "nativeCalls": 1,
+  "sdkResults": [
+    {
+      "platform": "ios",
+      "identity": {
+        "kitVersion": "0.1.0-rc.20",
+        "sdkVersion": "0.1.0-rc.19.native.2",
+        "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+        "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+        "sdkLockSha256": "1c1812792106b01591e51bd0d77c0b2e9f9d2e2f0c1dff7e9c772b735fc92558",
+        "platform": "ios"
+      },
+      "copiedFiles": 20,
+      "wrongPlatformRejected": true,
+      "tamperRejected": true
+    },
+    {
+      "platform": "android",
+      "identity": {
+        "kitVersion": "0.1.0-rc.20",
+        "sdkVersion": "0.1.0-rc.19.native.2",
+        "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+        "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+        "sdkLockSha256": "1c1812792106b01591e51bd0d77c0b2e9f9d2e2f0c1dff7e9c772b735fc92558",
+        "platform": "android"
+      },
+      "copiedFiles": 21,
+      "wrongPlatformRejected": true,
+      "tamperRejected": true
+    }
+  ],
+  "resourcesVerified": [
+    "macos-arm64",
+    "android",
+    "ios"
+  ],
+  "examples": [
+    {
+      "name": "backend-node/run.mjs",
+      "args": [],
+      "outputSha256": "4b7cfb237987284411f78b50305f675524803f1d2120798e67e1582d11fa3711",
+      "byteIdentical": true
+    },
+    {
+      "name": "backend-node/run.mjs",
+      "args": [
+        "--send"
+      ],
+      "outputSha256": "2c1e1d92b86ee70a473e17e383e6f953adc46801b408dde268eb1bc998506d99",
+      "byteIdentical": true
+    },
+    {
+      "name": "multi-round-merge/run.mjs",
+      "args": [],
+      "outputSha256": "2680f1e9599d312f0f2c85a4a4c89293c5cf9c7c5c204553d5f2ec320a7a8b02",
+      "byteIdentical": true
+    },
+    {
+      "name": "approval-presentation/run.mjs",
+      "args": [],
+      "outputSha256": "bdaef72ccb1b769154bfafbcfccdd1d0bb6e5f462c70319d31bf14b21b8aed83",
+      "byteIdentical": true
+    },
+    {
+      "name": "multi-wallet/run.mjs",
+      "args": [],
+      "outputSha256": "ff7285cd43c35070aee26422aa189cc75298020fe75aadfcbc535ae74f438b08",
+      "byteIdentical": true
+    }
+  ],
+  "localNormalizeTiming": {
+    "baseline": {
+      "samples": 100,
+      "medianMs": 0.201958999999988,
+      "p95Ms": 0.3141249999998763
+    },
+    "candidate": {
+      "samples": 100,
+      "medianMs": 0.22108399999979156,
+      "p95Ms": 0.3053329999993366
+    },
+    "environment": "Mac Node WASM, warm, interleaved; not device transaction timing"
+  },
+  "runtimeByteIdentical": true,
+  "noBroadcast": true,
+  "deviceBuildRun": false,
+  "scratch": "/Users/alex/Documents/Codex/2026-10-31/tbc-kit-rc20-distribution/.verify/lean-check-Z1PPUP"
+}

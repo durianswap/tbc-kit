@@ -1,0 +1,129 @@
+TAP version 13
+# Subtest: build-only SDKs cannot return through any production dependency category
+ok 1 - build-only SDKs cannot return through any production dependency category
+  ---
+  duration_ms: 0.946834
+  type: 'test'
+  ...
+# Subtest: native bulk inclusion and implicit download hooks are rejected
+ok 2 - native bulk inclusion and implicit download hooks are rejected
+  ---
+  duration_ms: 0.258666
+  type: 'test'
+  ...
+# Subtest: catalog preserves native identity across repeated builds; hashes and unknown platforms fail closed
+ok 3 - catalog preserves native identity across repeated builds; hashes and unknown platforms fail closed
+  ---
+  duration_ms: 24.809375
+  type: 'test'
+  ...
+# Subtest: platform catalog binds exact kit, protocol, native files and optional resource roots
+ok 4 - platform catalog binds exact kit, protocol, native files and optional resource roots
+  ---
+  duration_ms: 16.960667
+  type: 'test'
+  ...
+# Subtest: unmapped targets and unsafe resource paths cannot silently disappear from delivery
+ok 5 - unmapped targets and unsafe resource paths cannot silently disappear from delivery
+  ---
+  duration_ms: 0.51275
+  type: 'test'
+  ...
+# Subtest: monolithic frozen source retains its explicit local resource path
+ok 6 - monolithic frozen source retains its explicit local resource path
+  ---
+  duration_ms: 2.026416
+  type: 'test'
+  ...
+# Subtest: standalone SDK preparation is pinned, reproducible and fails before copying on corruption
+    # Subtest: only ios resources are required and verified
+    ok 1 - only ios resources are required and verified
+      ---
+      duration_ms: 4.805625
+      type: 'test'
+      ...
+    # Subtest: only android resources are required and verified
+    ok 2 - only android resources are required and verified
+      ---
+      duration_ms: 5.821125
+      type: 'test'
+      ...
+    1..2
+ok 7 - standalone SDK preparation is pinned, reproducible and fails before copying on corruption
+  ---
+  duration_ms: 107.968375
+  type: 'test'
+  ...
+# ▲ [WARNING] Ignoring this import because "source/packages/kit/dist/esm/chunk-V3B47YIV.js" was marked as having no side effects [ignored-bare-import]
+#     source/packages/kit/dist/esm/engine.js:12:7:
+#       12 │ import "./chunk-V3B47YIV.js";
+#          ╵        ~~~~~~~~~~~~~~~~~~~~~
+#   "sideEffects" is false in the enclosing "package.json" file:
+#     source/packages/kit/package.json:7:2:
+#       7 │   "sideEffects": false,
+#         ╵   ~~~~~~~~~~~~~
+# Subtest: startup rejects missing/stale native; concurrent calls preserve receiver, bytes and errors
+ok 8 - startup rejects missing/stale native; concurrent calls preserve receiver, bytes and errors
+  ---
+  duration_ms: 88.076417
+  type: 'test'
+  ...
+# Subtest: Expo glue reuses SDK and contains no duplicate JNI or buffer implementation
+ok 9 - Expo glue reuses SDK and contains no duplicate JNI or buffer implementation
+  ---
+  duration_ms: 1.833542
+  type: 'test'
+  ...
+# ▲ [WARNING] Ignoring this import because "source/packages/kit/dist/esm/chunk-V3B47YIV.js" was marked as having no side effects [ignored-bare-import]
+#     source/packages/kit/dist/esm/engine.js:12:7:
+#       12 │ import "./chunk-V3B47YIV.js";
+#          ╵        ~~~~~~~~~~~~~~~~~~~~~
+#   "sideEffects" is false in the enclosing "package.json" file:
+#     source/packages/kit/package.json:7:2:
+#       7 │   "sideEffects": false,
+#         ╵   ~~~~~~~~~~~~~
+# Subtest: Keyless bridge requires matching native identity, preserves concurrency and uses shared rejection semantics
+ok 10 - Keyless bridge requires matching native identity, preserves concurrency and uses shared rejection semantics
+  ---
+  duration_ms: 77.563625
+  type: 'test'
+  ...
+# Subtest: separate development identity agrees with workspace lock
+ok 11 - separate development identity agrees with workspace lock
+  ---
+  duration_ms: 0.815916
+  type: 'test'
+  ...
+# Subtest: stale lock and mismatched source identity are rejected
+ok 12 - stale lock and mismatched source identity are rejected
+  ---
+  duration_ms: 0.616542
+  type: 'test'
+  ...
+# Subtest: exact source and packaged output identity passes
+ok 13 - exact source and packaged output identity passes
+  ---
+  duration_ms: 0.05475
+  type: 'test'
+  ...
+# Subtest: stale version, changed source and changed output fail independently
+ok 14 - stale version, changed source and changed output fail independently
+  ---
+  duration_ms: 0.17075
+  type: 'test'
+  ...
+# Subtest: real packlist binds source and output and rejects source edits during build
+ok 15 - real packlist binds source and output and rejects source edits during build
+  ---
+  duration_ms: 1325.871209
+  type: 'test'
+  ...
+1..15
+# tests 17
+# suites 0
+# pass 17
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1370.81275

@@ -1,0 +1,18 @@
+{
+  "version": "0.1.0-rc.20",
+  "tarSha256": "78da28e717ce4d4234923f2b91c3fd4c01176f641def88981b2c6cba4c0c3614",
+  "script": "source/packages/kit/scripts/check-install-candidate.mjs",
+  "status": "passed",
+  "publicEntrypoints": 8,
+  "gates": [
+    "clean-install", "exports", "ESM/CJS", "RN-condition-resolution",
+    "migration-contract", "Host/Core-identity", "packed-provenance",
+    "installed-public-types", "DApp-browser-profile", "wallet-RN-profile",
+    "public-entry-node-browser-RN-resolution", "Node-ESM-CJS-package-WASM-load",
+    "multi-round-example", "approval-presentation-example",
+    "approval-host-reader-callback-import", "backend-sign-example",
+    "backend-explicit-send-example"
+  ],
+  "deviceAcceptance": false,
+  "realBroadcast": false
+}

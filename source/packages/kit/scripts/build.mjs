@@ -8,6 +8,7 @@ import { omitEmbeddedSources } from "./source-map-policy.mjs";
 import { stripWasmNameSection } from "./wasm-metadata.mjs";
 import { closePortableParserDependencies } from "./portable-parser-dependencies.mjs";
 import { patchContract173Parser } from "./contract173-parser-patch.mjs";
+import { assertDistributionManifest, writePlatformCatalog } from "./distribution-policy.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const packageRoot = resolve(root, "packages/kit");
@@ -416,6 +417,7 @@ await buildKitRuntime({ root, packageRoot });
 const provenancePath = resolve(packageRoot, "artifacts/provenance.json");
 const provenance = JSON.parse(await readFile(provenancePath, "utf8"));
 const packageManifest = JSON.parse(await readFile(resolve(packageRoot, "package.json"), "utf8"));
+assertDistributionManifest(packageManifest);
 const releaseSource = await readFile(resolve(root, "packages/core/src/generated/v1-candidate-release.ts"), "utf8");
 const protocolFingerprint = releaseSource.match(
   /GENERATED_TWS_RELEASE_FINGERPRINT\s*=\s*\n?\s*"([0-9a-f]{64})"/u,
@@ -424,7 +426,7 @@ if (protocolFingerprint === undefined) throw new Error("Generated protocol finge
 const sha256File = async (path) => createHash("sha256").update(await readFile(path)).digest("hex");
 provenance.package = `${packageManifest.name}@${packageManifest.version}`;
 provenance.protocolFingerprint = protocolFingerprint;
-for (const artifact of provenance.artifacts) {
+for (const artifact of [...provenance.artifacts, ...(provenance.externalArtifacts ?? [])]) {
   artifact.sha256 = await sha256File(resolve(packageRoot, artifact.path));
 }
 if (provenance.publicMerge?.schemas !== undefined) {
@@ -444,6 +446,7 @@ if (provenance.publicMerge?.nativeDelivery !== undefined) {
     packageRoot, "artifacts/wasm/tbc_engine_wasm.wasm",
   ));
 }
+await writePlatformCatalog(packageRoot, provenance);
 await writeFile(provenancePath, `${JSON.stringify(provenance, null, 2)}\n`);
 
 // Map-only finalization avoids changing runtime bytes or hashed chunk names.

@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, lstatSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join, resolve, isAbsolute } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { assertDistributionManifest } from '../packages/kit/scripts/distribution-policy.mjs';
 
 const repo = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const json = p => JSON.parse(readFileSync(p, 'utf8'));
@@ -19,6 +20,7 @@ export function checkIdentity(state, pkg, lock) {
   assert.equal(pkg.version, state.developmentVersion, 'Source version and release state differ');
   assert.equal(lock.packages['packages/kit'].version, pkg.version, 'Workspace lock version differs');
   assert.equal(pkg.private, true, 'Registry publication must be enabled explicitly');
+  assertDistributionManifest(pkg);
 }
 export function verifyBuild(record, version, sourceDigest, outputDigest) {
   assert.equal(record.version, version, 'Built version is stale');

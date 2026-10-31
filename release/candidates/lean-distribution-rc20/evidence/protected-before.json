@@ -1,0 +1,23 @@
+{
+  "files": 174,
+  "allMatch": true,
+  "manifestSha256": "b37f829931b8ddc7e28b971184bc7c43b7fe32dcc41eb909ad402cbee8e9a33f",
+  "frozen": {
+    "tbc-kit.tgz": {
+      "sha256": "ed8f1ef7d66154067c7676308dde28cd77d5d6ceacb16daebb3d2951a20eee3a",
+      "bytes": 44021942
+    },
+    "tbc-kit-flutter.tgz": {
+      "sha256": "f782b21ff2aa5d069669ae080615bde083e45006e5536a98b11233025d322b7f",
+      "bytes": 15595700
+    },
+    "ios-sdk.tgz": {
+      "sha256": "514b0922ffefdcfc0a8be13969fbfa76361ad0a1d977a82bdc2b3a2d5a4fa281",
+      "bytes": 43686738
+    },
+    "android-sdk.tgz": {
+      "sha256": "4146851beb779b63c080057ec31c0a96ed2ca6a6a24c680e3eb4151a75b5f7b7",
+      "bytes": 36108577
+    }
+  }
+}
