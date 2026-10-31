@@ -40,8 +40,14 @@ npm run check:install
 
 将已验收归档提升为默认下载时，应逐字节上传对应 Releases，不要重新打包。更新 `release/current.json`、`release/downloads.json`、Native 版本锁、源码清单与校验值后执行上述检查。下载 URL 固定到版本标签，已发布同名附件不得覆盖。JS/Native 与 Flutter 独立配对；仅提升 JS/Native 时，不运行会重打包 Flutter 的 `scripts/package-release.mjs`。
 
-大型 Flutter 测试夹具按文件哈希保留在 `flutter-test-fixtures.tgz`；历史候选安装包保留在 `tbc-kit-candidate-archives.tgz`。`assets:fetch -- fixtures` 和 `assets:fetch -- history` 恢复原路径及原字节，原始验收记录无需改写。全部可恢复文件由 `release/downloads.json` 索引。
+大型 Flutter 测试夹具按文件哈希保留在 `flutter-test-fixtures.tgz`，使用 `assets:fetch -- fixtures` 恢复。`assets:fetch -- acceptance` 可按当前验收记录中的文件名取回同一份已验收包，原始验收记录无需改写。可恢复文件由 `release/downloads.json` 索引。旧候选和实验版本只在开发仓库归档，不在本发布仓库或 Releases 分发。
 
 分发整理不会自动缩小既有 Git 历史。任何历史重写、分支删除或强制推送均需维护者另行批准，并先验证完整备份；不要把普通文件迁移当作该授权。
+
+## 历史清理后的本地工程
+
+本仓库已按维护者授权移除历史安装包和旧候选文件，当前源码与安装包内容未变。已有克隆建议另建干净目录重新克隆，先保留未提交的工作，再逐项迁移必要修改；不要把旧分支整段 merge 或强推回来，以免重新引入大文件历史。正常完整克隆无需 `--depth`。
+
+包锁、冻结源码及原始验收记录中的旧提交标识继续作为构建来源保留，不为整理而改写。提交映射见 [history-rewrite-map.json](../release/history-rewrite-map.json)。
 
 仓库可见性与注册表发布由维护者单独管理，代码推送不会触发发布。

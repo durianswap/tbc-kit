@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "reason": "Externalized distribution artifacts removed from Git history; package bytes and retained source history unchanged.",
+  "commits": [
+    {
+      "old": "23ab0bd5294dd19f4746011215c8b3e9c76a1470",
+      "new": "199983eac1ec8e1cd829aa03dbfebba777056e1a",
+      "subject": "Initial TBC Kit SDK"
+    },
+    {
+      "old": "46fabf4d611bbf379b376d410dd72f5058271193",
+      "new": "85da0dc47a09e0fd22111f09b3cc72a6299d80b5",
+      "subject": "Add bound per-transaction approval output review"
+    },
+    {
+      "old": "39f2981980511dc3f79873613894d48b0d0ba2e1",
+      "new": "355c96215efe8e606e623d8b55032fb968616aaf",
+      "subject": "Complete SDK capability gaps and conformance checks"
+    },
+    {
+      "old": "6e12b5451faa8806e2c5060d84277de2ef455654",
+      "new": "bdcb5049d200ef0027f74f425e259275ec18dc5b",
+      "subject": "Back up RC16 Kit and Flutter NFT batching candidates"
+    },
+    {
+      "old": "655efc6f4c90a028eb444218a0584e5e805b50c5",
+      "new": "be0d6f51550b292dd21a853df9b327847b40de81",
+      "subject": "Preserve unadopted RC16 local performance experiments"
+    },
+    {
+      "old": "68729536375931e9a5a0f6c67a4f585f7bccc6e5",
+      "new": "90da1484b8d2b901394b7bdf0c5e5f62b7e5ea46",
+      "subject": "Support Coin multi-round plans and exact native fee consolidation"
+    },
+    {
+      "old": "d6d7d01a7a4ff57232a7927e4aa176eeac9e93ae",
+      "new": "a89c219821e3417bb7248be914bb616907bef7ef",
+      "subject": "Optimize Coin planning reuse and back up RC17 and RC18 candidates"
+    },
+    {
+      "old": "95b4d07d74131f766817bfddc07fdbcd0eb6564b",
+      "new": "76573b905f18ca138ddb8237d4e5500301d203e4",
+      "subject": "Promote verified RC18 to the default Kit distribution"
+    },
+    {
+      "old": "acbe4ade89f76d99c5edfa1396486be708e2677a",
+      "new": "749978c4ba364053bacd017751191382fed2b49e",
+      "subject": "Fix legacy FT approval identity and exact input planning"
+    },
+    {
+      "old": "2c1850f51c42bf2471ce67657afd42a54f0f2a04",
+      "new": "c57271b665138b455568b9715c2d36c868c5b44b",
+      "subject": "Promote verified RC19 to the default Kit distribution"
+    },
+    {
+      "old": "6fdae68edb57a010ccbff8bf0e626a7cc5b6ea49",
+      "new": "51e40f769c5c1bbc52abc6a804f713895b0e5d73",
+      "subject": "Move immutable distributions to Releases and retain lightweight sources"
+    },
+    {
+      "old": "a8a9ce9937f1d7911a1415f159f9539a28e81969",
+      "new": "a3eaa4a49365b1190cfa6b52a9bbdd7e53826426",
+      "subject": "Record verified public downloads and clean installation"
+    }
+  ]
+}

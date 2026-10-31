@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { createHash } from 'node:crypto';
-import { mkdtemp, mkdir, writeFile, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, mkdir, writeFile, readFile, readdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -67,4 +67,14 @@ test('every removed file has a byte-exact download or archive mapping',async()=>
     const asset=index.get(f.path);assert(asset,`Missing restoration: ${f.path}`);
     assert.equal(asset.sha256,f.sha256);assert.equal(asset.bytes,f.bytes);
   }
+});
+test('published distribution exposes only the current accepted candidate',async()=>{
+  const root=new URL('../',import.meta.url);
+  const downloads=JSON.parse(await readFile(new URL('release/downloads.json',root),'utf8'));
+  assert(!('history' in downloads.groups));
+  assert(!downloads.assets.some(a=>a.id==='candidate-archive'));
+  assert(downloads.aliases.every(a=>a.path.startsWith('release/candidates/legacy-ft-exact-rc19/')));
+  assert.deepEqual((await readdir(new URL('release/candidates/',root))).sort(),['legacy-ft-exact-rc19']);
+  const sums=await readFile(new URL('release/DOWNLOADS.SHA256',root),'utf8');
+  assert.equal(sums,downloads.assets.map(a=>`${a.sha256}  ${a.name}`).join('\n')+'\n');
 });

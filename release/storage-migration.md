@@ -1,5 +1,7 @@
 # 分发存储整理
 
+本页记录第一阶段的文件迁移和验证。后续经维护者授权完成的历史清理、旧候选归档与完整克隆实测见 [history-cleanup.md](history-cleanup.md)；当前发布范围以 `current.json` 与 `downloads.json` 为准。
+
 ## 范围与保护
 
 基线提交：`2c1850f51c42bf2471ce67657afd42a54f0f2a04`。

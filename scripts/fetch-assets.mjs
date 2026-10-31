@@ -118,7 +118,7 @@ export async function fetchAssets(root, requested = ['verification'], from) {
     const restored = await restoreFiles(root, asset, archive);
     console.log(`${asset.id}: SHA256 verified; ${restored} files restored`);
   }
-  if (requested.includes('history') || requested.includes('all')) {
+  if (requested.includes('acceptance') || requested.includes('all')) {
     for (const alias of manifest.aliases) {
       const asset = manifest.assets.find(a => a.id === alias.asset);
       const destination = safePath(root, alias.path);

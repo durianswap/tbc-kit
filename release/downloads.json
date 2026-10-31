@@ -16,13 +16,6 @@
     "fixtures": [
       "flutter-fixtures"
     ],
-    "history": [
-      "candidate-archive",
-      "kit",
-      "sdk-ios",
-      "sdk-android",
-      "accepted-source"
-    ],
     "verification": [
       "kit",
       "flutter",
@@ -30,6 +23,12 @@
       "sdk-android",
       "accepted-source",
       "flutter-fixtures"
+    ],
+    "acceptance": [
+      "kit",
+      "sdk-ios",
+      "sdk-android",
+      "accepted-source"
     ]
   },
   "assets": [
@@ -6265,133 +6264,6 @@
           "path": "source/native/flutter-dart-kit/test/fixtures/workflow-signing.json",
           "bytes": 332627,
           "sha256": "e0473c17e3e9f5ead45c5122590aff9df1093609d0d74cf80bbe3353efd2c32a"
-        }
-      ]
-    },
-    {
-      "id": "candidate-archive",
-      "name": "tbc-kit-candidate-archives.tgz",
-      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/tbc-kit-candidate-archives.tgz",
-      "path": ".downloads/tbc-kit-candidate-archives.tgz",
-      "sha256": "4f9d8d94c79b2d02e2d7693c97c3d2996eb46c73f40bc89d5e4ac385844407e5",
-      "bytes": 548675923,
-      "archiveRoot": "",
-      "extractTo": "",
-      "files": [
-        {
-          "path": "release/candidates/approval-output-rc6/native/tbc-kit-resources-android-0.1.0-rc.6.tgz",
-          "bytes": 16886450,
-          "sha256": "0879107b9b35668b7b3006783ab34ef757905ccbb0f5bb0b1d053511add7f64a"
-        },
-        {
-          "path": "release/candidates/approval-output-rc6/native/tbc-kit-resources-ios-0.1.0-rc.6.tgz",
-          "bytes": 43294574,
-          "sha256": "ce1443dddd9e68baff54a78c637d9d6586c3d45c892951220c4aeb74be9109ac"
-        },
-        {
-          "path": "release/candidates/approval-output-rc6/native/tbc-kit-resources-macos-arm64-0.1.0-rc.6.tgz",
-          "bytes": 5633288,
-          "sha256": "26372b2cb815e45ba8861bcbf7d1394ff9da680a6302b0e431a62c4aec844135"
-        },
-        {
-          "path": "release/candidates/approval-output-rc6/tbc-kit-flutter.tgz",
-          "bytes": 15908495,
-          "sha256": "febdbef31f188d2200bb366397c0bbd34a22a3a0988ce908f6250f9154556296"
-        },
-        {
-          "path": "release/candidates/approval-output-rc6/tbc-kit.tgz",
-          "bytes": 3849595,
-          "sha256": "b610d7303605cce03f9b580eab5d7600a9ae204364ba56af4256c72ddef0cb22"
-        },
-        {
-          "path": "release/candidates/coin-local-reuse/delivery/android-sdk-0.1.0-rc.18.native.2.tgz",
-          "bytes": 35997245,
-          "sha256": "5fad73dc61048b82dc19d70dc072e3855ac4c700c2c1b495671393fe937fe5cd"
-        },
-        {
-          "path": "release/candidates/coin-local-reuse/delivery/ios-sdk-0.1.0-rc.18.native.2.tgz",
-          "bytes": 43633627,
-          "sha256": "1e4e6ebf70b89dbdf80ff63676fa09ae7c7cd567cd059c647134f97b706d14db"
-        },
-        {
-          "path": "release/candidates/coin-local-reuse/delivery/source.tgz",
-          "bytes": 3103963,
-          "sha256": "9cc8a86d9a79ae3710e71a6a2c592ac9825d96b60a50ec454ee735fbd3979bb3"
-        },
-        {
-          "path": "release/candidates/coin-local-reuse/delivery/tbc-kit-0.1.0-rc.18.tgz",
-          "bytes": 43909206,
-          "sha256": "a9914cbd050fe1276ad09ba101cd3c5a368af462d8cab1034bc621e8a5ccede7"
-        },
-        {
-          "path": "release/candidates/coin-multiround-rc17/delivery/android-sdk-0.1.0-rc.17.native.2.tgz",
-          "bytes": 35963048,
-          "sha256": "03ca43aca08236846c0c9fed525477e1ab3766c9f966c844568a9de942e63059"
-        },
-        {
-          "path": "release/candidates/coin-multiround-rc17/delivery/ios-sdk-0.1.0-rc.17.native.2.tgz",
-          "bytes": 43597023,
-          "sha256": "c4e5acd95e030439a3136201c56425069ca5e57cb4cc3e9fc56e754df430e7fe"
-        },
-        {
-          "path": "release/candidates/coin-multiround-rc17/delivery/source.tgz",
-          "bytes": 3100046,
-          "sha256": "c6291cfbc721a3cea64769a4323650e6bc754ec51f6b0fe936e7f3f899bb1ff5"
-        },
-        {
-          "path": "release/candidates/coin-multiround-rc17/delivery/tbc-kit-0.1.0-rc.17.tgz",
-          "bytes": 43844085,
-          "sha256": "4858521fc3c878c86d23a94454695b5bf2be18a30ed006eb8b56b113be86ec7e"
-        },
-        {
-          "path": "release/candidates/flutter-nft-mint-rc16/flutter-source.tgz",
-          "bytes": 389024,
-          "sha256": "a9b348221f03e0c039c1d2ce9464302e0eb85d1430bd05c15e40f492f70e3b6c"
-        },
-        {
-          "path": "release/candidates/flutter-nft-mint-rc16/tbc-kit-flutter.tgz",
-          "bytes": 16113276,
-          "sha256": "3ca989c1103f947be99716c5dde81424023bb814d48583fcac233632a35a05d0"
-        },
-        {
-          "path": "release/candidates/htlc-review-status-rc16/source.tgz",
-          "bytes": 3090040,
-          "sha256": "45c8bb96cccaa5dd712eb6afd10dec9e2705651ef4bbab141bcfabaa28376e75"
-        },
-        {
-          "path": "release/candidates/htlc-review-status-rc16/targeted-tests.tgz",
-          "bytes": 73522,
-          "sha256": "d74bff8e31cc8e059b577415988263a0518c68c00a8ce0535dc479bccaa2f8ce"
-        },
-        {
-          "path": "release/candidates/htlc-review-status-rc16/tbc-kit-0.1.0-rc.16.tgz",
-          "bytes": 43752364,
-          "sha256": "3994165c0d89e4da299e7ad82465d79b5181306bffc9f0dcfa7030bcdcb02796"
-        },
-        {
-          "path": "release/candidates/rc16-delivery/TBC-Kit/native/android-sdk.tgz",
-          "bytes": 18060588,
-          "sha256": "b1ec9514dc54db048252d798edbaa75cafff79a2e6b28df36feff6726283ab03"
-        },
-        {
-          "path": "release/candidates/rc16-delivery/TBC-Kit/native/ios-sdk.tgz",
-          "bytes": 43569366,
-          "sha256": "56df3deb16689dc5da1f63e12465f635ebff0bf1ab5d02ab95589490ff52ea6d"
-        },
-        {
-          "path": "release/candidates/rc16-delivery/TBC-Kit/packages/tbc-kit.tgz",
-          "bytes": 43752364,
-          "sha256": "3994165c0d89e4da299e7ad82465d79b5181306bffc9f0dcfa7030bcdcb02796"
-        },
-        {
-          "path": "release/candidates/rc16-delivery/native-adapter-source.tgz",
-          "bytes": 69640,
-          "sha256": "4416c66bb246d8907e2337e9c55111dc6edcf544b32e6eec8d36c8032830257f"
-        },
-        {
-          "path": "release/candidates/sdk-gaps-rc10/tbc-kit-0.1.0-rc.10.tgz",
-          "bytes": 43380762,
-          "sha256": "e1c04990ecedade2d6cf33786d5bef4a11ee8f1415057421a4d0d423d170b8f9"
         }
       ]
     }
