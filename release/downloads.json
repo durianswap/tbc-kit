@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "tag": "v0.1.0-rc.19",
-  "sourceCommit": "2c1850f51c42bf2471ce67657afd42a54f0f2a04",
+  "tag": "v0.1.0-rc.20",
+  "sourceCommit": "fa145cdb414637671f36dc722b66ff51599be5a7",
   "groups": {
     "kit": [
       "kit"
@@ -11,7 +11,8 @@
     ],
     "native": [
       "sdk-ios",
-      "sdk-android"
+      "sdk-android",
+      "native-sdk-lock"
     ],
     "fixtures": [
       "flutter-fixtures"
@@ -22,125 +23,65 @@
       "sdk-ios",
       "sdk-android",
       "accepted-source",
-      "flutter-fixtures"
+      "flutter-fixtures",
+      "native-sdk-lock"
     ],
     "acceptance": [
       "kit",
       "sdk-ios",
       "sdk-android",
-      "accepted-source"
+      "accepted-source",
+      "native-sdk-lock"
+    ],
+    "ios": [
+      "kit",
+      "sdk-ios",
+      "native-sdk-lock"
+    ],
+    "android": [
+      "kit",
+      "sdk-android",
+      "native-sdk-lock"
+    ],
+    "resources": [
+      "resources-macos-arm64",
+      "resources-android",
+      "resources-ios"
+    ],
+    "macos-resources": [
+      "resources-macos-arm64"
     ]
   },
   "assets": [
     {
       "id": "kit",
       "name": "tbc-kit.tgz",
-      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/tbc-kit.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit.tgz",
       "path": "artifacts/tbc-kit.tgz",
-      "sha256": "ed8f1ef7d66154067c7676308dde28cd77d5d6ceacb16daebb3d2951a20eee3a",
-      "bytes": 44021942,
+      "sha256": "78da28e717ce4d4234923f2b91c3fd4c01176f641def88981b2c6cba4c0c3614",
+      "bytes": 5533148,
       "archiveRoot": "package/",
       "extractTo": "packages/kit/",
       "files": [
-        {
-          "path": "packages/kit/LICENSE",
-          "bytes": 178,
-          "sha256": "bd137baa8b1e84bb8c0329da96ba2e97d15068091566efecd72a7b9621af3223"
-        },
-        {
-          "path": "packages/kit/README.md",
-          "bytes": 1903,
-          "sha256": "8c9988f10b319e0979b58c73199f339e8dd1de371fd131e7a18a7efb582ac3b0"
-        },
-        {
-          "path": "packages/kit/SUPPORT.md",
-          "bytes": 2000,
-          "sha256": "b36c1ccec6ae35e440b854d2221ad670630af3bea730e25b5a35b5b920bb0b89"
-        },
         {
           "path": "packages/kit/artifacts/api-rpc-coverage.json",
           "bytes": 157453,
           "sha256": "c2430f364a968d6025f77391f34a01893b956a3d64053e4826dbe9deefbd0167"
         },
         {
-          "path": "packages/kit/artifacts/keyless-native/aarch64-apple-darwin/libtbc_keyless_native.dylib",
-          "bytes": 4627072,
-          "sha256": "f4203d3643898fc49330d5178dc70dab0ab02df6cf8b2c97a44b9be01dba76e1"
-        },
-        {
-          "path": "packages/kit/artifacts/keyless-native/aarch64-apple-darwin/module.modulemap",
-          "bytes": 64,
-          "sha256": "c49a057d74e3d73dbf29bf0df22557cd94b4644dcdb2909546c4778870af08a9"
-        },
-        {
-          "path": "packages/kit/artifacts/keyless-native/aarch64-apple-darwin/tbc_keyless.h",
-          "bytes": 459,
-          "sha256": "fe6e4e9d09016deb7d23aff96b24a10e65772f7cdc930ee9266e754788a01b4c"
-        },
-        {
-          "path": "packages/kit/artifacts/native/aarch64-apple-darwin/libtbc_engine_native.dylib",
-          "bytes": 7434976,
-          "sha256": "91e9abec833a98b4abc916503de58f677ebc1880d88e099cac0e0265e5930a47"
-        },
-        {
-          "path": "packages/kit/artifacts/native/android/jniLibs/arm64-v8a/libtbc_engine_native.so",
-          "bytes": 8264624,
-          "sha256": "ea6c0b224ab2e3be4ee7ebb579e4e29d30ab6ef811d15a61d6fa99176eef016a"
-        },
-        {
-          "path": "packages/kit/artifacts/native/android/jniLibs/armeabi-v7a/libtbc_engine_native.so",
-          "bytes": 6297524,
-          "sha256": "dd856d184ae2297b6b3f0e0d00aec78c3468ac4d48fd7c1a18e72038776c1a23"
-        },
-        {
-          "path": "packages/kit/artifacts/native/android/jniLibs/x86_64/libtbc_engine_native.so",
-          "bytes": 8669392,
-          "sha256": "0854e961b826b2ecce9ccb4eb6c596e7ad1f7f3a041bc1c2371e5cbdf80c67d1"
-        },
-        {
-          "path": "packages/kit/artifacts/native/ios/TbcEngineNative.xcframework/Info.plist",
-          "bytes": 1261,
-          "sha256": "9a7a3843e141bf91da5590a98b1caf8f09d5ed69e42422039fc4112d654cf7da"
-        },
-        {
-          "path": "packages/kit/artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/Headers/module.modulemap",
-          "bytes": 62,
-          "sha256": "b96481a446ba0a7f27e2a8ed084287e118aa39999b32ed4fee82d75d34c33556"
-        },
-        {
-          "path": "packages/kit/artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/Headers/tbc_engine.h",
-          "bytes": 648,
-          "sha256": "d773d6a31b10fe5a5f7d780089aa89345b8d99df18e414ada58e4f716586c8bc"
-        },
-        {
-          "path": "packages/kit/artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/libtbc_engine_native.a",
-          "bytes": 34081944,
-          "sha256": "128a8ba5d99ea076142c0a3035f874925846cceb0ab712a6542b281030435610"
-        },
-        {
-          "path": "packages/kit/artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/Headers/module.modulemap",
-          "bytes": 62,
-          "sha256": "b96481a446ba0a7f27e2a8ed084287e118aa39999b32ed4fee82d75d34c33556"
-        },
-        {
-          "path": "packages/kit/artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/Headers/tbc_engine.h",
-          "bytes": 648,
-          "sha256": "d773d6a31b10fe5a5f7d780089aa89345b8d99df18e414ada58e4f716586c8bc"
-        },
-        {
-          "path": "packages/kit/artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/libtbc_engine_native.a",
-          "bytes": 34084232,
-          "sha256": "ec601540fdfc1d64b08488dcd6615595a8ec295f368a0a48a17fa4f41af97713"
+          "path": "packages/kit/artifacts/platform-resources.json",
+          "bytes": 3002,
+          "sha256": "3c6575477376b8f59834f45fd0fd50c8bd8309520042edbfb04872ae2b66a3bd"
         },
         {
           "path": "packages/kit/artifacts/provenance.json",
-          "bytes": 168126,
-          "sha256": "d9a15ac593004badb8149dd755903802c5bb577c6c4faa404fd0d26800d4549e"
+          "bytes": 168595,
+          "sha256": "f76908137d21d55bd50b36d8c17895f17cf6bc4118007a173fbc05f382c1b282"
         },
         {
           "path": "packages/kit/artifacts/source-build.json",
-          "bytes": 318,
-          "sha256": "8fee59472a1f62207a8ba226d70213355908da3aa5a41e0eec9f6f2db6f44cfd"
+          "bytes": 559,
+          "sha256": "e552eb1ca0ef547e555271ba861f9001726f58e568ca2d437f8fbc6923e36fb7"
         },
         {
           "path": "packages/kit/artifacts/wasm/tbc_engine_wasm.wasm",
@@ -953,26 +894,6 @@
           "sha256": "bfeed9b32615457b9d6251b47b20971671084ceb19b7bda9a63f9fa053ca39f8"
         },
         {
-          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser.d.ts",
-          "bytes": 161,
-          "sha256": "919a846f627a3edda278b3cb4a34781a46b81970e010be15d89ddffa2b0da24c"
-        },
-        {
-          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser.d.ts.map",
-          "bytes": 221,
-          "sha256": "15fb73d801c184740ea52bd59fe857aac0bddd57ebb84b749a574af0c09c1e84"
-        },
-        {
-          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser.js",
-          "bytes": 7407,
-          "sha256": "5bd2436c3dbba0019c23e895bc143cf6d1732565dab2a0a912b378dd273d1c20"
-        },
-        {
-          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser.js.map",
-          "bytes": 6394,
-          "sha256": "8f67135ea2c50d95d79eb6cfaed3bf61f5bd1c4598a16d462c07d13b8a1f91bd"
-        },
-        {
           "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser/contracts.d.ts",
           "bytes": 559,
           "sha256": "d3d749d3c116aea556a5c9e132bb99bb4d1ba27ba2f6517b79edf4cec9fe89a6"
@@ -1033,24 +954,24 @@
           "sha256": "b11f2dd2e3c56239e74cf2dfbc5e6344a59267d59ba11f166cf8024c82175ddc"
         },
         {
-          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types.d.ts",
-          "bytes": 1067,
-          "sha256": "35775d582d8e66c350f4d9625dbba3a3deb36b7f58e6afdefe6f19bd6d632089"
+          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser.d.ts",
+          "bytes": 161,
+          "sha256": "919a846f627a3edda278b3cb4a34781a46b81970e010be15d89ddffa2b0da24c"
         },
         {
-          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types.d.ts.map",
-          "bytes": 788,
-          "sha256": "196f36a98368c3942fbc446e171c6b93cb826ef7d5300246a04f6de7a53f6bf7"
+          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser.d.ts.map",
+          "bytes": 221,
+          "sha256": "15fb73d801c184740ea52bd59fe857aac0bddd57ebb84b749a574af0c09c1e84"
         },
         {
-          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types.js",
-          "bytes": 244,
-          "sha256": "fc52d0e924cee1217ab854e718f279a6a7a6ba721ca7eca06f0ef0d7379c855f"
+          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser.js",
+          "bytes": 7407,
+          "sha256": "5bd2436c3dbba0019c23e895bc143cf6d1732565dab2a0a912b378dd273d1c20"
         },
         {
-          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types.js.map",
-          "bytes": 201,
-          "sha256": "5c6d73cc52c40408fc1dc058a6a3286801f62fdac727a48da7a336e08a805dd4"
+          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser.js.map",
+          "bytes": 6394,
+          "sha256": "8f67135ea2c50d95d79eb6cfaed3bf61f5bd1c4598a16d462c07d13b8a1f91bd"
         },
         {
           "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/protocol.d.ts",
@@ -1131,6 +1052,26 @@
           "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/semantic.js.map",
           "bytes": 117,
           "sha256": "1ec3c5cea5ebff2e54d1ddc687f7a04d23aae5700a483690f2cdd834bea271f4"
+        },
+        {
+          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types.d.ts",
+          "bytes": 1067,
+          "sha256": "35775d582d8e66c350f4d9625dbba3a3deb36b7f58e6afdefe6f19bd6d632089"
+        },
+        {
+          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types.d.ts.map",
+          "bytes": 788,
+          "sha256": "196f36a98368c3942fbc446e171c6b93cb826ef7d5300246a04f6de7a53f6bf7"
+        },
+        {
+          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types.js",
+          "bytes": 244,
+          "sha256": "fc52d0e924cee1217ab854e718f279a6a7a6ba721ca7eca06f0ef0d7379c855f"
+        },
+        {
+          "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types.js.map",
+          "bytes": 201,
+          "sha256": "5c6d73cc52c40408fc1dc058a6a3286801f62fdac727a48da7a336e08a805dd4"
         },
         {
           "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/asm-converter.d.ts",
@@ -2463,26 +2404,6 @@
           "sha256": "bfeed9b32615457b9d6251b47b20971671084ceb19b7bda9a63f9fa053ca39f8"
         },
         {
-          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser.d.ts",
-          "bytes": 161,
-          "sha256": "919a846f627a3edda278b3cb4a34781a46b81970e010be15d89ddffa2b0da24c"
-        },
-        {
-          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser.d.ts.map",
-          "bytes": 221,
-          "sha256": "15fb73d801c184740ea52bd59fe857aac0bddd57ebb84b749a574af0c09c1e84"
-        },
-        {
-          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser.js",
-          "bytes": 7407,
-          "sha256": "5bd2436c3dbba0019c23e895bc143cf6d1732565dab2a0a912b378dd273d1c20"
-        },
-        {
-          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser.js.map",
-          "bytes": 6394,
-          "sha256": "8f67135ea2c50d95d79eb6cfaed3bf61f5bd1c4598a16d462c07d13b8a1f91bd"
-        },
-        {
           "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser/contracts.d.ts",
           "bytes": 559,
           "sha256": "d3d749d3c116aea556a5c9e132bb99bb4d1ba27ba2f6517b79edf4cec9fe89a6"
@@ -2543,24 +2464,24 @@
           "sha256": "b11f2dd2e3c56239e74cf2dfbc5e6344a59267d59ba11f166cf8024c82175ddc"
         },
         {
-          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types.d.ts",
-          "bytes": 1067,
-          "sha256": "35775d582d8e66c350f4d9625dbba3a3deb36b7f58e6afdefe6f19bd6d632089"
+          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser.d.ts",
+          "bytes": 161,
+          "sha256": "919a846f627a3edda278b3cb4a34781a46b81970e010be15d89ddffa2b0da24c"
         },
         {
-          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types.d.ts.map",
-          "bytes": 788,
-          "sha256": "196f36a98368c3942fbc446e171c6b93cb826ef7d5300246a04f6de7a53f6bf7"
+          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser.d.ts.map",
+          "bytes": 221,
+          "sha256": "15fb73d801c184740ea52bd59fe857aac0bddd57ebb84b749a574af0c09c1e84"
         },
         {
-          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types.js",
-          "bytes": 244,
-          "sha256": "fc52d0e924cee1217ab854e718f279a6a7a6ba721ca7eca06f0ef0d7379c855f"
+          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser.js",
+          "bytes": 7407,
+          "sha256": "5bd2436c3dbba0019c23e895bc143cf6d1732565dab2a0a912b378dd273d1c20"
         },
         {
-          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types.js.map",
-          "bytes": 201,
-          "sha256": "5c6d73cc52c40408fc1dc058a6a3286801f62fdac727a48da7a336e08a805dd4"
+          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser.js.map",
+          "bytes": 6394,
+          "sha256": "8f67135ea2c50d95d79eb6cfaed3bf61f5bd1c4598a16d462c07d13b8a1f91bd"
         },
         {
           "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/protocol.d.ts",
@@ -2641,6 +2562,26 @@
           "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/semantic.js.map",
           "bytes": 117,
           "sha256": "1ec3c5cea5ebff2e54d1ddc687f7a04d23aae5700a483690f2cdd834bea271f4"
+        },
+        {
+          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types.d.ts",
+          "bytes": 1067,
+          "sha256": "35775d582d8e66c350f4d9625dbba3a3deb36b7f58e6afdefe6f19bd6d632089"
+        },
+        {
+          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types.d.ts.map",
+          "bytes": 788,
+          "sha256": "196f36a98368c3942fbc446e171c6b93cb826ef7d5300246a04f6de7a53f6bf7"
+        },
+        {
+          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types.js",
+          "bytes": 244,
+          "sha256": "fc52d0e924cee1217ab854e718f279a6a7a6ba721ca7eca06f0ef0d7379c855f"
+        },
+        {
+          "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types.js.map",
+          "bytes": 201,
+          "sha256": "5c6d73cc52c40408fc1dc058a6a3286801f62fdac727a48da7a336e08a805dd4"
         },
         {
           "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/asm-converter.d.ts",
@@ -3618,14 +3559,14 @@
           "sha256": "bf259b4d047fd36f0ad595e46ca1036a3bbdcce814e4f3755bcf85b50f6b641d"
         },
         {
-          "path": "packages/kit/dist/types/internal/provider/generated/validators.d.ts",
-          "bytes": 4062,
-          "sha256": "e30ff1b353129855a84b84e91e91d5f01a2b1804551903cf6976de56aa63469d"
-        },
-        {
           "path": "packages/kit/dist/types/internal/provider/generated/validators/bundle.d.ts",
           "bytes": 495,
           "sha256": "75685ca0d3bc64f7a553fc7c6729aa2f42850c89decc5a3cb6725c65f0b1506f"
+        },
+        {
+          "path": "packages/kit/dist/types/internal/provider/generated/validators.d.ts",
+          "bytes": 4062,
+          "sha256": "e30ff1b353129855a84b84e91e91d5f01a2b1804551903cf6976de56aa63469d"
         },
         {
           "path": "packages/kit/dist/types/internal/provider/in-memory.d.ts",
@@ -4618,6 +4559,11 @@
           "sha256": "ebbeb3fb78c42a3213e87adc3b163056930601fa564a4a4830aff23d720050be"
         },
         {
+          "path": "packages/kit/docs/compatibility.md",
+          "bytes": 1690,
+          "sha256": "6f9ed92f7af888eb93b25eb0a232fa7942a23d336a95e849759b3d953531c8c8"
+        },
+        {
           "path": "packages/kit/docs/multisig.md",
           "bytes": 9877,
           "sha256": "e892ac7647f1e026f2ebf9abfd822f7822d8ad7186a4cf4830f1a1ad4258c2e4"
@@ -4626,6 +4572,11 @@
           "path": "packages/kit/docs/nft.md",
           "bytes": 9145,
           "sha256": "2e4a95559c070b36e9db3e8794ee045f456f04f1b78d8c2ec082a4612f1af0e5"
+        },
+        {
+          "path": "packages/kit/docs/platform-resources.md",
+          "bytes": 2701,
+          "sha256": "2379dcf69415b043d9de651626701f23af63f28ec92be8e933b951bc0f87d950"
         },
         {
           "path": "packages/kit/docs/reference/amm-quotes.md",
@@ -4678,24 +4629,24 @@
           "sha256": "382f70a451d9e6a31e3801ef27eee7e49008938fdf6955fb60586ce2a22bfba4"
         },
         {
-          "path": "packages/kit/examples/api-rpc/README.md",
-          "bytes": 2852,
-          "sha256": "48648aaff7a658a03014c9aa2b2dd306bd6341f38f4ffef9440904ecfb6f2452"
-        },
-        {
           "path": "packages/kit/examples/api-rpc/read-only.mjs",
           "bytes": 558,
           "sha256": "91bda2eeeeecb097741cde0fd98cf125f8b0349c0b3b46414a7e435aa120860c"
         },
         {
-          "path": "packages/kit/examples/approval-presentation/README.md",
-          "bytes": 5500,
-          "sha256": "1de24ed4f781290519821501c84ad75ae8c5a15e06f0aed0b24100896eed2063"
+          "path": "packages/kit/examples/api-rpc/README.md",
+          "bytes": 2852,
+          "sha256": "48648aaff7a658a03014c9aa2b2dd306bd6341f38f4ffef9440904ecfb6f2452"
         },
         {
           "path": "packages/kit/examples/approval-presentation/host-reader-callback.mjs",
           "bytes": 1666,
           "sha256": "efcb6d35266f984c1c5482cf6161e3d1248272c97dca8988d947df63239a1a0e"
+        },
+        {
+          "path": "packages/kit/examples/approval-presentation/README.md",
+          "bytes": 5500,
+          "sha256": "1de24ed4f781290519821501c84ad75ae8c5a15e06f0aed0b24100896eed2063"
         },
         {
           "path": "packages/kit/examples/approval-presentation/renderer.mjs",
@@ -4728,14 +4679,14 @@
           "sha256": "5f4d77f50dbc2c4e0fce5a65831ba21856219c149289e4c24b897116c1161eec"
         },
         {
-          "path": "packages/kit/examples/independent-wallet/README.md",
-          "bytes": 2702,
-          "sha256": "1a97bf67ceb28f6c27a68fe79164aa3795dccbdbc28375d2262276e859759193"
-        },
-        {
           "path": "packages/kit/examples/independent-wallet/controlled-platform.mjs",
           "bytes": 3612,
           "sha256": "073996d23722115790cd31e03516cfa63c476d8fb5bb6c54448953627131a62a"
+        },
+        {
+          "path": "packages/kit/examples/independent-wallet/README.md",
+          "bytes": 2702,
+          "sha256": "1a97bf67ceb28f6c27a68fe79164aa3795dccbdbc28375d2262276e859759193"
         },
         {
           "path": "packages/kit/examples/independent-wallet/run.mjs",
@@ -4753,14 +4704,14 @@
           "sha256": "8df923943138671f7c57598f53f311198fc80038d44c92ad7cb8ee2c76ce63cf"
         },
         {
-          "path": "packages/kit/examples/lop-prepared/README.md",
-          "bytes": 2092,
-          "sha256": "9d747482349e75a2b456e691b86975f9afb6b039926974d28f42383035589dd4"
-        },
-        {
           "path": "packages/kit/examples/lop-prepared/prepare.mjs",
           "bytes": 1034,
           "sha256": "9459b66dd7326191fdd7d6cb4e242af32a914a6aa6ad21d97e4305204e23f858"
+        },
+        {
+          "path": "packages/kit/examples/lop-prepared/README.md",
+          "bytes": 2092,
+          "sha256": "9d747482349e75a2b456e691b86975f9afb6b039926974d28f42383035589dd4"
         },
         {
           "path": "packages/kit/examples/merge-maintenance/README.md",
@@ -4798,29 +4749,19 @@
           "sha256": "8ddd0b0d72fd0240f3c6c6e11702c28462c7c32cb1f51cd8f0f70688ec636bfa"
         },
         {
-          "path": "packages/kit/examples/nft-three-step/README.md",
-          "bytes": 1916,
-          "sha256": "7d1969610c546c4622b2453e0c5fe0d463b8bb9c0738b0cc2bbac529c62ade14"
-        },
-        {
           "path": "packages/kit/examples/nft-three-step/batch.mjs",
           "bytes": 789,
           "sha256": "01a2dbfe5ca5993d5bf1986c42cdbfff446025eaa7d38ebc10655c1a8eb3667a"
         },
         {
+          "path": "packages/kit/examples/nft-three-step/README.md",
+          "bytes": 1916,
+          "sha256": "7d1969610c546c4622b2453e0c5fe0d463b8bb9c0738b0cc2bbac529c62ade14"
+        },
+        {
           "path": "packages/kit/examples/nft-three-step/run.mjs",
           "bytes": 1548,
           "sha256": "136240511efe5890e3f3842bddc7a17e8b0fc2b71d38d5e872b9444d0d1cf61e"
-        },
-        {
-          "path": "packages/kit/examples/react-native-engine/README.md",
-          "bytes": 8972,
-          "sha256": "e1f1fe217e3ab1c0990c75f9118e89d410737eed8871a8daec3b0642bbe970d3"
-        },
-        {
-          "path": "packages/kit/examples/react-native-engine/SmokeApp.tsx",
-          "bytes": 2177,
-          "sha256": "869a27efdb16e9826be118df5dc2484457541292e965efc17e8292a58071d787"
         },
         {
           "path": "packages/kit/examples/react-native-engine/babel.config.js.example",
@@ -4831,11 +4772,6 @@
           "path": "packages/kit/examples/react-native-engine/install.mjs",
           "bytes": 1370,
           "sha256": "2b11323621cbd250a77b74e685230d9d29ca55d578922fb92fd618bea2dedef2"
-        },
-        {
-          "path": "packages/kit/examples/react-native-engine/module/TbcKitEngine.podspec",
-          "bytes": 1834,
-          "sha256": "c1ca6cf7ad0f09807641dc72227ae770f61b00896b18ea0da3a6088a3e6e05aa"
         },
         {
           "path": "packages/kit/examples/react-native-engine/module/android/build.gradle",
@@ -4893,9 +4829,19 @@
           "sha256": "dfc110a2a7fa98445c7916649edbd35a31e55f8de13a06ad335a53f5f6962c4b"
         },
         {
-          "path": "packages/kit/examples/receipt-verification/README.md",
-          "bytes": 1278,
-          "sha256": "8119299b19ed14281fb403c4a78632ebea88a3f1756e5355da01651c5d39c6c3"
+          "path": "packages/kit/examples/react-native-engine/module/TbcKitEngine.podspec",
+          "bytes": 1834,
+          "sha256": "c1ca6cf7ad0f09807641dc72227ae770f61b00896b18ea0da3a6088a3e6e05aa"
+        },
+        {
+          "path": "packages/kit/examples/react-native-engine/README.md",
+          "bytes": 8972,
+          "sha256": "e1f1fe217e3ab1c0990c75f9118e89d410737eed8871a8daec3b0642bbe970d3"
+        },
+        {
+          "path": "packages/kit/examples/react-native-engine/SmokeApp.tsx",
+          "bytes": 2177,
+          "sha256": "869a27efdb16e9826be118df5dc2484457541292e965efc17e8292a58071d787"
         },
         {
           "path": "packages/kit/examples/receipt-verification/backend.mjs",
@@ -4903,9 +4849,9 @@
           "sha256": "49b52c82445a57501f6788a788755e5fd5f791c5eb310bda8e977df0b24a100c"
         },
         {
-          "path": "packages/kit/examples/sign-in/README.md",
-          "bytes": 914,
-          "sha256": "876c44ea0d7e0fe36f525ac6db7923e0a67e4c6b2bac65c88199b905c99f861b"
+          "path": "packages/kit/examples/receipt-verification/README.md",
+          "bytes": 1278,
+          "sha256": "8119299b19ed14281fb403c4a78632ebea88a3f1756e5355da01651c5d39c6c3"
         },
         {
           "path": "packages/kit/examples/sign-in/backend.mjs",
@@ -4918,21 +4864,41 @@
           "sha256": "a0885a35542e2b312a84b7f7c33fb19c900aec02d37e8bdaef3dde5c57acac5b"
         },
         {
+          "path": "packages/kit/examples/sign-in/README.md",
+          "bytes": 914,
+          "sha256": "876c44ea0d7e0fe36f525ac6db7923e0a67e4c6b2bac65c88199b905c99f861b"
+        },
+        {
           "path": "packages/kit/examples/sign-in/run.mjs",
           "bytes": 984,
           "sha256": "1e0c3a03093972677a67ed401b68e883a103b7339baf90cb123c176f86a68b80"
         },
         {
+          "path": "packages/kit/LICENSE",
+          "bytes": 178,
+          "sha256": "bd137baa8b1e84bb8c0329da96ba2e97d15068091566efecd72a7b9621af3223"
+        },
+        {
           "path": "packages/kit/package.json",
-          "bytes": 3303,
-          "sha256": "14a1ff34c76f970b4a279729840f96c00901a2bec2860693802efa481421fde8"
+          "bytes": 3288,
+          "sha256": "cb858801d07fdc9b21b1f764c6d0e5eb7f24916f400cfd3bdf288e76fa53359b"
+        },
+        {
+          "path": "packages/kit/README.md",
+          "bytes": 2035,
+          "sha256": "ef3f7598e1df4c038cddf8be2bc42e3a284c56854442180e83974506ff7603fe"
+        },
+        {
+          "path": "packages/kit/SUPPORT.md",
+          "bytes": 3132,
+          "sha256": "fc29b0afd41ba6d181b7d90c9ff3770488dd52e8a4bf3af83e5dc0aa11fba6d6"
         }
       ]
     },
     {
       "id": "flutter",
       "name": "tbc-kit-flutter.tgz",
-      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/tbc-kit-flutter.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit-flutter.tgz",
       "path": "artifacts/tbc-kit-flutter.tgz",
       "sha256": "f782b21ff2aa5d069669ae080615bde083e45006e5536a98b11233025d322b7f",
       "bytes": 15595700,
@@ -5854,7 +5820,7 @@
     {
       "id": "sdk-ios",
       "name": "ios-sdk.tgz",
-      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/ios-sdk.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/ios-sdk.tgz",
       "path": "artifacts/native/ios-sdk.tgz",
       "sha256": "514b0922ffefdcfc0a8be13969fbfa76361ad0a1d977a82bdc2b3a2d5a4fa281",
       "bytes": 43686738
@@ -5862,7 +5828,7 @@
     {
       "id": "sdk-android",
       "name": "android-sdk.tgz",
-      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/android-sdk.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/android-sdk.tgz",
       "path": "artifacts/native/android-sdk.tgz",
       "sha256": "4146851beb779b63c080057ec31c0a96ed2ca6a6a24c680e3eb4151a75b5f7b7",
       "bytes": 36108577
@@ -5870,15 +5836,15 @@
     {
       "id": "accepted-source",
       "name": "tbc-kit-source.tgz",
-      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/tbc-kit-source.tgz",
-      "path": "release/candidates/legacy-ft-exact-rc19/delivery/source.tgz",
-      "bytes": 3107337,
-      "sha256": "3d77c2936b9a5d607662ae6f2c6fb877d055c4c9305b7888a62246c759ae86e6"
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit-source.tgz",
+      "path": "release/candidates/lean-distribution-rc20/source.tgz",
+      "bytes": 10912213,
+      "sha256": "b8db3a8cdacedb1f87efb9b494ddbcddceccc8f1a92fc83c0ed3d6b46ef310f9"
     },
     {
       "id": "flutter-fixtures",
       "name": "flutter-test-fixtures.tgz",
-      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/flutter-test-fixtures.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/flutter-test-fixtures.tgz",
       "path": ".downloads/flutter-test-fixtures.tgz",
       "sha256": "8c0e0122dcda9fdd05458b6408c7e8c60a3df64526849f8d608243a9a218f51f",
       "bytes": 7456915,
@@ -6266,26 +6232,39 @@
           "sha256": "e0473c17e3e9f5ead45c5122590aff9df1093609d0d74cf80bbe3353efd2c32a"
         }
       ]
+    },
+    {
+      "id": "resources-macos-arm64",
+      "name": "tbc-kit-native-resources-macos-arm64.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit-native-resources-macos-arm64.tgz",
+      "path": "artifacts/native/tbc-kit-native-resources-macos-arm64.tgz",
+      "bytes": 5727012,
+      "sha256": "0309f3ec1efc5f87387817bbd4e7be431696016271266fc80a7a3192bd2e097c"
+    },
+    {
+      "id": "resources-android",
+      "name": "tbc-kit-native-resources-android.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit-native-resources-android.tgz",
+      "path": "artifacts/native/tbc-kit-native-resources-android.tgz",
+      "bytes": 10454590,
+      "sha256": "bb4db61d60481b4f8efbcf13e92d90474d29e00807e1bc272cb41662de0a0c9f"
+    },
+    {
+      "id": "resources-ios",
+      "name": "tbc-kit-native-resources-ios.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit-native-resources-ios.tgz",
+      "path": "artifacts/native/tbc-kit-native-resources-ios.tgz",
+      "bytes": 21666807,
+      "sha256": "3204de92d28a44772238a5ce9eaf6ef24b83e26335fd63ec3fc26e6e10876711"
+    },
+    {
+      "id": "native-sdk-lock",
+      "name": "native-sdk-lock.json",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/native-sdk-lock.json",
+      "path": "release/native-sdk-lock.json",
+      "bytes": 7917,
+      "sha256": "1c1812792106b01591e51bd0d77c0b2e9f9d2e2f0c1dff7e9c772b735fc92558"
     }
   ],
-  "aliases": [
-    {
-      "path": "release/candidates/legacy-ft-exact-rc19/delivery/android-sdk-0.1.0-rc.19.native.2.tgz",
-      "bytes": 36108577,
-      "sha256": "4146851beb779b63c080057ec31c0a96ed2ca6a6a24c680e3eb4151a75b5f7b7",
-      "asset": "sdk-android"
-    },
-    {
-      "path": "release/candidates/legacy-ft-exact-rc19/delivery/ios-sdk-0.1.0-rc.19.native.2.tgz",
-      "bytes": 43686738,
-      "sha256": "514b0922ffefdcfc0a8be13969fbfa76361ad0a1d977a82bdc2b3a2d5a4fa281",
-      "asset": "sdk-ios"
-    },
-    {
-      "path": "release/candidates/legacy-ft-exact-rc19/delivery/tbc-kit-0.1.0-rc.19.tgz",
-      "bytes": 44021942,
-      "sha256": "ed8f1ef7d66154067c7676308dde28cd77d5d6ceacb16daebb3d2951a20eee3a",
-      "asset": "kit"
-    }
-  ]
+  "aliases": []
 }

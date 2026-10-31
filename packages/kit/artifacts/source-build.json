@@ -1,8 +1,14 @@
 {
   "schemaVersion": 1,
-  "version": "0.1.0-rc.19",
-  "sourceDigest": "349fb97cdc18269e906866cf1c555fae3735893df0a6a64dfeedc22245e399b0",
-  "outputDigest": "c4b9f457c1b4c5fe83b0c3f9c07165eeb3fefa2f85d1d56b904d378f0d00e117",
-  "createdAt": "2026-10-29T22:08:37.831Z",
-  "status": "built-not-device-or-chain-accepted"
+  "version": "0.1.0-rc.20",
+  "status": "distribution-only-repack-not-a-new-runtime-build",
+  "baseline": {
+    "schemaVersion": 1,
+    "version": "0.1.0-rc.19",
+    "sourceDigest": "349fb97cdc18269e906866cf1c555fae3735893df0a6a64dfeedc22245e399b0",
+    "outputDigest": "c4b9f457c1b4c5fe83b0c3f9c07165eeb3fefa2f85d1d56b904d378f0d00e117",
+    "createdAt": "2026-10-29T22:08:37.831Z",
+    "status": "built-not-device-or-chain-accepted"
+  },
+  "baselineArchiveSha256": "ed8f1ef7d66154067c7676308dde28cd77d5d6ceacb16daebb3d2951a20eee3a"
 }

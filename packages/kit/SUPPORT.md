@@ -58,5 +58,4 @@ package entry points. React Native uses the paired native SDK. Flutter has its
 own Dart plugin and platform guide. A wallet supplies its account, Vault,
 approval UI and trusted transport; the SDK does not manage wallet secrets.
 
-See the [rc.20 distribution candidate](../../docs/candidates/rc20-distribution.md)
-for the proposed platform-specific downloads; the current rc.19 artifacts are unchanged.
+See [platform resources](docs/platform-resources.md) for platform-specific downloads.

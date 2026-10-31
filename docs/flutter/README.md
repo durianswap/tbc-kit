@@ -30,7 +30,7 @@ tbc-kit/
 └── SHA256SUMS
 ```
 
-安装包为 [tbc-kit-flutter.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/tbc-kit-flutter.tgz)，Dart 依赖名为 `tbc_kit_flutter_dart`。可直接下载后对照[版本清单](../../release/current.json)核对 SHA256，或在仓库根目录执行 `npm run assets:fetch -- flutter` 自动校验并取回完整包。接入反馈时提供该校验值，便于确认使用的是同一份配套包。不要直接使用尚未取回原生库的源码目录作为完整 Flutter 插件。
+安装包为 [tbc-kit-flutter.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit-flutter.tgz)，Dart 依赖名为 `tbc_kit_flutter_dart`。可直接下载后对照[版本清单](../../release/current.json)核对 SHA256，或在仓库根目录执行 `npm run assets:fetch -- flutter` 自动校验并取回完整包。接入反馈时提供该校验值，便于确认使用的是同一份配套包。不要直接使用尚未取回原生库的源码目录作为完整 Flutter 插件。
 
 包内已包含配对的 Engine、Signer 原生资源、Dart 编排、Swift/Kotlin 桥接和页面脚本。无需另外安装 JS Kit 或手动下载 Engine；请整体使用，不要替换其中某个库或页面脚本。
 

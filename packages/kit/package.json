@@ -1,6 +1,6 @@
 {
   "name": "@tbc/kit",
-  "version": "0.1.0-rc.19",
+  "version": "0.1.0-rc.20",
   "description": "TBC SDK for applications, wallets and backends",
   "private": true,
   "type": "module",
@@ -13,8 +13,7 @@
     "artifacts/provenance.json",
     "artifacts/source-build.json",
     "artifacts/wasm",
-    "artifacts/keyless-native",
-    "artifacts/native",
+    "artifacts/platform-resources.json",
     "dist",
     "docs",
     "examples",
@@ -104,11 +103,11 @@
     "bs58": "4.0.1",
     "buffer": "6.0.3",
     "elliptic": "6.6.1",
-    "hash.js": "1.1.7",
-    "tbc-contract": "1.6.6",
-    "tbc-tx-parser": "0.1.10"
+    "hash.js": "1.1.7"
   },
   "devDependencies": {
+    "tbc-contract": "1.6.6",
+    "tbc-tx-parser": "0.1.10",
     "tbc-lib-js": "1.0.31"
   },
   "repository": {

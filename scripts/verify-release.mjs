@@ -5,6 +5,7 @@ import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {tmpdir} from 'node:os';
+import {platformCatalog} from '../source/packages/kit/scripts/platform-resources.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const sha=b=>createHash('sha256').update(b).digest('hex');
@@ -45,6 +46,16 @@ assert.equal(nativeLock.sdkVersion,manifest.pairing.sdkVersion);
 assert.equal(nativeLock.artifactSetId,manifest.pairing.sdkArtifactSetId);
 assert.equal(nativeLock.protocolFingerprint,manifest.pairing.protocolFingerprint);
 assert.deepEqual(json('packages/kit/examples/react-native-engine/module/native-sdk-lock.json'),nativeLock,'RN template and published SDK lock differ');
+const catalog=await platformCatalog(safe('packages/kit'));
+assert(catalog,'Split distribution requires a verified platform catalog');
+for(const [path,h] of Object.entries(nativeLock.nativeHashes)){
+ const platform=path.startsWith('ios/')?'ios':'android';
+ assert.equal(catalog.platforms[platform].files['artifacts/native/'+path],h,'Paired SDK native input differs');
+}
+for(const [platform,group] of Object.entries(catalog.platforms)){
+ const asset=downloads.assets.find(a=>a.id==='resources-'+platform);assert(asset);
+ assert.equal(asset.name,group.archive);assert.equal(asset.sha256,group.archiveSha256);assert.equal(asset.bytes,group.archiveBytes);
+}
 assert.match(readFileSync(safe('packages/flutter/pubspec.yaml'),'utf8'),/^publish_to: none$/m);
 const temp=mkdtempSync(join(tmpdir(),'tbc-kit-integrity-'));
 let expandedFiles=0;
@@ -65,7 +76,7 @@ try{
   execFileSync('tar',['-xzf',safe(a.path),'-C',temp]);
   const identity=JSON.parse(readFileSync(join(temp,'identity.json'),'utf8'));
   assert.deepEqual(identity,json('release/native-sdk-identity.json'),'Published SDK identity differs: '+id);
-  assert.equal(identity.kitVersion,manifest.pairing.kitVersion);
+  assert.equal(identity.kitVersion,manifest.pairing.nativeBuildInputKitVersion,'Native build identity must remain frozen');
   assert.equal(identity.sdkVersion,manifest.pairing.sdkVersion);
   assert.equal(identity.protocolFingerprint,nativeLock.protocolFingerprint);
   assert.equal(identity.artifactSetId,nativeLock.artifactSetId);
@@ -84,7 +95,11 @@ const checkpoint=json(manifest.source.snapshotManifest);
 assert.equal(checkpoint.version,manifest.pairing.kitVersion);
 assert.equal(checkpoint.sourceDigest,manifest.source.sourceDigest);
 assert.equal(hash(safe(manifest.source.snapshot)),checkpoint.archiveSha256);
-for(const [p,h]of checkpoint.files)assert.equal(hash(safe('source/'+p)),h,'Source differs from accepted snapshot: '+p);
+assert.equal(manifest.source.snapshotFormat,'repository-relative-distribution-snapshot');
+assert.equal(sha(JSON.stringify(checkpoint.files)),checkpoint.sourceDigest,'Frozen source manifest digest differs');
+// The frozen rc.20 repack snapshot includes release-time docs; promotion updates
+// only the repository's public release metadata. Runtime/build source must match.
+for(const [p,h]of Object.entries(checkpoint.files))if(p.startsWith('source/'))assert.equal(hash(safe(p)),h,'Source differs from accepted snapshot: '+p);
 
 const docs=['README.md','CONTRIBUTING.md','SUPPORT.md','SECURITY.md',...files(safe('docs')).filter(p=>p.endsWith('.md')).map(p=>'docs/'+p),...files(safe('packages/kit')).filter(p=>p.endsWith('.md')).map(p=>'packages/kit/'+p)];
 let links=0;

@@ -4,13 +4,13 @@
 
 | 组件 | 版本 | 下载 |
 | --- | --- | --- |
-| JavaScript / TypeScript Kit | `0.1.0-rc.19` | [tbc-kit.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/tbc-kit.tgz) |
-| iOS Native SDK | `0.1.0-rc.19.native.2` | [ios-sdk.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/ios-sdk.tgz) |
-| Android Native SDK | `0.1.0-rc.19.native.2` | [android-sdk.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/android-sdk.tgz) |
+| JavaScript / TypeScript Kit | `0.1.0-rc.20` | [tbc-kit.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit.tgz) |
+| iOS Native SDK | `0.1.0-rc.19.native.2` | [ios-sdk.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/ios-sdk.tgz) |
+| Android Native SDK | `0.1.0-rc.19.native.2` | [android-sdk.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/android-sdk.tgz) |
 | Native 版本锁 | 与上面三项配套 | [native-sdk-lock.json](../release/native-sdk-lock.json) |
 | Flutter SDK | 独立配套版本，未随本次 JS/Native 升级 | [Flutter 接入](flutter/README.md) |
 
-精确版本和 SHA256 以 [版本清单](../release/current.json) 与 [SHA256SUMS](../SHA256SUMS) 为准。下载链接固定到对应 Release，不使用会随升级漂移的 `latest` 地址。文件名保持稳定；项目应提交自己的依赖锁，升级时核对包内版本和哈希，不仅比较文件名。下载目录可使用 Release 附件 [DOWNLOADS.SHA256](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/DOWNLOADS.SHA256) 校验文件名。
+精确版本和 SHA256 以 [版本清单](../release/current.json) 与 [SHA256SUMS](../SHA256SUMS) 为准。下载链接固定到对应 Release，不使用会随升级漂移的 `latest` 地址。文件名保持稳定；项目应提交自己的依赖锁，升级时核对包内版本和哈希，不仅比较文件名。下载目录可使用 Release 附件 [DOWNLOADS.SHA256](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/DOWNLOADS.SHA256) 校验文件名。
 
 ## Web、浏览器扩展与 Node.js
 
@@ -33,7 +33,7 @@ npm install /path/to/tbc-kit/artifacts/tbc-kit.tgz
 
 React Native 使用上面的 JS 包和配套平台 SDK；Swift/Kotlin 使用相应平台 SDK 与自己的 Host、账户和 Signer 适配。解压、安装脚本和最低系统要求见 [原生接入](native.md)。
 
-必须整体更新 JS、Native 与版本锁。当前协议指纹为：
+按清单整体核对 JS、Native 与版本锁，但组件版本号不必相同。本次 JS rc.20 配对字节不变的 Native rc.19.native.2，无需为升级 JS 重新构建原生库。当前协议指纹为：
 
 ```text
 8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9

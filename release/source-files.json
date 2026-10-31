@@ -1602,386 +1602,6 @@
       "bytes": 1413
     },
     {
-      "path": "source/native/flutter-dart-kit/test/fixtures/amm-alias-staged-signing.json",
-      "sha256": "12e26da3f528c1b5e7b59173ae56200a5fdca2a051c0d1878abda975b1daafed",
-      "bytes": 3228388
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/amm-business-signing.json",
-      "sha256": "55a19e1bbbaed7aaabe5c2fc59ccf1c38bbb2b257efefc6af22ca35a316b0e43",
-      "bytes": 2534489
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/amm-controller-extended.json",
-      "sha256": "d570cd0a4769c5172f4dd145d928a4587cc531feda67f5e08dc68971b2cb714a",
-      "bytes": 3929855
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/amm-controller-signing.json",
-      "sha256": "e2ccb1a4410ef3f7d4b72f00155b79ce5e016d36f3d86c55bebe4d89592b33bc",
-      "bytes": 2572427
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/amm-creation-signing.json",
-      "sha256": "a5688580c64a594f1641c7036d5d47469497c51bb324c60d11d67db78243f9d8",
-      "bytes": 352854
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/amm-dependent-signing.json",
-      "sha256": "f25f98bf2466581384b87a3c08fe8d0c8f7e5cfb26f1054675d517b20687d9d8",
-      "bytes": 3348075
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/amm-fee-review.json",
-      "sha256": "8e20edf5b7a71390d6f3fd7e88b9f1f0cd16bd8faa2d79e07873197eb35d15af",
-      "bytes": 1152
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/amm-funding.json",
-      "sha256": "fe516cb5c66692358f95f8b7b8e738f40e21de5d37b78737b984ac9f37eff68c",
-      "bytes": 1587995
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/balance-frozen-kit.json",
-      "sha256": "cd1a6faf8fd02871f4a0ab299ee448b4d280fa20b253c776b41de5961292d5fc",
-      "bytes": 12242
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/broadcast-client.json",
-      "sha256": "77a837d28f587f3d6f476cc1a4b48c2e1704424913de56b589d63eab1fff6f07",
-      "bytes": 2572685
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/broadcast-port.json",
-      "sha256": "2486ddf4794c64c250749ca0030c14b6fce896ad1646aa8ca0a95a8137ddbe8d",
-      "bytes": 2310580
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/creation-signing.json",
-      "sha256": "25c68181aa43e1185ef1ddf0d0da22e6c72e148ea66478870f7b199e00aae09c",
-      "bytes": 184832
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/crypto-device.json",
-      "sha256": "a79a3e831772e539710c4693e6fba77059692ef21b34f5f8e6d9987d4f524ea4",
-      "bytes": 151986
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/crypto-signing.json",
-      "sha256": "9373286892cfd6c82a93d7f5c8637f12015172b261e3463613058cb63a818bc3",
-      "bytes": 70408
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/crypto-workflow.json",
-      "sha256": "be69533af3b37464b048a9d811998f2d961869427d39e004db8216ddb8b1bc1e",
-      "bytes": 93841
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/formal-approval/fixtures.json",
-      "sha256": "d2b4c88ed37e4dbab9c2f204a6897aff7c2a1219028f207e5208667f5d753c40",
-      "bytes": 15636
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/formal-approval/provenance.json",
-      "sha256": "cf2c3b4d0db9fb6ed82fa60a78aba051441ad54845036111be420a0142f47d6c",
-      "bytes": 519
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/fungible-signing.json",
-      "sha256": "4570fc08642b0d78a6dc02f853955ce2bf2ed2c39a99f387faf26825c65a1d15",
-      "bytes": 729665
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/historical-nft-source.json",
-      "sha256": "d8421c4f19844a24d7f9e4a19efde88fe70978cca164485db912feebaa48f84d",
-      "bytes": 10652
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/htlc-native-signing.json",
-      "sha256": "56f728fd51c0fcb38ff16ef7f593abbb06941146337a8dcfff295a0b4b4299f0",
-      "bytes": 253906
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/htlc-token-signing.json",
-      "sha256": "0c6cc95628d0421cdaf72715925e28198bc4a2bf06ffacbb250b1cfcbc98ca82",
-      "bytes": 4993629
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/legacy-business-mapping.json",
-      "sha256": "fd3762f9599bffa1f28dc2c83a089960515edf378846d8f13b97ee83295e1c0f",
-      "bytes": 20650
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/legacy-mapping.json",
-      "sha256": "9a60188798c1da0daeb4c8b6b65a46074e4119aab4d4b76672e1918bc9973211",
-      "bytes": 316770
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/legacy-message-signing.json",
-      "sha256": "839cf9f9a8bac5967d1a0f9a3fe15cce1c68fc1e63eb6b02192a256dbef5c133",
-      "bytes": 63405
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/legacy-pool-mapping.json",
-      "sha256": "bc72c4763f1aa9a45899b07501a7f5283ca09baebfc719743e0e50c5db8fcf83",
-      "bytes": 70614
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/lop-signing.json",
-      "sha256": "a704ba489cac35299727bd4302857afa0fef84bad6a89504d210b2c20ad617b1",
-      "bytes": 23800844
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/lp-signing.json",
-      "sha256": "501e22e32790c289ca6c27a33d73231a5fa7c767b9787ce640e38ff6c66591b8",
-      "bytes": 1756320
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/lp-staged-signing.json",
-      "sha256": "c51c8031e2b86f0fe1da204b0ea3fa21d0ce59cd9067f951fe8fea39007adb9b",
-      "bytes": 6301314
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/multi-round-frozen-kit.json",
-      "sha256": "c8c1f8379113beb467499fa22ed2f38f9b7c97d6f3a812b361e2328bff30919e",
-      "bytes": 177059
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/native-permissions.json",
-      "sha256": "a01578b01488393a915635edaa73d8d080d577130d3279054038d6f9b1d49677",
-      "bytes": 896
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/native-signing.json",
-      "sha256": "20ef532634b272d78f8ea3e18fa6cdc56708fbc7cfac66ab02185ed8f8ac3019",
-      "bytes": 225980
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/native-transfers.json",
-      "sha256": "3f886787fd415bae7abbdf2cc853650178f89f04202417a0bd30a865639b1e91",
-      "bytes": 87016
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/network-switch.json",
-      "sha256": "fb6751a6e377bc2ab21000c7ea36d260d70691d95af4ebcb109e2d9da5dbca0b",
-      "bytes": 1934
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/nft-mint-signing.json",
-      "sha256": "79135bfc3698c652de65d39a608c1afc37ab227e2e214cd79a95ceeddb4d5d74",
-      "bytes": 272941
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/nft-signing.json",
-      "sha256": "6d85d73d532c52d3c5d95527dfa27589d06056d824fb847658de96b85a4d577e",
-      "bytes": 452383
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/pool2-maintenance-positive-floor.json",
-      "sha256": "7cbed45ff3c4f6366b50cde3de756220d65488c9eb1bb239805ac18ae4767ae7",
-      "bytes": 1052361
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/pool2-maintenance.json",
-      "sha256": "9d9ca48bd2af931d359e6de7114df3691bf2128885fc0f57739e385f5d699d9f",
-      "bytes": 1049655
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/pool2-positive-floor.json",
-      "sha256": "de9e50f17053c3479b13604072577b9f5952206d00e1f0e212bdff7d850a9145",
-      "bytes": 1393576
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/pool2-signing.json",
-      "sha256": "c49e88ca75e657fde7fe5d1b9bb41745ad2f2c7e6b1ca9f8fda3b1969e39bba1",
-      "bytes": 1228857
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/prepared-signing.json",
-      "sha256": "1f8042fef72985ad3323ec03b5150545272d177a0e97e044a06405f80704395c",
-      "bytes": 2885959
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/rc16-ft-signing.json",
-      "sha256": "a2418ac7d9ee72ab4473f9f28fb2284019ca5909a1d2caa056407e5aa3e7d889",
-      "bytes": 1247076
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/rc16-material.json",
-      "sha256": "44f6fdf3db83e0a4bafd6a8773b0245b6e282158c1492411e274777e01f8355e",
-      "bytes": 53411
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/rc16-nft-batch.json",
-      "sha256": "cdde6515cdf949fd7e2b2947ced0ee7f42495bf981c84f19731303582ecea6b6",
-      "bytes": 271897
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/rc16-nft-large.json",
-      "sha256": "008dabc9584cc44a0a575834e00e0122a08f3903056b913d8943567a710a4354",
-      "bytes": 13610297
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-associated-contract-dependency-lock.json",
-      "sha256": "ec1e08a4717066dba14ddb6d3dda759bc4661a80dd26bf4eccbfa0c8e2d2e295",
-      "bytes": 11170
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-associated-contract.json",
-      "sha256": "704c84c336f1cd92f3a10057601ab3bc057b38f4fead8af527974388924e1b64",
-      "bytes": 8929125
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-associated-holder.json",
-      "sha256": "5abad89b7cb4cbf0b3217d6d264c1c0ce722fcc419c3535b3405a5a44ad06e90",
-      "bytes": 583090
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-current-dependency-lock.json",
-      "sha256": "ec1e08a4717066dba14ddb6d3dda759bc4661a80dd26bf4eccbfa0c8e2d2e295",
-      "bytes": 11170
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-current.json",
-      "sha256": "6994ed64a7a8320aa5dc5b07918ea4dd70944c50926ad0524ddcf04f966f0062",
-      "bytes": 1571527
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-historical-fungible.json",
-      "sha256": "a60b3ed8d008b5fcbab07bd9a533defae43a85f7861864f0f66b250ee610e889",
-      "bytes": 521951
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-htlc-token-dependency-lock.json",
-      "sha256": "ec1e08a4717066dba14ddb6d3dda759bc4661a80dd26bf4eccbfa0c8e2d2e295",
-      "bytes": 11170
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-htlc-token.json",
-      "sha256": "09f4ce949d91556d44c42cb46f11f811c60f490f783937351924a1ba43f17f81",
-      "bytes": 1439206
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-lop-dependency-lock.json",
-      "sha256": "ec1e08a4717066dba14ddb6d3dda759bc4661a80dd26bf4eccbfa0c8e2d2e295",
-      "bytes": 11170
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-lop.json",
-      "sha256": "366be5a04ae577a850e50ebe915f1ae42e9e05364719849c16bf3b0b2f4eed11",
-      "bytes": 2522332
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-material-b.json",
-      "sha256": "590fd685b4bf0f3e59e91b46110a7b47e715fece64acfc6f07e86f1e59a8379b",
-      "bytes": 355645
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-material.json",
-      "sha256": "3ce2a8a1f39819b85e29f23482b61d8ed8e4b8aa76994d1d4d29f8d1c7fae79a",
-      "bytes": 193574
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-native-lock-dependency-lock.json",
-      "sha256": "ec1e08a4717066dba14ddb6d3dda759bc4661a80dd26bf4eccbfa0c8e2d2e295",
-      "bytes": 11170
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-native-lock.json",
-      "sha256": "31fa07ede7eb1d7ebf530cfa86142446de5e2739fd74f72f494d04b89f9d5bec",
-      "bytes": 69548
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-nft.json",
-      "sha256": "2bd8c7e35c515de8d7282e2ad804cd99545f96697ec848b4b8acf723346e560d",
-      "bytes": 182659
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-preview-dependency-lock.json",
-      "sha256": "ec1e08a4717066dba14ddb6d3dda759bc4661a80dd26bf4eccbfa0c8e2d2e295",
-      "bytes": 11170
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-preview.json",
-      "sha256": "f47a8f8fb7e97cfcc6f8e9c14f74c58f30fb7d04a4a0bf8886a257f0e5870404",
-      "bytes": 203744
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-signing.json",
-      "sha256": "637937ec493b627d2a978d0922d2ccddfd497b0be75cb12011d3adb3faa07105",
-      "bytes": 1104275
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/send-device.json",
-      "sha256": "465b7791655d43b175cdd9c47da7f046130c415b90e201ac9e9d88d3fda308aa",
-      "bytes": 2701321
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/send-lifecycle.json",
-      "sha256": "e892e4391b5202a1a8442a320fda4096f50559585f8519c6a0b037a41dd9be82",
-      "bytes": 8859649
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/signing/material.json",
-      "sha256": "f85148ac0ba1e7f6263d008ad3a23fee3fe1b4a1045ba9d01ab11ca10258da51",
-      "bytes": 36306
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/signing/replay.json",
-      "sha256": "a6fb7225d2311544d7bd7af67e80c507ab5e38780516f93fc0f990d2a153c9a3",
-      "bytes": 106278
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/stablecoin-signing.json",
-      "sha256": "8888f2b9b51043853f5475972228942b7b08d40f791ac1563e3c580094fcd9a9",
-      "bytes": 2030109
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/staged-signing.json",
-      "sha256": "ac6d33e80a5c3c3b471f17d782e7e21d51e6bdb5177282ac2ccb1ba02330f9a9",
-      "bytes": 766502
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/timelock-signing.json",
-      "sha256": "d1b1f480bf6e7000c6ac70ecaae7ed298ecf14826e9266b4740d43666af5e76e",
-      "bytes": 165981
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/typed-device-signing.json",
-      "sha256": "ccf0e5490d7fbfc1292fd5d35ade17057cf446926a991114888a0e812d1c3194",
-      "bytes": 87750
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/typed-signing.json",
-      "sha256": "5e63a773af68fa6bda3b46532ffc28d2b4adf3a7e19063d06a6264f4e528d478",
-      "bytes": 161093
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/unified-pool-signing.json",
-      "sha256": "d38c15bc6e9a6d1eee940ca1be75fcaa38406b506be16fe2fef87e795ab930c8",
-      "bytes": 9281769
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/workflow-device.json",
-      "sha256": "7d9df81740bc1d445438f08103f477d490c1640c3ce69c2d197cbe5c2eee0f6f",
-      "bytes": 392855
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/workflow-json.json",
-      "sha256": "a0469a88650d73c04a37cd497973686720b93bac62f24a64714ea69b221e8ee9",
-      "bytes": 11115
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/workflow-planning.json",
-      "sha256": "f77f3681f8ef8405b82494609e91e4df7e9a93d9b5d8b05039abe7db21b8f0d4",
-      "bytes": 620389
-    },
-    {
-      "path": "source/native/flutter-dart-kit/test/fixtures/workflow-signing.json",
-      "sha256": "e0473c17e3e9f5ead45c5122590aff9df1093609d0d74cf80bbe3353efd2c32a",
-      "bytes": 332627
-    },
-    {
       "path": "source/native/flutter-dart-kit/test/formal_approval_test.dart",
       "sha256": "79713ce58d071ee0f7b96623844951afa811d97ec41136ede5bd7895255c2108",
       "bytes": 9163
@@ -4838,8 +4458,8 @@
     },
     {
       "path": "source/package-lock.json",
-      "sha256": "3122db437d52fbca97bbcac295cf2ccb3995fe4500caf7c54d7981ab14f8370e",
-      "bytes": 48540
+      "sha256": "8a5746a2ee73eec11d909ee32019f71cf3f9737aebbcb23389d556ab631adfa3",
+      "bytes": 49565
     },
     {
       "path": "source/package.json",
@@ -5583,13 +5203,13 @@
     },
     {
       "path": "source/packages/kit/README.md",
-      "sha256": "8c9988f10b319e0979b58c73199f339e8dd1de371fd131e7a18a7efb582ac3b0",
-      "bytes": 1903
+      "sha256": "ef3f7598e1df4c038cddf8be2bc42e3a284c56854442180e83974506ff7603fe",
+      "bytes": 2035
     },
     {
       "path": "source/packages/kit/SUPPORT.md",
-      "sha256": "b36c1ccec6ae35e440b854d2221ad670630af3bea730e25b5a35b5b920bb0b89",
-      "bytes": 2000
+      "sha256": "fc29b0afd41ba6d181b7d90c9ff3770488dd52e8a4bf3af83e5dc0aa11fba6d6",
+      "bytes": 3132
     },
     {
       "path": "source/packages/kit/artifacts/.source-build-start.json",
@@ -5647,6 +5267,11 @@
       "bytes": 2740
     },
     {
+      "path": "source/packages/kit/docs/compatibility.md",
+      "sha256": "6f9ed92f7af888eb93b25eb0a232fa7942a23d336a95e849759b3d953531c8c8",
+      "bytes": 1690
+    },
+    {
       "path": "source/packages/kit/docs/multisig.md",
       "sha256": "e892ac7647f1e026f2ebf9abfd822f7822d8ad7186a4cf4830f1a1ad4258c2e4",
       "bytes": 9877
@@ -5655,6 +5280,11 @@
       "path": "source/packages/kit/docs/nft.md",
       "sha256": "2e4a95559c070b36e9db3e8794ee045f456f04f1b78d8c2ec082a4612f1af0e5",
       "bytes": 9145
+    },
+    {
+      "path": "source/packages/kit/docs/platform-resources.md",
+      "sha256": "2379dcf69415b043d9de651626701f23af63f28ec92be8e933b951bc0f87d950",
+      "bytes": 2701
     },
     {
       "path": "source/packages/kit/docs/reference/amm-quotes.md",
@@ -5953,8 +5583,8 @@
     },
     {
       "path": "source/packages/kit/package.json",
-      "sha256": "14a1ff34c76f970b4a279729840f96c00901a2bec2860693802efa481421fde8",
-      "bytes": 3303
+      "sha256": "cb858801d07fdc9b21b1f764c6d0e5eb7f24916f400cfd3bdf288e76fa53359b",
+      "bytes": 3288
     },
     {
       "path": "source/packages/kit/scripts/benchmark-network-transport.mjs",
@@ -5968,8 +5598,8 @@
     },
     {
       "path": "source/packages/kit/scripts/build.mjs",
-      "sha256": "dc8423b4e2beafa2e9898558849947d4940435515857a05ffadf44c364de734f",
-      "bytes": 21991
+      "sha256": "ab34b893309bffd27e614db3a58bfa8e387184561351f975017b11e08e8747e5",
+      "bytes": 22229
     },
     {
       "path": "source/packages/kit/scripts/check-approval-candidate.mjs",
@@ -6075,6 +5705,11 @@
       "path": "source/packages/kit/scripts/contract173-parser-patch.mjs",
       "sha256": "4e818783e233f4debb447bd54f27aacbf0b740d097a6f5cf74dc10c6719f561f",
       "bytes": 1839
+    },
+    {
+      "path": "source/packages/kit/scripts/distribution-policy.mjs",
+      "sha256": "19f66e75ba72ded6d530b37573ef6248582820d3e2d532c6030e4f34d0f73c06",
+      "bytes": 3067
     },
     {
       "path": "source/packages/kit/scripts/finalize-approval-output-candidate.mjs",
@@ -6945,6 +6580,11 @@
       "path": "source/packages/kit/test/delete-safe-final-audit.test.mjs",
       "sha256": "c88b7d9cb104a069dcfc30eff851d507bcff867705c68d2a1a6e904ef2068f4d",
       "bytes": 2042
+    },
+    {
+      "path": "source/packages/kit/test/distribution-policy.test.mjs",
+      "sha256": "b7eac59e624f97ba200ad1f336dc823491b88ae2ddd5e95ac0b257b7f3523fc9",
+      "bytes": 3276
     },
     {
       "path": "source/packages/kit/test/engine-network-profile.test.mjs",
@@ -10778,7 +10418,7 @@
     },
     {
       "path": "source/release/kit-source-state.json",
-      "sha256": "0bfb058609b3aadb40c5cc0d095a5331c6cd1aac11b8fce35ba9ad6da44db07f",
+      "sha256": "f219dea0d06853259f0543c5a59840c93b49b6f477a1fa550fc384ed34f16700",
       "bytes": 64
     },
     {
@@ -10903,8 +10543,8 @@
     },
     {
       "path": "source/scripts/check-kit-source-state.mjs",
-      "sha256": "24bb574c998fa05db4740eaaa1036d2c48a066bc8eefa8a17c927954f30158b2",
-      "bytes": 6320
+      "sha256": "0a9810bb758c08b3b7ce6741095a8fc22364a6ca9e34b8e30e5902946dc19ef2",
+      "bytes": 6449
     },
     {
       "path": "source/scripts/check-legacy-contract.mjs",
@@ -11308,8 +10948,8 @@
     },
     {
       "path": "source/test/kit-source-state.test.mjs",
-      "sha256": "e05d4cef4b2c0d5d9e37e8e2719fa8d73d828397e5b706ede60459e3f87564c4",
-      "bytes": 3571
+      "sha256": "407909c28fe2cca7227a8a332851fda7a6615c786946fc744905bb715702d16c",
+      "bytes": 3603
     },
     {
       "path": "source/test/legacy-contract.test.mjs",

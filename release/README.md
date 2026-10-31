@@ -1,8 +1,9 @@
 # 版本、下载与验收记录
 
 - [当前版本配对](current.json)、[下载与恢复清单](downloads.json)、[附件校验值](DOWNLOADS.SHA256)。
-- [rc.19 下载](https://github.com/durianswap/tbc-kit/releases/tag/v0.1.0-rc.19)。当前 JS、iOS、Android 与独立 Flutter 安装包的内容未因存放位置调整而变化。
-- `candidates/legacy-ft-exact-rc19/` 只保留当前最新版的原始报告、验证结果、计划样例、版本锁和哈希，不将受控测试改写为真实链验收。旧候选只在开发仓库归档。
+- [rc.20 下载](https://github.com/durianswap/tbc-kit/releases/tag/v0.1.0-rc.20)：JS 按需分发，配套 Native 与独立 Flutter 包字节不变。
+- [本轮报告](candidates/lean-distribution-rc20/REPORT.md) 保留候选形成时的原始结论；[发布记录](rc20-publication.md) 记录后续提升为默认下载的结果。
+- `candidates/lean-distribution-rc20/` 是当前候选；`evidence/runtime-baseline-rc19/` 仅保留其未改动执行实现的原始证据，不提供旧版本候选下载。
 
 ## 取回对应材料
 
@@ -12,12 +13,14 @@
 npm run assets:fetch -- kit          # JS 安装包及完整展开内容
 npm run assets:fetch -- flutter      # Flutter 安装包及配套原生库
 npm run assets:fetch -- native       # 独立 iOS / Android SDK
+npm run assets:fetch -- ios          # JS + iOS SDK + 版本锁
+npm run assets:fetch -- android      # JS + Android SDK + 版本锁
 npm run assets:fetch -- fixtures     # 大型 Flutter 测试数据
 npm run assets:fetch -- verification # 当前分发的完整检查材料
 npm run assets:fetch -- acceptance   # 当前验收报告引用的原始归档文件名
 ```
 
-当前源码位于 `source/`。`tbc-kit-source.tgz` 是与验收对应的冻结源码快照；当前安装包和大型测试数据均保留原始逐文件哈希。原始验收结论不因存放位置改变而改写。
+当前源码位于 `source/`。`tbc-kit-source.tgz` 是 rc.20 形成时的冻结源码快照；发布主页与下载清单以后续 main 为准。交易与构建源码必须与冻结快照一致；当前安装包和大型测试数据保留原始逐文件哈希。原始验收结论不因发布而改写。
 
 下载器对归档和展开文件执行 SHA256 校验，已有不同内容拒绝覆盖。普通接入只需要对应平台安装包；无需下载历史候选、测试数据或整个 Git 历史。
 

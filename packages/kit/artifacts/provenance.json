@@ -101,7 +101,7 @@
     "evidence": "Every object in both iOS archives passed minimum-OS auditing; four successful Engine calls and four error calls match frozen Native and bundled WASM byte-for-byte on iOS 26.5 Simulator. This is not an iOS 15.1 device claim.",
     "networkSigningBroadcast": "No network reads, keys, approvals, persistence, retry or broadcast are added to the bridge. Native identity changes require an app rebuild."
   },
-  "package": "@tbc/kit@0.1.0-rc.19",
+  "package": "@tbc/kit@0.1.0-rc.20",
   "createdAt": "2026-09-25T00:00:00.000Z",
   "candidateDelta": {
     "baseline": "@tbc/kit@0.1.0-candidate.167",
@@ -624,42 +624,6 @@
       "sha256": "686083cc06b9ac3e265f90f2ced0665f9e518394120f5fbefe365c647b2adeaf"
     },
     {
-      "role": "transaction-engine-wallet-private-native",
-      "path": "artifacts/native/aarch64-apple-darwin/libtbc_engine_native.dylib",
-      "sha256": "91e9abec833a98b4abc916503de58f677ebc1880d88e099cac0e0265e5930a47",
-      "target": "aarch64-apple-darwin"
-    },
-    {
-      "role": "transaction-engine-wallet-private-native",
-      "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/libtbc_engine_native.a",
-      "sha256": "ec601540fdfc1d64b08488dcd6615595a8ec295f368a0a48a17fa4f41af97713",
-      "target": "aarch64-apple-ios"
-    },
-    {
-      "role": "transaction-engine-wallet-private-native",
-      "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/libtbc_engine_native.a",
-      "sha256": "128a8ba5d99ea076142c0a3035f874925846cceb0ab712a6542b281030435610",
-      "target": "aarch64-apple-ios-sim"
-    },
-    {
-      "role": "transaction-engine-wallet-private-native",
-      "path": "artifacts/native/android/jniLibs/arm64-v8a/libtbc_engine_native.so",
-      "sha256": "ea6c0b224ab2e3be4ee7ebb579e4e29d30ab6ef811d15a61d6fa99176eef016a",
-      "target": "aarch64-linux-android"
-    },
-    {
-      "role": "transaction-engine-wallet-private-native",
-      "path": "artifacts/native/android/jniLibs/armeabi-v7a/libtbc_engine_native.so",
-      "sha256": "dd856d184ae2297b6b3f0e0d00aec78c3468ac4d48fd7c1a18e72038776c1a23",
-      "target": "armv7-linux-androideabi"
-    },
-    {
-      "role": "transaction-engine-wallet-private-native",
-      "path": "artifacts/native/android/jniLibs/x86_64/libtbc_engine_native.so",
-      "sha256": "0854e961b826b2ecce9ccb4eb6c596e7ad1f7f3a041bc1c2371e5cbdf80c67d1",
-      "target": "x86_64-linux-android"
-    },
-    {
       "role": "keyless-pool-preparation",
       "path": "artifacts/wasm/tbc_keyless_wasm.wasm",
       "sha256": "703566ea81b25ed7a358a2942ff6f783fd4de8f718401ea336bfb79dc4151b93",
@@ -671,20 +635,6 @@
         "inspectNftReceipt"
       ],
       "ambientImports": 0
-    },
-    {
-      "role": "keyless-pool-preparation-native",
-      "path": "artifacts/keyless-native/aarch64-apple-darwin/libtbc_keyless_native.dylib",
-      "sha256": "f4203d3643898fc49330d5178dc70dab0ab02df6cf8b2c97a44b9be01dba76e1",
-      "target": "aarch64-apple-darwin",
-      "operations": [
-        "preparePoolNft",
-        "prepareAssetAncestry",
-        "legacyPoolPreview",
-        "inspectTokenReceipt",
-        "inspectNftReceipt"
-      ],
-      "header": "artifacts/keyless-native/aarch64-apple-darwin/tbc_keyless.h"
     }
   ],
   "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
@@ -2265,5 +2215,70 @@
         "relationship": "strict root-only consumer proves fungible exact/minimum amount inputs and rejects an NFT fungible amount field at compile time"
       }
     ]
+  },
+  "distribution": {
+    "kind": "unchanged-runtime-repack",
+    "baseline": {
+      "package": "@tbc/kit@0.1.0-rc.19",
+      "sha256": "ed8f1ef7d66154067c7676308dde28cd77d5d6ceacb16daebb3d2951a20eee3a",
+      "bytes": 44021942
+    },
+    "sdkVersion": "0.1.0-rc.19.native.2"
+  },
+  "externalArtifacts": [
+    {
+      "role": "transaction-engine-wallet-private-native",
+      "path": "artifacts/native/aarch64-apple-darwin/libtbc_engine_native.dylib",
+      "sha256": "91e9abec833a98b4abc916503de58f677ebc1880d88e099cac0e0265e5930a47",
+      "target": "aarch64-apple-darwin"
+    },
+    {
+      "role": "transaction-engine-wallet-private-native",
+      "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/libtbc_engine_native.a",
+      "sha256": "ec601540fdfc1d64b08488dcd6615595a8ec295f368a0a48a17fa4f41af97713",
+      "target": "aarch64-apple-ios"
+    },
+    {
+      "role": "transaction-engine-wallet-private-native",
+      "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/libtbc_engine_native.a",
+      "sha256": "128a8ba5d99ea076142c0a3035f874925846cceb0ab712a6542b281030435610",
+      "target": "aarch64-apple-ios-sim"
+    },
+    {
+      "role": "transaction-engine-wallet-private-native",
+      "path": "artifacts/native/android/jniLibs/arm64-v8a/libtbc_engine_native.so",
+      "sha256": "ea6c0b224ab2e3be4ee7ebb579e4e29d30ab6ef811d15a61d6fa99176eef016a",
+      "target": "aarch64-linux-android"
+    },
+    {
+      "role": "transaction-engine-wallet-private-native",
+      "path": "artifacts/native/android/jniLibs/armeabi-v7a/libtbc_engine_native.so",
+      "sha256": "dd856d184ae2297b6b3f0e0d00aec78c3468ac4d48fd7c1a18e72038776c1a23",
+      "target": "armv7-linux-androideabi"
+    },
+    {
+      "role": "transaction-engine-wallet-private-native",
+      "path": "artifacts/native/android/jniLibs/x86_64/libtbc_engine_native.so",
+      "sha256": "0854e961b826b2ecce9ccb4eb6c596e7ad1f7f3a041bc1c2371e5cbdf80c67d1",
+      "target": "x86_64-linux-android"
+    },
+    {
+      "role": "keyless-pool-preparation-native",
+      "path": "artifacts/keyless-native/aarch64-apple-darwin/libtbc_keyless_native.dylib",
+      "sha256": "f4203d3643898fc49330d5178dc70dab0ab02df6cf8b2c97a44b9be01dba76e1",
+      "target": "aarch64-apple-darwin",
+      "operations": [
+        "preparePoolNft",
+        "prepareAssetAncestry",
+        "legacyPoolPreview",
+        "inspectTokenReceipt",
+        "inspectNftReceipt"
+      ],
+      "header": "artifacts/keyless-native/aarch64-apple-darwin/tbc_keyless.h"
+    }
+  ],
+  "platformResources": {
+    "path": "artifacts/platform-resources.json",
+    "sha256": "3c6575477376b8f59834f45fd0fd50c8bd8309520042edbfb04872ae2b66a3bd"
   }
 }

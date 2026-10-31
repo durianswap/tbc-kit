@@ -23,6 +23,6 @@
 
 ## 参与开发
 
-[rc.20 按需分发候选](candidates/rc20-distribution.md)：隔离候选的文件选择与配对方式，不替换当前交付。
+[按需分发](candidates/rc20-distribution.md)：JS、Native 与 Flutter 的文件选择和版本配对。
 
 [贡献指南](../CONTRIBUTING.md) · [维护指南](maintaining.md) · [问题反馈](../SUPPORT.md) · [安全](../SECURITY.md)

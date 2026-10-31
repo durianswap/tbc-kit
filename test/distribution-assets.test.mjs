@@ -56,25 +56,24 @@ test('archive restoration verifies every member and preserves local edits',async
   await assert.rejects(restoreFiles(f.root,asset,archive),/mismatch/);
   assert.equal(await readFile(join(f.root,'packages/kit/hello.txt'),'utf8'),'my change');
 });
-test('every removed file has a byte-exact download or archive mapping',async()=>{
+test('historical migration record stays immutable; current restoration uses its own inventory',async()=>{
   const root=new URL('../',import.meta.url);
   const downloads=JSON.parse(await readFile(new URL('release/downloads.json',root),'utf8'));
-  const index=new Map();
-  for(const a of downloads.assets){index.set(a.path,a);for(const f of a.files??[])index.set(f.path,f)}
-  for(const f of downloads.aliases)index.set(f.path,f);
-  const migration=JSON.parse(await readFile(new URL('release/storage-migration.json',root),'utf8'));
-  for(const f of migration.externalized){
-    const asset=index.get(f.path);assert(asset,`Missing restoration: ${f.path}`);
-    assert.equal(asset.sha256,f.sha256);assert.equal(asset.bytes,f.bytes);
-  }
+  assert.equal(sha(await readFile(new URL('release/storage-migration.json',root))),'54adfb583d026eb1e881f36e5e4c4d5e4335064f99b93dfb363c3b34ee0df797');
+  const current=JSON.parse(await readFile(new URL('release/current.json',root),'utf8'));
+  for(const artifact of current.artifacts){const asset=downloads.assets.find(a=>a.id===artifact.id);
+    assert.equal(asset.sha256,artifact.sha256);assert.equal(asset.bytes,artifact.bytes);}
+  const kit=downloads.assets.find(a=>a.id==='kit');
+  assert(kit.files.some(f=>f.path==='packages/kit/artifacts/platform-resources.json'));
+  assert(!kit.files.some(f=>/packages\/kit\/artifacts\/(native|keyless-native)\//.test(f.path)));
 });
 test('published distribution exposes only the current accepted candidate',async()=>{
   const root=new URL('../',import.meta.url);
   const downloads=JSON.parse(await readFile(new URL('release/downloads.json',root),'utf8'));
   assert(!('history' in downloads.groups));
   assert(!downloads.assets.some(a=>a.id==='candidate-archive'));
-  assert(downloads.aliases.every(a=>a.path.startsWith('release/candidates/legacy-ft-exact-rc19/')));
-  assert.deepEqual((await readdir(new URL('release/candidates/',root))).sort(),['legacy-ft-exact-rc19']);
+  assert(downloads.aliases.every(a=>a.path.startsWith('release/candidates/lean-distribution-rc20/')));
+  assert.deepEqual((await readdir(new URL('release/candidates/',root))).sort(),['lean-distribution-rc20']);
   const sums=await readFile(new URL('release/DOWNLOADS.SHA256',root),'utf8');
   assert.equal(sums,downloads.assets.map(a=>`${a.sha256}  ${a.name}`).join('\n')+'\n');
 });

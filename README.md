@@ -6,11 +6,11 @@
 
 [快速开始](#快速开始) · [文档](docs/README.md) · [示例](docs/examples.md) · [API 参考](docs/api-reference.md)
 
-当前 JavaScript / TypeScript 版本为 **0.1.0-rc.19**，配套 Native SDK 为 **0.1.0-rc.19.native.2**。下载、版本配对和升级步骤见 [安装与升级](docs/installation.md)。
+当前 JavaScript / TypeScript 版本为 **0.1.0-rc.20**，配套 Native SDK 为 **0.1.0-rc.19.native.2**。下载、版本配对和升级步骤见 [安装与升级](docs/installation.md)。
 
 ## 快速开始
 
-下载 [JavaScript / TypeScript 包](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/tbc-kit.tgz)，在应用中安装：
+下载 [JavaScript / TypeScript 包](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit.tgz)，在应用中安装：
 
 ```sh
 npm install ./tbc-kit.tgz
@@ -48,10 +48,12 @@ const wallet = await client.connect({ wallet: selected });
 | Web DApp | `@tbc/kit` | [连接钱包与发起交易](docs/dapp.md) |
 | JS/TS 钱包、浏览器扩展 | `@tbc/kit/wallet` | [钱包接入](docs/wallet.md) |
 | Node.js 服务端 | `/api`、`/rpc`、`/engine` | [查询与服务端](docs/api-and-backend.md) |
-| Flutter 钱包 | [Flutter 插件](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/tbc-kit-flutter.tgz) | [Flutter 接入](docs/flutter/README.md) |
+| Flutter 钱包 | [Flutter 插件](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit-flutter.tgz) | [Flutter 接入](docs/flutter/README.md) |
 | React Native、Swift、Kotlin | [平台 SDK](docs/native.md) | [原生接入](docs/native.md) |
 
 JavaScript 各入口来自同一个 `@tbc/kit` 包，可按需导入。Flutter 插件包含 Dart 接口、原生计算库和 WebView 桥接，不需要额外安装 JavaScript 包。
+
+JS 包约 **5.53 MB**，不再附带全部平台原生库。Web/Node 只安装 JS 包；React Native 再选对应平台 SDK。Native 仍使用 `rc.19.native.2` 的原始文件，版本锁确认其与 JS rc.20 配套，不要求组件编号相同。
 
 Flutter 是独立配套分发，保留现有版本；不要将本页的独立 Native SDK 替换进 Flutter 插件。
 
@@ -80,6 +82,6 @@ Flutter 是独立配套分发，保留现有版本；不要将本页的独立 Na
 
 ## 开发与贡献
 
-工程源码位于 `source/`，安装包按平台从 [Releases](https://github.com/durianswap/tbc-kit/releases/tag/v0.1.0-rc.19) 下载。`packages/` 保留类型、文档和接入示例；开发检查需要的编译产物通过 `npm run assets:fetch -- verification` 按锁定哈希取回。文档、构建与检查方式见 [贡献指南](CONTRIBUTING.md)。
+工程源码位于 `source/`，安装包按平台从 [Releases](https://github.com/durianswap/tbc-kit/releases/tag/v0.1.0-rc.20) 下载。`packages/` 保留类型、文档和接入示例；开发检查需要的编译产物通过 `npm run assets:fetch -- verification` 按锁定哈希取回。文档、构建与检查方式见 [贡献指南](CONTRIBUTING.md)。
 
 [问题反馈](SUPPORT.md) · [安全](SECURITY.md) · [许可证](LICENSE) · [包校验值](SHA256SUMS)

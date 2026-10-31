@@ -1,4 +1,0 @@
-module TbcEngineNative {
-  header "tbc_engine.h"
-  export *
-}

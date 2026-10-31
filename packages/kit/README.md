@@ -43,6 +43,8 @@ approval UI. Transaction construction does not receive private keys.
 
 - [Usage and business methods](docs/usage.md)
 - [Supported functionality](SUPPORT.md)
+- [Wallet and contract compatibility](docs/compatibility.md)
+- [Platform resources and version pairing](docs/platform-resources.md)
 - [Multi-wallet discovery](examples/multi-wallet/README.md)
 - [Wallet integration](examples/independent-wallet/README.md)
 - [Backend integration](examples/backend-node/README.md)

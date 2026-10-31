@@ -2,11 +2,11 @@
 
 从下面的 Releases 链接下载所需平台；使用仓库进行完整配对检查时，先执行 `npm run assets:fetch -- verification`，再执行 `npm run verify`。下载必须按 `release/current.json` 配对，不能按版本后缀相似或文件名称猜测。
 
-当前配对为 `@tbc/kit 0.1.0-rc.19` 与 Native SDK `0.1.0-rc.19.native.2`，安装校验见 [安装与升级](installation.md)。[iOS SDK](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/ios-sdk.tgz)、[Android SDK](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/android-sdk.tgz) 和 [版本锁](../release/native-sdk-lock.json) 必须一起更新。
+当前配对为 `@tbc/kit 0.1.0-rc.20` 与 Native SDK `0.1.0-rc.19.native.2`，安装校验见 [安装与升级](installation.md)。[iOS SDK](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/ios-sdk.tgz)、[Android SDK](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/android-sdk.tgz) 和 [版本锁](../release/native-sdk-lock.json) 必须一起更新。
 
 ## Flutter
 
-只使用 [tbc-kit-flutter.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/tbc-kit-flutter.tgz)。内含 Dart 编排、Swift/Kotlin 桥接、Engine、Signer 与 WebView 页面资源；不需要本页的独立 Native SDK。见 [Flutter 教程](flutter/README.md)。
+只使用 [tbc-kit-flutter.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit-flutter.tgz)。内含 Dart 编排、Swift/Kotlin 桥接、Engine、Signer 与 WebView 页面资源；不需要本页的独立 Native SDK。见 [Flutter 教程](flutter/README.md)。
 
 ## Swift / Kotlin
 
@@ -35,6 +35,10 @@ node node_modules/@tbc/kit/examples/react-native-engine/install.mjs \
 
 ## 资源与平台范围
 
-原生工程使用上述完整 SDK，无需再下载另一份原始库。JS 包内的 `artifacts/native`、`artifacts/keyless-native` 与 WASM 由包内运行时选用；不要把另一版本的裸库放进当前 SDK。Node 默认 WASM 路径不要求独立下载 macOS 库。
+原生工程使用上述完整 SDK，无需再下载另一份原始库。JS 包不再附带 iOS、Android 或 macOS 原生库，只保留现有 WASM 路径；移动端按目标平台另取 SDK。Node 默认 WASM 路径不要求独立下载 macOS 库。
+
+JS rc.20 与 Native rc.19.native.2 是明确验证过的配对：本轮不改 Native 实现或归档字节，不为统一编号重打包。平台目录、SDK 版本锁、协议指纹与文件哈希共同核对配对关系。
+
+自定义底层 FFI 可以显式下载 `resources-ios`、`resources-android` 或 `resources-macos-arm64`，普通钱包 SDK 接入不需要这些原始库附件。没有安装钩子、运行时下载或静默后端回退。
 
 平台最低版本各自不同：当前 Flutter 为 iOS 15.0、Android API 26、arm64；独立 SDK 为 iOS 15.1、Android API 24，其 ABI 以清单为准。构建支持不等同于所有真机均已验证。
