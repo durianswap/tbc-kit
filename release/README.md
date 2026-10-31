@@ -1,9 +1,9 @@
 # 版本、下载与验收记录
 
 - [当前版本配对](current.json)、[下载与恢复清单](downloads.json)、[附件校验值](DOWNLOADS.SHA256)。
-- [rc.20 下载](https://github.com/durianswap/tbc-kit/releases/tag/v0.1.0-rc.20)：JS 按需分发，配套 Native 与独立 Flutter 包字节不变。
-- [本轮报告](candidates/lean-distribution-rc20/REPORT.md) 保留候选形成时的原始结论；[发布记录](rc20-publication.md) 记录后续提升为默认下载的结果。
-- `candidates/lean-distribution-rc20/` 是当前候选；`evidence/runtime-baseline-rc19/` 仅保留其未改动执行实现的原始证据，不提供旧版本候选下载。
+- [rc.21 下载](https://github.com/durianswap/tbc-kit/releases/tag/v0.1.0-rc.21)：JS、签名示例与错误处理已更新，配套 Native 与独立 Flutter 包字节不变。
+- [本轮报告](candidates/host-port-signers-rc21/REPORT.md) 保留候选形成时的原始结论；[发布记录](rc21-publication.md) 记录提升为默认下载的结果。
+- `candidates/host-port-signers-rc21/` 对应当前包；较早目录仅保留验收记录，下载器不再选择其旧 JS 归档。
 
 ## 取回对应材料
 
@@ -20,7 +20,7 @@ npm run assets:fetch -- verification # 当前分发的完整检查材料
 npm run assets:fetch -- acceptance   # 当前验收报告引用的原始归档文件名
 ```
 
-当前源码位于 `source/`。`tbc-kit-source.tgz` 是 rc.20 形成时的冻结源码快照；发布主页与下载清单以后续 main 为准。交易与构建源码必须与冻结快照一致；当前安装包和大型测试数据保留原始逐文件哈希。原始验收结论不因发布而改写。
+当前源码位于 `source/`。`tbc-kit-source.tgz` 是 rc.21 形成时的冻结源码快照；发布主页与下载清单以后续 main 为准。交易与构建源码必须与冻结快照一致；当前安装包和大型测试数据保留原始逐文件哈希。原始验收结论不因发布而改写。
 
 下载器对归档和展开文件执行 SHA256 校验，已有不同内容拒绝覆盖。普通接入只需要对应平台安装包；无需下载历史候选、测试数据或整个 Git 历史。
 

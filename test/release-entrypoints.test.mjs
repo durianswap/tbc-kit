@@ -7,10 +7,10 @@ const root=new URL('../',import.meta.url);
 const read=p=>readFileSync(new URL(p,root));
 const json=p=>JSON.parse(read(p));
 const current=json('release/current.json');
-const frozen=json('release/candidates/lean-distribution-rc20/delivery-lock.json');
+const frozen=json('release/candidates/host-port-signers-rc21/delivery-lock.json');
 
-test('default downloads use the frozen RC20 JS and unchanged paired Native bytes',()=>{
- for(const [id,expected]of [['kit',frozen.kit],['sdk-ios',frozen.sdk['ios-sdk.tgz']],['sdk-android',frozen.sdk['android-sdk.tgz']]]){
+test('default downloads use the frozen RC21 JS and unchanged paired Native bytes',()=>{
+ for(const [id,expected]of [['kit',frozen.kit],['sdk-ios',frozen.pairedNative.ios],['sdk-android',frozen.pairedNative.android]]){
   const artifact=current.artifacts.find(a=>a.id===id);
   assert.equal(artifact.sha256,expected.sha256);
   assert.equal(artifact.bytes,expected.bytes);
@@ -22,6 +22,9 @@ test('default downloads use the frozen RC20 JS and unchanged paired Native bytes
  assert.equal(current.pairing.sdkVersion,frozen.sdkVersion);
  assert.equal(current.pairing.nativeBuildInputKitVersion,'0.1.0-rc.19');
  assert.equal(current.pairing.protocolFingerprint,frozen.protocolFingerprint);
+ assert.equal(current.githubRelease.tag,'v0.1.0-rc.21');
+ assert.equal(current.githubRelease.sourceCommit,'cc5c3554bf6036eea1fe942930a493fb6294f7b6');
+ assert.equal(current.artifacts.find(a=>a.id==='kit').url,'https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.21/tbc-kit.tgz');
 });
 
 test('Flutter remains independently paired and unchanged',()=>{
@@ -39,4 +42,8 @@ test('landing and install guide identify the selected pair',()=>{
  assert(read('docs/coin-multiround.md').toString().includes('constraints.inputOutpoints'));
  const guide=read('docs/legacy-ft.md').toString();
  for(const field of ['preview.assetFlows','contractId','constraints.inputOutpoints','outputReview'])assert(guide.includes(field));
+ for(const p of ['README.md','docs/installation.md']){
+  assert(read(p).toString().includes('/v0.1.0-rc.21/tbc-kit.tgz'));
+  assert(read(p).toString().includes('signer-integration.md'));
+ }
 });

@@ -6,11 +6,11 @@
 
 [快速开始](#快速开始) · [文档](docs/README.md) · [示例](docs/examples.md) · [API 参考](docs/api-reference.md)
 
-当前 JavaScript / TypeScript 版本为 **0.1.0-rc.20**，配套 Native SDK 为 **0.1.0-rc.19.native.2**。下载、版本配对和升级步骤见 [安装与升级](docs/installation.md)。
+当前 JavaScript / TypeScript 版本为 **0.1.0-rc.21**，配套 Native SDK 为 **0.1.0-rc.19.native.2**。下载、版本配对和升级步骤见 [安装与升级](docs/installation.md)。
 
 ## 快速开始
 
-下载 [JavaScript / TypeScript 包](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit.tgz)，在应用中安装：
+下载 [JavaScript / TypeScript 包](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.21/tbc-kit.tgz)，在应用中安装：
 
 ```sh
 npm install ./tbc-kit.tgz
@@ -53,7 +53,7 @@ const wallet = await client.connect({ wallet: selected });
 
 JavaScript 各入口来自同一个 `@tbc/kit` 包，可按需导入。Flutter 插件包含 Dart 接口、原生计算库和 WebView 桥接，不需要额外安装 JavaScript 包。
 
-JS 包约 **5.53 MB**，不再附带全部平台原生库。Web/Node 只安装 JS 包；React Native 再选对应平台 SDK。Native 仍使用 `rc.19.native.2` 的原始文件，版本锁确认其与 JS rc.20 配套，不要求组件编号相同。
+JS 包约 **5.54 MB**，不附带全部平台原生库。Web/Node 只安装 JS 包；React Native 再选对应平台 SDK。Native 使用 `rc.19.native.2` 的原始文件，版本锁确认其与 JS rc.21 配套，不要求组件编号相同。
 
 Flutter 是独立配套分发，保留现有版本；不要将本页的独立 Native SDK 替换进 Flutter 插件。
 
@@ -67,6 +67,8 @@ Flutter 是独立配套分发，保留现有版本；不要将本页的独立 Na
 - `window.Turing` 适配 TBC 历史接口和受支持的旧资产操作。
 
 钱包保留私钥管理、解锁和审批 UI；Kit 提供交易材料与执行流程。各平台的方法及使用方式见 [API 参考](docs/api-reference.md)。
+
+钱包和服务端按[签名适配指南](packages/kit/docs/signer-integration.md)连接自己的 Signer。完整业务需要 ECDSA、可恢复 ECDSA 和 BIP340，不能把仅支持 EVM 签名的回调用于所有合约。
 
 新版 Coin 稳定币支持多轮合并及指定原生手续费输入归集，沿用一次整批审批和原有顺序提交机制。接入要求及计划样例见 [Coin 多轮交易](docs/coin-multiround.md)。
 
@@ -82,6 +84,6 @@ Flutter 是独立配套分发，保留现有版本；不要将本页的独立 Na
 
 ## 开发与贡献
 
-工程源码位于 `source/`，安装包按平台从 [Releases](https://github.com/durianswap/tbc-kit/releases/tag/v0.1.0-rc.20) 下载。`packages/` 保留类型、文档和接入示例；开发检查需要的编译产物通过 `npm run assets:fetch -- verification` 按锁定哈希取回。文档、构建与检查方式见 [贡献指南](CONTRIBUTING.md)。
+工程源码位于 `source/`，安装包从 [Releases](https://github.com/durianswap/tbc-kit/releases/tag/v0.1.0-rc.21) 或[平台配套清单](docs/installation.md)下载。`packages/` 保留类型、文档和接入示例；开发检查需要的编译产物通过 `npm run assets:fetch -- verification` 按锁定哈希取回。文档、构建与检查方式见 [贡献指南](CONTRIBUTING.md)。
 
 [问题反馈](SUPPORT.md) · [安全](SECURITY.md) · [许可证](LICENSE) · [包校验值](SHA256SUMS)

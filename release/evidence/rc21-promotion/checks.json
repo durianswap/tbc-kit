@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "kitVersion": "0.1.0-rc.21",
+  "sdkVersion": "0.1.0-rc.19.native.2",
+  "candidateCommit": "cc5c3554bf6036eea1fe942930a493fb6294f7b6",
+  "kitSha256": "a7df6f8b6f98dba2b4691dd854eacee5c344b4781422529cd195912cd0bb6c91",
+  "flutterSha256": "f782b21ff2aa5d069669ae080615bde083e45006e5536a98b11233025d322b7f",
+  "checks": {
+    "releaseAssetDigests": 10,
+    "archiveHashes": 4,
+    "expandedFiles": 1151,
+    "runtimeSourceFiles": 2219,
+    "publicDocumentationFiles": 54,
+    "localLinks": 166,
+    "repositoryTests": { "passed": 21, "failed": 0 },
+    "installedPackage": { "version": "0.1.0-rc.21", "esmImports": 8, "cjsImports": 8, "offlineExamples": 2 },
+    "signerProfiles": { "verified": 3, "mismatchedProfilesRejected": 6, "bip340OfficialVector": true, "alteredDigestRejected": true },
+    "protectedFilesUnchanged": 174,
+    "flutterInventoryFilesUnchanged": 181
+  },
+  "commands": [
+    "npm run assets:fetch -- verification",
+    "npm ci --ignore-scripts --no-audit --no-fund",
+    "npm run verify",
+    "shasum -a 256 -c SHA256SUMS",
+    "npm test",
+    "npm run check:install",
+    "node packages/kit/examples/shared/check-signer.mjs"
+  ],
+  "packagesRebuilt": false,
+  "runtimeSourceChangedAfterCandidate": false,
+  "partnerDeliveryChanged": false,
+  "realSigning": false,
+  "realBroadcasts": 0,
+  "deviceBusinessAcceptanceRepeated": false
+}

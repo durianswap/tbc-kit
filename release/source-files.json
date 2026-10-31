@@ -4458,7 +4458,7 @@
     },
     {
       "path": "source/package-lock.json",
-      "sha256": "8a5746a2ee73eec11d909ee32019f71cf3f9737aebbcb23389d556ab631adfa3",
+      "sha256": "64a2bd086f6cf21c9516b4a4282b43fbbf9772b1bd81fb64f6f3560c7602596b",
       "bytes": 49565
     },
     {
@@ -4513,8 +4513,8 @@
     },
     {
       "path": "source/packages/core/src/core.ts",
-      "sha256": "b51da4dc6e9eb14ddcbbda2fa2a3d19484379b0bc899f76f4f478d846a42a60f",
-      "bytes": 23567
+      "sha256": "a3a206b96aca38f3a4945c2ec786c1332dd255cad9380c2fd11ef693999ed27f",
+      "bytes": 25637
     },
     {
       "path": "source/packages/core/src/crypto-input-budget.ts",
@@ -4908,8 +4908,8 @@
     },
     {
       "path": "source/packages/core/test/transaction-lifecycle.test.mjs",
-      "sha256": "229475bb001b6edae8c681ca1aa2b1624c97180fac7e20b97ee7dcebbacc3876",
-      "bytes": 42702
+      "sha256": "36e3846e6eb7d09cce0484c93596dd2c8cfca198b7f0a57b53d871a39625ae38",
+      "bytes": 45081
     },
     {
       "path": "source/packages/core/test/transition.test.mjs",
@@ -5208,8 +5208,8 @@
     },
     {
       "path": "source/packages/kit/SUPPORT.md",
-      "sha256": "fc29b0afd41ba6d181b7d90c9ff3770488dd52e8a4bf3af83e5dc0aa11fba6d6",
-      "bytes": 3132
+      "sha256": "365cdb8436582946f9ff4004be452e59f1ade56d3f324c64674d89813a529425",
+      "bytes": 3729
     },
     {
       "path": "source/packages/kit/artifacts/.source-build-start.json",
@@ -5327,6 +5327,11 @@
       "bytes": 1951
     },
     {
+      "path": "source/packages/kit/docs/signer-integration.md",
+      "sha256": "ff0bc45f8023b4ab6f374a6a51704ced649608ee65a4a45c1e2909b86ca6db76",
+      "bytes": 4552
+    },
+    {
       "path": "source/packages/kit/docs/usage.md",
       "sha256": "4b230a5190cf0b5b5604ef7d253105693d0c9b436c219480cf3e33e49d198cef",
       "bytes": 81700
@@ -5368,13 +5373,13 @@
     },
     {
       "path": "source/packages/kit/examples/backend-node/README.md",
-      "sha256": "c88aa9b740f4ab8cd965144991c8f2cc6f3f32ca18c5dc97d726cfc47938e031",
-      "bytes": 3089
+      "sha256": "f0664f3ddcb2aeb4689841715f5e43c31cc4aca8adbd57ec6e1127611f215b87",
+      "bytes": 3489
     },
     {
       "path": "source/packages/kit/examples/backend-node/run.mjs",
-      "sha256": "a62dea4cb0f95b4e99fa311081f7d76149858ec23d60ec2ad6ccb8c09d5f5a07",
-      "bytes": 5388
+      "sha256": "d2a703efbcc1fc9db5cb33d1b01596b60834d7932c4d8cc715212c4ac0182397",
+      "bytes": 5035
     },
     {
       "path": "source/packages/kit/examples/ftlp-burn/README.md",
@@ -5388,13 +5393,13 @@
     },
     {
       "path": "source/packages/kit/examples/independent-wallet/README.md",
-      "sha256": "1a97bf67ceb28f6c27a68fe79164aa3795dccbdbc28375d2262276e859759193",
-      "bytes": 2702
+      "sha256": "00d926043032846dcc757ee676d13d86b3d310a85a2c8c804f0eff78d58ef5a4",
+      "bytes": 3207
     },
     {
       "path": "source/packages/kit/examples/independent-wallet/controlled-platform.mjs",
-      "sha256": "073996d23722115790cd31e03516cfa63c476d8fb5bb6c54448953627131a62a",
-      "bytes": 3612
+      "sha256": "d3d86d5a3617f26c9deb89fb36222c411659a30e212cb5e90a74df996482a6ac",
+      "bytes": 3180
     },
     {
       "path": "source/packages/kit/examples/independent-wallet/run.mjs",
@@ -5562,6 +5567,16 @@
       "bytes": 1228
     },
     {
+      "path": "source/packages/kit/examples/shared/check-signer.mjs",
+      "sha256": "b33d1e5cc048c068b046f8565c3188f763c6778fe87c38a91284b5c420d203dc",
+      "bytes": 2797
+    },
+    {
+      "path": "source/packages/kit/examples/shared/controlled-signer.mjs",
+      "sha256": "3b60961c1dce859b82f132fe130eb203801941d4d7775e4a45b14c02730556cd",
+      "bytes": 1276
+    },
+    {
       "path": "source/packages/kit/examples/sign-in/README.md",
       "sha256": "876c44ea0d7e0fe36f525ac6db7923e0a67e4c6b2bac65c88199b905c99f861b",
       "bytes": 914
@@ -5573,8 +5588,8 @@
     },
     {
       "path": "source/packages/kit/examples/sign-in/frontend.mjs",
-      "sha256": "a0885a35542e2b312a84b7f7c33fb19c900aec02d37e8bdaef3dde5c57acac5b",
-      "bytes": 6660
+      "sha256": "c50e2498cc5de4c52e080376dc6ff362f6274d5d51acb14fa031d2d50576cc3a",
+      "bytes": 6442
     },
     {
       "path": "source/packages/kit/examples/sign-in/run.mjs",
@@ -5583,7 +5598,7 @@
     },
     {
       "path": "source/packages/kit/package.json",
-      "sha256": "cb858801d07fdc9b21b1f764c6d0e5eb7f24916f400cfd3bdf288e76fa53359b",
+      "sha256": "1ec46707571326ab35aa6b1061fad21362be53ecfb3591d9bf763f60c1285ca0",
       "bytes": 3288
     },
     {
@@ -5813,8 +5828,8 @@
     },
     {
       "path": "source/packages/kit/src/amm-business-material.ts",
-      "sha256": "abd13e4d47b9a5b77a5a9edc479e811b621b6ec8bfdf134f35bd3087922bbf4e",
-      "bytes": 14644
+      "sha256": "5e9a0f80c22b4a633c798f16f80cbf08ce46415072ba6997c479cc35f6e2a939",
+      "bytes": 15623
     },
     {
       "path": "source/packages/kit/src/amm-fee-policy.ts",
@@ -5913,8 +5928,8 @@
     },
     {
       "path": "source/packages/kit/src/default-chain-data.ts",
-      "sha256": "b493944a1401e6ccd8575a4610263beedd565538e1e0afc30f8ba8108d94e218",
-      "bytes": 123914
+      "sha256": "607f2ea7d595f05909e6a309b1cc2a2981ec801858dc6b87ec92f2fb7b6cc076",
+      "bytes": 124313
     },
     {
       "path": "source/packages/kit/src/default-network.ts",
@@ -6670,6 +6685,11 @@
       "path": "source/packages/kit/test/hermes-wallet-import.test.mjs",
       "sha256": "601215e6c298f68197a5a4331eae30f17791aac12a0bf38dcd470cea5994722a",
       "bytes": 4656
+    },
+    {
+      "path": "source/packages/kit/test/host-port-business-errors.test.mjs",
+      "sha256": "50909938cfbf5f40d8e5c56272da8e9343b376506da35e8d966a59c55698e2fb",
+      "bytes": 14674
     },
     {
       "path": "source/packages/kit/test/htlc-material.test.mjs",
@@ -10418,7 +10438,7 @@
     },
     {
       "path": "source/release/kit-source-state.json",
-      "sha256": "f219dea0d06853259f0543c5a59840c93b49b6f477a1fa550fc384ed34f16700",
+      "sha256": "d3e6db891647ad33a16abbadffe056cf9ba30dcecb3e069a4e19232c827e7807",
       "bytes": 64
     },
     {
@@ -10600,6 +10620,11 @@
       "path": "source/scripts/conformance.mjs",
       "sha256": "be5af3a1856c5d6cd244f22fc9664e024df750b08222f7425817a35cf04154c3",
       "bytes": 1746
+    },
+    {
+      "path": "source/scripts/diagnose-host-port-business.mjs",
+      "sha256": "675cdecba693072f4ca8e819159ecb232ceb27a715fb05d1ae1ce48eca93a0cb",
+      "bytes": 10010
     },
     {
       "path": "source/scripts/generate-core-types.mjs",

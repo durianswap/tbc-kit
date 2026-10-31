@@ -18,6 +18,11 @@ type Utxo = Point & Readonly<{
     classification: "pool" | "pool-ft" | "ft" | "ftlp";
     confirmations?: string;
 }>;
+/** Expected quote rejection, not a transport or wallet implementation fault. */
+export declare class AmmBusinessMaterialError extends Error {
+    readonly reason: "AMM_RETAINED_FEE_ZERO" | "AMM_POOL_INACTIVE";
+    constructor(reason: "AMM_RETAINED_FEE_ZERO" | "AMM_POOL_INACTIVE");
+}
 /** Only mutable API discovery and bounded direct proofs live here. Quotes and
  * contract parsing use the same Rust codec as Engine, with no signing or UI. */
 export declare function resolveAmmBusinessMaterial(input: Readonly<{

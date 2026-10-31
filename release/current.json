@@ -4,9 +4,9 @@
   "publicRelease": true,
   "registryPublished": false,
   "githubRelease": {
-    "tag": "v0.1.0-rc.20",
+    "tag": "v0.1.0-rc.21",
     "prerelease": true,
-    "sourceCommit": "fa145cdb414637671f36dc722b66ff51599be5a7",
+    "sourceCommit": "cc5c3554bf6036eea1fe942930a493fb6294f7b6",
     "downloadsManifest": "release/downloads.json"
   },
   "selection": {
@@ -18,7 +18,7 @@
     ]
   },
   "pairing": {
-    "kitVersion": "0.1.0-rc.20",
+    "kitVersion": "0.1.0-rc.21",
     "sdkVersion": "0.1.0-rc.19.native.2",
     "sdkArtifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
     "keylessArtifactSetId": "f9fc9f34a1c289b63c09a4fff29e6d52f461f737d09f8f93154d84372d5f8c45",
@@ -33,10 +33,10 @@
     {
       "id": "kit",
       "path": "artifacts/tbc-kit.tgz",
-      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit.tgz",
-      "sha256": "78da28e717ce4d4234923f2b91c3fd4c01176f641def88981b2c6cba4c0c3614",
-      "bytes": 5533148,
-      "version": "0.1.0-rc.20",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.21/tbc-kit.tgz",
+      "sha256": "a7df6f8b6f98dba2b4691dd854eacee5c344b4781422529cd195912cd0bb6c91",
+      "bytes": 5541374,
+      "version": "0.1.0-rc.21",
       "role": "JS/TS Kit with optional platform-native resources"
     },
     {
@@ -70,10 +70,12 @@
   "source": {
     "path": "source",
     "manifest": "release/source-files.json",
-    "snapshot": "release/candidates/lean-distribution-rc20/source.tgz",
-    "snapshotManifest": "release/candidates/lean-distribution-rc20/source-manifest.json",
-    "sourceDigest": "e06116426c0bae9bf684ac1e978ce2cd42df0b3d1e383e2546d1dc2d763c2b97",
-    "snapshotFormat": "repository-relative-distribution-snapshot"
+    "snapshot": "release/candidates/host-port-signers-rc21/tbc-kit-source.tgz",
+    "snapshotManifest": "release/candidates/host-port-signers-rc21/source-manifest.json",
+    "sourceDigest": "6b9f211eb6ebc73808e3b92698dfaf2064fbf9f1f9e34c02b74e90a59970c52a",
+    "snapshotFormat": "repository-relative-source-manifest",
+    "snapshotArchiveManifest": "release/candidates/host-port-signers-rc21/source-archive.json",
+    "buildManifest": "release/candidates/host-port-signers-rc21/evidence/build.json"
   },
   "platformResources": {
     "catalog": "packages/kit/artifacts/platform-resources.json",

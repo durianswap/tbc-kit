@@ -67,13 +67,17 @@ test('historical migration record stays immutable; current restoration uses its 
   assert(kit.files.some(f=>f.path==='packages/kit/artifacts/platform-resources.json'));
   assert(!kit.files.some(f=>/packages\/kit\/artifacts\/(native|keyless-native)\//.test(f.path)));
 });
-test('published distribution exposes only the current accepted candidate',async()=>{
+test('download selection exposes the current candidate while retaining historical evidence',async()=>{
   const root=new URL('../',import.meta.url);
   const downloads=JSON.parse(await readFile(new URL('release/downloads.json',root),'utf8'));
   assert(!('history' in downloads.groups));
   assert(!downloads.assets.some(a=>a.id==='candidate-archive'));
-  assert(downloads.aliases.every(a=>a.path.startsWith('release/candidates/lean-distribution-rc20/')));
-  assert.deepEqual((await readdir(new URL('release/candidates/',root))).sort(),['lean-distribution-rc20']);
+  const currentPath='release/candidates/host-port-signers-rc21/';
+  assert(downloads.aliases.every(a=>a.path.startsWith(currentPath)));
+  assert(downloads.assets.filter(a=>a.path.startsWith('release/candidates/')).every(a=>a.path.startsWith(currentPath)));
+  assert((await readdir(new URL('release/candidates/',root))).includes('host-port-signers-rc21'));
+  // Earlier reports remain evidence, not another selected installable version.
+  assert(!downloads.assets.some(a=>a.path.includes('lean-distribution-rc20')));
   const sums=await readFile(new URL('release/DOWNLOADS.SHA256',root),'utf8');
   assert.equal(sums,downloads.assets.map(a=>`${a.sha256}  ${a.name}`).join('\n')+'\n');
 });

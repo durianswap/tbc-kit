@@ -101,7 +101,7 @@
     "evidence": "Every object in both iOS archives passed minimum-OS auditing; four successful Engine calls and four error calls match frozen Native and bundled WASM byte-for-byte on iOS 26.5 Simulator. This is not an iOS 15.1 device claim.",
     "networkSigningBroadcast": "No network reads, keys, approvals, persistence, retry or broadcast are added to the bridge. Native identity changes require an app rebuild."
   },
-  "package": "@tbc/kit@0.1.0-rc.20",
+  "package": "@tbc/kit@0.1.0-rc.21",
   "createdAt": "2026-09-25T00:00:00.000Z",
   "candidateDelta": {
     "baseline": "@tbc/kit@0.1.0-candidate.167",
@@ -2217,13 +2217,15 @@
     ]
   },
   "distribution": {
-    "kind": "unchanged-runtime-repack",
-    "baseline": {
-      "package": "@tbc/kit@0.1.0-rc.19",
-      "sha256": "ed8f1ef7d66154067c7676308dde28cd77d5d6ceacb16daebb3d2951a20eee3a",
-      "bytes": 44021942
-    },
-    "sdkVersion": "0.1.0-rc.19.native.2"
+    "kind": "source-built-js-with-verified-frozen-native",
+    "baselineVersion": "0.1.0-rc.20",
+    "baselineArchiveSha256": "78da28e717ce4d4234923f2b91c3fd4c01176f641def88981b2c6cba4c0c3614",
+    "nativeSdkVersion": "0.1.0-rc.19.native.2",
+    "changes": [
+      "typed Host errors",
+      "AMM public rejection reasons",
+      "complete three-profile signer examples"
+    ]
   },
   "externalArtifacts": [
     {
@@ -2279,6 +2281,6 @@
   ],
   "platformResources": {
     "path": "artifacts/platform-resources.json",
-    "sha256": "3c6575477376b8f59834f45fd0fd50c8bd8309520042edbfb04872ae2b66a3bd"
+    "sha256": "5bd6563617c1f4917d74721bc491a42c1c193700f06036a62edf8c49e022d2fe"
   }
 }

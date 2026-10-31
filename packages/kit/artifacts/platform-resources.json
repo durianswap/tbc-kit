@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "package": "@tbc/kit@0.1.0-rc.20",
+  "package": "@tbc/kit@0.1.0-rc.21",
   "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
   "platforms": {
     "macos-arm64": {

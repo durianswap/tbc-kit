@@ -92,13 +92,22 @@ try{
 const source=json('release/source-files.json');
 for(const f of source.files)assert.equal(hash(safe(f.path)),f.sha256,'Source differs from release inventory: '+f.path);
 const checkpoint=json(manifest.source.snapshotManifest);
-assert.equal(checkpoint.version,manifest.pairing.kitVersion);
-assert.equal(checkpoint.sourceDigest,manifest.source.sourceDigest);
-assert.equal(hash(safe(manifest.source.snapshot)),checkpoint.archiveSha256);
-assert.equal(manifest.source.snapshotFormat,'repository-relative-distribution-snapshot');
-assert.equal(sha(JSON.stringify(checkpoint.files)),checkpoint.sourceDigest,'Frozen source manifest digest differs');
-// The frozen rc.20 repack snapshot includes release-time docs; promotion updates
-// only the repository's public release metadata. Runtime/build source must match.
+assert.equal(manifest.source.snapshotFormat,'repository-relative-source-manifest');
+assert.equal(checkpoint.kitVersion,manifest.pairing.kitVersion);
+assert.equal(sha(JSON.stringify(checkpoint.files)),manifest.source.sourceDigest,'Frozen source manifest digest differs');
+const archive=json(manifest.source.snapshotArchiveManifest);
+assert.equal(hash(safe(manifest.source.snapshot)),archive.sha256);
+assert.equal(lstatSync(safe(manifest.source.snapshot)).size,archive.bytes);
+assert.equal(archive.files,Object.keys(checkpoint.files).length);
+const sourceAsset=downloads.assets.find(a=>a.id==='accepted-source');
+assert.equal(sourceAsset.path,manifest.source.snapshot);
+assert.equal(sourceAsset.sha256,archive.sha256);
+assert.equal(sourceAsset.bytes,archive.bytes);
+const build=json(manifest.source.buildManifest);
+assert.equal(build.sourceDigest,checkpoint.sourceBuildDigest);
+for(const [p,h]of Object.entries(build.sourceFiles))assert.equal(hash(safe(p)),h,'Build input differs from accepted candidate: '+p);
+// Frozen snapshots include release-time docs; promotion updates only public
+// release metadata. Runtime/build source must still match every frozen hash.
 for(const [p,h]of Object.entries(checkpoint.files))if(p.startsWith('source/'))assert.equal(hash(safe(p)),h,'Source differs from accepted snapshot: '+p);
 
 const docs=['README.md','CONTRIBUTING.md','SUPPORT.md','SECURITY.md',...files(safe('docs')).filter(p=>p.endsWith('.md')).map(p=>'docs/'+p),...files(safe('packages/kit')).filter(p=>p.endsWith('.md')).map(p=>'packages/kit/'+p)];
