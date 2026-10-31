@@ -1,0 +1,3425 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "2c1850f51c42bf2471ce67657afd42a54f0f2a04",
+  "historyRewritten": false,
+  "backupBundleSha256": "fece7912fbabf663a3179c7d7f915e4a435538113b7733669eae071b3990cab6",
+  "beforeTrackedBytes": 1171340698,
+  "externalizedBytes": 1109616220,
+  "externalized": [
+    {
+      "path": "artifacts/native/android-sdk.tgz",
+      "bytes": 36108577,
+      "sha256": "4146851beb779b63c080057ec31c0a96ed2ca6a6a24c680e3eb4151a75b5f7b7"
+    },
+    {
+      "path": "artifacts/native/ios-sdk.tgz",
+      "bytes": 43686738,
+      "sha256": "514b0922ffefdcfc0a8be13969fbfa76361ad0a1d977a82bdc2b3a2d5a4fa281"
+    },
+    {
+      "path": "artifacts/tbc-kit-flutter.tgz",
+      "bytes": 15595700,
+      "sha256": "f782b21ff2aa5d069669ae080615bde083e45006e5536a98b11233025d322b7f"
+    },
+    {
+      "path": "artifacts/tbc-kit.tgz",
+      "bytes": 44021942,
+      "sha256": "ed8f1ef7d66154067c7676308dde28cd77d5d6ceacb16daebb3d2951a20eee3a"
+    },
+    {
+      "path": "packages/flutter/android/src/main/jniLibs/arm64-v8a/libtbc_compute_native.so",
+      "bytes": 7335808,
+      "sha256": "d487f7d3064c17524c894f6e9e1940a22f8fd613a2f470a6e68153098c8c2fa6"
+    },
+    {
+      "path": "packages/flutter/android/src/main/jniLibs/arm64-v8a/libtbc_dart_reviewed.so",
+      "bytes": 6152,
+      "sha256": "76552a6335579faac18e6f96f60023dd74acb037972a5825c994df6c59920792"
+    },
+    {
+      "path": "packages/flutter/android/src/main/jniLibs/arm64-v8a/libtbc_signer_kernel.so",
+      "bytes": 1605184,
+      "sha256": "38e00bbf434180fc1a37a03b9d08f00fd1f5baca3930af31f49c3309a9f982fd"
+    },
+    {
+      "path": "packages/kit/artifacts/keyless-native/aarch64-apple-darwin/libtbc_keyless_native.dylib",
+      "bytes": 4627072,
+      "sha256": "f4203d3643898fc49330d5178dc70dab0ab02df6cf8b2c97a44b9be01dba76e1"
+    },
+    {
+      "path": "packages/kit/artifacts/native/aarch64-apple-darwin/libtbc_engine_native.dylib",
+      "bytes": 7434976,
+      "sha256": "91e9abec833a98b4abc916503de58f677ebc1880d88e099cac0e0265e5930a47"
+    },
+    {
+      "path": "packages/kit/artifacts/native/android/jniLibs/arm64-v8a/libtbc_engine_native.so",
+      "bytes": 8264624,
+      "sha256": "ea6c0b224ab2e3be4ee7ebb579e4e29d30ab6ef811d15a61d6fa99176eef016a"
+    },
+    {
+      "path": "packages/kit/artifacts/native/android/jniLibs/armeabi-v7a/libtbc_engine_native.so",
+      "bytes": 6297524,
+      "sha256": "dd856d184ae2297b6b3f0e0d00aec78c3468ac4d48fd7c1a18e72038776c1a23"
+    },
+    {
+      "path": "packages/kit/artifacts/native/android/jniLibs/x86_64/libtbc_engine_native.so",
+      "bytes": 8669392,
+      "sha256": "0854e961b826b2ecce9ccb4eb6c596e7ad1f7f3a041bc1c2371e5cbdf80c67d1"
+    },
+    {
+      "path": "packages/kit/artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/libtbc_engine_native.a",
+      "bytes": 34081944,
+      "sha256": "128a8ba5d99ea076142c0a3035f874925846cceb0ab712a6542b281030435610"
+    },
+    {
+      "path": "packages/kit/artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/libtbc_engine_native.a",
+      "bytes": 34084232,
+      "sha256": "ec601540fdfc1d64b08488dcd6615595a8ec295f368a0a48a17fa4f41af97713"
+    },
+    {
+      "path": "packages/kit/artifacts/wasm/tbc_engine_wasm.wasm",
+      "bytes": 4357869,
+      "sha256": "686083cc06b9ac3e265f90f2ced0665f9e518394120f5fbefe365c647b2adeaf"
+    },
+    {
+      "path": "packages/kit/artifacts/wasm/tbc_keyless_wasm.wasm",
+      "bytes": 2357708,
+      "sha256": "703566ea81b25ed7a358a2942ff6f783fd4de8f718401ea336bfb79dc4151b93"
+    },
+    {
+      "path": "packages/kit/dist/cjs/api.cjs",
+      "bytes": 100772,
+      "sha256": "c324868f91b22ec40c92938a7d315eb442aea0ebc85b27921d60dc2e490f61e3"
+    },
+    {
+      "path": "packages/kit/dist/cjs/api.cjs.map",
+      "bytes": 64564,
+      "sha256": "77939a20b4ab197e0b688032c105100559c99b6a978d7695741e30fbbb6accbb"
+    },
+    {
+      "path": "packages/kit/dist/cjs/engine.cjs",
+      "bytes": 50,
+      "sha256": "445f1dacbdc146a0836ac011513e80058b20d0b5fa708b3a2b64d808ffc29ab5"
+    },
+    {
+      "path": "packages/kit/dist/cjs/index.cjs",
+      "bytes": 299420,
+      "sha256": "19747f326fc50234715407c83270fc4fb2f0e59c9cc789e6b2f4ef91250187ef"
+    },
+    {
+      "path": "packages/kit/dist/cjs/index.cjs.map",
+      "bytes": 195742,
+      "sha256": "44c35b21797a844bf39ad1bc59274b324c3022a5da701fdcd4b95fdda76c3137"
+    },
+    {
+      "path": "packages/kit/dist/cjs/multisig.cjs",
+      "bytes": 21632,
+      "sha256": "5111a7eda2bc788038201cbfe9a1757ff5602766e77f4a03debb4236b74717a9"
+    },
+    {
+      "path": "packages/kit/dist/cjs/multisig.cjs.map",
+      "bytes": 13943,
+      "sha256": "61e943bd6e02f4f13965f6155821552dbe9167e40c59ec6bdd7cb4bc3d24f4b7"
+    },
+    {
+      "path": "packages/kit/dist/cjs/rpc.cjs",
+      "bytes": 54155,
+      "sha256": "830af3b1313184639e802662488eb051255435e769e3516537aafbafb9480a37"
+    },
+    {
+      "path": "packages/kit/dist/cjs/rpc.cjs.map",
+      "bytes": 35166,
+      "sha256": "ff2730ec8cdfc5105e1531c3ee9b777fb90841a001198d1778ee99a0246b7dbd"
+    },
+    {
+      "path": "packages/kit/dist/cjs/runtime.cjs",
+      "bytes": 1610639,
+      "sha256": "eb4e118d59f050e975333fdaac899f674e65419d43ea1ad086ff87071f082e93"
+    },
+    {
+      "path": "packages/kit/dist/cjs/runtime.cjs.map",
+      "bytes": 1017585,
+      "sha256": "39b1819feed37dcc54c878fa764f6e3cff29f7bcc5115df5b047d481b4645421"
+    },
+    {
+      "path": "packages/kit/dist/cjs/shared-checkpoint-ownership.cjs",
+      "bytes": 1266,
+      "sha256": "f7f3bf1f06b504a4981164251369fc6fc74d633ee18b228904e9ad6386d09b74"
+    },
+    {
+      "path": "packages/kit/dist/cjs/shared-checkpoint-ownership.cjs.map",
+      "bytes": 169,
+      "sha256": "519613ef2e8f64bbefa7e242ac365f915de6bcbb3db7ead152d76851c5361992"
+    },
+    {
+      "path": "packages/kit/dist/cjs/shared-core-validation.cjs",
+      "bytes": 3100638,
+      "sha256": "b17249b96b2abe4d42e7fa2d1da45e6f24af171ea336b955668eeefb88656944"
+    },
+    {
+      "path": "packages/kit/dist/cjs/shared-core-validation.cjs.map",
+      "bytes": 1785530,
+      "sha256": "2a1ff0cd7a9fae0d3149ce2592f1f8500ea9ca302a9e04f3c3d27b251e5d7782"
+    },
+    {
+      "path": "packages/kit/dist/cjs/shared-provider-validation.cjs",
+      "bytes": 1835606,
+      "sha256": "89a85e041b41018af5a68bf2876fc4912b7369878792a8d0adb8b55af493622d"
+    },
+    {
+      "path": "packages/kit/dist/cjs/shared-provider-validation.cjs.map",
+      "bytes": 877138,
+      "sha256": "9630ddfc865f1a3f461c619d39cfad33a544dfaabbc239b862608a4113538c78"
+    },
+    {
+      "path": "packages/kit/dist/cjs/sqlite.cjs",
+      "bytes": 50,
+      "sha256": "602c07e602815a51dfcf4778041c9d5c025498bdd02de3f634f42bc118ac9108"
+    },
+    {
+      "path": "packages/kit/dist/cjs/testing.cjs",
+      "bytes": 51,
+      "sha256": "3d7b7c16b592253f7fbe3621a0210685296df8ac730b269303d5073ef944a380"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/adapters/nft-code-scripts.js",
+      "bytes": 3452,
+      "sha256": "c3902a9a33b0b4d14a69090048fa9b97fddb0f6451a8af7bbed5246c0ea59917"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/adapters/partial-sha256.d.ts",
+      "bytes": 115,
+      "sha256": "664c5a76c937d8fa61155e31e2a3d6c337e5e775aa54e752bf9794ab2224afe2"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/adapters/partial-sha256.d.ts.map",
+      "bytes": 178,
+      "sha256": "693459c75ec688bc8c31e062c4f553c6fb94c01b89793dada4149d9a44f6feb3"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/adapters/partial-sha256.js",
+      "bytes": 225,
+      "sha256": "2b64d16069ccba8b5769acfe16d332689cb5ffc9535dd143e2a1ed1f477e5ab2"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/adapters/partial-sha256.js.map",
+      "bytes": 255,
+      "sha256": "4e2dd1335204129986777da242d8f61bd77d5f8ce72537d98e5d9332b8d5fe1e"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/adapters/tbc-lib.d.ts",
+      "bytes": 179,
+      "sha256": "bc717fb723f30b33974c4526e6d582e9766a47701f96fa51aee0a68341f3b82e"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/adapters/tbc-lib.d.ts.map",
+      "bytes": 262,
+      "sha256": "70cc4f372792f8734ad1c9d7cea18da37f9add8c4ff2ea755b1cfc37b2c30f02"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/adapters/tbc-lib.js",
+      "bytes": 753,
+      "sha256": "93835016ba610f6076a7e9a41b45e337db74fc92109286a2a459b3fd04c7a1d6"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/adapters/tbc-lib.js.map",
+      "bytes": 238,
+      "sha256": "ee921fb5a6f85f9ade3465330fe28035ba1127288eae907ea3187476c2fcf53b"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/constants/chain.d.ts",
+      "bytes": 164,
+      "sha256": "9f3065f898bb40c1f55dc84f564fa5714aa0f933631720f2f5238822a233a02c"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/constants/chain.d.ts.map",
+      "bytes": 210,
+      "sha256": "a99190a04c37d4b7acb2c4dec10b3ea6591fc17b5d0517dbdb378117061778ab"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/constants/chain.js",
+      "bytes": 351,
+      "sha256": "e2a1029e3b3f86c9ec733de1ad6cdd3c626b6af4d75dfadafca7fbc796e0fe6c"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/constants/chain.js.map",
+      "bytes": 277,
+      "sha256": "f13e709b59404d9e9f97153bed03f68dc2af01e7c88f5bd76ee4a0aafdd24a6f"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/chain.d.ts",
+      "bytes": 514,
+      "sha256": "ff6f1222ddb63095bde09da495fbc67dc4482809b9a10cde2f398559c29b3287"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/chain.d.ts.map",
+      "bytes": 395,
+      "sha256": "6425df7d609b623b824760768ae489a196309271a20c3131a31e15fb43b718ea"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/chain.js",
+      "bytes": 1598,
+      "sha256": "521222b702e72a318041b1961869c261034be4c980fb5276c1dc7ab45fae4304"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/chain.js.map",
+      "bytes": 1594,
+      "sha256": "8613e5f40d54eb0ec1ae0fdf03a9dec272e48404657d911509f35a0f6b8a647d"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/input-utxos.d.ts",
+      "bytes": 266,
+      "sha256": "d4cb54e8ccbd94a2630deb0f1f87eca31b63a228411bc8ef6f9b401a6dab12f3"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/input-utxos.d.ts.map",
+      "bytes": 313,
+      "sha256": "5706c58d9526adb30ac239eab27c3e86e53f1d110a09d453e1d68d78c457a234"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/input-utxos.js",
+      "bytes": 2766,
+      "sha256": "e89e3465e0d6d0d08b9de732176fae902002e0d4b75356a1a09b337be34c93b2"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/input-utxos.js.map",
+      "bytes": 2523,
+      "sha256": "42962dd7b8085f28459ba64886be3c126a6eaa80aab802e8fb687ab5561caf61"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/public-chain-compression.d.ts",
+      "bytes": 384,
+      "sha256": "8623a337a0a00a6d89d8ec44d787a3ee876878799747a803442c5e1786f93ca8"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/public-chain-compression.d.ts.map",
+      "bytes": 392,
+      "sha256": "30096c2a6bd8dd8ae6ebb7167c7cd233a31273a98fa815da55776add9a12d22c"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/public-chain-compression.js",
+      "bytes": 3459,
+      "sha256": "fde32a65e68f4532f3edb6ef5b4bf27a91420c32659e2588401f249bcc6b25e0"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/public-chain-compression.js.map",
+      "bytes": 3680,
+      "sha256": "6a23361f93f351ce0e126c88dff014676e668c4b288f5b9c8d176c6e6fb8e977"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/public-script.d.ts",
+      "bytes": 278,
+      "sha256": "54450987120725ed1b9edcb1cdd58de462f196010720b7123ed47360dee00858"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/public-script.d.ts.map",
+      "bytes": 278,
+      "sha256": "95a1afb4199953c33ecb8f3ec2020c3b0ee8575bd8b3acf27aaa738a2ab7fef2"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/public-script.js",
+      "bytes": 3532,
+      "sha256": "f5f6bbe3769e04684635dcb62846543f08f0c94f0b57c8ed2dfce4ccb8b52a29"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/core/public-script.js.map",
+      "bytes": 3941,
+      "sha256": "586941057d4c9bd9c15daf42174227d2a26e4d808711167657b6b37dff8050ac"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/decode-tx-raw.d.ts",
+      "bytes": 226,
+      "sha256": "d97135f04430b2d746088700d470523a2e06ce154f4a6fa3d96629758cdc1a8c"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/decode-tx-raw.d.ts.map",
+      "bytes": 277,
+      "sha256": "f40ed05430945f464c6fdfa8c48c408e83a1f31af14eac4e11f4bff7da43e10a"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/decode-tx-raw.js",
+      "bytes": 17006,
+      "sha256": "ed7389e42b8fc7131416ef87597d4163dd676c71070247f394b803ee310b1c3c"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/decode-tx-raw.js.map",
+      "bytes": 15703,
+      "sha256": "68ec7a8bf21f913e21db169a791a775dcacf0e9564bf5a62246064b834acdaf9"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/index.d.ts",
+      "bytes": 1046,
+      "sha256": "e070fd75c134afab455b2268fd7f91470f1e1f89d20cd1188d10d759068a2f2a"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/index.d.ts.map",
+      "bytes": 762,
+      "sha256": "dcc31c38ed6f58393c80190ac9ae890b019333599d934c35f89f3197e99e4f90"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/index.js",
+      "bytes": 247,
+      "sha256": "172d3b50b0d05271e005b407b45b67452676e007ea204e0bb1c639937483447d"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/index.js.map",
+      "bytes": 201,
+      "sha256": "d79266090de6b161bb2babcdcf6b2f867ab9237adbcd3de39b88b7b29bdd8e92"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/ft/index.d.ts",
+      "bytes": 1368,
+      "sha256": "4149ad6d782c879ed1efef9a89af76946b1184ea3320a8a64945caa4d7227650"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/ft/index.d.ts.map",
+      "bytes": 1152,
+      "sha256": "dec9098eef6e34a793bf87aeacb5333f5f6bc170d96371ec7f9e8c1ea92bf718"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/ft/index.js",
+      "bytes": 23458,
+      "sha256": "77be48610a38a73c8ba041252bb1fbd86f8da66e6d5e78f03123426b90f791ec"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/ft/index.js.map",
+      "bytes": 22275,
+      "sha256": "56533c5dc733aa881318394ba49dda7bb67654b542e340ed16ed0b4c04ce1e6c"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/index.d.ts",
+      "bytes": 326,
+      "sha256": "1eb808d47ddb8c32d06ef577f90239211f80d599946a546cd8a19115836f59d3"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/index.d.ts.map",
+      "bytes": 334,
+      "sha256": "41764643a6801e6b488b4e97cebc2a48f1130d3c78c538645bea508d987da194"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/index.js",
+      "bytes": 2376,
+      "sha256": "652923960e7564122b20e70579e71f7bcae0cbd6630da11efacfc721e8b6e455"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/index.js.map",
+      "bytes": 2209,
+      "sha256": "055ea0bc1e1b03f3f18729bbf50cbabf706091565128f1cd4fb70a6edaf8e5a9"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/nft/index.d.ts",
+      "bytes": 639,
+      "sha256": "87c77f0361214d36ee3da8ae2ad37658062ae1cc4056ea4964b31721eafa6be8"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/nft/index.d.ts.map",
+      "bytes": 553,
+      "sha256": "12c9d70b50ca664f6177364aa9f60d8b9f506826b22a1b4c0856890a94a2b119"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/nft/index.js",
+      "bytes": 14526,
+      "sha256": "cc55e944b9bc83d18d7f768e7e14caf3609f2957419922d35dd46fd5079c7703"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/nft/index.js.map",
+      "bytes": 12927,
+      "sha256": "d7e26e7ed13d7273e48dc78f6535c57fa98703123afc51cc0fbcf08e0a137dcf"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/actions.d.ts",
+      "bytes": 824,
+      "sha256": "152cc7d8a01df4eb9e59b6a8ea08db236ef3b9090553b667965bab881e1c7233"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/actions.d.ts.map",
+      "bytes": 543,
+      "sha256": "ba72fc650c37d1cc0f0debd6a604e075ae288beafc6b6dcc2050842e9ce9efc3"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/actions.js",
+      "bytes": 4652,
+      "sha256": "e28d4449a94d2fc362cbdbdd3d7740beddfff7649f9c94dc5d1ee1edf8bd9b68"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/actions.js.map",
+      "bytes": 4216,
+      "sha256": "e7f98e7af505beb44787b4fc615a142de5b745dd47b01d13889c9a797c3cc053"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/facts.d.ts",
+      "bytes": 658,
+      "sha256": "eceec8220a3b1722137f57c2a4587696a15cde1b0cbf7a3af9117d97e15cd62a"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/facts.d.ts.map",
+      "bytes": 615,
+      "sha256": "e0b122123948273fda86282e35142308685cfbcaa41a6b72d827831b3953bf7e"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/facts.js",
+      "bytes": 3488,
+      "sha256": "940fdcda4b58c6f701abad125b0e0c5b70f59415289c0a8d7f83d74425d15de8"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/facts.js.map",
+      "bytes": 3810,
+      "sha256": "20254fea01fb68b25cc386f7cfdfc099b9b50e98070b951fb373d898ab107858"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/identity.d.ts",
+      "bytes": 271,
+      "sha256": "9fd60f952b561a1b9512f838003a8699b1e730e46f5e6f65f5ae5a9592d528e7"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/identity.d.ts.map",
+      "bytes": 291,
+      "sha256": "87edd0ff8d8b10df702f22be0c76feacc7ffa15df4e4f693d5b3d2528f091861"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/identity.js",
+      "bytes": 1695,
+      "sha256": "99ebc7220326795fa338417bcd7b7c1e90e4059b4825f67af9568971369570aa"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/identity.js.map",
+      "bytes": 1533,
+      "sha256": "8c743c2960bb88cdd6cac3615a2834001d60098705c174eb74ea030fff796b97"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/index.d.ts",
+      "bytes": 1392,
+      "sha256": "9ccb98edd861f657be9ab4da153a2215a26914fe81444fa06450e9d5a6d03088"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/index.d.ts.map",
+      "bytes": 934,
+      "sha256": "c3011aae29b4e0742549fd516237ff2a01efd9c4e4633ef14c900e4674c47fc1"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/index.js",
+      "bytes": 1877,
+      "sha256": "920698cdcc3f9b51b4b1c6cb49bc58c2a4ae553d890e4a81272bed18a6e7b96b"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/index.js.map",
+      "bytes": 1436,
+      "sha256": "9994beb4548e3d2751a60264c93ac293f2691559de877dc0beb0093cc4a9ed69"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/settlement.d.ts",
+      "bytes": 1183,
+      "sha256": "4b0dfe464fe538b5692b9c91fb45148374d76041025ffbe74ed7c7a24604c0fc"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/settlement.d.ts.map",
+      "bytes": 959,
+      "sha256": "a491f4befb9ca6bdedb7806a91d08a6968ecb01dae34fa734a4c6b0831c80007"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/settlement.js",
+      "bytes": 14086,
+      "sha256": "8803fc10b14111d76c29e14c0ba6ba18e25688ad3aeb1bf999cc5e61f5e55bef"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/settlement.js.map",
+      "bytes": 12649,
+      "sha256": "0c627cea714459b0f05ff7ed33e6c70df58e831754535057408ded056437d13c"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/types.d.ts",
+      "bytes": 3325,
+      "sha256": "22f6ac8841efc2f01b6766d8d0ed9d9e886beeba3c5979589067d8390bae0b12"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/types.d.ts.map",
+      "bytes": 3081,
+      "sha256": "a3697617b8f73da5a9031c621d4732ae792ccff4ea85e0f1902197ba4e213d18"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/types.js",
+      "bytes": 44,
+      "sha256": "01ae2a5b120382f9a648ced7ee8507493a134f216d100fc61600c6c9738235d2"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/order-book/types.js.map",
+      "bytes": 129,
+      "sha256": "1bb35414accc1dcdde2bfa0b5c10a4f9bd3faca8179a7ea75202ad65a5ed2ee6"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/piggy-bank/index.d.ts",
+      "bytes": 566,
+      "sha256": "b27b92423715b654e2042e663d0dcf8ace205c311c399f8363210f6729cb0512"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/piggy-bank/index.d.ts.map",
+      "bytes": 494,
+      "sha256": "baf7acbfa2a0f42cb5cfea9df60e87cf941fcb4101e4cf20121ede279141a2e2"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/piggy-bank/index.js",
+      "bytes": 3582,
+      "sha256": "7694d2c4cd84b7146407bdbc299ff0488f8a9f9e843c5694cb1647fa5a889dee"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/piggy-bank/index.js.map",
+      "bytes": 3135,
+      "sha256": "d8b12c93999b0d7c779d0b5ec5528e5481d392e061f6a2d8cf0e0a41675063c9"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/actions.d.ts",
+      "bytes": 2063,
+      "sha256": "976de80ef42e2da9b8df7d0265474e456dd2d7628b1ed2f50734edc871f707cd"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/actions.d.ts.map",
+      "bytes": 899,
+      "sha256": "dd83fddce1d38e78c41f30eeb524734471a0038680f72a7f87e5266d4c632251"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/actions.js",
+      "bytes": 2918,
+      "sha256": "4aed04eddd2f43b204eab86a45fbb861eb3b19eb5206f90f68bbe8001702fb8d"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/actions.js.map",
+      "bytes": 2130,
+      "sha256": "b46f234277972b772922998378eda4114468ed19fc0c7e2884f41714a8e2a1aa"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/amounts.d.ts",
+      "bytes": 913,
+      "sha256": "cfcaaf45f8fd3bd79ef724799daa5acebe9e1b5e18f636a5e0197fe84022f341"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/amounts.d.ts.map",
+      "bytes": 662,
+      "sha256": "e2e91c4622a64b77e94734f591e99243bb84e5496514964023edc679f031cf4c"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/amounts.js",
+      "bytes": 2725,
+      "sha256": "c8ff407160645b16a45334e006e14e915e3744ba4bb55ff2b75eaf867a3377c9"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/amounts.js.map",
+      "bytes": 2454,
+      "sha256": "baae6c801d6d09b083422222722ad210d33b3f015e8e1ceb670ab5c617281913"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/constants.d.ts",
+      "bytes": 971,
+      "sha256": "b263a11a3e6772af8a463646e7dae6856703ecec7e23e2e831b131a6a9a3bb25"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/constants.d.ts.map",
+      "bytes": 693,
+      "sha256": "02684054a21a7854538b41e2d8f9c602775c64617ebf4c144170394c1b069025"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/constants.js",
+      "bytes": 1484,
+      "sha256": "3c3d52218cb606c31c0bd4146a9667cfcf0244919182892a08655a5c2a108f56"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/constants.js.map",
+      "bytes": 1045,
+      "sha256": "7d826e517331dd8ee6ee9376dbc40a2559f63aee89c59e71214bbba754037063"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/facts.d.ts",
+      "bytes": 1015,
+      "sha256": "15cb08504ce1eb83a7a7090b0153d1f2e79a8399b4320b04fa9ccf70dc332676"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/facts.d.ts.map",
+      "bytes": 844,
+      "sha256": "1f0c01732777ce90dd585f95783d105992f8668de801780a07fbacd2abe679db"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/facts.js",
+      "bytes": 4309,
+      "sha256": "555f4b2a5f9d9b64ca715edff7504f937c5b9710b3eb1ad6e35d65c64ac95274"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/facts.js.map",
+      "bytes": 4515,
+      "sha256": "c1c5ad335702078265a023475c1d71e114e4493b7406e60e11489e9c75497df6"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/fees.d.ts",
+      "bytes": 1134,
+      "sha256": "e8ad2bc3a2739079875e00a11ccf2309753b40608c9a93bf67d506d1976577f8"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/fees.d.ts.map",
+      "bytes": 810,
+      "sha256": "f9588d8b27f219e4cf5e6858791e61e2d7d5c85e1abf4d591913ee74eac3a4f3"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/fees.js",
+      "bytes": 7537,
+      "sha256": "de293094a809eef570592e631c807d6e47f872e1223aeeb6c4fb8a0bc4e25391"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/fees.js.map",
+      "bytes": 6803,
+      "sha256": "c8817dff8e565d729cfe5a69e432e6f43412c56441224a12836f1dd5236e0173"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/index.d.ts",
+      "bytes": 237,
+      "sha256": "601cd3998cf5e59dd49d2772e995e339396bbb3e1ba9d502a4b0f0bf7a2d8e5e"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/index.d.ts.map",
+      "bytes": 273,
+      "sha256": "57d0eea5ed63838f9c164d5dfad361b4cc243bcaf2c256312d5a9e8ea2326dda"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/index.js",
+      "bytes": 780,
+      "sha256": "d12c4b5212cc0504db89bf7dae1c61a9642a7c4487cdfdbb853203cce54b4ab5"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/index.js.map",
+      "bytes": 764,
+      "sha256": "45e9c6a8e1b11c9009699a235835ad57af1e3ff340ecc682653195b253d357c1"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/movements.d.ts",
+      "bytes": 462,
+      "sha256": "35894e879475c54f8bd07cbe7c20e3801b029709e9bf142627f2c36f9f2a33ad"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/movements.d.ts.map",
+      "bytes": 456,
+      "sha256": "a55a74ad45831795e1f9f815d386ff792c47415e13d9175e075462fe1877663d"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/movements.js",
+      "bytes": 40486,
+      "sha256": "90f343ba5ed64467b13909a5863c0ab3b6fafef49bbc0db7e2bc9e0ec9a72bce"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/movements.js.map",
+      "bytes": 32874,
+      "sha256": "a0f96dc7c6cc3b4aefd55b56d76b636baca626a12268753dee944789d8202556"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/selectors.d.ts",
+      "bytes": 3292,
+      "sha256": "2a50c03234b831bc482af4d0d755f5ee5350a16d7a8677f51491caff7ef128d1"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/selectors.d.ts.map",
+      "bytes": 1900,
+      "sha256": "e833724e8957f6614b6d6d45d174afddbdb4ce61a1d743229767164f41b7e6f0"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/selectors.js",
+      "bytes": 7542,
+      "sha256": "0b1e2428e56a6a7fcc2cf00dd8176b49c7a7ae05a3a92d1370e58fae4d9cdb35"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/selectors.js.map",
+      "bytes": 7392,
+      "sha256": "f537ff77086f45b938be2e0c8c6be528fd071097ce94fd3a5d261f0271f8e885"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/types.d.ts",
+      "bytes": 1227,
+      "sha256": "765f98f81d6dd714e218c5ec86eb66b4313248ccc6800e483bbb502edbf4c174"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/types.d.ts.map",
+      "bytes": 1231,
+      "sha256": "1dccfb6855819b53671b133429d58a8e1b2481036e2c4a1b7d3fc52ee0db4247"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/types.js",
+      "bytes": 44,
+      "sha256": "01ae2a5b120382f9a648ced7ee8507493a134f216d100fc61600c6c9738235d2"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/pool-nft/types.js.map",
+      "bytes": 127,
+      "sha256": "54c9ee7edac05d70228f83ff38485bb9df0eeca24e2b66ea865bb8ec3a12945a"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/tbc/index.d.ts",
+      "bytes": 145,
+      "sha256": "0f9891fdaf0f68590332ab7b70c2d1ca6381add9f06e2423ae3581ce3c8581ae"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/tbc/index.d.ts.map",
+      "bytes": 209,
+      "sha256": "ae29d4057229db131a8f5d34746a856e672067a2f27188e38e8af51331466f88"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/tbc/index.js",
+      "bytes": 751,
+      "sha256": "3cde285e8ff00fc32c0452d48658d68c0ebdced705baca026c7131e283391ad2"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/tbc/index.js.map",
+      "bytes": 697,
+      "sha256": "3edb9f3775c698b93c62c9222fa3da44918f7a737b9a7bc4b650d04af679bc72"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/types.d.ts",
+      "bytes": 416,
+      "sha256": "3eb86c9e909a67859ebfa8ae6cb8f33d22be5934eb7bf0187b7e021da90aa02a"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/types.d.ts.map",
+      "bytes": 474,
+      "sha256": "692b787efcede4bcced37d0f18b9ff093d00d54f325b6d37a53b6ce7a2d9a854"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/types.js",
+      "bytes": 44,
+      "sha256": "01ae2a5b120382f9a648ced7ee8507493a134f216d100fc61600c6c9738235d2"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/protocols/types.js.map",
+      "bytes": 115,
+      "sha256": "4d49d36b2e39277b060868f7bae34bea532ae511052737a309d37f71bae46595"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/render-transaction-description.d.ts",
+      "bytes": 478,
+      "sha256": "d16a068d68ba1e083b92db9f8cd88fd14b381d3cb97e522830bbaa71a7354106"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/render-transaction-description.d.ts.map",
+      "bytes": 301,
+      "sha256": "6270bc2cf3489ad5c94878fdd5183f5cd7d2f8af1c43750ceaf0f96373518f3f"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/render-transaction-description.js",
+      "bytes": 1376,
+      "sha256": "945284d0d5d8f7871216f8ed13cc645113c82ba059836fd8fe52080d2b5c172a"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/render-transaction-description.js.map",
+      "bytes": 1070,
+      "sha256": "21560a2846a06494bb33b9edb41defac39d130b30b9c9db9a92ebd1b99395aa0"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/classification-description.d.ts",
+      "bytes": 662,
+      "sha256": "61fa45ffa39478f6c127c9494e97c17da24302e26d48b44834da47611cc51df4"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/classification-description.d.ts.map",
+      "bytes": 634,
+      "sha256": "35874fbe0fa984a6d3c98600adc06ca47c66b1afa22b3948508c44ac703d76b7"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/classification-description.js",
+      "bytes": 27037,
+      "sha256": "df8b7b6c24dd2f0e1a45cca6f76d600995eff7ae37893e6d3e0750f159c9fffb"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/classification-description.js.map",
+      "bytes": 29315,
+      "sha256": "0f87a6a31b67a5d49ee08d59036859baf40c3d007fda647e7e47dc146eb491c6"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/classification.d.ts",
+      "bytes": 854,
+      "sha256": "de5d38228b405a3d2a0cba05ecd9a10cdaefe81a1d78574d519c66af48d995ed"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/classification.d.ts.map",
+      "bytes": 811,
+      "sha256": "e783c473ab8620a5597521cda382550e4a756e7d06b605bfaedc9b0a6f5ce5fa"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/classification.js",
+      "bytes": 18193,
+      "sha256": "d2390caac2e809f6859375c3d3a8736bc76333cf0699195e3e8c943f9ea023fe"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/classification.js.map",
+      "bytes": 13131,
+      "sha256": "f826ae0a1652309757d8594e0819feb9fd41fc6f9872795917c3c29e6df19224"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/index.d.ts",
+      "bytes": 1125,
+      "sha256": "cb79ecaf5147ea0d8a7b7ca1df2a7e804bb06872d76852757b153023c087db18"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/index.d.ts.map",
+      "bytes": 926,
+      "sha256": "42eeb5b56ed4cbd25116c4dabda534449ac17385fa8a0791ac991fb2bbc504fd"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/index.js",
+      "bytes": 39294,
+      "sha256": "8c59d6f59ac4ca7f4c95397659e67f2faa383a0f55e00c90ca1bad12209506c8"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/index.js.map",
+      "bytes": 38061,
+      "sha256": "d6aebe446fca33e20c116cf7645adc2f03121fcc22c068bbc470d4c88a3b752d"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/semantic.d.ts",
+      "bytes": 717,
+      "sha256": "c3f126154ca0d6eb4043dd6ea0b52e41fedf3ff5c210db7eb78e39ba8b3af2cb"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/semantic.d.ts.map",
+      "bytes": 635,
+      "sha256": "73ba53537c1765f00c3751e2c287d7249578da91419e39daceb3285546a77f7e"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/semantic.js",
+      "bytes": 42376,
+      "sha256": "789892f1c1ef78794c4830b9606acfda50d08618c9010abc187e7d923b97621e"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/result/semantic.js.map",
+      "bytes": 35261,
+      "sha256": "bfeed9b32615457b9d6251b47b20971671084ceb19b7bda9a63f9fa053ca39f8"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser.d.ts",
+      "bytes": 161,
+      "sha256": "919a846f627a3edda278b3cb4a34781a46b81970e010be15d89ddffa2b0da24c"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser.d.ts.map",
+      "bytes": 221,
+      "sha256": "15fb73d801c184740ea52bd59fe857aac0bddd57ebb84b749a574af0c09c1e84"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser.js",
+      "bytes": 7407,
+      "sha256": "5bd2436c3dbba0019c23e895bc143cf6d1732565dab2a0a912b378dd273d1c20"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser.js.map",
+      "bytes": 6394,
+      "sha256": "8f67135ea2c50d95d79eb6cfaed3bf61f5bd1c4598a16d462c07d13b8a1f91bd"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser/contracts.d.ts",
+      "bytes": 559,
+      "sha256": "d3d749d3c116aea556a5c9e132bb99bb4d1ba27ba2f6517b79edf4cec9fe89a6"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser/contracts.d.ts.map",
+      "bytes": 502,
+      "sha256": "2910d349562753154597fd93c83ef4b3b83d258d2181f186b715496275038f8e"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser/contracts.js",
+      "bytes": 4849,
+      "sha256": "84b973de3c07a9bae580dee007c0867e571fc0f7b7cb3c932b9842b2a63cbc8c"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser/contracts.js.map",
+      "bytes": 4365,
+      "sha256": "73f1f6ba7b7cf257d235ff0408f7784012a8c12d356cf2c035170dfe343a30bd"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser/op-return.d.ts",
+      "bytes": 428,
+      "sha256": "dbde4437286bace07d9b2949af0c98289f4377799658935c3368bf7bf6266b6f"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser/op-return.d.ts.map",
+      "bytes": 462,
+      "sha256": "26c4492b2160027d458915ef24e7fff8d613949f6513555f85f1a7ab9bd529da"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser/op-return.js",
+      "bytes": 12699,
+      "sha256": "bf8995735af7aa7a7dfc82945016d99fd701ea1a9025411f8ee2b717fc34dbe7"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser/op-return.js.map",
+      "bytes": 11848,
+      "sha256": "4cdf8f966e11fd7329fec35c259951d4bdebd2a8f5efcfce209e3cce65a76309"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser/origin.d.ts",
+      "bytes": 212,
+      "sha256": "2cec167cc68675900bcacbd25eccf28150e1d988d17c2ed8ed937fe2f223f53d"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser/origin.d.ts.map",
+      "bytes": 286,
+      "sha256": "40d051bbc7108d3057002a807f076e8a50e927f9edaac6ea546f091e34ffd7a4"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser/origin.js",
+      "bytes": 2822,
+      "sha256": "5aebbf96c57f1903f6bad542ff2edb16f26fe4d88e7ae509f05b45c84921ef21"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/script-parser/origin.js.map",
+      "bytes": 2949,
+      "sha256": "b11f2dd2e3c56239e74cf2dfbc5e6344a59267d59ba11f166cf8024c82175ddc"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types.d.ts",
+      "bytes": 1067,
+      "sha256": "35775d582d8e66c350f4d9625dbba3a3deb36b7f58e6afdefe6f19bd6d632089"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types.d.ts.map",
+      "bytes": 788,
+      "sha256": "196f36a98368c3942fbc446e171c6b93cb826ef7d5300246a04f6de7a53f6bf7"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types.js",
+      "bytes": 244,
+      "sha256": "fc52d0e924cee1217ab854e718f279a6a7a6ba721ca7eca06f0ef0d7379c855f"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types.js.map",
+      "bytes": 201,
+      "sha256": "5c6d73cc52c40408fc1dc058a6a3286801f62fdac727a48da7a336e08a805dd4"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/protocol.d.ts",
+      "bytes": 5484,
+      "sha256": "dfd716fd4df1af2d29d34153838db16b730d3944903d9de4095136ba54775397"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/protocol.d.ts.map",
+      "bytes": 5508,
+      "sha256": "5d2c87b7bc44159e26a24f0dbab70049e8dd06729a0f5d8df217cccc7b721d34"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/protocol.js",
+      "bytes": 47,
+      "sha256": "b5ab69287989be4a830cf388cb3030d92eb9659a48f3e37ce718ba7282bd6417"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/protocol.js.map",
+      "bytes": 117,
+      "sha256": "c1c78eed92414d5cbfd9fdd522764970fa4d7212294be85322a96f93bf60efdc"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/result.d.ts",
+      "bytes": 7965,
+      "sha256": "2bf23d74474ce45eaf5cf2a601d53df141be5a6531237f69a4768d865f7e1dbe"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/result.d.ts.map",
+      "bytes": 7733,
+      "sha256": "62616632f66196e6f3499f3acf854ddf029c08b7e6b84f1a1b2893e1e9585182"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/result.js",
+      "bytes": 45,
+      "sha256": "10223ee8f4afabc68031ed705a6ab15fe1328c0bce3bd537e4961873119478f6"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/result.js.map",
+      "bytes": 113,
+      "sha256": "bca1a5f1e6838569d62a5898b0f24689067aa62beac68e24088fbccfc3b496e9"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/script.d.ts",
+      "bytes": 5343,
+      "sha256": "8dc8274bb7c7417146ee0b4efe25f558c8754c9fc52a5aae349cd97243c97df2"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/script.d.ts.map",
+      "bytes": 5101,
+      "sha256": "eb0b5ba7d9c72634a0cb7c7cae0f17c3921803be83ea83bac5efc0ebb864bd76"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/script.js",
+      "bytes": 199,
+      "sha256": "f1ec47fd699022c032f456f0d439d85cef73b1e5b2bee74857ce3907b9bfe48b"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/script.js.map",
+      "bytes": 275,
+      "sha256": "96842b12674875e8dac227ab5b22d9ad5af77a586c1ee90397927dde57fec97f"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/semantic.d.ts",
+      "bytes": 2765,
+      "sha256": "46e70a43e840c34ad149c455d7d83790b02b65c906367c00393bf5d1e30d35c8"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/semantic.d.ts.map",
+      "bytes": 3011,
+      "sha256": "60eeef258f1787ffdbd0a600f8f2d8a173d9996d666f90709849de3a52c39e78"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/semantic.js",
+      "bytes": 47,
+      "sha256": "8d7d33dc5a7bf11bbee911fba032a95eb54b571bee63664b4f93391b2ec7aaa7"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/types/semantic.js.map",
+      "bytes": 117,
+      "sha256": "1ec3c5cea5ebff2e54d1ddc687f7a04d23aae5700a483690f2cdd834bea271f4"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/asm-converter.d.ts",
+      "bytes": 457,
+      "sha256": "7b8bf19c601a40f82d5d9bd2a46b5e38cf3f54cfd35d84b9841fd75ab29a464a"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/asm-converter.d.ts.map",
+      "bytes": 461,
+      "sha256": "447860cd5ecb9f6f4c626df5904e7cd4e457358279145f0986821fc85442a7a0"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/asm-converter.js",
+      "bytes": 3509,
+      "sha256": "b7349bd0f5eff6bcc34b754349c18d66bcf7fa07f35f4e9c67bf2bb0b17974fc"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/asm-converter.js.map",
+      "bytes": 3516,
+      "sha256": "b055c6c685d28224e780395e28207820e9c8480dcf748aeae53245da2457d856"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/binary.d.ts",
+      "bytes": 202,
+      "sha256": "fca2a00503be6d1be1eee9249c280fb18a6b77d9716f8525b1041ceeaefc545b"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/binary.d.ts.map",
+      "bytes": 254,
+      "sha256": "2e0265dd2df7ac458df4957766f3ec04f95185155cbd8a66ee75a52a3f58d564"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/binary.js",
+      "bytes": 649,
+      "sha256": "8c140e8391d270d5d4effba99ce291bd1b45a6e1c93b3a331ec05ef50cf4eb39"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/binary.js.map",
+      "bytes": 689,
+      "sha256": "12818e5ccaaed3e60b6308f7f7020cac183dac97b6eb1e78f8fd74335afa68ab"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/multi-sig.d.ts",
+      "bytes": 509,
+      "sha256": "af33870568032a4b0cd4372f9cd96b0d493d27c10084aae93821dd18944698ce"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/multi-sig.d.ts.map",
+      "bytes": 506,
+      "sha256": "9c02ba965bd145e3f49ad5792340c62c354eea181677c4c9e6cc1631a2e98b6b"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/multi-sig.js",
+      "bytes": 6212,
+      "sha256": "384e568e3535fca23d57704344a3eb11dfc0f8ef5af2eb7034bdd982d49d4364"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/multi-sig.js.map",
+      "bytes": 5550,
+      "sha256": "89b5278a2121fb404b8ca4a4cc707a9141d3bb2ae503e526bf6bf8d4737ff9ee"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/token-amount.d.ts",
+      "bytes": 239,
+      "sha256": "4dac245d2c8cbaaeec7525d55fb5bfa266a68566e56f7df11c9f47049f5261c7"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/token-amount.d.ts.map",
+      "bytes": 297,
+      "sha256": "3705602dfe5bc232e2ce89961f8fed6f60c58cbc441bd1b1348463b5e7abd924"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/token-amount.js",
+      "bytes": 1838,
+      "sha256": "5135d75800fe222ee7c83e7c459748e06b7371a09fcb3b9c2c7ca9716d124e11"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/utils/token-amount.js.map",
+      "bytes": 1688,
+      "sha256": "06885f7830ea2fcd787275e0e58b61554b74d3a17722c256f60796ae6df8d17b"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/address.js",
+      "bytes": 17902,
+      "sha256": "443948e6a97839effbb6e94db58ced345e4afa7ce2dbffd0e610eb70c74aacc7"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/bn.js",
+      "bytes": 85701,
+      "sha256": "3f7825048764e24e9105c8ad7d527c43ff41cd903366f5a3d5b73c6bb78b31be"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/crypto/bn.js",
+      "bytes": 8480,
+      "sha256": "8db4fdf948adf7e5699f895516bfa143a7eccb66f254ee361d518fc5a38a9b47"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/crypto/hash.browser.js",
+      "bytes": 5033,
+      "sha256": "4d31aced5c62059007054a7a69b3533e4e74a1ea6e0dfc2d7703c8227d67cdfb"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/crypto/hash.js",
+      "bytes": 47,
+      "sha256": "8e889f1a42f4c9637de00d0493af2b685724e0640abccdd893ca744e8799a4c9"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/crypto/point.js",
+      "bytes": 5475,
+      "sha256": "df5cac4e36cca932706e46fb6e5484a98dd392f253160245cceafc1c08f7a982"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/crypto/signature.js",
+      "bytes": 9685,
+      "sha256": "ecb9bf3b7fe9b0750a226dae0aba75867c20f107765465cf3cae14cb9569ad67"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/base58.js",
+      "bytes": 2617,
+      "sha256": "b9a1f2ce84096e2370bcdad06b05e933696ec6dbbb290212971a6ebc38fe094d"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/base58check.js",
+      "bytes": 2917,
+      "sha256": "d82362662027e76915b9c39d5374776158ff5acc81210fb50cd6bc9db9cc5d06"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/bufferreader.js",
+      "bytes": 5272,
+      "sha256": "971784e552737a6099eba48da8fe57929c4225af8f2cf080fdd1e2650ba29825"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/bufferwriter.js",
+      "bytes": 2706,
+      "sha256": "04331c95c3d90e1e309a9532245ac3691c1ea3009d9a9a36da3accbd163ed46c"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/decode-asm.js",
+      "bytes": 662,
+      "sha256": "1c75727ac9b3436abced3a753ae863749c4cf61721afdade82b0051f422a92ac"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/decode-hex.js",
+      "bytes": 978,
+      "sha256": "93aba31c9dcd3b286024909f263f92456ab28734a21c4d41c162b15dd15a1717"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/decode-script-chunks.js",
+      "bytes": 1261,
+      "sha256": "b6cf9813da32890103ecd08ba4c565b3d536285600e4b8157ff045fcdad1fff2"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/encode-hex.js",
+      "bytes": 2461,
+      "sha256": "008e86199ff28f879a7cd81ae0f8f930c452bb81e9794a7f33fb5ca7b0a3be7f"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/is-hex.js",
+      "bytes": 125,
+      "sha256": "bdbb989e83d54541470439e8baa933441bcc0a6582ef575d2afdace9049f6e28"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/varint.js",
+      "bytes": 1549,
+      "sha256": "bbea9380fbf1228832fb550614a26b1a2380f3855ef755bbc7a587ea2a8e80a3"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/errors/index.js",
+      "bytes": 1638,
+      "sha256": "7c86c3564fb41a6515746ebb0d5e118d3b2f0a69018c1d7853c8245c1776022e"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/errors/spec.js",
+      "bytes": 5839,
+      "sha256": "a0bbadbe22eb2d49d36efa91e493c10f0680a662785148185e3cd831c5e6cc62"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/networks.js",
+      "bytes": 8789,
+      "sha256": "f828f6b818d3030b56929bde34b38b389a15576aaaa48e5a25a44d43b0db37a3"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/opcode.js",
+      "bytes": 4905,
+      "sha256": "bedf989470866d0f3c7da7f353db92026532a771280196e60e2a7841ce05e2eb"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/publickey.js",
+      "bytes": 12446,
+      "sha256": "4a5e5f0b0478b6a4bca2b279dc479babf6b965dd6372e3b48c44c575bf255b08"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/index.js",
+      "bytes": 135,
+      "sha256": "b0762233b6c2f5449f310df35861c70df5d18456a19bf4a4a146db2c7e73b638"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/script.js",
+      "bytes": 35116,
+      "sha256": "b87d7845bf2ff1c5832a14fa98f8148bcb80aaa9c44ba6e832bb6fc79762a35e"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/write-i32-le.js",
+      "bytes": 385,
+      "sha256": "f0c06cda81fa67a2847b66349d9aa751b84e8ec9e31a48f22fc0b8c6d969e23a"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/write-push-data.js",
+      "bytes": 1241,
+      "sha256": "daad2018d6d6d30a2181ee059629fe269ba7c4a18b387c302ef58fcc77fc4c3b"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/write-u16-le.js",
+      "bytes": 243,
+      "sha256": "3ce5f7b433f67e9ef1928d4dc9d1db021f7864f1675ca2b2880e2af6a02a335e"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/write-u32-le.js",
+      "bytes": 324,
+      "sha256": "b7f41683195fce115d0fa13e0b0fe79b783e242b529d96536e6e52725c7c5a35"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/write-u64-le.js",
+      "bytes": 529,
+      "sha256": "6fbace72e3a7adc90d9694374cf0bdb484a1d7aead92f681d37d6df2bd82958b"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/write-u8-le.js",
+      "bytes": 196,
+      "sha256": "c83b0a1a8acbfc5afd1a38ba4838a852ee4957cc3aaa99a022fc6424a9ad16df"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/write-varint.js",
+      "bytes": 1039,
+      "sha256": "383e5ac95553e56de158a108f39f47c7b242f49d212ac058b0571e214de2358c"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/util/_.js",
+      "bytes": 1342,
+      "sha256": "92b83046cd3d75fc0330cd8ef4a953ccbb1e92534d263ffe4fb5124e839620f5"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/util/js.js",
+      "bytes": 2273,
+      "sha256": "b7faf7d28eeb645f0629c3c5f92e41ac6946a46e67a6607fbb2a410f93f9184f"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/util/partial-sha256.js",
+      "bytes": 8235,
+      "sha256": "ef7c89e9bef07ec3047045eb25becc8eb2e94c6d7e90fd23e2fa49fdd06fc375"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/util/preconditions.js",
+      "bytes": 1128,
+      "sha256": "64935cc18c1c8e68bc1f9a80e81cf07ab26dbbc3732bf39cdc057698826e6487"
+    },
+    {
+      "path": "packages/kit/dist/cjs/vendor/tbc-tx-parser/vendor/tbc-lib-js/package.json",
+      "bytes": 25,
+      "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a"
+    },
+    {
+      "path": "packages/kit/dist/cjs/wallet.cjs",
+      "bytes": 50,
+      "sha256": "ca870a53224dccfe36bbfb9f49934468342a1ec0655a1678cac67b07cc123aae"
+    },
+    {
+      "path": "packages/kit/dist/esm/amm-fee-policy.js",
+      "bytes": 5314,
+      "sha256": "1a176b5c1599fa59bfc34987562e81a0fc6593231fa09ae37b6b797d7610261a"
+    },
+    {
+      "path": "packages/kit/dist/esm/amm-fee-policy.js.map",
+      "bytes": 3519,
+      "sha256": "4d2045d1c778e19f8a9134e8984e5046d74ebf702c79f8566f8fed74c2d39e4e"
+    },
+    {
+      "path": "packages/kit/dist/esm/amm-quote.js",
+      "bytes": 3461,
+      "sha256": "233c12b820f8738f768cb2ca991fb10a64dccd0b0dd8b8d820c0a6adadba7987"
+    },
+    {
+      "path": "packages/kit/dist/esm/amm-quote.js.map",
+      "bytes": 2272,
+      "sha256": "f73e6a6f012da703832851d43219179c8451f012ff4a3fa1d20ab453b05845c1"
+    },
+    {
+      "path": "packages/kit/dist/esm/api.js",
+      "bytes": 75950,
+      "sha256": "9ab6f454643ab38cfb9f28add4d6800efac26f8026303ff3942f5fe45321499f"
+    },
+    {
+      "path": "packages/kit/dist/esm/api.js.map",
+      "bytes": 49434,
+      "sha256": "1d90070d90b0178f070b7797ccd109191fc8f4c8184d2d1faea4b456db8e054a"
+    },
+    {
+      "path": "packages/kit/dist/esm/business-capabilities.js",
+      "bytes": 2569,
+      "sha256": "a3b2b3a9b3c6e4f73aa5395360256421cf7cf0c05d30f96957d6cfd1753d6ec3"
+    },
+    {
+      "path": "packages/kit/dist/esm/business-capabilities.js.map",
+      "bytes": 1344,
+      "sha256": "9c917e9a05787fbac80ba992092ce54a5aeb0a1288fabc5f0ee2aafa4ef8c86b"
+    },
+    {
+      "path": "packages/kit/dist/esm/chunk-6TK4AJZX.js",
+      "bytes": 4694,
+      "sha256": "a0a638ad8a7854cda7892f2fe5c047cc29f68bb861276936efffb65e2b073375"
+    },
+    {
+      "path": "packages/kit/dist/esm/chunk-6TK4AJZX.js.map",
+      "bytes": 2894,
+      "sha256": "3bbc7c0033a7bf261ac4fc140474cbd7c9b1fdab7a73ab2ccb523bc1bc59039c"
+    },
+    {
+      "path": "packages/kit/dist/esm/chunk-IRRD2W6K.js",
+      "bytes": 69316,
+      "sha256": "c146309a166b8c19dbf1b64c4e887431a90736f57d0d6e4576c72102f556b62a"
+    },
+    {
+      "path": "packages/kit/dist/esm/chunk-IRRD2W6K.js.map",
+      "bytes": 39974,
+      "sha256": "d1d0c323cfc82a973b1f978e1bfadae7c6ad9ccceaf2c15ff104fcb7a1699acb"
+    },
+    {
+      "path": "packages/kit/dist/esm/chunk-V3B47YIV.js",
+      "bytes": 334622,
+      "sha256": "c40c25b47c06ca2a50a4e680b181e7ed08f601bf582b6180dc2eb46840d27408"
+    },
+    {
+      "path": "packages/kit/dist/esm/chunk-V3B47YIV.js.map",
+      "bytes": 208872,
+      "sha256": "0e8e1930d85639d2ff5d9141ef5534da83b8a8c941980ad1ea39ec1b8e695eb7"
+    },
+    {
+      "path": "packages/kit/dist/esm/chunk-XJTQAQQI.js",
+      "bytes": 4591,
+      "sha256": "df738281ce3175c114c19668a70ba146c08f20b6dbddba749fce4a23044c6a6a"
+    },
+    {
+      "path": "packages/kit/dist/esm/chunk-XJTQAQQI.js.map",
+      "bytes": 2852,
+      "sha256": "628b51ba6d3001d711195ab5133255121bd3c62d4bd67a762d875c5d83a18b4b"
+    },
+    {
+      "path": "packages/kit/dist/esm/chunk-YNYBYRU6.js",
+      "bytes": 156060,
+      "sha256": "d183dbb786e931e99bc6fbf14323b5e25731b6168040acc03e47df7457519a5c"
+    },
+    {
+      "path": "packages/kit/dist/esm/chunk-YNYBYRU6.js.map",
+      "bytes": 99447,
+      "sha256": "b8f51eab364c5ab9271bd1e84d5feffcf6f19944a69cc867dc591afb8f518775"
+    },
+    {
+      "path": "packages/kit/dist/esm/client-browser.js",
+      "bytes": 169912,
+      "sha256": "58424243e4271310b6b02ac15769d026c5c0af0336a708c216804a25235e04ee"
+    },
+    {
+      "path": "packages/kit/dist/esm/client-browser.js.map",
+      "bytes": 113224,
+      "sha256": "4d4128ce3808e91c2f0093809cc03f892054f80985e586962d52a458612619ed"
+    },
+    {
+      "path": "packages/kit/dist/esm/client.js",
+      "bytes": 165679,
+      "sha256": "af7a6a6592bb87c2bf4a08b1874c7f7e21f4049bc4a3cb0066b355db577fc9cb"
+    },
+    {
+      "path": "packages/kit/dist/esm/client.js.map",
+      "bytes": 110188,
+      "sha256": "64f41649c3e82916c3f599b56bc3905cd36449179fd8e66ab196c2f29733bf75"
+    },
+    {
+      "path": "packages/kit/dist/esm/contract-identification.js",
+      "bytes": 5903,
+      "sha256": "9143976cf9dd7c22514298715fbf03ebb7cb809ffaf6a48799a72cfdb591c2a5"
+    },
+    {
+      "path": "packages/kit/dist/esm/contract-identification.js.map",
+      "bytes": 3801,
+      "sha256": "0b46f6c98dbd27fb3558d4d4096b20df9391ef5491102e9335429bf9caac95e1"
+    },
+    {
+      "path": "packages/kit/dist/esm/engine.js",
+      "bytes": 532,
+      "sha256": "7492c62ffbecf8b2032fdb4e76a7fe0dbfd1cde1e6d61af584a7be4e62db6508"
+    },
+    {
+      "path": "packages/kit/dist/esm/engine.js.map",
+      "bytes": 52,
+      "sha256": "3652609eb57e9672ef567728834e94d8903aa1c16ab7ac06f9e39c2bc22f15ac"
+    },
+    {
+      "path": "packages/kit/dist/esm/engine.node.js",
+      "bytes": 505,
+      "sha256": "ae450a1005cc6f41d37e54d4dd2b19fc5dceda9ad9cc43082017e8f827154763"
+    },
+    {
+      "path": "packages/kit/dist/esm/engine.node.js.map",
+      "bytes": 52,
+      "sha256": "3652609eb57e9672ef567728834e94d8903aa1c16ab7ac06f9e39c2bc22f15ac"
+    },
+    {
+      "path": "packages/kit/dist/esm/index.js",
+      "bytes": 2606,
+      "sha256": "f0b626e9df52fcb9bb585ae64435cb3597ca914ca707fc07bf3afd6081592453"
+    },
+    {
+      "path": "packages/kit/dist/esm/index.js.map",
+      "bytes": 671,
+      "sha256": "defb605d4a26e7372b35bd9520fa979b642da4e5d2bb34b0aeef18ae5f83a878"
+    },
+    {
+      "path": "packages/kit/dist/esm/index.native.js",
+      "bytes": 2604,
+      "sha256": "6714264cf5cf0066e4da0606a4381104a4049106339180890adc8ea3587e8fe7"
+    },
+    {
+      "path": "packages/kit/dist/esm/index.native.js.map",
+      "bytes": 678,
+      "sha256": "03c28da098a45fc5849de40d2751d049977cecf687723a25e7540aaf84b6fa8d"
+    },
+    {
+      "path": "packages/kit/dist/esm/index.node.js",
+      "bytes": 84566,
+      "sha256": "72a22288a53265c16d7aa9d899e7cfbc851768fd9e05234f5433125ea12398d5"
+    },
+    {
+      "path": "packages/kit/dist/esm/index.node.js.map",
+      "bytes": 57182,
+      "sha256": "9aa787d3326504b9cf08c1ce625f71c2942ea5468692f00c768824cb11962d36"
+    },
+    {
+      "path": "packages/kit/dist/esm/keyless.js",
+      "bytes": 4945,
+      "sha256": "d5b970ed36646f33cff6a4cbee2c6b9626c70f2274bdb272b26decd6ad83e9d2"
+    },
+    {
+      "path": "packages/kit/dist/esm/keyless.js.map",
+      "bytes": 2982,
+      "sha256": "7544d8af5ff6d471853fc133c2f8c3ef05f3ced4823411a8d64d283494081eac"
+    },
+    {
+      "path": "packages/kit/dist/esm/multisig.js",
+      "bytes": 20637,
+      "sha256": "5f4dfa37800986b9fcbf3f18a2e1f59c9116c3a31821be956523c35a1e261d5c"
+    },
+    {
+      "path": "packages/kit/dist/esm/multisig.js.map",
+      "bytes": 13980,
+      "sha256": "6c2dd281f0b2a3fa998971d274affd3daa1553d80892362b3f997fa437764710"
+    },
+    {
+      "path": "packages/kit/dist/esm/network-KZOIEAEE.js",
+      "bytes": 54424,
+      "sha256": "a6b1244543e2dc1904fbc02adb7d620160952638e2dfe691b4847521a04bc75b"
+    },
+    {
+      "path": "packages/kit/dist/esm/network-KZOIEAEE.js.map",
+      "bytes": 35550,
+      "sha256": "04989614a4a0fdb4cea8f686611e14638d44312c108a220867571539ae109c4f"
+    },
+    {
+      "path": "packages/kit/dist/esm/nft-query.js",
+      "bytes": 12929,
+      "sha256": "3f4409d623ea6db3c0edd819b6e000253f1af53c73e3b4e1973e78df3f276d26"
+    },
+    {
+      "path": "packages/kit/dist/esm/nft-query.js.map",
+      "bytes": 8977,
+      "sha256": "5e29276b50206db885d964384f500fc7f3c1ccd608838ec660a6d665a23a105e"
+    },
+    {
+      "path": "packages/kit/dist/esm/node-5RODVBMK.js",
+      "bytes": 195154,
+      "sha256": "a05721207df973a398a01d5af69856f913a25590479d7562255d7685beda647d"
+    },
+    {
+      "path": "packages/kit/dist/esm/node-5RODVBMK.js.map",
+      "bytes": 126055,
+      "sha256": "cdbfbe40d865967f23a6d81bde6605cc00d1a9573ca9132c5e1b4102942259ac"
+    },
+    {
+      "path": "packages/kit/dist/esm/node-ACTKO3YT.js",
+      "bytes": 338129,
+      "sha256": "8be878747a95b9b9762fee7d07e56801bd46393a7af89c283ab24805397fc17d"
+    },
+    {
+      "path": "packages/kit/dist/esm/node-ACTKO3YT.js.map",
+      "bytes": 211862,
+      "sha256": "fa7fc62811e8b17e1b1d474de741b6a845dfd82cb746d21bde873207038c8fac"
+    },
+    {
+      "path": "packages/kit/dist/esm/node-BRUOQYD6.js",
+      "bytes": 5494,
+      "sha256": "240a1ea5e7b31d3ccde7f32d68989e8bd75d116ccfac4f54c5e5dab3de9f9b9b"
+    },
+    {
+      "path": "packages/kit/dist/esm/node-BRUOQYD6.js.map",
+      "bytes": 3508,
+      "sha256": "a84f3fbc1aca233b91a415d6a361c6710a905fa2a61c178c4f2483e5608e7332"
+    },
+    {
+      "path": "packages/kit/dist/esm/prepared.js",
+      "bytes": 66326,
+      "sha256": "df577febf2cc9be957a191cf77d90c21c4e0bdc33581c5dafa941c55d3f511bc"
+    },
+    {
+      "path": "packages/kit/dist/esm/prepared.js.map",
+      "bytes": 41701,
+      "sha256": "707ea99bc73d68d77c3dc54b83ca34012aea7588a3d18e4ada4944324cf1cc15"
+    },
+    {
+      "path": "packages/kit/dist/esm/protocol-time.js",
+      "bytes": 1015,
+      "sha256": "fdfa898cd60db2231568ca7e19b045ad9c37d1057793a75f1b2b8db44b0524c4"
+    },
+    {
+      "path": "packages/kit/dist/esm/protocol-time.js.map",
+      "bytes": 685,
+      "sha256": "bd61f89be7c79fd2d6cb969e695be78f5aed8a4f5b677e8d49656e3d7988f03b"
+    },
+    {
+      "path": "packages/kit/dist/esm/provider-transport.js",
+      "bytes": 35488,
+      "sha256": "c9d8963674a5d38b992f9716cc5be3638a2258ef2cf2b0ffd0a75af0f739b51f"
+    },
+    {
+      "path": "packages/kit/dist/esm/provider-transport.js.map",
+      "bytes": 19317,
+      "sha256": "6592d697df977e910501fd94e86754bbc49c3a131f0f5f0d098e808b3f85a4ac"
+    },
+    {
+      "path": "packages/kit/dist/esm/receipt-verification.js",
+      "bytes": 115840,
+      "sha256": "8377f44ae5fa1250e156f450451b1a334c0a2539ba2c0fdaec029aae8dc532d6"
+    },
+    {
+      "path": "packages/kit/dist/esm/receipt-verification.js.map",
+      "bytes": 74619,
+      "sha256": "f9a6b7e2448e009737c9bbb846e364ec140448776b681ee100d2ce6921ce57d8"
+    },
+    {
+      "path": "packages/kit/dist/esm/rpc.js",
+      "bytes": 547,
+      "sha256": "ee512e6e6090b392179bced9c3298f78023f4b1ed5909ee6cda3a722dd2407c6"
+    },
+    {
+      "path": "packages/kit/dist/esm/rpc.js.map",
+      "bytes": 52,
+      "sha256": "3652609eb57e9672ef567728834e94d8903aa1c16ab7ac06f9e39c2bc22f15ac"
+    },
+    {
+      "path": "packages/kit/dist/esm/shared-checkpoint-ownership.js",
+      "bytes": 192,
+      "sha256": "657a82dafbb5d7996a7f0ee80c5bdae8f26715da49c75efa9ba8205de98910c1"
+    },
+    {
+      "path": "packages/kit/dist/esm/shared-checkpoint-ownership.js.map",
+      "bytes": 125,
+      "sha256": "b70b9d9893f6d2277bde8ac78d3a7d65eb1febd651ffa4c264d90b6981e152a7"
+    },
+    {
+      "path": "packages/kit/dist/esm/shared-core-validation.js",
+      "bytes": 3096344,
+      "sha256": "fd3c10a9ede01a145a2380ed01250d1bf3dafda5e04bbf923a8062c34ff58ed3"
+    },
+    {
+      "path": "packages/kit/dist/esm/shared-core-validation.js.map",
+      "bytes": 1785174,
+      "sha256": "ccdc25bd1e9dac2cf19bf94a47a7008a27f484d6fc69d5c22bbf6d60500db981"
+    },
+    {
+      "path": "packages/kit/dist/esm/shared-provider-validation.js",
+      "bytes": 1834636,
+      "sha256": "080fca97e9abb5ec0e9ca32f0ea25eb14f7453b1edef97fd494a3967b6e529fa"
+    },
+    {
+      "path": "packages/kit/dist/esm/shared-provider-validation.js.map",
+      "bytes": 877017,
+      "sha256": "f2dd2bb2be6519ab5f7e857a17adc1233c0a7c51ab23b24ff18e93deafe00154"
+    },
+    {
+      "path": "packages/kit/dist/esm/sign-in.js",
+      "bytes": 20116,
+      "sha256": "d380b0853e96c362300dfae8d81a1f6baf6dfd6358a7af41184584ae5e359795"
+    },
+    {
+      "path": "packages/kit/dist/esm/sign-in.js.map",
+      "bytes": 13922,
+      "sha256": "a31b1046d50b6f214ee6bf09bf9355217878b8c1266f805760cbf0c70720d0ff"
+    },
+    {
+      "path": "packages/kit/dist/esm/sqlite.js",
+      "bytes": 44241,
+      "sha256": "31a003c736d391a0d9b8435957dc9689d461806177a7219994dd6ead046f2395"
+    },
+    {
+      "path": "packages/kit/dist/esm/sqlite.js.map",
+      "bytes": 23098,
+      "sha256": "ac56da36679912c78256f854654a1f90229109b4c06ba7bcc12f329677840fd5"
+    },
+    {
+      "path": "packages/kit/dist/esm/testing.js",
+      "bytes": 1452,
+      "sha256": "79bd2a5b31cc85edebd450f7462d92bff8f98f0dbc2f8413674c9c58f050eef1"
+    },
+    {
+      "path": "packages/kit/dist/esm/testing.js.map",
+      "bytes": 696,
+      "sha256": "0f0ff35f08d12cafba95047054fe1647c32b71a86658a5234a4ef0583f9b191c"
+    },
+    {
+      "path": "packages/kit/dist/esm/timelock-query.js",
+      "bytes": 18208,
+      "sha256": "501c0da68b073d6b12d46de647dfff3ad0004e7ea387b052b0e1423233b3e985"
+    },
+    {
+      "path": "packages/kit/dist/esm/timelock-query.js.map",
+      "bytes": 12432,
+      "sha256": "c2bd8d5b37dd9d9c8c47606ea75728d7caf2dedab38a189c4cfe329be51f4aad"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/adapters/nft-code-scripts.js",
+      "bytes": 3452,
+      "sha256": "c3902a9a33b0b4d14a69090048fa9b97fddb0f6451a8af7bbed5246c0ea59917"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/adapters/partial-sha256.d.ts",
+      "bytes": 115,
+      "sha256": "664c5a76c937d8fa61155e31e2a3d6c337e5e775aa54e752bf9794ab2224afe2"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/adapters/partial-sha256.d.ts.map",
+      "bytes": 178,
+      "sha256": "693459c75ec688bc8c31e062c4f553c6fb94c01b89793dada4149d9a44f6feb3"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/adapters/partial-sha256.js",
+      "bytes": 225,
+      "sha256": "2b64d16069ccba8b5769acfe16d332689cb5ffc9535dd143e2a1ed1f477e5ab2"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/adapters/partial-sha256.js.map",
+      "bytes": 255,
+      "sha256": "4e2dd1335204129986777da242d8f61bd77d5f8ce72537d98e5d9332b8d5fe1e"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/adapters/tbc-lib.d.ts",
+      "bytes": 179,
+      "sha256": "bc717fb723f30b33974c4526e6d582e9766a47701f96fa51aee0a68341f3b82e"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/adapters/tbc-lib.d.ts.map",
+      "bytes": 262,
+      "sha256": "70cc4f372792f8734ad1c9d7cea18da37f9add8c4ff2ea755b1cfc37b2c30f02"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/adapters/tbc-lib.js",
+      "bytes": 753,
+      "sha256": "93835016ba610f6076a7e9a41b45e337db74fc92109286a2a459b3fd04c7a1d6"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/adapters/tbc-lib.js.map",
+      "bytes": 238,
+      "sha256": "ee921fb5a6f85f9ade3465330fe28035ba1127288eae907ea3187476c2fcf53b"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/constants/chain.d.ts",
+      "bytes": 164,
+      "sha256": "9f3065f898bb40c1f55dc84f564fa5714aa0f933631720f2f5238822a233a02c"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/constants/chain.d.ts.map",
+      "bytes": 210,
+      "sha256": "a99190a04c37d4b7acb2c4dec10b3ea6591fc17b5d0517dbdb378117061778ab"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/constants/chain.js",
+      "bytes": 351,
+      "sha256": "e2a1029e3b3f86c9ec733de1ad6cdd3c626b6af4d75dfadafca7fbc796e0fe6c"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/constants/chain.js.map",
+      "bytes": 277,
+      "sha256": "f13e709b59404d9e9f97153bed03f68dc2af01e7c88f5bd76ee4a0aafdd24a6f"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/chain.d.ts",
+      "bytes": 514,
+      "sha256": "ff6f1222ddb63095bde09da495fbc67dc4482809b9a10cde2f398559c29b3287"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/chain.d.ts.map",
+      "bytes": 395,
+      "sha256": "6425df7d609b623b824760768ae489a196309271a20c3131a31e15fb43b718ea"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/chain.js",
+      "bytes": 1598,
+      "sha256": "521222b702e72a318041b1961869c261034be4c980fb5276c1dc7ab45fae4304"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/chain.js.map",
+      "bytes": 1594,
+      "sha256": "8613e5f40d54eb0ec1ae0fdf03a9dec272e48404657d911509f35a0f6b8a647d"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/input-utxos.d.ts",
+      "bytes": 266,
+      "sha256": "d4cb54e8ccbd94a2630deb0f1f87eca31b63a228411bc8ef6f9b401a6dab12f3"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/input-utxos.d.ts.map",
+      "bytes": 313,
+      "sha256": "5706c58d9526adb30ac239eab27c3e86e53f1d110a09d453e1d68d78c457a234"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/input-utxos.js",
+      "bytes": 2766,
+      "sha256": "e89e3465e0d6d0d08b9de732176fae902002e0d4b75356a1a09b337be34c93b2"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/input-utxos.js.map",
+      "bytes": 2523,
+      "sha256": "42962dd7b8085f28459ba64886be3c126a6eaa80aab802e8fb687ab5561caf61"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/public-chain-compression.d.ts",
+      "bytes": 384,
+      "sha256": "8623a337a0a00a6d89d8ec44d787a3ee876878799747a803442c5e1786f93ca8"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/public-chain-compression.d.ts.map",
+      "bytes": 392,
+      "sha256": "30096c2a6bd8dd8ae6ebb7167c7cd233a31273a98fa815da55776add9a12d22c"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/public-chain-compression.js",
+      "bytes": 3459,
+      "sha256": "fde32a65e68f4532f3edb6ef5b4bf27a91420c32659e2588401f249bcc6b25e0"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/public-chain-compression.js.map",
+      "bytes": 3680,
+      "sha256": "6a23361f93f351ce0e126c88dff014676e668c4b288f5b9c8d176c6e6fb8e977"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/public-script.d.ts",
+      "bytes": 278,
+      "sha256": "54450987120725ed1b9edcb1cdd58de462f196010720b7123ed47360dee00858"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/public-script.d.ts.map",
+      "bytes": 278,
+      "sha256": "95a1afb4199953c33ecb8f3ec2020c3b0ee8575bd8b3acf27aaa738a2ab7fef2"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/public-script.js",
+      "bytes": 3532,
+      "sha256": "f5f6bbe3769e04684635dcb62846543f08f0c94f0b57c8ed2dfce4ccb8b52a29"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/core/public-script.js.map",
+      "bytes": 3941,
+      "sha256": "586941057d4c9bd9c15daf42174227d2a26e4d808711167657b6b37dff8050ac"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/decode-tx-raw.d.ts",
+      "bytes": 226,
+      "sha256": "d97135f04430b2d746088700d470523a2e06ce154f4a6fa3d96629758cdc1a8c"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/decode-tx-raw.d.ts.map",
+      "bytes": 277,
+      "sha256": "f40ed05430945f464c6fdfa8c48c408e83a1f31af14eac4e11f4bff7da43e10a"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/decode-tx-raw.js",
+      "bytes": 17006,
+      "sha256": "ed7389e42b8fc7131416ef87597d4163dd676c71070247f394b803ee310b1c3c"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/decode-tx-raw.js.map",
+      "bytes": 15703,
+      "sha256": "68ec7a8bf21f913e21db169a791a775dcacf0e9564bf5a62246064b834acdaf9"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/index.d.ts",
+      "bytes": 1046,
+      "sha256": "e070fd75c134afab455b2268fd7f91470f1e1f89d20cd1188d10d759068a2f2a"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/index.d.ts.map",
+      "bytes": 762,
+      "sha256": "dcc31c38ed6f58393c80190ac9ae890b019333599d934c35f89f3197e99e4f90"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/index.js",
+      "bytes": 247,
+      "sha256": "172d3b50b0d05271e005b407b45b67452676e007ea204e0bb1c639937483447d"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/index.js.map",
+      "bytes": 201,
+      "sha256": "d79266090de6b161bb2babcdcf6b2f867ab9237adbcd3de39b88b7b29bdd8e92"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/ft/index.d.ts",
+      "bytes": 1368,
+      "sha256": "4149ad6d782c879ed1efef9a89af76946b1184ea3320a8a64945caa4d7227650"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/ft/index.d.ts.map",
+      "bytes": 1152,
+      "sha256": "dec9098eef6e34a793bf87aeacb5333f5f6bc170d96371ec7f9e8c1ea92bf718"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/ft/index.js",
+      "bytes": 23458,
+      "sha256": "77be48610a38a73c8ba041252bb1fbd86f8da66e6d5e78f03123426b90f791ec"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/ft/index.js.map",
+      "bytes": 22275,
+      "sha256": "56533c5dc733aa881318394ba49dda7bb67654b542e340ed16ed0b4c04ce1e6c"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/index.d.ts",
+      "bytes": 326,
+      "sha256": "1eb808d47ddb8c32d06ef577f90239211f80d599946a546cd8a19115836f59d3"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/index.d.ts.map",
+      "bytes": 334,
+      "sha256": "41764643a6801e6b488b4e97cebc2a48f1130d3c78c538645bea508d987da194"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/index.js",
+      "bytes": 2376,
+      "sha256": "652923960e7564122b20e70579e71f7bcae0cbd6630da11efacfc721e8b6e455"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/index.js.map",
+      "bytes": 2209,
+      "sha256": "055ea0bc1e1b03f3f18729bbf50cbabf706091565128f1cd4fb70a6edaf8e5a9"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/nft/index.d.ts",
+      "bytes": 639,
+      "sha256": "87c77f0361214d36ee3da8ae2ad37658062ae1cc4056ea4964b31721eafa6be8"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/nft/index.d.ts.map",
+      "bytes": 553,
+      "sha256": "12c9d70b50ca664f6177364aa9f60d8b9f506826b22a1b4c0856890a94a2b119"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/nft/index.js",
+      "bytes": 14526,
+      "sha256": "cc55e944b9bc83d18d7f768e7e14caf3609f2957419922d35dd46fd5079c7703"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/nft/index.js.map",
+      "bytes": 12927,
+      "sha256": "d7e26e7ed13d7273e48dc78f6535c57fa98703123afc51cc0fbcf08e0a137dcf"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/actions.d.ts",
+      "bytes": 824,
+      "sha256": "152cc7d8a01df4eb9e59b6a8ea08db236ef3b9090553b667965bab881e1c7233"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/actions.d.ts.map",
+      "bytes": 543,
+      "sha256": "ba72fc650c37d1cc0f0debd6a604e075ae288beafc6b6dcc2050842e9ce9efc3"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/actions.js",
+      "bytes": 4652,
+      "sha256": "e28d4449a94d2fc362cbdbdd3d7740beddfff7649f9c94dc5d1ee1edf8bd9b68"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/actions.js.map",
+      "bytes": 4216,
+      "sha256": "e7f98e7af505beb44787b4fc615a142de5b745dd47b01d13889c9a797c3cc053"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/facts.d.ts",
+      "bytes": 658,
+      "sha256": "eceec8220a3b1722137f57c2a4587696a15cde1b0cbf7a3af9117d97e15cd62a"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/facts.d.ts.map",
+      "bytes": 615,
+      "sha256": "e0b122123948273fda86282e35142308685cfbcaa41a6b72d827831b3953bf7e"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/facts.js",
+      "bytes": 3488,
+      "sha256": "940fdcda4b58c6f701abad125b0e0c5b70f59415289c0a8d7f83d74425d15de8"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/facts.js.map",
+      "bytes": 3810,
+      "sha256": "20254fea01fb68b25cc386f7cfdfc099b9b50e98070b951fb373d898ab107858"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/identity.d.ts",
+      "bytes": 271,
+      "sha256": "9fd60f952b561a1b9512f838003a8699b1e730e46f5e6f65f5ae5a9592d528e7"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/identity.d.ts.map",
+      "bytes": 291,
+      "sha256": "87edd0ff8d8b10df702f22be0c76feacc7ffa15df4e4f693d5b3d2528f091861"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/identity.js",
+      "bytes": 1695,
+      "sha256": "99ebc7220326795fa338417bcd7b7c1e90e4059b4825f67af9568971369570aa"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/identity.js.map",
+      "bytes": 1533,
+      "sha256": "8c743c2960bb88cdd6cac3615a2834001d60098705c174eb74ea030fff796b97"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/index.d.ts",
+      "bytes": 1392,
+      "sha256": "9ccb98edd861f657be9ab4da153a2215a26914fe81444fa06450e9d5a6d03088"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/index.d.ts.map",
+      "bytes": 934,
+      "sha256": "c3011aae29b4e0742549fd516237ff2a01efd9c4e4633ef14c900e4674c47fc1"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/index.js",
+      "bytes": 1877,
+      "sha256": "920698cdcc3f9b51b4b1c6cb49bc58c2a4ae553d890e4a81272bed18a6e7b96b"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/index.js.map",
+      "bytes": 1436,
+      "sha256": "9994beb4548e3d2751a60264c93ac293f2691559de877dc0beb0093cc4a9ed69"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/settlement.d.ts",
+      "bytes": 1183,
+      "sha256": "4b0dfe464fe538b5692b9c91fb45148374d76041025ffbe74ed7c7a24604c0fc"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/settlement.d.ts.map",
+      "bytes": 959,
+      "sha256": "a491f4befb9ca6bdedb7806a91d08a6968ecb01dae34fa734a4c6b0831c80007"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/settlement.js",
+      "bytes": 14086,
+      "sha256": "8803fc10b14111d76c29e14c0ba6ba18e25688ad3aeb1bf999cc5e61f5e55bef"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/settlement.js.map",
+      "bytes": 12649,
+      "sha256": "0c627cea714459b0f05ff7ed33e6c70df58e831754535057408ded056437d13c"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/types.d.ts",
+      "bytes": 3325,
+      "sha256": "22f6ac8841efc2f01b6766d8d0ed9d9e886beeba3c5979589067d8390bae0b12"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/types.d.ts.map",
+      "bytes": 3081,
+      "sha256": "a3697617b8f73da5a9031c621d4732ae792ccff4ea85e0f1902197ba4e213d18"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/types.js",
+      "bytes": 44,
+      "sha256": "01ae2a5b120382f9a648ced7ee8507493a134f216d100fc61600c6c9738235d2"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/order-book/types.js.map",
+      "bytes": 129,
+      "sha256": "1bb35414accc1dcdde2bfa0b5c10a4f9bd3faca8179a7ea75202ad65a5ed2ee6"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/piggy-bank/index.d.ts",
+      "bytes": 566,
+      "sha256": "b27b92423715b654e2042e663d0dcf8ace205c311c399f8363210f6729cb0512"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/piggy-bank/index.d.ts.map",
+      "bytes": 494,
+      "sha256": "baf7acbfa2a0f42cb5cfea9df60e87cf941fcb4101e4cf20121ede279141a2e2"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/piggy-bank/index.js",
+      "bytes": 3582,
+      "sha256": "7694d2c4cd84b7146407bdbc299ff0488f8a9f9e843c5694cb1647fa5a889dee"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/piggy-bank/index.js.map",
+      "bytes": 3135,
+      "sha256": "d8b12c93999b0d7c779d0b5ec5528e5481d392e061f6a2d8cf0e0a41675063c9"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/actions.d.ts",
+      "bytes": 2063,
+      "sha256": "976de80ef42e2da9b8df7d0265474e456dd2d7628b1ed2f50734edc871f707cd"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/actions.d.ts.map",
+      "bytes": 899,
+      "sha256": "dd83fddce1d38e78c41f30eeb524734471a0038680f72a7f87e5266d4c632251"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/actions.js",
+      "bytes": 2918,
+      "sha256": "4aed04eddd2f43b204eab86a45fbb861eb3b19eb5206f90f68bbe8001702fb8d"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/actions.js.map",
+      "bytes": 2130,
+      "sha256": "b46f234277972b772922998378eda4114468ed19fc0c7e2884f41714a8e2a1aa"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/amounts.d.ts",
+      "bytes": 913,
+      "sha256": "cfcaaf45f8fd3bd79ef724799daa5acebe9e1b5e18f636a5e0197fe84022f341"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/amounts.d.ts.map",
+      "bytes": 662,
+      "sha256": "e2e91c4622a64b77e94734f591e99243bb84e5496514964023edc679f031cf4c"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/amounts.js",
+      "bytes": 2725,
+      "sha256": "c8ff407160645b16a45334e006e14e915e3744ba4bb55ff2b75eaf867a3377c9"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/amounts.js.map",
+      "bytes": 2454,
+      "sha256": "baae6c801d6d09b083422222722ad210d33b3f015e8e1ceb670ab5c617281913"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/constants.d.ts",
+      "bytes": 971,
+      "sha256": "b263a11a3e6772af8a463646e7dae6856703ecec7e23e2e831b131a6a9a3bb25"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/constants.d.ts.map",
+      "bytes": 693,
+      "sha256": "02684054a21a7854538b41e2d8f9c602775c64617ebf4c144170394c1b069025"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/constants.js",
+      "bytes": 1484,
+      "sha256": "3c3d52218cb606c31c0bd4146a9667cfcf0244919182892a08655a5c2a108f56"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/constants.js.map",
+      "bytes": 1045,
+      "sha256": "7d826e517331dd8ee6ee9376dbc40a2559f63aee89c59e71214bbba754037063"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/facts.d.ts",
+      "bytes": 1015,
+      "sha256": "15cb08504ce1eb83a7a7090b0153d1f2e79a8399b4320b04fa9ccf70dc332676"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/facts.d.ts.map",
+      "bytes": 844,
+      "sha256": "1f0c01732777ce90dd585f95783d105992f8668de801780a07fbacd2abe679db"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/facts.js",
+      "bytes": 4309,
+      "sha256": "555f4b2a5f9d9b64ca715edff7504f937c5b9710b3eb1ad6e35d65c64ac95274"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/facts.js.map",
+      "bytes": 4515,
+      "sha256": "c1c5ad335702078265a023475c1d71e114e4493b7406e60e11489e9c75497df6"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/fees.d.ts",
+      "bytes": 1134,
+      "sha256": "e8ad2bc3a2739079875e00a11ccf2309753b40608c9a93bf67d506d1976577f8"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/fees.d.ts.map",
+      "bytes": 810,
+      "sha256": "f9588d8b27f219e4cf5e6858791e61e2d7d5c85e1abf4d591913ee74eac3a4f3"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/fees.js",
+      "bytes": 7537,
+      "sha256": "de293094a809eef570592e631c807d6e47f872e1223aeeb6c4fb8a0bc4e25391"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/fees.js.map",
+      "bytes": 6803,
+      "sha256": "c8817dff8e565d729cfe5a69e432e6f43412c56441224a12836f1dd5236e0173"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/index.d.ts",
+      "bytes": 237,
+      "sha256": "601cd3998cf5e59dd49d2772e995e339396bbb3e1ba9d502a4b0f0bf7a2d8e5e"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/index.d.ts.map",
+      "bytes": 273,
+      "sha256": "57d0eea5ed63838f9c164d5dfad361b4cc243bcaf2c256312d5a9e8ea2326dda"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/index.js",
+      "bytes": 780,
+      "sha256": "d12c4b5212cc0504db89bf7dae1c61a9642a7c4487cdfdbb853203cce54b4ab5"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/index.js.map",
+      "bytes": 764,
+      "sha256": "45e9c6a8e1b11c9009699a235835ad57af1e3ff340ecc682653195b253d357c1"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/movements.d.ts",
+      "bytes": 462,
+      "sha256": "35894e879475c54f8bd07cbe7c20e3801b029709e9bf142627f2c36f9f2a33ad"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/movements.d.ts.map",
+      "bytes": 456,
+      "sha256": "a55a74ad45831795e1f9f815d386ff792c47415e13d9175e075462fe1877663d"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/movements.js",
+      "bytes": 40486,
+      "sha256": "90f343ba5ed64467b13909a5863c0ab3b6fafef49bbc0db7e2bc9e0ec9a72bce"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/movements.js.map",
+      "bytes": 32874,
+      "sha256": "a0f96dc7c6cc3b4aefd55b56d76b636baca626a12268753dee944789d8202556"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/selectors.d.ts",
+      "bytes": 3292,
+      "sha256": "2a50c03234b831bc482af4d0d755f5ee5350a16d7a8677f51491caff7ef128d1"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/selectors.d.ts.map",
+      "bytes": 1900,
+      "sha256": "e833724e8957f6614b6d6d45d174afddbdb4ce61a1d743229767164f41b7e6f0"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/selectors.js",
+      "bytes": 7542,
+      "sha256": "0b1e2428e56a6a7fcc2cf00dd8176b49c7a7ae05a3a92d1370e58fae4d9cdb35"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/selectors.js.map",
+      "bytes": 7392,
+      "sha256": "f537ff77086f45b938be2e0c8c6be528fd071097ce94fd3a5d261f0271f8e885"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/types.d.ts",
+      "bytes": 1227,
+      "sha256": "765f98f81d6dd714e218c5ec86eb66b4313248ccc6800e483bbb502edbf4c174"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/types.d.ts.map",
+      "bytes": 1231,
+      "sha256": "1dccfb6855819b53671b133429d58a8e1b2481036e2c4a1b7d3fc52ee0db4247"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/types.js",
+      "bytes": 44,
+      "sha256": "01ae2a5b120382f9a648ced7ee8507493a134f216d100fc61600c6c9738235d2"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/pool-nft/types.js.map",
+      "bytes": 127,
+      "sha256": "54c9ee7edac05d70228f83ff38485bb9df0eeca24e2b66ea865bb8ec3a12945a"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/tbc/index.d.ts",
+      "bytes": 145,
+      "sha256": "0f9891fdaf0f68590332ab7b70c2d1ca6381add9f06e2423ae3581ce3c8581ae"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/tbc/index.d.ts.map",
+      "bytes": 209,
+      "sha256": "ae29d4057229db131a8f5d34746a856e672067a2f27188e38e8af51331466f88"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/tbc/index.js",
+      "bytes": 751,
+      "sha256": "3cde285e8ff00fc32c0452d48658d68c0ebdced705baca026c7131e283391ad2"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/tbc/index.js.map",
+      "bytes": 697,
+      "sha256": "3edb9f3775c698b93c62c9222fa3da44918f7a737b9a7bc4b650d04af679bc72"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/types.d.ts",
+      "bytes": 416,
+      "sha256": "3eb86c9e909a67859ebfa8ae6cb8f33d22be5934eb7bf0187b7e021da90aa02a"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/types.d.ts.map",
+      "bytes": 474,
+      "sha256": "692b787efcede4bcced37d0f18b9ff093d00d54f325b6d37a53b6ce7a2d9a854"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/types.js",
+      "bytes": 44,
+      "sha256": "01ae2a5b120382f9a648ced7ee8507493a134f216d100fc61600c6c9738235d2"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/protocols/types.js.map",
+      "bytes": 115,
+      "sha256": "4d49d36b2e39277b060868f7bae34bea532ae511052737a309d37f71bae46595"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/render-transaction-description.d.ts",
+      "bytes": 478,
+      "sha256": "d16a068d68ba1e083b92db9f8cd88fd14b381d3cb97e522830bbaa71a7354106"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/render-transaction-description.d.ts.map",
+      "bytes": 301,
+      "sha256": "6270bc2cf3489ad5c94878fdd5183f5cd7d2f8af1c43750ceaf0f96373518f3f"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/render-transaction-description.js",
+      "bytes": 1376,
+      "sha256": "945284d0d5d8f7871216f8ed13cc645113c82ba059836fd8fe52080d2b5c172a"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/render-transaction-description.js.map",
+      "bytes": 1070,
+      "sha256": "21560a2846a06494bb33b9edb41defac39d130b30b9c9db9a92ebd1b99395aa0"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/classification-description.d.ts",
+      "bytes": 662,
+      "sha256": "61fa45ffa39478f6c127c9494e97c17da24302e26d48b44834da47611cc51df4"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/classification-description.d.ts.map",
+      "bytes": 634,
+      "sha256": "35874fbe0fa984a6d3c98600adc06ca47c66b1afa22b3948508c44ac703d76b7"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/classification-description.js",
+      "bytes": 27037,
+      "sha256": "df8b7b6c24dd2f0e1a45cca6f76d600995eff7ae37893e6d3e0750f159c9fffb"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/classification-description.js.map",
+      "bytes": 29315,
+      "sha256": "0f87a6a31b67a5d49ee08d59036859baf40c3d007fda647e7e47dc146eb491c6"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/classification.d.ts",
+      "bytes": 854,
+      "sha256": "de5d38228b405a3d2a0cba05ecd9a10cdaefe81a1d78574d519c66af48d995ed"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/classification.d.ts.map",
+      "bytes": 811,
+      "sha256": "e783c473ab8620a5597521cda382550e4a756e7d06b605bfaedc9b0a6f5ce5fa"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/classification.js",
+      "bytes": 18193,
+      "sha256": "d2390caac2e809f6859375c3d3a8736bc76333cf0699195e3e8c943f9ea023fe"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/classification.js.map",
+      "bytes": 13131,
+      "sha256": "f826ae0a1652309757d8594e0819feb9fd41fc6f9872795917c3c29e6df19224"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/index.d.ts",
+      "bytes": 1125,
+      "sha256": "cb79ecaf5147ea0d8a7b7ca1df2a7e804bb06872d76852757b153023c087db18"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/index.d.ts.map",
+      "bytes": 926,
+      "sha256": "42eeb5b56ed4cbd25116c4dabda534449ac17385fa8a0791ac991fb2bbc504fd"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/index.js",
+      "bytes": 39294,
+      "sha256": "8c59d6f59ac4ca7f4c95397659e67f2faa383a0f55e00c90ca1bad12209506c8"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/index.js.map",
+      "bytes": 38061,
+      "sha256": "d6aebe446fca33e20c116cf7645adc2f03121fcc22c068bbc470d4c88a3b752d"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/semantic.d.ts",
+      "bytes": 717,
+      "sha256": "c3f126154ca0d6eb4043dd6ea0b52e41fedf3ff5c210db7eb78e39ba8b3af2cb"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/semantic.d.ts.map",
+      "bytes": 635,
+      "sha256": "73ba53537c1765f00c3751e2c287d7249578da91419e39daceb3285546a77f7e"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/semantic.js",
+      "bytes": 42376,
+      "sha256": "789892f1c1ef78794c4830b9606acfda50d08618c9010abc187e7d923b97621e"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/result/semantic.js.map",
+      "bytes": 35261,
+      "sha256": "bfeed9b32615457b9d6251b47b20971671084ceb19b7bda9a63f9fa053ca39f8"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser.d.ts",
+      "bytes": 161,
+      "sha256": "919a846f627a3edda278b3cb4a34781a46b81970e010be15d89ddffa2b0da24c"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser.d.ts.map",
+      "bytes": 221,
+      "sha256": "15fb73d801c184740ea52bd59fe857aac0bddd57ebb84b749a574af0c09c1e84"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser.js",
+      "bytes": 7407,
+      "sha256": "5bd2436c3dbba0019c23e895bc143cf6d1732565dab2a0a912b378dd273d1c20"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser.js.map",
+      "bytes": 6394,
+      "sha256": "8f67135ea2c50d95d79eb6cfaed3bf61f5bd1c4598a16d462c07d13b8a1f91bd"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser/contracts.d.ts",
+      "bytes": 559,
+      "sha256": "d3d749d3c116aea556a5c9e132bb99bb4d1ba27ba2f6517b79edf4cec9fe89a6"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser/contracts.d.ts.map",
+      "bytes": 502,
+      "sha256": "2910d349562753154597fd93c83ef4b3b83d258d2181f186b715496275038f8e"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser/contracts.js",
+      "bytes": 4849,
+      "sha256": "84b973de3c07a9bae580dee007c0867e571fc0f7b7cb3c932b9842b2a63cbc8c"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser/contracts.js.map",
+      "bytes": 4365,
+      "sha256": "73f1f6ba7b7cf257d235ff0408f7784012a8c12d356cf2c035170dfe343a30bd"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser/op-return.d.ts",
+      "bytes": 428,
+      "sha256": "dbde4437286bace07d9b2949af0c98289f4377799658935c3368bf7bf6266b6f"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser/op-return.d.ts.map",
+      "bytes": 462,
+      "sha256": "26c4492b2160027d458915ef24e7fff8d613949f6513555f85f1a7ab9bd529da"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser/op-return.js",
+      "bytes": 12699,
+      "sha256": "bf8995735af7aa7a7dfc82945016d99fd701ea1a9025411f8ee2b717fc34dbe7"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser/op-return.js.map",
+      "bytes": 11848,
+      "sha256": "4cdf8f966e11fd7329fec35c259951d4bdebd2a8f5efcfce209e3cce65a76309"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser/origin.d.ts",
+      "bytes": 212,
+      "sha256": "2cec167cc68675900bcacbd25eccf28150e1d988d17c2ed8ed937fe2f223f53d"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser/origin.d.ts.map",
+      "bytes": 286,
+      "sha256": "40d051bbc7108d3057002a807f076e8a50e927f9edaac6ea546f091e34ffd7a4"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser/origin.js",
+      "bytes": 2822,
+      "sha256": "5aebbf96c57f1903f6bad542ff2edb16f26fe4d88e7ae509f05b45c84921ef21"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/script-parser/origin.js.map",
+      "bytes": 2949,
+      "sha256": "b11f2dd2e3c56239e74cf2dfbc5e6344a59267d59ba11f166cf8024c82175ddc"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types.d.ts",
+      "bytes": 1067,
+      "sha256": "35775d582d8e66c350f4d9625dbba3a3deb36b7f58e6afdefe6f19bd6d632089"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types.d.ts.map",
+      "bytes": 788,
+      "sha256": "196f36a98368c3942fbc446e171c6b93cb826ef7d5300246a04f6de7a53f6bf7"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types.js",
+      "bytes": 244,
+      "sha256": "fc52d0e924cee1217ab854e718f279a6a7a6ba721ca7eca06f0ef0d7379c855f"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types.js.map",
+      "bytes": 201,
+      "sha256": "5c6d73cc52c40408fc1dc058a6a3286801f62fdac727a48da7a336e08a805dd4"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/protocol.d.ts",
+      "bytes": 5484,
+      "sha256": "dfd716fd4df1af2d29d34153838db16b730d3944903d9de4095136ba54775397"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/protocol.d.ts.map",
+      "bytes": 5508,
+      "sha256": "5d2c87b7bc44159e26a24f0dbab70049e8dd06729a0f5d8df217cccc7b721d34"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/protocol.js",
+      "bytes": 47,
+      "sha256": "b5ab69287989be4a830cf388cb3030d92eb9659a48f3e37ce718ba7282bd6417"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/protocol.js.map",
+      "bytes": 117,
+      "sha256": "c1c78eed92414d5cbfd9fdd522764970fa4d7212294be85322a96f93bf60efdc"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/result.d.ts",
+      "bytes": 7965,
+      "sha256": "2bf23d74474ce45eaf5cf2a601d53df141be5a6531237f69a4768d865f7e1dbe"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/result.d.ts.map",
+      "bytes": 7733,
+      "sha256": "62616632f66196e6f3499f3acf854ddf029c08b7e6b84f1a1b2893e1e9585182"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/result.js",
+      "bytes": 45,
+      "sha256": "10223ee8f4afabc68031ed705a6ab15fe1328c0bce3bd537e4961873119478f6"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/result.js.map",
+      "bytes": 113,
+      "sha256": "bca1a5f1e6838569d62a5898b0f24689067aa62beac68e24088fbccfc3b496e9"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/script.d.ts",
+      "bytes": 5343,
+      "sha256": "8dc8274bb7c7417146ee0b4efe25f558c8754c9fc52a5aae349cd97243c97df2"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/script.d.ts.map",
+      "bytes": 5101,
+      "sha256": "eb0b5ba7d9c72634a0cb7c7cae0f17c3921803be83ea83bac5efc0ebb864bd76"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/script.js",
+      "bytes": 199,
+      "sha256": "f1ec47fd699022c032f456f0d439d85cef73b1e5b2bee74857ce3907b9bfe48b"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/script.js.map",
+      "bytes": 275,
+      "sha256": "96842b12674875e8dac227ab5b22d9ad5af77a586c1ee90397927dde57fec97f"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/semantic.d.ts",
+      "bytes": 2765,
+      "sha256": "46e70a43e840c34ad149c455d7d83790b02b65c906367c00393bf5d1e30d35c8"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/semantic.d.ts.map",
+      "bytes": 3011,
+      "sha256": "60eeef258f1787ffdbd0a600f8f2d8a173d9996d666f90709849de3a52c39e78"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/semantic.js",
+      "bytes": 47,
+      "sha256": "8d7d33dc5a7bf11bbee911fba032a95eb54b571bee63664b4f93391b2ec7aaa7"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/types/semantic.js.map",
+      "bytes": 117,
+      "sha256": "1ec3c5cea5ebff2e54d1ddc687f7a04d23aae5700a483690f2cdd834bea271f4"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/asm-converter.d.ts",
+      "bytes": 457,
+      "sha256": "7b8bf19c601a40f82d5d9bd2a46b5e38cf3f54cfd35d84b9841fd75ab29a464a"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/asm-converter.d.ts.map",
+      "bytes": 461,
+      "sha256": "447860cd5ecb9f6f4c626df5904e7cd4e457358279145f0986821fc85442a7a0"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/asm-converter.js",
+      "bytes": 3509,
+      "sha256": "b7349bd0f5eff6bcc34b754349c18d66bcf7fa07f35f4e9c67bf2bb0b17974fc"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/asm-converter.js.map",
+      "bytes": 3516,
+      "sha256": "b055c6c685d28224e780395e28207820e9c8480dcf748aeae53245da2457d856"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/binary.d.ts",
+      "bytes": 202,
+      "sha256": "fca2a00503be6d1be1eee9249c280fb18a6b77d9716f8525b1041ceeaefc545b"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/binary.d.ts.map",
+      "bytes": 254,
+      "sha256": "2e0265dd2df7ac458df4957766f3ec04f95185155cbd8a66ee75a52a3f58d564"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/binary.js",
+      "bytes": 649,
+      "sha256": "8c140e8391d270d5d4effba99ce291bd1b45a6e1c93b3a331ec05ef50cf4eb39"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/binary.js.map",
+      "bytes": 689,
+      "sha256": "12818e5ccaaed3e60b6308f7f7020cac183dac97b6eb1e78f8fd74335afa68ab"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/multi-sig.d.ts",
+      "bytes": 509,
+      "sha256": "af33870568032a4b0cd4372f9cd96b0d493d27c10084aae93821dd18944698ce"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/multi-sig.d.ts.map",
+      "bytes": 506,
+      "sha256": "9c02ba965bd145e3f49ad5792340c62c354eea181677c4c9e6cc1631a2e98b6b"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/multi-sig.js",
+      "bytes": 6212,
+      "sha256": "384e568e3535fca23d57704344a3eb11dfc0f8ef5af2eb7034bdd982d49d4364"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/multi-sig.js.map",
+      "bytes": 5550,
+      "sha256": "89b5278a2121fb404b8ca4a4cc707a9141d3bb2ae503e526bf6bf8d4737ff9ee"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/token-amount.d.ts",
+      "bytes": 239,
+      "sha256": "4dac245d2c8cbaaeec7525d55fb5bfa266a68566e56f7df11c9f47049f5261c7"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/token-amount.d.ts.map",
+      "bytes": 297,
+      "sha256": "3705602dfe5bc232e2ce89961f8fed6f60c58cbc441bd1b1348463b5e7abd924"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/token-amount.js",
+      "bytes": 1838,
+      "sha256": "5135d75800fe222ee7c83e7c459748e06b7371a09fcb3b9c2c7ca9716d124e11"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/utils/token-amount.js.map",
+      "bytes": 1688,
+      "sha256": "06885f7830ea2fcd787275e0e58b61554b74d3a17722c256f60796ae6df8d17b"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/address.js",
+      "bytes": 17902,
+      "sha256": "443948e6a97839effbb6e94db58ced345e4afa7ce2dbffd0e610eb70c74aacc7"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/bn.js",
+      "bytes": 85701,
+      "sha256": "3f7825048764e24e9105c8ad7d527c43ff41cd903366f5a3d5b73c6bb78b31be"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/crypto/bn.js",
+      "bytes": 8480,
+      "sha256": "8db4fdf948adf7e5699f895516bfa143a7eccb66f254ee361d518fc5a38a9b47"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/crypto/hash.browser.js",
+      "bytes": 5033,
+      "sha256": "4d31aced5c62059007054a7a69b3533e4e74a1ea6e0dfc2d7703c8227d67cdfb"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/crypto/hash.js",
+      "bytes": 47,
+      "sha256": "8e889f1a42f4c9637de00d0493af2b685724e0640abccdd893ca744e8799a4c9"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/crypto/point.js",
+      "bytes": 5475,
+      "sha256": "df5cac4e36cca932706e46fb6e5484a98dd392f253160245cceafc1c08f7a982"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/crypto/signature.js",
+      "bytes": 9685,
+      "sha256": "ecb9bf3b7fe9b0750a226dae0aba75867c20f107765465cf3cae14cb9569ad67"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/base58.js",
+      "bytes": 2617,
+      "sha256": "b9a1f2ce84096e2370bcdad06b05e933696ec6dbbb290212971a6ebc38fe094d"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/base58check.js",
+      "bytes": 2917,
+      "sha256": "d82362662027e76915b9c39d5374776158ff5acc81210fb50cd6bc9db9cc5d06"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/bufferreader.js",
+      "bytes": 5272,
+      "sha256": "971784e552737a6099eba48da8fe57929c4225af8f2cf080fdd1e2650ba29825"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/bufferwriter.js",
+      "bytes": 2706,
+      "sha256": "04331c95c3d90e1e309a9532245ac3691c1ea3009d9a9a36da3accbd163ed46c"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/decode-asm.js",
+      "bytes": 662,
+      "sha256": "1c75727ac9b3436abced3a753ae863749c4cf61721afdade82b0051f422a92ac"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/decode-hex.js",
+      "bytes": 978,
+      "sha256": "93aba31c9dcd3b286024909f263f92456ab28734a21c4d41c162b15dd15a1717"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/decode-script-chunks.js",
+      "bytes": 1261,
+      "sha256": "b6cf9813da32890103ecd08ba4c565b3d536285600e4b8157ff045fcdad1fff2"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/encode-hex.js",
+      "bytes": 2461,
+      "sha256": "008e86199ff28f879a7cd81ae0f8f930c452bb81e9794a7f33fb5ca7b0a3be7f"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/is-hex.js",
+      "bytes": 125,
+      "sha256": "bdbb989e83d54541470439e8baa933441bcc0a6582ef575d2afdace9049f6e28"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/encoding/varint.js",
+      "bytes": 1549,
+      "sha256": "bbea9380fbf1228832fb550614a26b1a2380f3855ef755bbc7a587ea2a8e80a3"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/errors/index.js",
+      "bytes": 1638,
+      "sha256": "7c86c3564fb41a6515746ebb0d5e118d3b2f0a69018c1d7853c8245c1776022e"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/errors/spec.js",
+      "bytes": 5839,
+      "sha256": "a0bbadbe22eb2d49d36efa91e493c10f0680a662785148185e3cd831c5e6cc62"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/networks.js",
+      "bytes": 8789,
+      "sha256": "f828f6b818d3030b56929bde34b38b389a15576aaaa48e5a25a44d43b0db37a3"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/opcode.js",
+      "bytes": 4905,
+      "sha256": "bedf989470866d0f3c7da7f353db92026532a771280196e60e2a7841ce05e2eb"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/publickey.js",
+      "bytes": 12446,
+      "sha256": "4a5e5f0b0478b6a4bca2b279dc479babf6b965dd6372e3b48c44c575bf255b08"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/index.js",
+      "bytes": 135,
+      "sha256": "b0762233b6c2f5449f310df35861c70df5d18456a19bf4a4a146db2c7e73b638"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/script.js",
+      "bytes": 35116,
+      "sha256": "b87d7845bf2ff1c5832a14fa98f8148bcb80aaa9c44ba6e832bb6fc79762a35e"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/write-i32-le.js",
+      "bytes": 385,
+      "sha256": "f0c06cda81fa67a2847b66349d9aa751b84e8ec9e31a48f22fc0b8c6d969e23a"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/write-push-data.js",
+      "bytes": 1241,
+      "sha256": "daad2018d6d6d30a2181ee059629fe269ba7c4a18b387c302ef58fcc77fc4c3b"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/write-u16-le.js",
+      "bytes": 243,
+      "sha256": "3ce5f7b433f67e9ef1928d4dc9d1db021f7864f1675ca2b2880e2af6a02a335e"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/write-u32-le.js",
+      "bytes": 324,
+      "sha256": "b7f41683195fce115d0fa13e0b0fe79b783e242b529d96536e6e52725c7c5a35"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/write-u64-le.js",
+      "bytes": 529,
+      "sha256": "6fbace72e3a7adc90d9694374cf0bdb484a1d7aead92f681d37d6df2bd82958b"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/write-u8-le.js",
+      "bytes": 196,
+      "sha256": "c83b0a1a8acbfc5afd1a38ba4838a852ee4957cc3aaa99a022fc6424a9ad16df"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/script/write-varint.js",
+      "bytes": 1039,
+      "sha256": "383e5ac95553e56de158a108f39f47c7b242f49d212ac058b0571e214de2358c"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/util/_.js",
+      "bytes": 1342,
+      "sha256": "92b83046cd3d75fc0330cd8ef4a953ccbb1e92534d263ffe4fb5124e839620f5"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/util/js.js",
+      "bytes": 2273,
+      "sha256": "b7faf7d28eeb645f0629c3c5f92e41ac6946a46e67a6607fbb2a410f93f9184f"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/util/partial-sha256.js",
+      "bytes": 8235,
+      "sha256": "ef7c89e9bef07ec3047045eb25becc8eb2e94c6d7e90fd23e2fa49fdd06fc375"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/lib/util/preconditions.js",
+      "bytes": 1128,
+      "sha256": "64935cc18c1c8e68bc1f9a80e81cf07ab26dbbc3732bf39cdc057698826e6487"
+    },
+    {
+      "path": "packages/kit/dist/esm/vendor/tbc-tx-parser/vendor/tbc-lib-js/package.json",
+      "bytes": 25,
+      "sha256": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a"
+    },
+    {
+      "path": "packages/kit/dist/esm/wallet-standard-browser.js",
+      "bytes": 5038,
+      "sha256": "b8018c5dd38b8f43e718af19af6089a0f54fc9406e8a53d64c529c149008e4ca"
+    },
+    {
+      "path": "packages/kit/dist/esm/wallet-standard-browser.js.map",
+      "bytes": 3296,
+      "sha256": "1d3d08a6b2d1bbc350db041cb95c75ccc0f1f1a4ce1db609f32d9810215cb295"
+    },
+    {
+      "path": "packages/kit/dist/esm/wallet-standard-native.js",
+      "bytes": 2204,
+      "sha256": "ce0ab137a21e8556ebb1e157b3baac9a8452f81984292c63bea2720cbbc8e65e"
+    },
+    {
+      "path": "packages/kit/dist/esm/wallet-standard-native.js.map",
+      "bytes": 1307,
+      "sha256": "26a1240d5ca696bf8acd3b91783f48994cc498f7c6dee5eb0938b0f9314366a3"
+    },
+    {
+      "path": "packages/kit/dist/esm/wallet.js",
+      "bytes": 998624,
+      "sha256": "00bb3d6ce7a90c1877f10ccb9c078b8d0c89af034af9c3c3b199791a9af79e7d"
+    },
+    {
+      "path": "packages/kit/dist/esm/wallet.js.map",
+      "bytes": 630951,
+      "sha256": "0ba28b71813c5968fe10f4cc6e9ab531bc6a8782e968dd34296a76c08cf6c761"
+    },
+    {
+      "path": "packages/kit/dist/esm/wallet.node.js",
+      "bytes": 1008267,
+      "sha256": "ccd5eea92605282a79ac572a50845de696c9b9d9bc3973101236e72adfc51d7b"
+    },
+    {
+      "path": "packages/kit/dist/esm/wallet.node.js.map",
+      "bytes": 636995,
+      "sha256": "f9266ef95e1d575b48719d63ba655ca85430f3adb46bdc3ef6a605e3be3aff1a"
+    },
+    {
+      "path": "packages/kit/dist/esm/webview.js",
+      "bytes": 56861,
+      "sha256": "b30e6f840a22e76716b01c878d27605943cc6a41532cea97728d4116f9ba942a"
+    },
+    {
+      "path": "packages/kit/dist/esm/webview.js.map",
+      "bytes": 32630,
+      "sha256": "8bf42dfa8e5666d2c8368458b38b790232dbc8f148b6c10e41b346a87d645d66"
+    },
+    {
+      "path": "release/candidates/approval-output-rc6/native/tbc-kit-resources-android-0.1.0-rc.6.tgz",
+      "bytes": 16886450,
+      "sha256": "0879107b9b35668b7b3006783ab34ef757905ccbb0f5bb0b1d053511add7f64a"
+    },
+    {
+      "path": "release/candidates/approval-output-rc6/native/tbc-kit-resources-ios-0.1.0-rc.6.tgz",
+      "bytes": 43294574,
+      "sha256": "ce1443dddd9e68baff54a78c637d9d6586c3d45c892951220c4aeb74be9109ac"
+    },
+    {
+      "path": "release/candidates/approval-output-rc6/native/tbc-kit-resources-macos-arm64-0.1.0-rc.6.tgz",
+      "bytes": 5633288,
+      "sha256": "26372b2cb815e45ba8861bcbf7d1394ff9da680a6302b0e431a62c4aec844135"
+    },
+    {
+      "path": "release/candidates/approval-output-rc6/tbc-kit-flutter.tgz",
+      "bytes": 15908495,
+      "sha256": "febdbef31f188d2200bb366397c0bbd34a22a3a0988ce908f6250f9154556296"
+    },
+    {
+      "path": "release/candidates/approval-output-rc6/tbc-kit.tgz",
+      "bytes": 3849595,
+      "sha256": "b610d7303605cce03f9b580eab5d7600a9ae204364ba56af4256c72ddef0cb22"
+    },
+    {
+      "path": "release/candidates/coin-local-reuse/delivery/android-sdk-0.1.0-rc.18.native.2.tgz",
+      "bytes": 35997245,
+      "sha256": "5fad73dc61048b82dc19d70dc072e3855ac4c700c2c1b495671393fe937fe5cd"
+    },
+    {
+      "path": "release/candidates/coin-local-reuse/delivery/ios-sdk-0.1.0-rc.18.native.2.tgz",
+      "bytes": 43633627,
+      "sha256": "1e4e6ebf70b89dbdf80ff63676fa09ae7c7cd567cd059c647134f97b706d14db"
+    },
+    {
+      "path": "release/candidates/coin-local-reuse/delivery/source.tgz",
+      "bytes": 3103963,
+      "sha256": "9cc8a86d9a79ae3710e71a6a2c592ac9825d96b60a50ec454ee735fbd3979bb3"
+    },
+    {
+      "path": "release/candidates/coin-local-reuse/delivery/tbc-kit-0.1.0-rc.18.tgz",
+      "bytes": 43909206,
+      "sha256": "a9914cbd050fe1276ad09ba101cd3c5a368af462d8cab1034bc621e8a5ccede7"
+    },
+    {
+      "path": "release/candidates/coin-multiround-rc17/delivery/android-sdk-0.1.0-rc.17.native.2.tgz",
+      "bytes": 35963048,
+      "sha256": "03ca43aca08236846c0c9fed525477e1ab3766c9f966c844568a9de942e63059"
+    },
+    {
+      "path": "release/candidates/coin-multiround-rc17/delivery/ios-sdk-0.1.0-rc.17.native.2.tgz",
+      "bytes": 43597023,
+      "sha256": "c4e5acd95e030439a3136201c56425069ca5e57cb4cc3e9fc56e754df430e7fe"
+    },
+    {
+      "path": "release/candidates/coin-multiround-rc17/delivery/source.tgz",
+      "bytes": 3100046,
+      "sha256": "c6291cfbc721a3cea64769a4323650e6bc754ec51f6b0fe936e7f3f899bb1ff5"
+    },
+    {
+      "path": "release/candidates/coin-multiround-rc17/delivery/tbc-kit-0.1.0-rc.17.tgz",
+      "bytes": 43844085,
+      "sha256": "4858521fc3c878c86d23a94454695b5bf2be18a30ed006eb8b56b113be86ec7e"
+    },
+    {
+      "path": "release/candidates/flutter-nft-mint-rc16/flutter-source.tgz",
+      "bytes": 389024,
+      "sha256": "a9b348221f03e0c039c1d2ce9464302e0eb85d1430bd05c15e40f492f70e3b6c"
+    },
+    {
+      "path": "release/candidates/flutter-nft-mint-rc16/tbc-kit-flutter.tgz",
+      "bytes": 16113276,
+      "sha256": "3ca989c1103f947be99716c5dde81424023bb814d48583fcac233632a35a05d0"
+    },
+    {
+      "path": "release/candidates/htlc-review-status-rc16/source.tgz",
+      "bytes": 3090040,
+      "sha256": "45c8bb96cccaa5dd712eb6afd10dec9e2705651ef4bbab141bcfabaa28376e75"
+    },
+    {
+      "path": "release/candidates/htlc-review-status-rc16/targeted-tests.tgz",
+      "bytes": 73522,
+      "sha256": "d74bff8e31cc8e059b577415988263a0518c68c00a8ce0535dc479bccaa2f8ce"
+    },
+    {
+      "path": "release/candidates/htlc-review-status-rc16/tbc-kit-0.1.0-rc.16.tgz",
+      "bytes": 43752364,
+      "sha256": "3994165c0d89e4da299e7ad82465d79b5181306bffc9f0dcfa7030bcdcb02796"
+    },
+    {
+      "path": "release/candidates/legacy-ft-exact-rc19/delivery/android-sdk-0.1.0-rc.19.native.2.tgz",
+      "bytes": 36108577,
+      "sha256": "4146851beb779b63c080057ec31c0a96ed2ca6a6a24c680e3eb4151a75b5f7b7"
+    },
+    {
+      "path": "release/candidates/legacy-ft-exact-rc19/delivery/ios-sdk-0.1.0-rc.19.native.2.tgz",
+      "bytes": 43686738,
+      "sha256": "514b0922ffefdcfc0a8be13969fbfa76361ad0a1d977a82bdc2b3a2d5a4fa281"
+    },
+    {
+      "path": "release/candidates/legacy-ft-exact-rc19/delivery/source.tgz",
+      "bytes": 3107337,
+      "sha256": "3d77c2936b9a5d607662ae6f2c6fb877d055c4c9305b7888a62246c759ae86e6"
+    },
+    {
+      "path": "release/candidates/legacy-ft-exact-rc19/delivery/tbc-kit-0.1.0-rc.19.tgz",
+      "bytes": 44021942,
+      "sha256": "ed8f1ef7d66154067c7676308dde28cd77d5d6ceacb16daebb3d2951a20eee3a"
+    },
+    {
+      "path": "release/candidates/rc16-delivery/TBC-Kit/native/android-sdk.tgz",
+      "bytes": 18060588,
+      "sha256": "b1ec9514dc54db048252d798edbaa75cafff79a2e6b28df36feff6726283ab03"
+    },
+    {
+      "path": "release/candidates/rc16-delivery/TBC-Kit/native/ios-sdk.tgz",
+      "bytes": 43569366,
+      "sha256": "56df3deb16689dc5da1f63e12465f635ebff0bf1ab5d02ab95589490ff52ea6d"
+    },
+    {
+      "path": "release/candidates/rc16-delivery/TBC-Kit/packages/tbc-kit.tgz",
+      "bytes": 43752364,
+      "sha256": "3994165c0d89e4da299e7ad82465d79b5181306bffc9f0dcfa7030bcdcb02796"
+    },
+    {
+      "path": "release/candidates/rc16-delivery/native-adapter-source.tgz",
+      "bytes": 69640,
+      "sha256": "4416c66bb246d8907e2337e9c55111dc6edcf544b32e6eec8d36c8032830257f"
+    },
+    {
+      "path": "release/candidates/sdk-gaps-rc10/tbc-kit-0.1.0-rc.10.tgz",
+      "bytes": 43380762,
+      "sha256": "e1c04990ecedade2d6cf33786d5bef4a11ee8f1415057421a4d0d423d170b8f9"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/amm-alias-staged-signing.json",
+      "bytes": 3228388,
+      "sha256": "12e26da3f528c1b5e7b59173ae56200a5fdca2a051c0d1878abda975b1daafed"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/amm-business-signing.json",
+      "bytes": 2534489,
+      "sha256": "55a19e1bbbaed7aaabe5c2fc59ccf1c38bbb2b257efefc6af22ca35a316b0e43"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/amm-controller-extended.json",
+      "bytes": 3929855,
+      "sha256": "d570cd0a4769c5172f4dd145d928a4587cc531feda67f5e08dc68971b2cb714a"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/amm-controller-signing.json",
+      "bytes": 2572427,
+      "sha256": "e2ccb1a4410ef3f7d4b72f00155b79ce5e016d36f3d86c55bebe4d89592b33bc"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/amm-creation-signing.json",
+      "bytes": 352854,
+      "sha256": "a5688580c64a594f1641c7036d5d47469497c51bb324c60d11d67db78243f9d8"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/amm-dependent-signing.json",
+      "bytes": 3348075,
+      "sha256": "f25f98bf2466581384b87a3c08fe8d0c8f7e5cfb26f1054675d517b20687d9d8"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/amm-fee-review.json",
+      "bytes": 1152,
+      "sha256": "8e20edf5b7a71390d6f3fd7e88b9f1f0cd16bd8faa2d79e07873197eb35d15af"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/amm-funding.json",
+      "bytes": 1587995,
+      "sha256": "fe516cb5c66692358f95f8b7b8e738f40e21de5d37b78737b984ac9f37eff68c"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/balance-frozen-kit.json",
+      "bytes": 12242,
+      "sha256": "cd1a6faf8fd02871f4a0ab299ee448b4d280fa20b253c776b41de5961292d5fc"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/broadcast-client.json",
+      "bytes": 2572685,
+      "sha256": "77a837d28f587f3d6f476cc1a4b48c2e1704424913de56b589d63eab1fff6f07"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/broadcast-port.json",
+      "bytes": 2310580,
+      "sha256": "2486ddf4794c64c250749ca0030c14b6fce896ad1646aa8ca0a95a8137ddbe8d"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/creation-signing.json",
+      "bytes": 184832,
+      "sha256": "25c68181aa43e1185ef1ddf0d0da22e6c72e148ea66478870f7b199e00aae09c"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/crypto-device.json",
+      "bytes": 151986,
+      "sha256": "a79a3e831772e539710c4693e6fba77059692ef21b34f5f8e6d9987d4f524ea4"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/crypto-signing.json",
+      "bytes": 70408,
+      "sha256": "9373286892cfd6c82a93d7f5c8637f12015172b261e3463613058cb63a818bc3"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/crypto-workflow.json",
+      "bytes": 93841,
+      "sha256": "be69533af3b37464b048a9d811998f2d961869427d39e004db8216ddb8b1bc1e"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/formal-approval/fixtures.json",
+      "bytes": 15636,
+      "sha256": "d2b4c88ed37e4dbab9c2f204a6897aff7c2a1219028f207e5208667f5d753c40"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/formal-approval/provenance.json",
+      "bytes": 519,
+      "sha256": "cf2c3b4d0db9fb6ed82fa60a78aba051441ad54845036111be420a0142f47d6c"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/fungible-signing.json",
+      "bytes": 729665,
+      "sha256": "4570fc08642b0d78a6dc02f853955ce2bf2ed2c39a99f387faf26825c65a1d15"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/historical-nft-source.json",
+      "bytes": 10652,
+      "sha256": "d8421c4f19844a24d7f9e4a19efde88fe70978cca164485db912feebaa48f84d"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/htlc-native-signing.json",
+      "bytes": 253906,
+      "sha256": "56f728fd51c0fcb38ff16ef7f593abbb06941146337a8dcfff295a0b4b4299f0"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/htlc-token-signing.json",
+      "bytes": 4993629,
+      "sha256": "0c6cc95628d0421cdaf72715925e28198bc4a2bf06ffacbb250b1cfcbc98ca82"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/legacy-business-mapping.json",
+      "bytes": 20650,
+      "sha256": "fd3762f9599bffa1f28dc2c83a089960515edf378846d8f13b97ee83295e1c0f"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/legacy-mapping.json",
+      "bytes": 316770,
+      "sha256": "9a60188798c1da0daeb4c8b6b65a46074e4119aab4d4b76672e1918bc9973211"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/legacy-message-signing.json",
+      "bytes": 63405,
+      "sha256": "839cf9f9a8bac5967d1a0f9a3fe15cce1c68fc1e63eb6b02192a256dbef5c133"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/legacy-pool-mapping.json",
+      "bytes": 70614,
+      "sha256": "bc72c4763f1aa9a45899b07501a7f5283ca09baebfc719743e0e50c5db8fcf83"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/lop-signing.json",
+      "bytes": 23800844,
+      "sha256": "a704ba489cac35299727bd4302857afa0fef84bad6a89504d210b2c20ad617b1"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/lp-signing.json",
+      "bytes": 1756320,
+      "sha256": "501e22e32790c289ca6c27a33d73231a5fa7c767b9787ce640e38ff6c66591b8"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/lp-staged-signing.json",
+      "bytes": 6301314,
+      "sha256": "c51c8031e2b86f0fe1da204b0ea3fa21d0ce59cd9067f951fe8fea39007adb9b"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/multi-round-frozen-kit.json",
+      "bytes": 177059,
+      "sha256": "c8c1f8379113beb467499fa22ed2f38f9b7c97d6f3a812b361e2328bff30919e"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/native-permissions.json",
+      "bytes": 896,
+      "sha256": "a01578b01488393a915635edaa73d8d080d577130d3279054038d6f9b1d49677"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/native-signing.json",
+      "bytes": 225980,
+      "sha256": "20ef532634b272d78f8ea3e18fa6cdc56708fbc7cfac66ab02185ed8f8ac3019"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/native-transfers.json",
+      "bytes": 87016,
+      "sha256": "3f886787fd415bae7abbdf2cc853650178f89f04202417a0bd30a865639b1e91"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/network-switch.json",
+      "bytes": 1934,
+      "sha256": "fb6751a6e377bc2ab21000c7ea36d260d70691d95af4ebcb109e2d9da5dbca0b"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/nft-mint-signing.json",
+      "bytes": 272941,
+      "sha256": "79135bfc3698c652de65d39a608c1afc37ab227e2e214cd79a95ceeddb4d5d74"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/nft-signing.json",
+      "bytes": 452383,
+      "sha256": "6d85d73d532c52d3c5d95527dfa27589d06056d824fb847658de96b85a4d577e"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/pool2-maintenance-positive-floor.json",
+      "bytes": 1052361,
+      "sha256": "7cbed45ff3c4f6366b50cde3de756220d65488c9eb1bb239805ac18ae4767ae7"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/pool2-maintenance.json",
+      "bytes": 1049655,
+      "sha256": "9d9ca48bd2af931d359e6de7114df3691bf2128885fc0f57739e385f5d699d9f"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/pool2-positive-floor.json",
+      "bytes": 1393576,
+      "sha256": "de9e50f17053c3479b13604072577b9f5952206d00e1f0e212bdff7d850a9145"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/pool2-signing.json",
+      "bytes": 1228857,
+      "sha256": "c49e88ca75e657fde7fe5d1b9bb41745ad2f2c7e6b1ca9f8fda3b1969e39bba1"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/prepared-signing.json",
+      "bytes": 2885959,
+      "sha256": "1f8042fef72985ad3323ec03b5150545272d177a0e97e044a06405f80704395c"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/rc16-ft-signing.json",
+      "bytes": 1247076,
+      "sha256": "a2418ac7d9ee72ab4473f9f28fb2284019ca5909a1d2caa056407e5aa3e7d889"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/rc16-material.json",
+      "bytes": 53411,
+      "sha256": "44f6fdf3db83e0a4bafd6a8773b0245b6e282158c1492411e274777e01f8355e"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/rc16-nft-batch.json",
+      "bytes": 271897,
+      "sha256": "cdde6515cdf949fd7e2b2947ced0ee7f42495bf981c84f19731303582ecea6b6"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/rc16-nft-large.json",
+      "bytes": 13610297,
+      "sha256": "008dabc9584cc44a0a575834e00e0122a08f3903056b913d8943567a710a4354"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-associated-contract-dependency-lock.json",
+      "bytes": 11170,
+      "sha256": "ec1e08a4717066dba14ddb6d3dda759bc4661a80dd26bf4eccbfa0c8e2d2e295"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-associated-contract.json",
+      "bytes": 8929125,
+      "sha256": "704c84c336f1cd92f3a10057601ab3bc057b38f4fead8af527974388924e1b64"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-associated-holder.json",
+      "bytes": 583090,
+      "sha256": "5abad89b7cb4cbf0b3217d6d264c1c0ce722fcc419c3535b3405a5a44ad06e90"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-current-dependency-lock.json",
+      "bytes": 11170,
+      "sha256": "ec1e08a4717066dba14ddb6d3dda759bc4661a80dd26bf4eccbfa0c8e2d2e295"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-current.json",
+      "bytes": 1571527,
+      "sha256": "6994ed64a7a8320aa5dc5b07918ea4dd70944c50926ad0524ddcf04f966f0062"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-historical-fungible.json",
+      "bytes": 521951,
+      "sha256": "a60b3ed8d008b5fcbab07bd9a533defae43a85f7861864f0f66b250ee610e889"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-htlc-token-dependency-lock.json",
+      "bytes": 11170,
+      "sha256": "ec1e08a4717066dba14ddb6d3dda759bc4661a80dd26bf4eccbfa0c8e2d2e295"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-htlc-token.json",
+      "bytes": 1439206,
+      "sha256": "09f4ce949d91556d44c42cb46f11f811c60f490f783937351924a1ba43f17f81"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-lop-dependency-lock.json",
+      "bytes": 11170,
+      "sha256": "ec1e08a4717066dba14ddb6d3dda759bc4661a80dd26bf4eccbfa0c8e2d2e295"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-lop.json",
+      "bytes": 2522332,
+      "sha256": "366be5a04ae577a850e50ebe915f1ae42e9e05364719849c16bf3b0b2f4eed11"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-material-b.json",
+      "bytes": 355645,
+      "sha256": "590fd685b4bf0f3e59e91b46110a7b47e715fece64acfc6f07e86f1e59a8379b"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-material.json",
+      "bytes": 193574,
+      "sha256": "3ce2a8a1f39819b85e29f23482b61d8ed8e4b8aa76994d1d4d29f8d1c7fae79a"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-native-lock-dependency-lock.json",
+      "bytes": 11170,
+      "sha256": "ec1e08a4717066dba14ddb6d3dda759bc4661a80dd26bf4eccbfa0c8e2d2e295"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-native-lock.json",
+      "bytes": 69548,
+      "sha256": "31fa07ede7eb1d7ebf530cfa86142446de5e2739fd74f72f494d04b89f9d5bec"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-nft.json",
+      "bytes": 182659,
+      "sha256": "2bd8c7e35c515de8d7282e2ad804cd99545f96697ec848b4b8acf723346e560d"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-preview-dependency-lock.json",
+      "bytes": 11170,
+      "sha256": "ec1e08a4717066dba14ddb6d3dda759bc4661a80dd26bf4eccbfa0c8e2d2e295"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-preview.json",
+      "bytes": 203744,
+      "sha256": "f47a8f8fb7e97cfcc6f8e9c14f74c58f30fb7d04a4a0bf8886a257f0e5870404"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/reviewed-signing.json",
+      "bytes": 1104275,
+      "sha256": "637937ec493b627d2a978d0922d2ccddfd497b0be75cb12011d3adb3faa07105"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/send-device.json",
+      "bytes": 2701321,
+      "sha256": "465b7791655d43b175cdd9c47da7f046130c415b90e201ac9e9d88d3fda308aa"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/send-lifecycle.json",
+      "bytes": 8859649,
+      "sha256": "e892e4391b5202a1a8442a320fda4096f50559585f8519c6a0b037a41dd9be82"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/signing/material.json",
+      "bytes": 36306,
+      "sha256": "f85148ac0ba1e7f6263d008ad3a23fee3fe1b4a1045ba9d01ab11ca10258da51"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/signing/replay.json",
+      "bytes": 106278,
+      "sha256": "a6fb7225d2311544d7bd7af67e80c507ab5e38780516f93fc0f990d2a153c9a3"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/stablecoin-signing.json",
+      "bytes": 2030109,
+      "sha256": "8888f2b9b51043853f5475972228942b7b08d40f791ac1563e3c580094fcd9a9"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/staged-signing.json",
+      "bytes": 766502,
+      "sha256": "ac6d33e80a5c3c3b471f17d782e7e21d51e6bdb5177282ac2ccb1ba02330f9a9"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/timelock-signing.json",
+      "bytes": 165981,
+      "sha256": "d1b1f480bf6e7000c6ac70ecaae7ed298ecf14826e9266b4740d43666af5e76e"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/typed-device-signing.json",
+      "bytes": 87750,
+      "sha256": "ccf0e5490d7fbfc1292fd5d35ade17057cf446926a991114888a0e812d1c3194"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/typed-signing.json",
+      "bytes": 161093,
+      "sha256": "5e63a773af68fa6bda3b46532ffc28d2b4adf3a7e19063d06a6264f4e528d478"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/unified-pool-signing.json",
+      "bytes": 9281769,
+      "sha256": "d38c15bc6e9a6d1eee940ca1be75fcaa38406b506be16fe2fef87e795ab930c8"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/workflow-device.json",
+      "bytes": 392855,
+      "sha256": "7d9df81740bc1d445438f08103f477d490c1640c3ce69c2d197cbe5c2eee0f6f"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/workflow-json.json",
+      "bytes": 11115,
+      "sha256": "a0469a88650d73c04a37cd497973686720b93bac62f24a64714ea69b221e8ee9"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/workflow-planning.json",
+      "bytes": 620389,
+      "sha256": "f77f3681f8ef8405b82494609e91e4df7e9a93d9b5d8b05039abe7db21b8f0d4"
+    },
+    {
+      "path": "source/native/flutter-dart-kit/test/fixtures/workflow-signing.json",
+      "bytes": 332627,
+      "sha256": "e0473c17e3e9f5ead45c5122590aff9df1093609d0d74cf80bbe3353efd2c32a"
+    },
+    {
+      "path": "packages/flutter/ios/Frameworks/TbcFlutterEngine.xcframework/ios-arm64-simulator/TbcFlutterEngine.framework/TbcFlutterEngine",
+      "bytes": 7101712,
+      "sha256": "92a155553438272ff72d69d15b974601d8124b08d77ceecec8d9d084223f193e"
+    },
+    {
+      "path": "packages/flutter/ios/Frameworks/TbcFlutterEngine.xcframework/ios-arm64/TbcFlutterEngine.framework/TbcFlutterEngine",
+      "bytes": 7062896,
+      "sha256": "03ae8bc53a414d3f518582dcfbb672e0324b0467b3c88a1c5d5d82bdb0ff148b"
+    },
+    {
+      "path": "packages/flutter/ios/Frameworks/TbcFlutterSigner.xcframework/ios-arm64-simulator/TbcFlutterSigner.framework/TbcFlutterSigner",
+      "bytes": 1574592,
+      "sha256": "b1e6855ae106aec95f5b7e659b167bf48823a5825e20d81093f1721883e62682"
+    },
+    {
+      "path": "packages/flutter/ios/Frameworks/TbcFlutterSigner.xcframework/ios-arm64/TbcFlutterSigner.framework/TbcFlutterSigner",
+      "bytes": 1578616,
+      "sha256": "91127728a2b7600adc371d901df3e4d4b599e0fd02a695275af7793068ca312b"
+    }
+  ]
+}

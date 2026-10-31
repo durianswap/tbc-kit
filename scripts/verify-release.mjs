@@ -21,8 +21,16 @@ function files(dir,prefix=''){
 }
 function inventory(dir){return files(dir).map(p=>[p,hash(join(dir,p))]);}
 const manifest=json('release/current.json');
-assert.equal(manifest.publicRelease,false);
+assert.equal(manifest.publicRelease,true);
 assert.equal(manifest.registryPublished,false);
+const downloads=json('release/downloads.json');
+assert.equal(downloads.tag,manifest.githubRelease.tag);
+assert.equal(downloads.sourceCommit,manifest.githubRelease.sourceCommit);
+for(const artifact of manifest.artifacts){
+ const asset=downloads.assets.find(a=>a.id===artifact.id);
+ for(const key of ['path','sha256','bytes','url'])assert.equal(asset[key],artifact[key],'Download differs: '+artifact.id+' '+key);
+ if(!existsSync(safe(artifact.path)))throw new Error('Run npm run assets:fetch -- verification before verifying this checkout');
+}
 const checks=[];
 assert.equal(readFileSync(safe('SHA256SUMS'),'utf8'),manifest.artifacts.map(a=>`${a.sha256}  ${a.path}`).join('\n')+'\n','Checksum index differs from current release');
 for(const a of manifest.artifacts){

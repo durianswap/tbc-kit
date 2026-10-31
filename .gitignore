@@ -23,3 +23,20 @@ TEST_ACCOUNT.md
 source/packages/*/artifacts/native/
 source/packages/*/artifacts/keyless-native/
 source/packages/*/dist/
+
+# Immutable downloads live in GitHub Releases, not in Git history.
+/.downloads/
+/artifacts/
+/release/candidates/**/*.tgz
+/release/candidates/**/*.zip
+/packages/kit/dist/esm/
+/packages/kit/dist/cjs/
+/packages/**/*.a
+/packages/**/*.so
+/packages/**/*.dylib
+/packages/**/*.wasm
+/packages/**/*.aar
+/packages/**/*.jar
+/source/native/flutter-dart-kit/test/fixtures/
+/packages/flutter/ios/Frameworks/**/TbcFlutterEngine.framework/TbcFlutterEngine
+/packages/flutter/ios/Frameworks/**/TbcFlutterSigner.framework/TbcFlutterSigner

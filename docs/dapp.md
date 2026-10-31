@@ -1,6 +1,6 @@
 # DApp 接入
 
-先按根 README 安装 `artifacts/tbc-kit.tgz`。网页导入 `@tbc/kit`，无需安装私有 Core、Host 或 Engine 包，也不要将钱包 Vault 代码注入网页。
+先按[安装指南](installation.md)从 Releases 下载并安装 `tbc-kit.tgz`。网页导入 `@tbc/kit`，无需安装私有 Core、Host 或 Engine 包，也不要将钱包 Vault 代码注入网页。
 
 ```ts
 import { createTbcClient } from '@tbc/kit';

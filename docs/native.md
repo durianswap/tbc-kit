@@ -1,12 +1,12 @@
 # 原生平台接入
 
-先执行根目录 `node scripts/verify-release.mjs`。下载必须按 `release/current.json` 配对，不能按版本后缀相似或文件名称猜测。
+从下面的 Releases 链接下载所需平台；使用仓库进行完整配对检查时，先执行 `npm run assets:fetch -- verification`，再执行 `npm run verify`。下载必须按 `release/current.json` 配对，不能按版本后缀相似或文件名称猜测。
 
-当前配对为 `@tbc/kit 0.1.0-rc.19` 与 Native SDK `0.1.0-rc.19.native.2`，安装校验见 [安装与升级](installation.md)。[iOS SDK](../artifacts/native/ios-sdk.tgz)、[Android SDK](../artifacts/native/android-sdk.tgz) 和 [版本锁](../release/native-sdk-lock.json) 必须一起更新。
+当前配对为 `@tbc/kit 0.1.0-rc.19` 与 Native SDK `0.1.0-rc.19.native.2`，安装校验见 [安装与升级](installation.md)。[iOS SDK](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/ios-sdk.tgz)、[Android SDK](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/android-sdk.tgz) 和 [版本锁](../release/native-sdk-lock.json) 必须一起更新。
 
 ## Flutter
 
-只使用 [tbc-kit-flutter.tgz](../artifacts/tbc-kit-flutter.tgz)。内含 Dart 编排、Swift/Kotlin 桥接、Engine、Signer 与 WebView 页面资源；不需要本页的独立 Native SDK。见 [Flutter 教程](flutter/README.md)。
+只使用 [tbc-kit-flutter.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/tbc-kit-flutter.tgz)。内含 Dart 编排、Swift/Kotlin 桥接、Engine、Signer 与 WebView 页面资源；不需要本页的独立 Native SDK。见 [Flutter 教程](flutter/README.md)。
 
 ## Swift / Kotlin
 

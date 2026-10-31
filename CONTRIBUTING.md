@@ -7,13 +7,16 @@
 使用 Node.js 22 或以上版本：
 
 ```sh
+npm run assets:fetch -- verification
 npm ci
 npm run verify
 npm test
 npm run check:install
 ```
 
-修改源码请在 `source/` 中进行。`packages/` 是安装包的展开内容，通过打包工具同步，不单独维护另一套实现。
+修改源码请在 `source/` 中进行。`packages/` 保留当前安装包的类型、文档与示例；编译产物在检查前从锁定版本的 Releases 取回，不单独维护另一套实现。下载只在显式执行维护命令时发生，不属于钱包运行时。
+
+仅检查 JS 包可使用 `npm run assets:fetch -- kit`，仅接入 Flutter 使用 `npm run assets:fetch -- flutter`。大型 Flutter 测试数据使用 `npm run assets:fetch -- fixtures`；历史候选归档使用 `npm run assets:fetch -- history`。现有文件若与锁定哈希不同，工具会停止，不覆盖本地修改。
 
 ## 提交变更
 

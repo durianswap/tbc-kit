@@ -1,0 +1,70 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import { createHash } from 'node:crypto';
+import { mkdtemp, mkdir, writeFile, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { acquireAsset, restoreFiles, safePath } from '../scripts/fetch-assets.mjs';
+
+const sha=b=>createHash('sha256').update(b).digest('hex');
+async function fixture(t) {
+  const root=await mkdtemp(join(tmpdir(),'tbc-download-test-'));
+  t.after(()=>rm(root,{recursive:true,force:true}));
+  const source=join(root,'upload');await mkdir(source);
+  const bytes=Buffer.from('unchanged accepted package');
+  await writeFile(join(source,'test.tgz'),bytes);
+  const asset={id:'test',name:'test.tgz',path:'artifacts/test.tgz',bytes:bytes.length,sha256:sha(bytes),url:'https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.19/test.tgz'};
+  return {root,source,bytes,asset};
+}
+
+test('asset copy preserves bytes and reuses an already verified file without network',async t=>{
+  const f=await fixture(t);
+  const path=await acquireAsset(f.root,f.asset,f.source);
+  assert.deepEqual(await readFile(path),f.bytes);
+  assert.equal(await acquireAsset(f.root,f.asset),path);
+});
+test('a changed local download is rejected rather than overwritten',async t=>{
+  const f=await fixture(t);const path=await acquireAsset(f.root,f.asset,f.source);
+  await writeFile(path,'local edit');
+  await assert.rejects(acquireAsset(f.root,f.asset,f.source),/mismatch/);
+  assert.equal(await readFile(path,'utf8'),'local edit');
+});
+test('wrong checksum never installs an artifact',async t=>{
+  const f=await fixture(t);
+  await assert.rejects(acquireAsset(f.root,{...f.asset,sha256:'0'.repeat(64)},f.source),/SHA256 mismatch/);
+  await assert.rejects(readFile(join(f.root,f.asset.path)),{code:'ENOENT'});
+});
+test('downloads are restricted to the declared repository',async t=>{
+  const f=await fixture(t);
+  await assert.rejects(acquireAsset(f.root,{...f.asset,url:'https://example.com/test.tgz'},f.source));
+});
+test('paths cannot escape the root',()=>{
+  for(const path of ['../outside','/outside','a/../b','a\\b','./a',''])assert.throws(()=>safePath('/tmp/root',path));
+});
+test('archive restoration verifies every member and preserves local edits',async t=>{
+  const f=await fixture(t);const staging=join(f.root,'staging');
+  await mkdir(join(staging,'package'),{recursive:true});
+  await writeFile(join(staging,'package','hello.txt'),'accepted content');
+  const archive=join(f.source,'content.tgz');
+  execFileSync('tar',['-czf',archive,'-C',staging,'package']);
+  const bytes=Buffer.from('accepted content');
+  const asset={id:'content',archiveRoot:'package/',extractTo:'packages/kit/',files:[{path:'packages/kit/hello.txt',bytes:bytes.length,sha256:sha(bytes)}]};
+  assert.equal(await restoreFiles(f.root,asset,archive),1);
+  assert.equal(await restoreFiles(f.root,asset,archive),0);
+  await writeFile(join(f.root,'packages/kit/hello.txt'),'my change');
+  await assert.rejects(restoreFiles(f.root,asset,archive),/mismatch/);
+  assert.equal(await readFile(join(f.root,'packages/kit/hello.txt'),'utf8'),'my change');
+});
+test('every removed file has a byte-exact download or archive mapping',async()=>{
+  const root=new URL('../',import.meta.url);
+  const downloads=JSON.parse(await readFile(new URL('release/downloads.json',root),'utf8'));
+  const index=new Map();
+  for(const a of downloads.assets){index.set(a.path,a);for(const f of a.files??[])index.set(f.path,f)}
+  for(const f of downloads.aliases)index.set(f.path,f);
+  const migration=JSON.parse(await readFile(new URL('release/storage-migration.json',root),'utf8'));
+  for(const f of migration.externalized){
+    const asset=index.get(f.path);assert(asset,`Missing restoration: ${f.path}`);
+    assert.equal(asset.sha256,f.sha256);assert.equal(asset.bytes,f.bytes);
+  }
+});

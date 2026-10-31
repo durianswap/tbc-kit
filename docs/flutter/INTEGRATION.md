@@ -4,7 +4,7 @@
 
 ## 安装 Dart 依赖
 
-先克隆本私有仓库并核对根目录 `SHA256SUMS`，再把 `artifacts/tbc-kit-flutter.tgz` 解压到工程的 `vendor` 目录：
+从[安装指南](../installation.md)下载 Flutter 包并核对 SHA256；也可克隆仓库后执行 `npm run assets:fetch -- flutter`，将相同文件下载至 `artifacts/tbc-kit-flutter.tgz`。然后解压到工程的 `vendor` 目录：
 
 ```text
 your_wallet/
