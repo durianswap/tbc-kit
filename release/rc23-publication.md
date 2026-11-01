@@ -20,3 +20,11 @@ Promotion copies the sealed files; it does not rebuild JS, WASM or Native. Rust 
 - Accepted JS SHA256: `14fa77b6af1248edb5fc89c3dd7104d525c0c07a1529dc3dc0f6d6527d62b88b`.
 
 The original candidate reports and manifests remain unchanged, including red-test evidence and pre-promotion status. No real signing, broadcasting or repeated chain transactions were performed during publication. Native compilation/vector tests are not represented as new device or chain acceptance.
+
+## Published download verification
+
+- All 15 Release attachments were fetched through their public versioned URLs; complete downloaded bytes and SHA256 match the sealed local files.
+- Publication is visible as a pre-release under `v0.1.0-rc.23`, pointing to the frozen source commit above.
+- GitHub's anonymous REST endpoint was temporarily rate-limited. Verification used independent full downloads, not a claimed server-digest result.
+- [Machine-readable download verification](rc23-public-download-verification.json) records filenames, sizes, hashes and unchanged protected partner files.
+- Source and promotion commits are backed up on `fix/rc23-unexpected-rejections` in both `durianswap/tbc-kit` and `durianswap/tbc-wallet-standard`; the public repository's `main` selects the new pair without rewriting history.
