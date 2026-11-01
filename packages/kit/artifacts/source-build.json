@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "version": "0.1.0-rc.21",
+  "version": "0.1.0-rc.22",
   "status": "source-built-js-frozen-native-not-device-or-chain-accepted",
-  "sourceDigest": "f066550e4b04aee17bf4abbebd2b8b3a6ffb05aa0e34353442373cc084bf8fc7",
-  "baselineArchiveSha256": "78da28e717ce4d4234923f2b91c3fd4c01176f641def88981b2c6cba4c0c3614",
+  "sourceDigest": "6b86cbc71942e16db13ede92b4957a7775d20d9b82bed53cc9c4b56b6691c6fe",
+  "baselineArchiveSha256": "a7df6f8b6f98dba2b4691dd854eacee5c344b4781422529cd195912cd0bb6c91",
   "unchangedNativeAndProtocolPaths": [
     "source/packages/tbc-engine",
     "source/native",
     "source/schemas",
     "source/registry"
   ],
-  "outputDigest": "161e3f468208cffc48381ec24945907746bb53dc6b8419c6420a5ff8b776f443"
+  "outputDigest": "e89e93ec983973d4486406f926cdb53669d2d1e28cc10e7e8502aed4e9312fe7"
 }

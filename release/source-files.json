@@ -4458,7 +4458,7 @@
     },
     {
       "path": "source/package-lock.json",
-      "sha256": "64a2bd086f6cf21c9516b4a4282b43fbbf9772b1bd81fb64f6f3560c7602596b",
+      "sha256": "4a959fd9097b59a14e68e03c1af1d7aa29e0da0e04300d3411eb272a26f9d608",
       "bytes": 49565
     },
     {
@@ -4513,8 +4513,8 @@
     },
     {
       "path": "source/packages/core/src/core.ts",
-      "sha256": "a3a206b96aca38f3a4945c2ec786c1332dd255cad9380c2fd11ef693999ed27f",
-      "bytes": 25637
+      "sha256": "b5155d07745ed0603cd6189976d1f726d86a5c0751c5f069662f643240025b13",
+      "bytes": 25829
     },
     {
       "path": "source/packages/core/src/crypto-input-budget.ts",
@@ -4908,8 +4908,8 @@
     },
     {
       "path": "source/packages/core/test/transaction-lifecycle.test.mjs",
-      "sha256": "36e3846e6eb7d09cce0484c93596dd2c8cfca198b7f0a57b53d871a39625ae38",
-      "bytes": 45081
+      "sha256": "70a592f69a8e07c01d3132cdfa1429632dcbe22566cf9089e6817ad7a32e5923",
+      "bytes": 45113
     },
     {
       "path": "source/packages/core/test/transition.test.mjs",
@@ -5337,6 +5337,11 @@
       "bytes": 81700
     },
     {
+      "path": "source/packages/kit/docs/zero-balance-inputs.md",
+      "sha256": "98a164f9f80cb00f9889e4e30014b9d0af2d9fa5028d16c2f54442717ad0cc74",
+      "bytes": 1789
+    },
+    {
       "path": "source/packages/kit/examples/amm-fee-policy.ts",
       "sha256": "382f70a451d9e6a31e3801ef27eee7e49008938fdf6955fb60586ce2a22bfba4",
       "bytes": 448
@@ -5598,7 +5603,7 @@
     },
     {
       "path": "source/packages/kit/package.json",
-      "sha256": "1ec46707571326ab35aa6b1061fad21362be53ecfb3591d9bf763f60c1285ca0",
+      "sha256": "6c978fd7e3603006362b70fa6bafd03d9ec9f5518e81df0142fd06b41f6a8a9b",
       "bytes": 3288
     },
     {
@@ -5828,8 +5833,8 @@
     },
     {
       "path": "source/packages/kit/src/amm-business-material.ts",
-      "sha256": "5e9a0f80c22b4a633c798f16f80cbf08ce46415072ba6997c479cc35f6e2a939",
-      "bytes": 15623
+      "sha256": "7d21bcbaa82670fba6da6ead317b741acff786149a3a7b1396a91245ad37d81d",
+      "bytes": 15869
     },
     {
       "path": "source/packages/kit/src/amm-fee-policy.ts",
@@ -5838,8 +5843,8 @@
     },
     {
       "path": "source/packages/kit/src/amm-material.ts",
-      "sha256": "1765021f4738eefa0e834386c4a49ab6b5893c1c41452f146c867b0237a98b6b",
-      "bytes": 9773
+      "sha256": "0e7d813bafca298b9d2a1411f6808db2cca9bb3f929bf9053da3e811a7b7b3f9",
+      "bytes": 9892
     },
     {
       "path": "source/packages/kit/src/amm-quote.ts",
@@ -5928,8 +5933,8 @@
     },
     {
       "path": "source/packages/kit/src/default-chain-data.ts",
-      "sha256": "607f2ea7d595f05909e6a309b1cc2a2981ec801858dc6b87ec92f2fb7b6cc076",
-      "bytes": 124313
+      "sha256": "eead588916f0738a8a4fc963752cec026cbbaad34a71390c832418e01d5609ec",
+      "bytes": 124771
     },
     {
       "path": "source/packages/kit/src/default-network.ts",
@@ -5955,6 +5960,11 @@
       "path": "source/packages/kit/src/fungible-business-route.ts",
       "sha256": "f578fc6fa80553d6089c234896e4e2a4e8227fc856c75bfeb59a793b1e629a0c",
       "bytes": 6956
+    },
+    {
+      "path": "source/packages/kit/src/fungible-candidates.ts",
+      "sha256": "dc0bd4ddc15f8d8a84723de1ec8cea66c2aebebb01f7ffe63109d996b36ece7f",
+      "bytes": 1474
     },
     {
       "path": "source/packages/kit/src/host-runtime.ts",
@@ -6123,8 +6133,8 @@
     },
     {
       "path": "source/packages/kit/src/lop-material.ts",
-      "sha256": "50fddec190e20186c95203be86bf6bc4cd89198d78f651f5761c3e6096c24fea",
-      "bytes": 14651
+      "sha256": "4b2a7716bff860b2aaad8106d2b55ed2f437f7e885e19953b80872ace1f78e0d",
+      "bytes": 14783
     },
     {
       "path": "source/packages/kit/src/multi-round-merge.ts",
@@ -6388,8 +6398,8 @@
     },
     {
       "path": "source/packages/kit/src/testnet-client.ts",
-      "sha256": "2ea9d6af17d25176711699517d930149d7ac8efd2bed2f1eeb102c32bba1db5e",
-      "bytes": 37389
+      "sha256": "d736fa8ae68e63263a000cf57dffadedd00c7df3ea160bf69de8d3fd85f1d9d0",
+      "bytes": 37485
     },
     {
       "path": "source/packages/kit/src/testnet-validation.ts",
@@ -6523,8 +6533,8 @@
     },
     {
       "path": "source/packages/kit/test/coin-chain-data.test.mjs",
-      "sha256": "2a19218d3b33f2b9977712fc41a3059663bad0bb4d869355fe6802373f02d6d2",
-      "bytes": 8985
+      "sha256": "6a267f17abfb771a525f6a1c39714b1dee56e11ab6ea6858f56eef2a2ca849be",
+      "bytes": 10108
     },
     {
       "path": "source/packages/kit/test/contract-identification.test.mjs",
@@ -6688,8 +6698,8 @@
     },
     {
       "path": "source/packages/kit/test/host-port-business-errors.test.mjs",
-      "sha256": "50909938cfbf5f40d8e5c56272da8e9343b376506da35e8d966a59c55698e2fb",
-      "bytes": 14674
+      "sha256": "187c0823e6607687514b1e8632e11fd2a2720e4161fba9260fd0dcc989824f92",
+      "bytes": 20673
     },
     {
       "path": "source/packages/kit/test/htlc-material.test.mjs",
@@ -7083,8 +7093,8 @@
     },
     {
       "path": "source/packages/kit/test/tbc20-chain-data.test.mjs",
-      "sha256": "0d06e38489a1fea26281aa8a97db2042e4db174a3b128a28c23b2954eb5e4eb7",
-      "bytes": 9207
+      "sha256": "23d01c1bcfff1c952332507f12a497f08fa560318975f7def631e8c980724484",
+      "bytes": 11228
     },
     {
       "path": "source/packages/kit/test/tbc20-network-profile.test.mjs",

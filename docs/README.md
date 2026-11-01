@@ -21,6 +21,7 @@
 - [Flutter 业务调用](flutter/BUSINESS_CALLS.md)
 - [Coin 多轮交易](coin-multiround.md)：多轮合并、指定手续费输入与顺序提交。
 - [旧 FT 审批与指定输入](legacy-ft.md)：合约身份、精确输入集合及依赖交易。
+- [零余额输入处理](../packages/kit/docs/zero-balance-inputs.md)：自动选择、指定输入及错误处理。
 
 ## 参与开发
 

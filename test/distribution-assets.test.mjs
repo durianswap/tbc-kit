@@ -72,10 +72,11 @@ test('download selection exposes the current candidate while retaining historica
   const downloads=JSON.parse(await readFile(new URL('release/downloads.json',root),'utf8'));
   assert(!('history' in downloads.groups));
   assert(!downloads.assets.some(a=>a.id==='candidate-archive'));
-  const currentPath='release/candidates/host-port-signers-rc21/';
+  const currentPath='release/candidates/zero-balance-rc22/';
   assert(downloads.aliases.every(a=>a.path.startsWith(currentPath)));
   assert(downloads.assets.filter(a=>a.path.startsWith('release/candidates/')).every(a=>a.path.startsWith(currentPath)));
   assert((await readdir(new URL('release/candidates/',root))).includes('host-port-signers-rc21'));
+  assert((await readdir(new URL('release/candidates/',root))).includes('zero-balance-rc22'));
   // Earlier reports remain evidence, not another selected installable version.
   assert(!downloads.assets.some(a=>a.path.includes('lean-distribution-rc20')));
   const sums=await readFile(new URL('release/DOWNLOADS.SHA256',root),'utf8');

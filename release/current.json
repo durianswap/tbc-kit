@@ -4,9 +4,9 @@
   "publicRelease": true,
   "registryPublished": false,
   "githubRelease": {
-    "tag": "v0.1.0-rc.21",
+    "tag": "v0.1.0-rc.22",
     "prerelease": true,
-    "sourceCommit": "cc5c3554bf6036eea1fe942930a493fb6294f7b6",
+    "sourceCommit": "1603d14e957c20acd7e227d59e63f486ba1986d6",
     "downloadsManifest": "release/downloads.json"
   },
   "selection": {
@@ -18,7 +18,7 @@
     ]
   },
   "pairing": {
-    "kitVersion": "0.1.0-rc.21",
+    "kitVersion": "0.1.0-rc.22",
     "sdkVersion": "0.1.0-rc.19.native.2",
     "sdkArtifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
     "keylessArtifactSetId": "f9fc9f34a1c289b63c09a4fff29e6d52f461f737d09f8f93154d84372d5f8c45",
@@ -33,10 +33,10 @@
     {
       "id": "kit",
       "path": "artifacts/tbc-kit.tgz",
-      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.21/tbc-kit.tgz",
-      "sha256": "a7df6f8b6f98dba2b4691dd854eacee5c344b4781422529cd195912cd0bb6c91",
-      "bytes": 5541374,
-      "version": "0.1.0-rc.21",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.22/tbc-kit.tgz",
+      "sha256": "10bb0cf19f8c0e25000fa286d587ae15ba623edd0826856111e64000439c00b3",
+      "bytes": 5544408,
+      "version": "0.1.0-rc.22",
       "role": "JS/TS Kit with optional platform-native resources"
     },
     {
@@ -70,12 +70,12 @@
   "source": {
     "path": "source",
     "manifest": "release/source-files.json",
-    "snapshot": "release/candidates/host-port-signers-rc21/tbc-kit-source.tgz",
-    "snapshotManifest": "release/candidates/host-port-signers-rc21/source-manifest.json",
-    "sourceDigest": "6b9f211eb6ebc73808e3b92698dfaf2064fbf9f1f9e34c02b74e90a59970c52a",
+    "snapshot": "release/candidates/zero-balance-rc22/tbc-kit-source.tgz",
+    "snapshotManifest": "release/candidates/zero-balance-rc22/source-manifest.json",
+    "sourceDigest": "cddd307efeb088d6c285a4a12e22f250da09682e696da7797c3d7fc02acb5ccb",
     "snapshotFormat": "repository-relative-source-manifest",
-    "snapshotArchiveManifest": "release/candidates/host-port-signers-rc21/source-archive.json",
-    "buildManifest": "release/candidates/host-port-signers-rc21/evidence/build.json"
+    "snapshotArchiveManifest": "release/candidates/zero-balance-rc22/source-archive.json",
+    "buildManifest": "release/candidates/zero-balance-rc22/evidence/build.json"
   },
   "platformResources": {
     "catalog": "packages/kit/artifacts/platform-resources.json",
