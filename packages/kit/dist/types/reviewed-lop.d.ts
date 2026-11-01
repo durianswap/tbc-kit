@@ -26,4 +26,3 @@ export type LopReviewMaterial = Readonly<{
  * token issuance identities. Rejected asset flows stay rejected by reviewer. */
 export declare function inspectReviewedLopOrders(native: PoolMaterialNativeProviderInput, transactions: readonly LopReviewScripts[]): Promise<readonly LopOrderInspection[]>;
 export declare function inspectReviewedLopMaterials(native: PoolMaterialNativeProviderInput, transactions: readonly LopReviewScripts[]): Promise<readonly LopReviewMaterial[]>;
-//# sourceMappingURL=reviewed-lop.d.ts.map

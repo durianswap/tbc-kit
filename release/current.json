@@ -4,9 +4,9 @@
   "publicRelease": true,
   "registryPublished": false,
   "githubRelease": {
-    "tag": "v0.1.0-rc.22",
+    "tag": "v0.1.0-rc.23",
     "prerelease": true,
-    "sourceCommit": "1603d14e957c20acd7e227d59e63f486ba1986d6",
+    "sourceCommit": "ba2bf386ddd8b34d4409cdb5d25e7b90164b8abc",
     "downloadsManifest": "release/downloads.json"
   },
   "selection": {
@@ -18,25 +18,25 @@
     ]
   },
   "pairing": {
-    "kitVersion": "0.1.0-rc.22",
-    "sdkVersion": "0.1.0-rc.19.native.2",
-    "sdkArtifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+    "kitVersion": "0.1.0-rc.23",
+    "sdkVersion": "0.1.0-rc.23.native.2",
+    "sdkArtifactSetId": "0b5afe3c8f986c8e3835cd7488e68b3986c3be46fdef7ea518fa75dd5d4dc9b4",
     "keylessArtifactSetId": "f9fc9f34a1c289b63c09a4fff29e6d52f461f737d09f8f93154d84372d5f8c45",
     "flutterIsIndependentPairedDistribution": true,
     "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
     "nativeSdkLock": "release/native-sdk-lock.json",
-    "nativeBuildInputKitSha256": "b22d983433c5f18d2da88ad5cc605d5f1faccfc469256f55ab7fca7eebd78377",
+    "nativeBuildInputKitSha256": "4f794d987dcd0eed21da5d2d9a2547def3d40f1a4937e51a2910ad425d1a4a95",
     "flutterVersion": "0.1.0-rc.1",
-    "nativeBuildInputKitVersion": "0.1.0-rc.19"
+    "nativeBuildInputKitVersion": "0.1.0-rc.23"
   },
   "artifacts": [
     {
       "id": "kit",
       "path": "artifacts/tbc-kit.tgz",
-      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.22/tbc-kit.tgz",
-      "sha256": "10bb0cf19f8c0e25000fa286d587ae15ba623edd0826856111e64000439c00b3",
-      "bytes": 5544408,
-      "version": "0.1.0-rc.22",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.23/tbc-kit.tgz",
+      "sha256": "14fa77b6af1248edb5fc89c3dd7104d525c0c07a1529dc3dc0f6d6527d62b88b",
+      "bytes": 5553552,
+      "version": "0.1.0-rc.23",
       "role": "JS/TS Kit with optional platform-native resources"
     },
     {
@@ -51,31 +51,31 @@
     {
       "id": "sdk-ios",
       "path": "artifacts/native/ios-sdk.tgz",
-      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/ios-sdk.tgz",
-      "sha256": "514b0922ffefdcfc0a8be13969fbfa76361ad0a1d977a82bdc2b3a2d5a4fa281",
-      "bytes": 43686738,
-      "version": "0.1.0-rc.19.native.2",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.23/ios-sdk.tgz",
+      "sha256": "877a715f9ab8d8e640136927c3b7d951c39db0ae3728a24d932eb62580d84e1e",
+      "bytes": 43685665,
+      "version": "0.1.0-rc.23.native.2",
       "role": "Standalone ios calculation SDK paired with the JS Kit"
     },
     {
       "id": "sdk-android",
       "path": "artifacts/native/android-sdk.tgz",
-      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/android-sdk.tgz",
-      "sha256": "4146851beb779b63c080057ec31c0a96ed2ca6a6a24c680e3eb4151a75b5f7b7",
-      "bytes": 36108577,
-      "version": "0.1.0-rc.19.native.2",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.23/android-sdk.tgz",
+      "sha256": "9293208a3da7d57a4ee13f8fbb84838cc4ad3c4d32df750d47a0f9483c7db67c",
+      "bytes": 36111191,
+      "version": "0.1.0-rc.23.native.2",
       "role": "Standalone android calculation SDK paired with the JS Kit"
     }
   ],
   "source": {
     "path": "source",
     "manifest": "release/source-files.json",
-    "snapshot": "release/candidates/zero-balance-rc22/tbc-kit-source.tgz",
-    "snapshotManifest": "release/candidates/zero-balance-rc22/source-manifest.json",
-    "sourceDigest": "cddd307efeb088d6c285a4a12e22f250da09682e696da7797c3d7fc02acb5ccb",
+    "snapshot": "release/candidates/unexpected-rejections-rc23/tbc-kit-source.tgz",
+    "snapshotManifest": "release/candidates/unexpected-rejections-rc23/source-manifest.json",
+    "sourceDigest": "5d1e246864e4c77620b66cf7a1c9524925194cc64def932244061335560749e9",
     "snapshotFormat": "repository-relative-source-manifest",
-    "snapshotArchiveManifest": "release/candidates/zero-balance-rc22/source-archive.json",
-    "buildManifest": "release/candidates/zero-balance-rc22/evidence/build.json"
+    "snapshotArchiveManifest": "release/candidates/unexpected-rejections-rc23/source-archive.json",
+    "buildManifest": "release/candidates/unexpected-rejections-rc23/evidence/build.json"
   },
   "platformResources": {
     "catalog": "packages/kit/artifacts/platform-resources.json",

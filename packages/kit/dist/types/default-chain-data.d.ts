@@ -71,4 +71,3 @@ export declare function inspectCoinAncestryReferences(transaction: ParsedTbcTran
     inputIndex: number;
 }>[];
 export declare function createDefaultTbcChainDataResolver(options: CreateDefaultTbcChainDataOptions): DefaultTbcChainDataResolver;
-//# sourceMappingURL=default-chain-data.d.ts.map

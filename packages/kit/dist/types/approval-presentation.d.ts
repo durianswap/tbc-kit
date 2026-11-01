@@ -151,4 +151,3 @@ export declare function projectTbcApprovalPresentation(evidence: ApprovalHostEvi
  * flows, actual fees or signing counts from business intent.
  */
 export declare function projectTbcApprovalPreparation(input: TbcApprovalPreparationPresentationInput): TbcApprovalPresentation;
-//# sourceMappingURL=approval-presentation.d.ts.map

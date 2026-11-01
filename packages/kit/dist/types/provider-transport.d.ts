@@ -149,4 +149,3 @@ export declare function assertTbcProviderEvent(value: unknown): TbcProviderEvent
 /** Validate and detach a Provider delivery using this Kit's bundled schema. */
 export declare function assertTbcTransportDelivery(value: unknown, method?: string): TbcTransportDelivery;
 export {};
-//# sourceMappingURL=provider-transport.d.ts.map

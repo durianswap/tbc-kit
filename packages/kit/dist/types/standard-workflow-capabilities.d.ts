@@ -76,4 +76,3 @@ export declare function normalizeTbcReviewedTransactionMaterial(request: unknown
  * the selected runtime policy, not this private execution capability.
  */
 export declare function createTbcStandardWorkflowCapabilities(options: TbcStandardWorkflowCapabilitiesOptions): TbcStandardWorkflowCapabilities;
-//# sourceMappingURL=standard-workflow-capabilities.d.ts.map

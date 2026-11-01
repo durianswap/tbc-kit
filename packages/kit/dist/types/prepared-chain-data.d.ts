@@ -35,4 +35,3 @@ export declare function preparedChainDataRequirement(request: KitTransactionRequ
     assets: readonly AssetRequirement[];
 }>;
 export {};
-//# sourceMappingURL=prepared-chain-data.d.ts.map

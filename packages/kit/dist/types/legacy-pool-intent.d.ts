@@ -15,4 +15,3 @@ export declare function createLegacyPoolIntentResolver(options: {
     readonly resolvePoolFtDecimals?: (poolContractId: string) => Promise<number>;
     readonly metadata?: Pick<TbcLegacyMetadataResolver, "network" | "resolvePoolFtDecimals">;
 }): LegacyPoolIntentResolver;
-//# sourceMappingURL=legacy-pool-intent.d.ts.map

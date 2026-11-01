@@ -1,6 +1,6 @@
 # rc.22: zero-balance holder input selection
 
-The accepted rc.22 archive is now the repository's selected JS distribution; use the [installation guide](installation.md) for downloads. The prior rc.21 archive, paired Native SDK, and current Flutter partner delivery remain unchanged. The original candidate report records the pre-publication checkpoint and is preserved as evidence.
+This record describes the rc.22 zero-balance fix, retained in later versions; use the [installation guide](installation.md) for the currently selected JS/Native pair. The original rc.22 archives and pre-publication candidate report are preserved as evidence. The Flutter partner delivery remains independently paired.
 
 - JS/TS candidate: `@tbc/kit@0.1.0-rc.22`.
 - Paired Native SDK: `0.1.0-rc.19.native.2`, reused byte-for-byte because no Rust, protocol, schema, template or signing algorithm changes are required.

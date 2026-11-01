@@ -17,6 +17,11 @@ export interface NftTransactionMaterial {
 export declare class NftMaterialUnavailableError extends Error {
     constructor(message: string);
 }
+/** Fixed public reasons only; never expose raw proofs or transport diagnostics. */
+export declare class NftMaterialError extends Error {
+    readonly reason: "NFT_SLOT_SPENT" | "NFT_SLOT_MISMATCH";
+    constructor(reason: "NFT_SLOT_SPENT" | "NFT_SLOT_MISMATCH");
+}
 export declare function resolveNftMaterial(input: Readonly<{
     kind: "collection" | "nft";
     contractId: string;
@@ -56,4 +61,3 @@ export declare function resolveNftMaterial(input: Readonly<{
         protocolVersion: "tbc721" | "2.0";
     }>[];
 }>>;
-//# sourceMappingURL=nft-material.d.ts.map

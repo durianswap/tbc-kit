@@ -35,4 +35,3 @@ export declare function inspectReviewedTokenCodes(native: PoolMaterialNativeProv
 /** Adjacent Code/Tape material must already be authenticated by the caller.
  * This checks exact layout/balance/lock only, not ancestry or spendability. */
 export declare function inspectReviewedTokenPairs(native: PoolMaterialNativeProviderInput, pairs: readonly ReviewedTokenPairInput[]): Promise<readonly ReviewedTokenPair[]>;
-//# sourceMappingURL=reviewed-token.d.ts.map

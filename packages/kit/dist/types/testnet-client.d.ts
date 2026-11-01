@@ -157,4 +157,3 @@ export interface CreateTestnetClientOptions {
 }
 export declare function createTestnetClient(options: CreateTestnetClientOptions): TestnetClient;
 export declare const createTbcChainClient: typeof createTestnetClient;
-//# sourceMappingURL=testnet-client.d.ts.map

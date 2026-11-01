@@ -1,6 +1,6 @@
 {
   "name": "@tbc/kit",
-  "version": "0.1.0-rc.22",
+  "version": "0.1.0-rc.23",
   "description": "TBC SDK for applications, wallets and backends",
   "private": true,
   "type": "module",

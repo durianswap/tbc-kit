@@ -28,4 +28,3 @@ export declare function createLegacyFtTransferIntentResolver(options: {
     readonly maxCacheEntries?: number;
     readonly now?: () => number;
 }): LegacyFtTransferIntentResolver;
-//# sourceMappingURL=legacy-ft-transfer-intent.d.ts.map

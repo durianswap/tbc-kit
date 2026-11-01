@@ -52,4 +52,3 @@ export declare function resolveTimelockMaterial(input: Readonly<{
     }>[];
 }>>;
 export {};
-//# sourceMappingURL=timelock-material.d.ts.map

@@ -4,13 +4,13 @@
 
 | 组件 | 版本 | 下载 |
 | --- | --- | --- |
-| JavaScript / TypeScript Kit | `0.1.0-rc.22` | [tbc-kit.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.22/tbc-kit.tgz) |
-| iOS Native SDK | `0.1.0-rc.19.native.2` | [ios-sdk.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/ios-sdk.tgz) |
-| Android Native SDK | `0.1.0-rc.19.native.2` | [android-sdk.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/android-sdk.tgz) |
+| JavaScript / TypeScript Kit | `0.1.0-rc.23` | [tbc-kit.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.23/tbc-kit.tgz) |
+| iOS Native SDK | `0.1.0-rc.23.native.2` | [ios-sdk.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.23/ios-sdk.tgz) |
+| Android Native SDK | `0.1.0-rc.23.native.2` | [android-sdk.tgz](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.23/android-sdk.tgz) |
 | Native 版本锁 | 与上面三项配套 | [native-sdk-lock.json](../release/native-sdk-lock.json) |
 | Flutter SDK | 独立配套版本，未随本次 JS/Native 升级 | [Flutter 接入](flutter/README.md) |
 
-精确版本和 SHA256 以 [版本清单](../release/current.json) 与 [SHA256SUMS](../SHA256SUMS) 为准。下载链接固定到对应 Release，不使用会随升级漂移的 `latest` 地址。文件名保持稳定；项目应提交自己的依赖锁，升级时核对包内版本和哈希，不仅比较文件名。完整配套文件使用[下载校验清单](../release/DOWNLOADS.SHA256)；rc.22 Release 的 [DOWNLOADS.SHA256](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.22/DOWNLOADS.SHA256) 校验该页新增的 JS、源码和说明附件。Native 与 Flutter 继续从原 Release 取回原始文件。
+精确版本和 SHA256 以 [版本清单](../release/current.json) 与 [SHA256SUMS](../SHA256SUMS) 为准。下载链接固定到对应 Release，不使用会随升级漂移的 `latest` 地址。文件名保持稳定；项目应提交自己的依赖锁，升级时核对包内版本和哈希，不仅比较文件名。完整配套文件使用[下载校验清单](../release/DOWNLOADS.SHA256)；rc.23 Release 的 [DOWNLOADS.SHA256](https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.23/DOWNLOADS.SHA256) 校验该页 JS、Native、源码和说明附件。Flutter 继续从原 Release 取回原始文件。
 
 ## Web、浏览器扩展与 Node.js
 
@@ -33,7 +33,7 @@ npm install /path/to/tbc-kit/artifacts/tbc-kit.tgz
 
 React Native 使用上面的 JS 包和配套平台 SDK；Swift/Kotlin 使用相应平台 SDK 与自己的 Host、账户和 Signer 适配。解压、安装脚本和最低系统要求见 [原生接入](native.md)。
 
-按清单整体核对 JS、Native 与版本锁，但组件版本号不必相同。本次 JS rc.22 配对字节不变的 Native rc.19.native.2，无需为升级 JS 重新构建原生库。当前协议指纹为：
+按清单整体核对 JS、Native 与版本锁。本次 JS rc.23 必须配对 Native rc.23.native.2，原生应用替换 SDK 后重新构建。Rust 和 WASM 均包含 AMM 控制人集合规范化修复；不能仅升级 JS 后继续使用旧 Native。当前协议指纹为：
 
 ```text
 8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9
@@ -73,3 +73,9 @@ Host 现在保留类型化失败；页面应读取错误 code/data，而不是�
 升级 JS 后，自动选择持有人代币输入会在读取父交易前跳过有效的零余额输出。显式 `inputOutpoints` 包含零余额输入时返回 `INVALID_INPUT`，固定原因为 `SELECTED_ZERO_BALANCE_INPUT`，不能忽略指定输入后自动重试。池子储备为零的合法状态不受影响。见[调用约定](../packages/kit/docs/zero-balance-inputs.md)。
 
 此修复位于 JS/TS Chain Data 和 Core，不改变 Native 计算库、签名算法或必要校验。独立 Flutter/Dart 编排没有随此 JS 更新，不能据此声称 Flutter 已获得同一修复。
+
+### rc.23 输入容量与可诊断错误
+
+NFT 和 Token LOP 自动选择手续费输入时，只计算实际需要的资金角色，不把所有备选 UTXO 都计入材料预算。显式 `inputOutpoints` 仍必须完整满足，单笔输入预算与收款人容量不放宽。AMM 控制人按集合规范化，调用者无需预先排序；收款人、工作流步骤和历史多签顺序不受影响。
+
+材料不足、指定输入不可用、已花 NFT 槽位、无可用槽位和不支持的池操作保留明确的错误 code/reason。页面应按[容量与错误约定](../packages/kit/docs/transaction-capacity.md)处理，不自动忽略指定输入或重发交易。一次审批、并行预取及材料复用的接入方式不变。

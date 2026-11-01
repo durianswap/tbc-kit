@@ -52,4 +52,3 @@ export declare function normalizeLegacyAssociatedTransactionResult(result: unkno
 export declare function createLegacyAssociatedTransactionService(options: Readonly<{
     journal: LegacyAssociatedTransactionJournal;
 }>): LegacyAssociatedTransactionService;
-//# sourceMappingURL=legacy-associated-transaction.d.ts.map

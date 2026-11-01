@@ -21,4 +21,3 @@ export declare function createWalletNftMintJob(input: Readonly<{
         signal?: AbortSignal;
     }>) => Promise<import("./nft-mint-job.js").TbcNftMintJobResult>>[0]): Promise<import("./nft-mint-job.js").TbcNftMintJobResult>;
 }>;
-//# sourceMappingURL=nft-mint-job-wallet.d.ts.map

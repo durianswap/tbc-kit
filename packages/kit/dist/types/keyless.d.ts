@@ -6,4 +6,3 @@ export declare function createWasmTbcKeylessEngine(source: ArrayBuffer | Uint8Ar
 export declare function createLazyBundledWasmTbcKeylessEngine(input?: typeof globalThis.fetch | KeylessWasmAssetOptions): LegacyPoolSigningProductionNativeEngine;
 /** Thin adapter for a platform-owned Native bridge. No key or signing operation is accepted. */
 export declare function createNativeTbcKeylessEngine(execute: LegacyPoolSigningProductionNativeEngine["execute"]): LegacyPoolSigningProductionNativeEngine;
-//# sourceMappingURL=keyless.d.ts.map

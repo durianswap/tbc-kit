@@ -123,4 +123,3 @@ export interface DefaultTbcTestnetNetwork {
 export type DefaultTbcNetwork = DefaultTbcTestnetNetwork;
 export declare function createDefaultTbcNetwork(options: DefaultTbcNetworkOptions): DefaultTbcNetwork;
 export declare function createDefaultTbcTestnetNetwork(options: DefaultTbcTestnetNetworkOptions): DefaultTbcTestnetNetwork;
-//# sourceMappingURL=default-network.d.ts.map

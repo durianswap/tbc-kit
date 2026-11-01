@@ -55,4 +55,3 @@ export declare function resolveHtlcMaterial(input: Readonly<{
     }>[];
 }>>;
 export {};
-//# sourceMappingURL=htlc-material.d.ts.map

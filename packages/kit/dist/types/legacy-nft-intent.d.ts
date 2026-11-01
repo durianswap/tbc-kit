@@ -5,4 +5,3 @@ export interface LegacyNftIntentResolver {
 export declare function createLegacyNftIntentResolver(options: Readonly<{
     chainId: string;
 }>): LegacyNftIntentResolver;
-//# sourceMappingURL=legacy-nft-intent.d.ts.map

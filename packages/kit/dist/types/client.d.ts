@@ -440,4 +440,3 @@ export declare function createTbcClientWithWalletDiscovery(options: CreateTbcCli
 /** React Native-safe client. Browser discovery is supplied by the browser root. */
 export declare function createTbcClient(options: CreateTbcClientOptions): TbcClient;
 export {};
-//# sourceMappingURL=client.d.ts.map

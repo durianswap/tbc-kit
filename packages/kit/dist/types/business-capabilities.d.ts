@@ -16,4 +16,3 @@ export declare const TBC_KIT_UNIFIED_TEMPLATE_SUPPORT: Readonly<{
     "tbc-amm": readonly ["amm.swap", "amm.addLiquidity", "amm.removeLiquidity", "tbc20Lp.transfer", "tbc20Lp.lock", "tbc20Lp.unlock", "tbc20Lp.merge"];
     "historical-pool2": readonly ["amm.swap", "amm.addLiquidity", "amm.removeLiquidity", "amm.mergeToken", "tbc20Lp.merge", "tbc20Lp.burn"];
 }>;
-//# sourceMappingURL=business-capabilities.d.ts.map

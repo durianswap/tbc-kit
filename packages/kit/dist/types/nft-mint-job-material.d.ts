@@ -22,4 +22,3 @@ export declare function prepareTbcNftMintJobMaterial(input: Readonly<{
     now?: () => number;
 }>): Promise<TbcNftMintJobMaterial>;
 export {};
-//# sourceMappingURL=nft-mint-job-material.d.ts.map

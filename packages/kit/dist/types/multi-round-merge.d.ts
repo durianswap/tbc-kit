@@ -236,4 +236,3 @@ export declare function createTbcMultiRoundMergeOrchestrator(adapter: TbcMultiRo
 }>): Readonly<{
     readonly run: (input: TbcMultiRoundMergeRunInput) => Promise<TbcMultiRoundMergeResult>;
 }>;
-//# sourceMappingURL=multi-round-merge.d.ts.map

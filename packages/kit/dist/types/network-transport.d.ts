@@ -66,4 +66,3 @@ export interface TbcHttpTransport {
     }>) => Promise<T>;
 }
 export declare function createTbcHttpTransport(options: TbcTransportOptions): TbcHttpTransport;
-//# sourceMappingURL=network-transport.d.ts.map

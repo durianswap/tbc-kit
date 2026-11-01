@@ -60,4 +60,3 @@ export declare function isLegacyWebViewMessage(serialized: string): boolean;
 export declare function decodeLegacyPageMessage(serialized: string): LegacyPageMessage;
 export declare function decodeLegacyNativeMessage(serialized: string): LegacyNativeMessage;
 export declare function encodeLegacyNativeMessage(message: LegacyNativeMessage): string;
-//# sourceMappingURL=legacy-webview-protocol.d.ts.map

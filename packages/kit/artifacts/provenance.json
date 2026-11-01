@@ -101,7 +101,7 @@
     "evidence": "Every object in both iOS archives passed minimum-OS auditing; four successful Engine calls and four error calls match frozen Native and bundled WASM byte-for-byte on iOS 26.5 Simulator. This is not an iOS 15.1 device claim.",
     "networkSigningBroadcast": "No network reads, keys, approvals, persistence, retry or broadcast are added to the bridge. Native identity changes require an app rebuild."
   },
-  "package": "@tbc/kit@0.1.0-rc.22",
+  "package": "@tbc/kit@0.1.0-rc.23",
   "createdAt": "2026-09-25T00:00:00.000Z",
   "candidateDelta": {
     "baseline": "@tbc/kit@0.1.0-candidate.167",
@@ -621,7 +621,7 @@
     {
       "role": "transaction-engine",
       "path": "artifacts/wasm/tbc_engine_wasm.wasm",
-      "sha256": "686083cc06b9ac3e265f90f2ced0665f9e518394120f5fbefe365c647b2adeaf"
+      "sha256": "030d370cf96638f6935d097b500251688a8100c2401012fbb593c495d0c52a5b"
     },
     {
       "role": "keyless-pool-preparation",
@@ -676,9 +676,9 @@
       "schemas/integration.schema.json": "1c694ea1439b771dd9114bd357388dbe6be9ae7b7466b8b938ad7c0e8abb45b2"
     },
     "nativeDelivery": {
-      "iosArm64Sha256": "ec601540fdfc1d64b08488dcd6615595a8ec295f368a0a48a17fa4f41af97713",
-      "iosSimulatorArm64Sha256": "128a8ba5d99ea076142c0a3035f874925846cceb0ab712a6542b281030435610",
-      "wasmSha256": "686083cc06b9ac3e265f90f2ced0665f9e518394120f5fbefe365c647b2adeaf"
+      "iosArm64Sha256": "92c9d97a77c06bc69c95435876522052f71704a48ce8dc245cff7ed8ea839439",
+      "iosSimulatorArm64Sha256": "cbd97d97ef625e57620a77a3192250ac262849c24b829539b1f6e96477e88fa3",
+      "wasmSha256": "030d370cf96638f6935d097b500251688a8100c2401012fbb593c495d0c52a5b"
     }
   },
   "publicFtlpBurn": {
@@ -2217,51 +2217,58 @@
     ]
   },
   "distribution": {
-    "kind": "source-built-js-with-verified-frozen-native",
-    "baselineVersion": "0.1.0-rc.21",
-    "baselineArchiveSha256": "a7df6f8b6f98dba2b4691dd854eacee5c344b4781422529cd195912cd0bb6c91",
-    "nativeSdkVersion": "0.1.0-rc.19.native.2",
+    "kind": "isolated-source-built-candidate",
+    "baselineVersion": "0.1.0-rc.22",
+    "nativeSdkVersion": "0.1.0-rc.23.native.2",
+    "rustSourceDigest": "f037a8afbdd77cf74ad2d7778683717481ddf5733100a4cdcbd883f51b6890b5",
     "changes": [
-      "zero holder filtering before proof reads",
-      "explicit zero input typed rejection",
-      "positive input and Pool reserve validation preserved"
-    ]
+      "AMM controller canonicalization",
+      "NFT funding-candidate budget",
+      "safe business rejection classification",
+      "LOP token funding-alternative budget and exact-set check",
+      "safe spent/unavailable/budget/empty-slot reasons"
+    ],
+    "keylessUnchanged": true,
+    "protocolUnchanged": true,
+    "deviceAcceptance": false,
+    "realBroadcasts": 0,
+    "sourceDigest": "e8e31c2bc87b7e1419f31685eb852dd790edd6b34dd3f3810d8c7a8988f0d7bf"
   },
   "externalArtifacts": [
     {
       "role": "transaction-engine-wallet-private-native",
       "path": "artifacts/native/aarch64-apple-darwin/libtbc_engine_native.dylib",
-      "sha256": "91e9abec833a98b4abc916503de58f677ebc1880d88e099cac0e0265e5930a47",
+      "sha256": "33e4342185588b05c8c660f228cefde8156163d38b2bf36b4e5e6fc1ae68bfc4",
       "target": "aarch64-apple-darwin"
     },
     {
       "role": "transaction-engine-wallet-private-native",
       "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/libtbc_engine_native.a",
-      "sha256": "ec601540fdfc1d64b08488dcd6615595a8ec295f368a0a48a17fa4f41af97713",
+      "sha256": "92c9d97a77c06bc69c95435876522052f71704a48ce8dc245cff7ed8ea839439",
       "target": "aarch64-apple-ios"
     },
     {
       "role": "transaction-engine-wallet-private-native",
       "path": "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/libtbc_engine_native.a",
-      "sha256": "128a8ba5d99ea076142c0a3035f874925846cceb0ab712a6542b281030435610",
+      "sha256": "cbd97d97ef625e57620a77a3192250ac262849c24b829539b1f6e96477e88fa3",
       "target": "aarch64-apple-ios-sim"
     },
     {
       "role": "transaction-engine-wallet-private-native",
       "path": "artifacts/native/android/jniLibs/arm64-v8a/libtbc_engine_native.so",
-      "sha256": "ea6c0b224ab2e3be4ee7ebb579e4e29d30ab6ef811d15a61d6fa99176eef016a",
+      "sha256": "71b5373fd598126141730480e4607ca73f1fcd1259dd2e7b5ef92653c0b76e44",
       "target": "aarch64-linux-android"
     },
     {
       "role": "transaction-engine-wallet-private-native",
       "path": "artifacts/native/android/jniLibs/armeabi-v7a/libtbc_engine_native.so",
-      "sha256": "dd856d184ae2297b6b3f0e0d00aec78c3468ac4d48fd7c1a18e72038776c1a23",
+      "sha256": "d47532d9bba23171a6f9ebcc21b6353a1e4c1cff996181f0042364f44e795d92",
       "target": "armv7-linux-androideabi"
     },
     {
       "role": "transaction-engine-wallet-private-native",
       "path": "artifacts/native/android/jniLibs/x86_64/libtbc_engine_native.so",
-      "sha256": "0854e961b826b2ecce9ccb4eb6c596e7ad1f7f3a041bc1c2371e5cbdf80c67d1",
+      "sha256": "8a7ff21679456522a0c67fe4035666beba145a2c42e8b1278542c46742fab90a",
       "target": "x86_64-linux-android"
     },
     {
@@ -2281,6 +2288,6 @@
   ],
   "platformResources": {
     "path": "artifacts/platform-resources.json",
-    "sha256": "20e76ecfd2e4160a8e8b4e3546a1ed2dc61e6975fc0f83813a94966faa26d7e5"
+    "sha256": "7081e3cc1adec0a7b740b7028026002555e719651074da3e3ec97ad392cd939d"
   }
 }

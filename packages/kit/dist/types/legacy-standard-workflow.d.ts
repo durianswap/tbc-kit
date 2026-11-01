@@ -61,4 +61,3 @@ export declare function mapLegacyAssociatedTransactionToReviewed(input: unknown)
 export declare function mapLegacyGenericBatchToWorkflow(input: unknown, options: LegacyStandardWorkflowBatchOptions): Promise<TbcWorkflowRequest>;
 export declare function createLegacyStandardWorkflowBatchAdapter(options: LegacyStandardWorkflowBatchOptions): LegacyStandardWorkflowBatchAdapter;
 export {};
-//# sourceMappingURL=legacy-standard-workflow.d.ts.map

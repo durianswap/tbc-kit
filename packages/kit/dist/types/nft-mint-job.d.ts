@@ -134,4 +134,3 @@ export declare function createTbcNftMintJobOrchestrator(adapter: TbcNftMintJobAd
         signal?: AbortSignal;
     }>): Promise<TbcNftMintJobResult>;
 }>;
-//# sourceMappingURL=nft-mint-job.d.ts.map

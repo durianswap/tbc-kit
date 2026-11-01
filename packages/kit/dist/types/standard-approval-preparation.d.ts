@@ -78,4 +78,3 @@ export interface StandardApprovalPreparationApproval {
         readonly feeCapAtomic?: string;
     }>;
 }
-//# sourceMappingURL=standard-approval-preparation.d.ts.map

@@ -39,4 +39,3 @@ export declare function isTbcProviderFeature(feature: unknown): feature is TbcPr
 export declare function isTbcWallet(wallet: unknown): wallet is TbcWallet;
 export declare function assertTbcWallet(wallet: unknown): asserts wallet is TbcWallet;
 export declare function assertTbcWalletsListener(listener: unknown): asserts listener is TbcWalletsListener;
-//# sourceMappingURL=wallet-standard-common.d.ts.map

@@ -51,4 +51,3 @@ export declare function resolveLopMaterial(input: Readonly<{
     }>[];
 }>;
 export {};
-//# sourceMappingURL=lop-material.d.ts.map

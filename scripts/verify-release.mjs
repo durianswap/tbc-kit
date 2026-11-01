@@ -104,7 +104,7 @@ assert.equal(sourceAsset.path,manifest.source.snapshot);
 assert.equal(sourceAsset.sha256,archive.sha256);
 assert.equal(sourceAsset.bytes,archive.bytes);
 const build=json(manifest.source.buildManifest);
-assert.equal(build.sourceDigest,checkpoint.sourceBuildDigest);
+assert.equal(build.sourceDigest,checkpoint.sourceBuildDigest ?? checkpoint.sourceDigest);
 for(const [p,h]of Object.entries(build.sourceFiles))assert.equal(hash(safe(p)),h,'Build input differs from accepted candidate: '+p);
 // Frozen snapshots include release-time docs; promotion updates only public
 // release metadata. Runtime/build source must still match every frozen hash.

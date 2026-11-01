@@ -327,4 +327,3 @@ export interface KitWalletRuntime {
     readonly standardWallet: (session: KitWalletSession) => Promise<Readonly<KitWalletStandardDescriptor>>;
 }
 export declare function createTbcWallet(options: KitWalletOptions): KitWalletRuntime;
-//# sourceMappingURL=wallet-runtime.d.ts.map

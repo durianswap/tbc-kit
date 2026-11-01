@@ -57,4 +57,3 @@ export interface TbcAssociatedTransactionReviewer {
         policyMaterial?: TbcReviewedPolicyMaterial;
     }>>;
 }
-//# sourceMappingURL=reviewed-transaction-types.d.ts.map

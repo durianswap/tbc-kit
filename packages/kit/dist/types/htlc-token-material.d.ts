@@ -60,4 +60,3 @@ export declare function resolveHtlcTokenMaterial(input: Readonly<{
         }>;
     }>[];
 }>>;
-//# sourceMappingURL=htlc-token-material.d.ts.map

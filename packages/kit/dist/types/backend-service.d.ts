@@ -67,4 +67,3 @@ export declare class TbcBackendServiceError extends Error {
  * service authorization callback and an external Signer are injected.
  */
 export declare function createTbcBackendService(options: CreateTbcBackendServiceOptions): TbcBackendService;
-//# sourceMappingURL=backend-service.d.ts.map

@@ -19,4 +19,3 @@ export declare function withLegacyDependentTxids(params: unknown, txids: readonl
     message: string;
     encoding: "utf8";
 }> | undefined;
-//# sourceMappingURL=legacy-batch.d.ts.map

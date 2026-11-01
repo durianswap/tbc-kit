@@ -53,4 +53,3 @@ export declare function createReviewedRoleExecutor(): (options: Readonly<{
     detachedSignatures?: readonly (readonly string[])[];
 }>>;
 export {};
-//# sourceMappingURL=reviewed-role-executor.d.ts.map

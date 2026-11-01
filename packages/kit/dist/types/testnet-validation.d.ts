@@ -49,4 +49,3 @@ export declare function inspectTbcTransaction(raw: string): Readonly<{
     transaction: ParsedTbcTransaction;
     txid: string;
 }>;
-//# sourceMappingURL=testnet-validation.d.ts.map

@@ -94,4 +94,3 @@ export declare function createPoolMaterialLoader(options: {
     readonly readPoolInfo?: ReturnType<typeof createTbcOfficialApi>["poolInfo"];
     readonly readFtInfo?: ReturnType<typeof createTbcOfficialApi>["ftInfo"];
 }): (request: LegacyPoolMaterialLoadRequest) => Promise<Readonly<Record<string, unknown>>>;
-//# sourceMappingURL=pool-signing-loader.d.ts.map

@@ -22,4 +22,3 @@ export declare function requireReviewedIssuancePolicy(native: PoolMaterialNative
     txid: string;
 }>[], outputs: readonly PolicyOutput[]): Promise<void>;
 export {};
-//# sourceMappingURL=reviewed-issuance-policy.d.ts.map

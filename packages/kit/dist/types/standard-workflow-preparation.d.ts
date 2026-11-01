@@ -67,4 +67,3 @@ export interface StandardWorkflowPreparationApproval {
         readonly feeCapAtomic: string;
     }>;
 }
-//# sourceMappingURL=standard-workflow-preparation.d.ts.map

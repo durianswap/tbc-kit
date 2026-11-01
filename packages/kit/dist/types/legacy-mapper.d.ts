@@ -53,4 +53,3 @@ export declare function createLegacyKitFacade(input: Readonly<{
     readAccount?: () => Promise<string>;
     requestLegacyMessage?: (params: Readonly<Record<string, unknown>>) => Promise<unknown>;
 }>): LegacyKitFacade;
-//# sourceMappingURL=legacy-mapper.d.ts.map

@@ -32,4 +32,3 @@ export declare function tbcNetworkProfileForChainId(chainId: string): TbcNetwork
 export declare function tbcNetworkNameForChainId(chainId: string): TbcNetworkName;
 export declare function createTbcNetworkContext(options: CreateTbcNetworkContextOptions): TbcNetworkContext;
 export declare function assertTbcNetworkContext(value: TbcNetworkContext): TbcNetworkContext;
-//# sourceMappingURL=network-context.d.ts.map

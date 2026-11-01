@@ -62,4 +62,3 @@ export declare function createSignInMessage(input: Omit<TbcSignInInput, "provide
 }>;
 export declare function signIn(input: TbcSignInInput): Promise<TbcSignInResult>;
 export declare function verifySignIn(options: VerifyTbcSignInOptions): Promise<TbcSignInMessageFields>;
-//# sourceMappingURL=sign-in.d.ts.map

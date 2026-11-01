@@ -1,14 +1,14 @@
 {
   "schema": 1,
-  "package": "@tbc/kit@0.1.0-rc.22",
+  "package": "@tbc/kit@0.1.0-rc.23",
   "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
   "platforms": {
     "macos-arm64": {
       "archive": "tbc-kit-native-resources-macos-arm64.tgz",
-      "archiveSha256": "0309f3ec1efc5f87387817bbd4e7be431696016271266fc80a7a3192bd2e097c",
-      "archiveBytes": 5727012,
+      "archiveSha256": "f087f1a68ad4474dbb40672f4fb82f033d0198353c032d60c7243fedf46b7e15",
+      "archiveBytes": 5726174,
       "files": {
-        "artifacts/native/aarch64-apple-darwin/libtbc_engine_native.dylib": "91e9abec833a98b4abc916503de58f677ebc1880d88e099cac0e0265e5930a47",
+        "artifacts/native/aarch64-apple-darwin/libtbc_engine_native.dylib": "33e4342185588b05c8c660f228cefde8156163d38b2bf36b4e5e6fc1ae68bfc4",
         "artifacts/keyless-native/aarch64-apple-darwin/libtbc_keyless_native.dylib": "f4203d3643898fc49330d5178dc70dab0ab02df6cf8b2c97a44b9be01dba76e1",
         "artifacts/keyless-native/aarch64-apple-darwin/module.modulemap": "c49a057d74e3d73dbf29bf0df22557cd94b4644dcdb2909546c4778870af08a9",
         "artifacts/keyless-native/aarch64-apple-darwin/tbc_keyless.h": "fe6e4e9d09016deb7d23aff96b24a10e65772f7cdc930ee9266e754788a01b4c"
@@ -16,26 +16,26 @@
     },
     "android": {
       "archive": "tbc-kit-native-resources-android.tgz",
-      "archiveSha256": "bb4db61d60481b4f8efbcf13e92d90474d29e00807e1bc272cb41662de0a0c9f",
-      "archiveBytes": 10454590,
+      "archiveSha256": "95fcfd7fe4dfd72a723cc7836b84b65cb1a56a40b15fc53dc892543382da0ddf",
+      "archiveBytes": 10456349,
       "files": {
-        "artifacts/native/android/jniLibs/arm64-v8a/libtbc_engine_native.so": "ea6c0b224ab2e3be4ee7ebb579e4e29d30ab6ef811d15a61d6fa99176eef016a",
-        "artifacts/native/android/jniLibs/armeabi-v7a/libtbc_engine_native.so": "dd856d184ae2297b6b3f0e0d00aec78c3468ac4d48fd7c1a18e72038776c1a23",
-        "artifacts/native/android/jniLibs/x86_64/libtbc_engine_native.so": "0854e961b826b2ecce9ccb4eb6c596e7ad1f7f3a041bc1c2371e5cbdf80c67d1"
+        "artifacts/native/android/jniLibs/arm64-v8a/libtbc_engine_native.so": "71b5373fd598126141730480e4607ca73f1fcd1259dd2e7b5ef92653c0b76e44",
+        "artifacts/native/android/jniLibs/armeabi-v7a/libtbc_engine_native.so": "d47532d9bba23171a6f9ebcc21b6353a1e4c1cff996181f0042364f44e795d92",
+        "artifacts/native/android/jniLibs/x86_64/libtbc_engine_native.so": "8a7ff21679456522a0c67fe4035666beba145a2c42e8b1278542c46742fab90a"
       }
     },
     "ios": {
       "archive": "tbc-kit-native-resources-ios.tgz",
-      "archiveSha256": "3204de92d28a44772238a5ce9eaf6ef24b83e26335fd63ec3fc26e6e10876711",
-      "archiveBytes": 21666807,
+      "archiveSha256": "359fb6227200966aa3dfc19256877eb40432035c1c50c4f51ebf8f8dcb4fbe0e",
+      "archiveBytes": 21671339,
       "files": {
         "artifacts/native/ios/TbcEngineNative.xcframework/Info.plist": "9a7a3843e141bf91da5590a98b1caf8f09d5ed69e42422039fc4112d654cf7da",
         "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/Headers/module.modulemap": "b96481a446ba0a7f27e2a8ed084287e118aa39999b32ed4fee82d75d34c33556",
         "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/Headers/tbc_engine.h": "d773d6a31b10fe5a5f7d780089aa89345b8d99df18e414ada58e4f716586c8bc",
-        "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/libtbc_engine_native.a": "ec601540fdfc1d64b08488dcd6615595a8ec295f368a0a48a17fa4f41af97713",
+        "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/libtbc_engine_native.a": "92c9d97a77c06bc69c95435876522052f71704a48ce8dc245cff7ed8ea839439",
         "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/Headers/module.modulemap": "b96481a446ba0a7f27e2a8ed084287e118aa39999b32ed4fee82d75d34c33556",
         "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/Headers/tbc_engine.h": "d773d6a31b10fe5a5f7d780089aa89345b8d99df18e414ada58e4f716586c8bc",
-        "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/libtbc_engine_native.a": "128a8ba5d99ea076142c0a3035f874925846cceb0ab712a6542b281030435610"
+        "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/libtbc_engine_native.a": "cbd97d97ef625e57620a77a3192250ac262849c24b829539b1f6e96477e88fa3"
       }
     }
   }

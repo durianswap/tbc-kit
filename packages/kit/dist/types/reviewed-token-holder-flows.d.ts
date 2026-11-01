@@ -31,4 +31,3 @@ export declare function reviewCurrentTokenHolderFlows(options: Readonly<{
     readStatuses: (points: readonly Point[]) => Promise<ReadonlyMap<string, TbcApiTxoStatus>>;
 }>): Promise<ReadonlyMap<number, Readonly<Record<string, unknown>>>>;
 export {};
-//# sourceMappingURL=reviewed-token-holder-flows.d.ts.map

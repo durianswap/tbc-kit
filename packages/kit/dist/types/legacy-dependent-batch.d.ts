@@ -41,4 +41,3 @@ export interface LegacyDependentBatchCoordinator {
 export declare function createLegacyDependentBatchCoordinator(options?: Readonly<{
     readonly onProgress?: (progress: LegacyDependentBatchProgress) => void;
 }>): LegacyDependentBatchCoordinator;
-//# sourceMappingURL=legacy-dependent-batch.d.ts.map

@@ -72,7 +72,7 @@ test('download selection exposes the current candidate while retaining historica
   const downloads=JSON.parse(await readFile(new URL('release/downloads.json',root),'utf8'));
   assert(!('history' in downloads.groups));
   assert(!downloads.assets.some(a=>a.id==='candidate-archive'));
-  const currentPath='release/candidates/zero-balance-rc22/';
+  const currentPath='release/candidates/unexpected-rejections-rc23/';
   assert(downloads.aliases.every(a=>a.path.startsWith(currentPath)));
   assert(downloads.assets.filter(a=>a.path.startsWith('release/candidates/')).every(a=>a.path.startsWith(currentPath)));
   assert((await readdir(new URL('release/candidates/',root))).includes('host-port-signers-rc21'));

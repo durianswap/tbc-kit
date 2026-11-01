@@ -182,4 +182,3 @@ export declare function createMultisigClient(engine: MultisigEngine): Readonly<{
     }>[]): Promise<readonly FinalizedMultisig[]>;
     finalize: (proposal: MultisigProposal, signatures: readonly MultisigSignature[]) => Promise<FinalizedMultisig>;
 }>;
-//# sourceMappingURL=multisig.d.ts.map

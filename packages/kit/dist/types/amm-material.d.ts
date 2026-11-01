@@ -6,6 +6,9 @@ type Point = Readonly<{
     txid: string;
     vout: number;
 }>;
+export declare class UnsupportedPoolOperationError extends Error {
+    constructor();
+}
 type MaterialInput = Readonly<{
     contractId: string;
     readHistory: (txid: string) => Promise<TransactionMaterial>;
@@ -95,4 +98,3 @@ export declare function resolveLpMaterial(input: MaterialInput & Readonly<{
     }[];
 }>;
 export {};
-//# sourceMappingURL=amm-material.d.ts.map

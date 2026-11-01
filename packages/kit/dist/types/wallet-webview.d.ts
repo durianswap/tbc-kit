@@ -155,4 +155,3 @@ export declare function digestTbcWebViewEnvelope(serialized: string): string;
  */
 export declare function createTbcKitWebViewNativeController(options: TbcKitWebViewNativeOptions): TbcKitWebViewNativeController;
 export {};
-//# sourceMappingURL=wallet-webview.d.ts.map

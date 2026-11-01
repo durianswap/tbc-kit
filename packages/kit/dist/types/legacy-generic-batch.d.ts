@@ -32,4 +32,3 @@ export declare function createLegacyGenericBatchExecutor(options: Readonly<{
     readonly execute: (request: LegacyGenericBatchRequest, index: number) => Promise<LegacyGenericBatchExecution>;
     readonly onProgress?: (progress: LegacyGenericBatchProgress) => void;
 }>): LegacyGenericBatchExecutor;
-//# sourceMappingURL=legacy-generic-batch.d.ts.map

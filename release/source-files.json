@@ -4458,7 +4458,7 @@
     },
     {
       "path": "source/package-lock.json",
-      "sha256": "4a959fd9097b59a14e68e03c1af1d7aa29e0da0e04300d3411eb272a26f9d608",
+      "sha256": "44ff9e752f9a03650444cedd5be8552806b63053c2d70205bdd9912b07aabe2e",
       "bytes": 49565
     },
     {
@@ -4513,8 +4513,8 @@
     },
     {
       "path": "source/packages/core/src/core.ts",
-      "sha256": "b5155d07745ed0603cd6189976d1f726d86a5c0751c5f069662f643240025b13",
-      "bytes": 25829
+      "sha256": "973c63680565fc8b2954c8da15bba909879619e4dbe66750163c84cdc7afd820",
+      "bytes": 26909
     },
     {
       "path": "source/packages/core/src/crypto-input-budget.ts",
@@ -4618,8 +4618,8 @@
     },
     {
       "path": "source/packages/core/src/reducers/authorizing.ts",
-      "sha256": "0b0fa3f85ce4eed43adb1c78d2205e86cd93e5fecdb92334e86d9fa4b767fb95",
-      "bytes": 15669
+      "sha256": "87a456607ee250a444f73a567ef7ba5555f798df0030216a71216db1b2a0e814",
+      "bytes": 16101
     },
     {
       "path": "source/packages/core/src/reducers/broadcasting.ts",
@@ -4688,8 +4688,8 @@
     },
     {
       "path": "source/packages/core/src/reducers/workflows.ts",
-      "sha256": "cd5e12bce4145fa17486144ba23de9d197dff2a416704ccc0a201bb3435e9051",
-      "bytes": 106687
+      "sha256": "eb7ac4614225f6b011d1b318ecf17bbe4ae0954df382a7625dbf4a51e185e8bf",
+      "bytes": 107045
     },
     {
       "path": "source/packages/core/src/release.ts",
@@ -4908,8 +4908,8 @@
     },
     {
       "path": "source/packages/core/test/transaction-lifecycle.test.mjs",
-      "sha256": "70a592f69a8e07c01d3132cdfa1429632dcbe22566cf9089e6817ad7a32e5923",
-      "bytes": 45113
+      "sha256": "922b5bdffaa4d183cd052742d3cc06e40350dc7b1916eeb4b3d4fd1d989725d0",
+      "bytes": 45328
     },
     {
       "path": "source/packages/core/test/transition.test.mjs",
@@ -5208,48 +5208,8 @@
     },
     {
       "path": "source/packages/kit/SUPPORT.md",
-      "sha256": "365cdb8436582946f9ff4004be452e59f1ade56d3f324c64674d89813a529425",
-      "bytes": 3729
-    },
-    {
-      "path": "source/packages/kit/artifacts/.source-build-start.json",
-      "sha256": "3d01216e763e49e649041ac1f48e148dfbcaca8c06d64dac14f076aa3e01dc50",
-      "bytes": 108
-    },
-    {
-      "path": "source/packages/kit/artifacts/api-rpc-coverage.json",
-      "sha256": "c2430f364a968d6025f77391f34a01893b956a3d64053e4826dbe9deefbd0167",
-      "bytes": 157453
-    },
-    {
-      "path": "source/packages/kit/artifacts/nft-three-step-evidence.json",
-      "sha256": "49c549a1474a89dc22c7c588431887d136f91e7fdf832e128eef7d860e4cfd8e",
-      "bytes": 3671
-    },
-    {
-      "path": "source/packages/kit/artifacts/provenance.json",
-      "sha256": "d9a15ac593004badb8149dd755903802c5bb577c6c4faa404fd0d26800d4549e",
-      "bytes": 168126
-    },
-    {
-      "path": "source/packages/kit/artifacts/source-build.json",
-      "sha256": "8fee59472a1f62207a8ba226d70213355908da3aa5a41e0eec9f6f2db6f44cfd",
-      "bytes": 318
-    },
-    {
-      "path": "source/packages/kit/artifacts/transport-hardening-evidence.json",
-      "sha256": "16af6913d7ff96f15dc165b673753e06fe51004ad076602b94356b71c9641706",
-      "bytes": 3566
-    },
-    {
-      "path": "source/packages/kit/artifacts/wasm/tbc_engine_wasm.wasm",
-      "sha256": "686083cc06b9ac3e265f90f2ced0665f9e518394120f5fbefe365c647b2adeaf",
-      "bytes": 4357869
-    },
-    {
-      "path": "source/packages/kit/artifacts/wasm/tbc_keyless_wasm.wasm",
-      "sha256": "703566ea81b25ed7a358a2942ff6f783fd4de8f718401ea336bfb79dc4151b93",
-      "bytes": 2357708
+      "sha256": "0aa300df7ce39a5f8557c3e74e32ca83025b9091928373b76f770fb738c5e1a9",
+      "bytes": 4000
     },
     {
       "path": "source/packages/kit/conformance/controlled-standard-signature-verifier.d.mts",
@@ -5330,6 +5290,11 @@
       "path": "source/packages/kit/docs/signer-integration.md",
       "sha256": "ff0bc45f8023b4ab6f374a6a51704ced649608ee65a4a45c1e2909b86ca6db76",
       "bytes": 4552
+    },
+    {
+      "path": "source/packages/kit/docs/transaction-capacity.md",
+      "sha256": "c60a33f7974425c8fefdcf484bdc488033c3e216f353eb040cc8e83e8b95a375",
+      "bytes": 4853
     },
     {
       "path": "source/packages/kit/docs/usage.md",
@@ -5538,7 +5503,7 @@
     },
     {
       "path": "source/packages/kit/examples/react-native-engine/module/native-sdk-lock.json",
-      "sha256": "1c1812792106b01591e51bd0d77c0b2e9f9d2e2f0c1dff7e9c772b735fc92558",
+      "sha256": "851c5364a663beaf464ab2d2a9f924c657ef6afd0d80bb7a982c58c417187080",
       "bytes": 7917
     },
     {
@@ -5603,7 +5568,7 @@
     },
     {
       "path": "source/packages/kit/package.json",
-      "sha256": "6c978fd7e3603006362b70fa6bafd03d9ec9f5518e81df0142fd06b41f6a8a9b",
+      "sha256": "cc8d249e0400ef309dd286399d0798b088d79c0e42896eceb865573f04b9f124",
       "bytes": 3288
     },
     {
@@ -5843,8 +5808,8 @@
     },
     {
       "path": "source/packages/kit/src/amm-material.ts",
-      "sha256": "0e7d813bafca298b9d2a1411f6808db2cca9bb3f929bf9053da3e811a7b7b3f9",
-      "bytes": 9892
+      "sha256": "ffe6c25c2e10b380e61324398fb9902db925b0f80d540ff813dcd594d03658cc",
+      "bytes": 10034
     },
     {
       "path": "source/packages/kit/src/amm-quote.ts",
@@ -5913,8 +5878,8 @@
     },
     {
       "path": "source/packages/kit/src/coin-management-material.ts",
-      "sha256": "7fca275a544a44de61a50f969f0b3d2ceda433a1ee297215df81e250e7f40f5f",
-      "bytes": 6688
+      "sha256": "63689b5356392c59132b2adbaaa51a329fe778b22ec0c4b423b72d9219262ade",
+      "bytes": 7120
     },
     {
       "path": "source/packages/kit/src/contract-identification.ts",
@@ -5933,8 +5898,8 @@
     },
     {
       "path": "source/packages/kit/src/default-chain-data.ts",
-      "sha256": "eead588916f0738a8a4fc963752cec026cbbaad34a71390c832418e01d5609ec",
-      "bytes": 124771
+      "sha256": "672518674845aee47e2f95e2e155294002638a305567147f57b7887b826426cd",
+      "bytes": 126676
     },
     {
       "path": "source/packages/kit/src/default-network.ts",
@@ -5973,8 +5938,8 @@
     },
     {
       "path": "source/packages/kit/src/htlc-material.ts",
-      "sha256": "87942cc2524218a29a759973f70f0fb4508d120e1fc6629c1b4a7fc3b9635ac4",
-      "bytes": 7271
+      "sha256": "c7b0d7d1ce9719c303ccd3e18381448f450321fae6fc0b4026ad1ad96d7ee0ab",
+      "bytes": 7502
     },
     {
       "path": "source/packages/kit/src/htlc-privacy.ts",
@@ -5983,8 +5948,8 @@
     },
     {
       "path": "source/packages/kit/src/htlc-token-material.ts",
-      "sha256": "2c6699841cd6fcdab0e423e73714362eea83fd33455ca838795db458ed74d571",
-      "bytes": 7428
+      "sha256": "7d2c818d93b8b31a81f0117659e161484ddb376392538eebe2f70593c6e85afa",
+      "bytes": 7641
     },
     {
       "path": "source/packages/kit/src/index.native.ts",
@@ -6133,8 +6098,13 @@
     },
     {
       "path": "source/packages/kit/src/lop-material.ts",
-      "sha256": "4b2a7716bff860b2aaad8106d2b55ed2f437f7e885e19953b80872ace1f78e0d",
-      "bytes": 14783
+      "sha256": "25e55c3b879922e20fca09d27873fb418085d22faf25e3f0a3dee71afcdf63de",
+      "bytes": 15884
+    },
+    {
+      "path": "source/packages/kit/src/material-business-error.ts",
+      "sha256": "346bfb39fda1c0fb602a43b5abc6d64c083e3d6048fb70db781a65d19f0050f6",
+      "bytes": 726
     },
     {
       "path": "source/packages/kit/src/multi-round-merge.ts",
@@ -6178,8 +6148,8 @@
     },
     {
       "path": "source/packages/kit/src/nft-material.ts",
-      "sha256": "a5b7322afca33922a157797cdf6927d53d06d3ca494d63a228719c9d321b6edd",
-      "bytes": 14630
+      "sha256": "f957889511f97cd5460fddca4a88f3a96b517e4528dc39b168d85d512496cd18",
+      "bytes": 15437
     },
     {
       "path": "source/packages/kit/src/nft-mint-job-material.ts",
@@ -6533,8 +6503,8 @@
     },
     {
       "path": "source/packages/kit/test/coin-chain-data.test.mjs",
-      "sha256": "6a267f17abfb771a525f6a1c39714b1dee56e11ab6ea6858f56eef2a2ca849be",
-      "bytes": 10108
+      "sha256": "1cbe35f57e7cb5ca574c0c222ea7ffadeb97373d91b508d4c3d79341e0bb563e",
+      "bytes": 11414
     },
     {
       "path": "source/packages/kit/test/contract-identification.test.mjs",
@@ -6698,13 +6668,13 @@
     },
     {
       "path": "source/packages/kit/test/host-port-business-errors.test.mjs",
-      "sha256": "187c0823e6607687514b1e8632e11fd2a2720e4161fba9260fd0dcc989824f92",
-      "bytes": 20673
+      "sha256": "fa41bfcd8c8ed0c20a743f3ef812208316c9f3691a030acfc1789b7d0ff8b538",
+      "bytes": 25876
     },
     {
       "path": "source/packages/kit/test/htlc-material.test.mjs",
-      "sha256": "7fc50f0e50d8fffeda2fff7c84ee1c7435e2e8d20a827e66c783351221d23c2d",
-      "bytes": 18716
+      "sha256": "f08b81b5be766e7c4b8b805b9ece6c254db1ec497b154a199c482536fc0ae022",
+      "bytes": 19148
     },
     {
       "path": "source/packages/kit/test/htlc-review-status-batching.test.mjs",
@@ -6848,8 +6818,8 @@
     },
     {
       "path": "source/packages/kit/test/lop-material.test.mjs",
-      "sha256": "46287cac4d6a17d603a3eaed4eb5bd71afaa2762ff1c639b7e3b76ad6aaf86d3",
-      "bytes": 4734
+      "sha256": "da78d82e4f8164b4138b7c7dc297781d7c58f0a0037903929f7da2666c2ea4a4",
+      "bytes": 7044
     },
     {
       "path": "source/packages/kit/test/lop-shared-contract.test.mjs",
@@ -6903,8 +6873,8 @@
     },
     {
       "path": "source/packages/kit/test/nft-material-batching.test.mjs",
-      "sha256": "ac2819404f1879c0a01c7f02ff70a0aa284e162e6b01f1aa1bc7fb74ee7980fe",
-      "bytes": 12880
+      "sha256": "2356254ddae5524de7d2b49f6fc4b272ac182140d793080791d7a7a971f6bbda",
+      "bytes": 17837
     },
     {
       "path": "source/packages/kit/test/nft-mint-job.test.mjs",
@@ -6923,8 +6893,8 @@
     },
     {
       "path": "source/packages/kit/test/nft-three-step.test.mjs",
-      "sha256": "331dabb20c53b120fdf9702f3d5d67742806a34747cdecef9b4fe4a333fb5ebc",
-      "bytes": 15128
+      "sha256": "db663f058f0b1d5e8f1cb548ee54bb231f3cc3d050faaca99e3f8a2354b4a262",
+      "bytes": 16290
     },
     {
       "path": "source/packages/kit/test/official-api-rpc.test.ts",
@@ -7477,11 +7447,6 @@
       "bytes": 4020
     },
     {
-      "path": "source/packages/tbc-engine/artifacts/wasm/tbc_engine_wasm.wasm",
-      "sha256": "35a03d2045f5b4d9ac8be754a51508d2ae8b6f43beb536e4b0fbbc4dfab3265d",
-      "bytes": 5125803
-    },
-    {
       "path": "source/packages/tbc-engine/evidence/runtime-artifact-report.json",
       "sha256": "6e0e53e58d84f00d0acf96245beae16c9cee7ccf466cab6922026f504c6e504f",
       "bytes": 6958
@@ -7933,8 +7898,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/normalize.rs",
-      "sha256": "91a747340e2e706111efa0f5ef9cdb980d43b4b9931f0513363b11fa0e1a73c1",
-      "bytes": 47071
+      "sha256": "1cc3fe181a3d8797f5218ae519e9a1b7c3c02006cef405d22faf52e66b0adcb8",
+      "bytes": 47542
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/src/output_review.rs",
@@ -8388,8 +8353,8 @@
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/amm_public.rs",
-      "sha256": "7f10f4e93e93df9bee462aadc81e534f73f4e18cd2c81669f8c8c38185f40c5a",
-      "bytes": 41241
+      "sha256": "cc58ff82aac9e9e9c96af71e663e3b6c82a6835d9e30356ce44c4bc2e6161112",
+      "bytes": 42646
     },
     {
       "path": "source/packages/tbc-engine/rust/crates/tbc-engine-core/tests/coin_admin.rs",

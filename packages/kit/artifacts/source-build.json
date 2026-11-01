@@ -1,14 +1,10 @@
 {
   "schemaVersion": 1,
-  "version": "0.1.0-rc.22",
-  "status": "source-built-js-frozen-native-not-device-or-chain-accepted",
-  "sourceDigest": "6b86cbc71942e16db13ede92b4957a7775d20d9b82bed53cc9c4b56b6691c6fe",
-  "baselineArchiveSha256": "a7df6f8b6f98dba2b4691dd854eacee5c344b4781422529cd195912cd0bb6c91",
-  "unchangedNativeAndProtocolPaths": [
-    "source/packages/tbc-engine",
-    "source/native",
-    "source/schemas",
-    "source/registry"
-  ],
-  "outputDigest": "e89e93ec983973d4486406f926cdb53669d2d1e28cc10e7e8502aed4e9312fe7"
+  "version": "0.1.0-rc.23",
+  "status": "source-built-js-and-native-not-device-or-chain-accepted",
+  "sourceDigest": "e8e31c2bc87b7e1419f31685eb852dd790edd6b34dd3f3810d8c7a8988f0d7bf",
+  "rustSourceDigest": "f037a8afbdd77cf74ad2d7778683717481ddf5733100a4cdcbd883f51b6890b5",
+  "nativeSdkVersion": "0.1.0-rc.23.native.2",
+  "baselineArchiveSha256": "10bb0cf19f8c0e25000fa286d587ae15ba623edd0826856111e64000439c00b3",
+  "outputDigest": "4ebf6331f8b5532ee13dfed35bc9e013b9e05dbfeff31c0deb8f8f1c3125ad3e"
 }

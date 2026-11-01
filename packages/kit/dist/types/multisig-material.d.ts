@@ -44,4 +44,3 @@ export declare function createMultisigMaterialLoader(options: Readonly<{
         funding?: MultisigInput;
     }>>;
 }>;
-//# sourceMappingURL=multisig-material.d.ts.map

@@ -44,4 +44,3 @@ export declare const TBC_KIT_LEGACY_MIGRATION_CONTRACT: readonly [{
     readonly legacyRole: "DTO/result/error/event mapping";
 }];
 export type TbcKitLegacyMigrationContract = typeof TBC_KIT_LEGACY_MIGRATION_CONTRACT;
-//# sourceMappingURL=legacy-migration-contract.d.ts.map

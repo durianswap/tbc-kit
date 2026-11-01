@@ -64,4 +64,3 @@ export type { AmmFeePolicy } from "./public-types.js";
 export type { TbcReviewedRoleSigner, TbcReviewedInputSigningTask } from "./reviewed-role-executor.js";
 export { quoteTbcAmm, type TbcAmmQuote, type TbcAmmQuoteInput, type TbcAmmQuoteOptions, type TbcAmmQuoteAction, type TbcAmmQuoteState, type TbcAmmQuoteFees, } from "./amm-quote.js";
 export { identifyTbcFungibleContracts, type TbcFungibleContractMaterial, type TbcFungibleContractIdentity, type IdentifyTbcFungibleContractsOptions, } from "./contract-identification.js";
-//# sourceMappingURL=wallet.d.ts.map

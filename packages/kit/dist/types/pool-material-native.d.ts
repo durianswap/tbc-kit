@@ -21,4 +21,3 @@ export interface PoolMaterialNativeProviderInput {
  * resolution. No HTTP, Port, authority, signing or durable state is involved.
  */
 export declare function createPoolMaterialNativeProvider(input: PoolMaterialNativeProviderInput): PoolMaterialNativeProvider;
-//# sourceMappingURL=pool-material-native.d.ts.map

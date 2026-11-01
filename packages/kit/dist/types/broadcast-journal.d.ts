@@ -69,4 +69,3 @@ export declare class TbcKitBroadcastConflictError extends Error {
     readonly name = "TbcKitBroadcastConflictError";
 }
 export declare function createTbcKitSqliteBroadcastJournal(options: CreateTbcKitSqliteBroadcastJournalOptions): Promise<TbcKitBroadcastJournal>;
-//# sourceMappingURL=broadcast-journal.d.ts.map

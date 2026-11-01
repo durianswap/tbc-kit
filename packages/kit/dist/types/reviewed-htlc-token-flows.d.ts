@@ -19,4 +19,3 @@ export declare function reviewHtlcTokenFlows(rows: readonly Readonly<{
     readStatuses: (points: readonly Point[]) => Promise<ReadonlyMap<string, TbcApiTxoStatus>>;
 }>): Promise<ReadonlyMap<number, Readonly<Record<string, unknown>>>>;
 export {};
-//# sourceMappingURL=reviewed-htlc-token-flows.d.ts.map

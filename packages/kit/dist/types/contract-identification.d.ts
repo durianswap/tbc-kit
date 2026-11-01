@@ -68,4 +68,3 @@ export declare function identifyTbcPoolOrigin(contractId: string, rawTransaction
  * Snapshot and deduplicate before awaiting; no mutable or cross-network cache. */
 export declare function identifyTbcFungibleContracts(pairs: readonly TbcFungibleContractMaterial[], options: IdentifyTbcFungibleContractsOptions): Promise<readonly (TbcFungibleContractIdentity | null)[]>;
 export {};
-//# sourceMappingURL=contract-identification.d.ts.map

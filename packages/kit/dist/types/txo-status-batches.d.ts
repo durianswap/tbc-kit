@@ -8,4 +8,3 @@ type BatchResult = PromiseSettledResult<Readonly<{
  * Reuses the supplied preparation-scoped API; no retries, cache or extra reads. */
 export declare function forEachTxoStatusBatch(api: Pick<TbcOfficialApiClient, "txoStatus">, txos: readonly TbcApiTxoStatusInput[], visit: (result: BatchResult) => void, options?: TbcRequestOptions): Promise<void>;
 export {};
-//# sourceMappingURL=txo-status-batches.d.ts.map

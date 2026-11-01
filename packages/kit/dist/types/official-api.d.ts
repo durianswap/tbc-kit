@@ -522,4 +522,3 @@ export type CreateTbcOfficialApiOptions = Omit<TbcTransportOptions, "baseUrl"> &
 }>;
 export declare function createTbcOfficialApi(options?: CreateTbcOfficialApiOptions): TbcOfficialApiClient;
 export {};
-//# sourceMappingURL=official-api.d.ts.map

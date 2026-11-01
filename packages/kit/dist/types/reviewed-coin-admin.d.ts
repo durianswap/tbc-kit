@@ -24,4 +24,3 @@ export declare function bindReviewedCoinAdminMaterial(input: Readonly<{
     publicKey: string;
     native: PoolMaterialNativeProviderInput;
 }>): Promise<Readonly<Record<string, unknown>>>;
-//# sourceMappingURL=reviewed-coin-admin.d.ts.map

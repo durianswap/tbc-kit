@@ -45,4 +45,3 @@ export interface CreateTbc721ReaderOptions {
 }
 export declare function createTbc721Reader(options: CreateTbc721ReaderOptions): Tbc721Reader;
 export {};
-//# sourceMappingURL=nft-query.d.ts.map

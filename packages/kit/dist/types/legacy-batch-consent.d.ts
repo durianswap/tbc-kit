@@ -85,4 +85,3 @@ export interface LegacyBatchConsentMachineOptions {
  * Authority, evidence, journal, clock, account and presentation stay injected.
  */
 export declare function createLegacyBatchConsentMachine(options: LegacyBatchConsentMachineOptions): LegacyBatchConsentMachine;
-//# sourceMappingURL=legacy-batch-consent.d.ts.map

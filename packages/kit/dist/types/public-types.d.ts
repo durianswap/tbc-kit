@@ -590,4 +590,3 @@ export interface KitTransactionEngine {
     finalize(params: unknown): unknown | Promise<unknown>;
 }
 export {};
-//# sourceMappingURL=public-types.d.ts.map

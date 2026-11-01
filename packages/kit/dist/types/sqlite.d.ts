@@ -111,4 +111,3 @@ export declare function createTbcKitMemoryHostStore(options?: KitMemoryHostStore
 export declare function createTbcKitHostEvidenceReader(store: KitHostStore): KitHostEvidenceReader;
 export declare function createTbcKitPostSignerRecoveryReader(store: KitHostStore): KitPostSignerRecoveryReader;
 export { TbcKitBroadcastConflictError, createTbcKitSqliteBroadcastJournal, type CreateTbcKitSqliteBroadcastJournalOptions, type TbcKitBroadcastIdentity, type TbcKitBroadcastJournal, type TbcKitBroadcastJournalRecord, type TbcKitBroadcastJournalSchema, type TbcKitBroadcastPreNetworkAbortEvidence, } from "./broadcast-journal.js";
-//# sourceMappingURL=sqlite.d.ts.map

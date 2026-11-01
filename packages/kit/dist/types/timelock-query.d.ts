@@ -42,4 +42,3 @@ export interface CreateTimelockReaderOptions {
  * Creation is lazy, and mutable index/tip observations are never retained. */
 export declare function createTimelockReader(options: CreateTimelockReaderOptions): TimelockReader;
 export {};
-//# sourceMappingURL=timelock-query.d.ts.map
