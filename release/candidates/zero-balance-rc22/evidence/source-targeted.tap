@@ -1,0 +1,485 @@
+TAP version 13
+# Subtest: one material scope shares in-flight and completed identical reads, never later scopes
+ok 1 - one material scope shares in-flight and completed identical reads, never later scopes
+  ---
+  duration_ms: 1.274792
+  type: 'test'
+  ...
+# Subtest: NFT collection index is reused inside one job scope, not across later jobs
+ok 2 - NFT collection index is reused inside one job scope, not across later jobs
+  ---
+  duration_ms: 1.212041
+  type: 'test'
+  ...
+# Subtest: omitted optional native-read options share prefetch, distinct limits never do
+ok 3 - omitted optional native-read options share prefetch, distinct limits never do
+  ---
+  duration_ms: 0.507334
+  type: 'test'
+  ...
+# Subtest: account, contract and query scopes stay separate; decode feeds immutable bytes
+ok 4 - account, contract and query scopes stay separate; decode feeds immutable bytes
+  ---
+  duration_ms: 0.704417
+  type: 'test'
+  ...
+# Subtest: decoded bytes are shared but raw-only observations never impersonate confirmations
+ok 5 - decoded bytes are shared but raw-only observations never impersonate confirmations
+  ---
+  duration_ms: 0.62125
+  type: 'test'
+  ...
+# Subtest: a failed observation is shared within the scope and does not poison a later request
+ok 6 - a failed observation is shared within the scope and does not poison a later request
+  ---
+  duration_ms: 1.873125
+  type: 'test'
+  ...
+# Subtest: read-only batch output status is shared only inside preparation, never broadcast
+ok 7 - read-only batch output status is shared only inside preparation, never broadcast
+  ---
+  duration_ms: 0.696291
+  type: 'test'
+  ...
+# Subtest: timelock deposits and tip share reads within one preparation, not across preparations
+ok 8 - timelock deposits and tip share reads within one preparation, not across preparations
+  ---
+  duration_ms: 0.136584
+  type: 'test'
+  ...
+# Subtest: real client shares nested native tip and direct timelock tip only in a bounded read scope
+ok 9 - real client shares nested native tip and direct timelock tip only in a bounded read scope
+  ---
+  duration_ms: 17.524458
+  type: 'test'
+  ...
+# Subtest: Coin zero-lock hot path uses five SDK reads without a tip or issuer audit
+ok 10 - Coin zero-lock hot path uses five SDK reads without a tip or issuer audit
+  ---
+  duration_ms: 48.452541
+  type: 'test'
+  ...
+# Subtest: Coin legal zero index rows preserve material and GET count; explicit zero inputs are not ignored
+ok 11 - Coin legal zero index rows preserve material and GET count; explicit zero inputs are not ignored
+  ---
+  duration_ms: 58.52125
+  type: 'test'
+  ...
+# Subtest: Coin holder material selects six and twenty fragments without duplicate ancestry or tip reads
+ok 12 - Coin holder material selects six and twenty fragments without duplicate ancestry or tip reads
+  ---
+  duration_ms: 388.236167
+  type: 'test'
+  ...
+# Subtest: Coin locked-first backfills without duplicate raw and ignores index lock hints
+ok 13 - Coin locked-first backfills without duplicate raw and ignores index lock hints
+  ---
+  duration_ms: 9.771333
+  type: 'test'
+  ...
+# Subtest: Coin timestamp maturity uses same-tip MTP, equality is not mature
+ok 14 - Coin timestamp maturity uses same-tip MTP, equality is not mature
+  ---
+  duration_ms: 10.74075
+  type: 'test'
+  ...
+# Subtest: Coin height boundary and merge only include mature inputs
+ok 15 - Coin height boundary and merge only include mature inputs
+  ---
+  duration_ms: 9.49475
+  type: 'test'
+  ...
+# Subtest: node median accepts exact integer strings, rejects malformed present values
+ok 16 - node median accepts exact integer strings, rejects malformed present values
+  ---
+  duration_ms: 4.8695
+  type: 'test'
+  ...
+# Subtest: positive-only hot-path metrics
+ok 17 - positive-only hot-path metrics
+  ---
+  duration_ms: 1216.819334
+  type: 'test'
+  ...
+# ZERO_HOT_PATH [{"kind":"transfer","milliseconds":299.51083300000005,"trace":["/api/tbc/ft/info/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/ft/utxo/combinescript/751e76e8199196d454941c45d1b3a323f1433bd600/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/txraw/txid/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/txraw/txid/b458c99aa138a3eff100518ba4862f5d48fbba0730ba13206664623372cc792c","/api/tbc/utxo/address/1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"],"txids":["fd6182ad11fd36dd32851697bd1e5d343ae1f3fb5c97b0354764e3bb3de52f35"],"approvals":1,"signatures":2},{"kind":"merge","milliseconds":82.35945800000002,"trace":["/api/tbc/ft/info/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/ft/utxo/combinescript/751e76e8199196d454941c45d1b3a323f1433bd600/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/txraw/txid/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/txraw/txid/b458c99aa138a3eff100518ba4862f5d48fbba0730ba13206664623372cc792c","/api/tbc/utxo/address/1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"],"txids":["c8f259da1a91ace157f8f7a6816edffc2577cb0a6049cc634199d9489638226b"],"approvals":1,"signatures":3},{"kind":"htlc","milliseconds":68.53849999999989,"trace":["/api/tbc/ft/info/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/ft/utxo/combinescript/751e76e8199196d454941c45d1b3a323f1433bd600/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/nodeinfo","/api/tbc/txraw/txid/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/txraw/txid/b458c99aa138a3eff100518ba4862f5d48fbba0730ba13206664623372cc792c","/api/tbc/utxo/address/1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"],"txids":["855f36ab52900b07dcbf24da0942e5c15c9809178a500dac9aae7e45038c458a"],"approvals":1,"signatures":2},{"kind":"order","milliseconds":81.06904199999985,"trace":["/api/tbc/ft/info/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/ft/utxo/combinescript/751e76e8199196d454941c45d1b3a323f1433bd600/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/txraw/txid/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/txraw/txid/b458c99aa138a3eff100518ba4862f5d48fbba0730ba13206664623372cc792c","/api/tbc/utxo/address/1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"],"txids":["18932ce37b9df82a6c1796943c44434fe0f454e7ffec8c3585c6565ed5ad7f84"],"approvals":1,"signatures":2},{"kind":"addLiquidity","milliseconds":251.594333,"trace":["/api/tbc/ft/info/contract/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/ft/utxo/combinescript/751e76e8199196d454941c45d1b3a323f1433bd600/contract/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/ft/utxo/combinescript/b6e23e4167ad5dab5444fdf3dd66e8c41b2f252701/contract/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/pool/poolinfo/poolid/6a6e5a171b3572c09385bfde4801013be3af5e0badb5f615ec830f62a640f952","/api/tbc/txraw/txid/27c258033f674eb33ce548722df0ecf8a23357ad05669cdac12970abd37d62a8","/api/tbc/txraw/txid/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/txraw/txid/6359cc2a7d9f75e3b7f1d5ec40d6d77ed79a1312497618fb54733877ca5ca1d2","/api/tbc/txraw/txid/7b93bfa5ba038979cb7c53046bd857b986fc7c58bf2ca4d6fdc52e9f6de57fe2","/api/tbc/utxo/address/1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"],"txids":["dcd4aed7fbf8c4f6aadd432434e4258c29d7624d85fe2f2601f38b5c7d22a3e0"],"approvals":1,"signatures":3},{"kind":"swap","milliseconds":219.54937500000005,"trace":["/api/tbc/ft/info/contract/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/ft/utxo/combinescript/751e76e8199196d454941c45d1b3a323f1433bd600/contract/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/ft/utxo/combinescript/b6e23e4167ad5dab5444fdf3dd66e8c41b2f252701/contract/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/pool/poolinfo/poolid/6a6e5a171b3572c09385bfde4801013be3af5e0badb5f615ec830f62a640f952","/api/tbc/txraw/txid/27c258033f674eb33ce548722df0ecf8a23357ad05669cdac12970abd37d62a8","/api/tbc/txraw/txid/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/txraw/txid/6359cc2a7d9f75e3b7f1d5ec40d6d77ed79a1312497618fb54733877ca5ca1d2","/api/tbc/txraw/txid/7b93bfa5ba038979cb7c53046bd857b986fc7c58bf2ca4d6fdc52e9f6de57fe2","/api/tbc/utxo/address/1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"],"txids":["d8afc1f21b418bff2ae034ac8a2b0dacf48827127ba144f2d80ed44e76973555"],"approvals":1,"signatures":3},{"kind":"lpTransfer","milliseconds":116.31687499999998,"trace":["/api/tbc/ft/info/contract/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/pool/lputxo/scriptpubkeyhash/f38bb89e55e4c37b13d858ec42b38a80dba665326ccddecec66bfdfb9622ae5f","/api/tbc/pool/poolinfo/poolid/6a6e5a171b3572c09385bfde4801013be3af5e0badb5f615ec830f62a640f952","/api/tbc/txraw/txid/27c258033f674eb33ce548722df0ecf8a23357ad05669cdac12970abd37d62a8","/api/tbc/txraw/txid/6a6e5a171b3572c09385bfde4801013be3af5e0badb5f615ec830f62a640f952","/api/tbc/txraw/txid/7b93bfa5ba038979cb7c53046bd857b986fc7c58bf2ca4d6fdc52e9f6de57fe2","/api/tbc/utxo/address/1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"],"txids":["c37490a6df97a47117c0e3d5e549a0798de595a94f5d82a5db751429071910a0"],"approvals":1,"signatures":2}]
+# Subtest: zero holder rows: public transfer completes with identical transaction bytes, GETs and one approval
+ok 18 - zero holder rows: public transfer completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 126.362209
+  type: 'test'
+  ...
+# Subtest: explicit zero input: public transfer fails typed, before approval/signing, without replacement
+ok 19 - explicit zero input: public transfer fails typed, before approval/signing, without replacement
+  ---
+  duration_ms: 12.539333
+  type: 'test'
+  ...
+# Subtest: zero filtering does not bypass malformed index amount rejection: transfer
+ok 20 - zero filtering does not bypass malformed index amount rejection: transfer
+  ---
+  duration_ms: 11.494583
+  type: 'test'
+  ...
+# Subtest: zero holder rows: public merge completes with identical transaction bytes, GETs and one approval
+ok 21 - zero holder rows: public merge completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 141.344583
+  type: 'test'
+  ...
+# Subtest: explicit zero input: public merge fails typed, before approval/signing, without replacement
+ok 22 - explicit zero input: public merge fails typed, before approval/signing, without replacement
+  ---
+  duration_ms: 9.468459
+  type: 'test'
+  ...
+# Subtest: zero filtering does not bypass malformed index amount rejection: merge
+ok 23 - zero filtering does not bypass malformed index amount rejection: merge
+  ---
+  duration_ms: 8.605917
+  type: 'test'
+  ...
+# Subtest: zero holder rows: public htlc completes with identical transaction bytes, GETs and one approval
+ok 24 - zero holder rows: public htlc completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 127.531666
+  type: 'test'
+  ...
+# Subtest: explicit zero input: public htlc fails typed, before approval/signing, without replacement
+ok 25 - explicit zero input: public htlc fails typed, before approval/signing, without replacement
+  ---
+  duration_ms: 8.084958
+  type: 'test'
+  ...
+# Subtest: zero filtering does not bypass malformed index amount rejection: htlc
+ok 26 - zero filtering does not bypass malformed index amount rejection: htlc
+  ---
+  duration_ms: 8.825042
+  type: 'test'
+  ...
+# Subtest: zero holder rows: public order completes with identical transaction bytes, GETs and one approval
+ok 27 - zero holder rows: public order completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 130.803834
+  type: 'test'
+  ...
+# Subtest: explicit zero input: public order fails typed, before approval/signing, without replacement
+ok 28 - explicit zero input: public order fails typed, before approval/signing, without replacement
+  ---
+  duration_ms: 8.497959
+  type: 'test'
+  ...
+# Subtest: zero filtering does not bypass malformed index amount rejection: order
+ok 29 - zero filtering does not bypass malformed index amount rejection: order
+  ---
+  duration_ms: 8.693792
+  type: 'test'
+  ...
+# Subtest: zero holder rows: public addLiquidity completes with identical transaction bytes, GETs and one approval
+ok 30 - zero holder rows: public addLiquidity completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 469.776625
+  type: 'test'
+  ...
+# Subtest: explicit zero input: public addLiquidity fails typed, before approval/signing, without replacement
+ok 31 - explicit zero input: public addLiquidity fails typed, before approval/signing, without replacement
+  ---
+  duration_ms: 20.325917
+  type: 'test'
+  ...
+# Subtest: zero filtering does not bypass malformed index amount rejection: addLiquidity
+ok 32 - zero filtering does not bypass malformed index amount rejection: addLiquidity
+  ---
+  duration_ms: 15.403792
+  type: 'test'
+  ...
+# Subtest: zero holder rows: public swap completes with identical transaction bytes, GETs and one approval
+ok 33 - zero holder rows: public swap completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 439.974417
+  type: 'test'
+  ...
+# Subtest: explicit zero input: public swap fails typed, before approval/signing, without replacement
+ok 34 - explicit zero input: public swap fails typed, before approval/signing, without replacement
+  ---
+  duration_ms: 13.699417
+  type: 'test'
+  ...
+# Subtest: zero filtering does not bypass malformed index amount rejection: swap
+ok 35 - zero filtering does not bypass malformed index amount rejection: swap
+  ---
+  duration_ms: 14.001041
+  type: 'test'
+  ...
+# Subtest: zero holder rows: public lpTransfer completes with identical transaction bytes, GETs and one approval
+ok 36 - zero holder rows: public lpTransfer completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 231.641833
+  type: 'test'
+  ...
+# Subtest: explicit zero input: public lpTransfer fails typed, before approval/signing, without replacement
+ok 37 - explicit zero input: public lpTransfer fails typed, before approval/signing, without replacement
+  ---
+  duration_ms: 11.282917
+  type: 'test'
+  ...
+# Subtest: zero filtering does not bypass malformed index amount rejection: lpTransfer
+ok 38 - zero filtering does not bypass malformed index amount rejection: lpTransfer
+  ---
+  duration_ms: 10.825791
+  type: 'test'
+  ...
+# Subtest: Coin create 0/6 decimals completes the public client/Host/Engine staged path with one synthetic approval
+ok 39 - Coin create 0/6 decimals completes the public client/Host/Engine staged path with one synthetic approval
+  ---
+  duration_ms: 108.600459
+  type: 'test'
+  ...
+# Subtest: current AMM historical-only maintenance returns INVALID_PARAMS before approval or signer
+ok 40 - current AMM historical-only maintenance returns INVALID_PARAMS before approval or signer
+  ---
+  duration_ms: 34.854917
+  type: 'test'
+  ...
+# Subtest: small AMM sell preserves the actual fee rule but returns a precise typed reason
+ok 41 - small AMM sell preserves the actual fee rule but returns a precise typed reason
+  ---
+  duration_ms: 16.262208
+  type: 'test'
+  ...
+# Subtest: inactive pool remains a distinct conflict, not an internal failure
+ok 42 - inactive pool remains a distinct conflict, not an internal failure
+  ---
+  duration_ms: 13.865875
+  type: 'test'
+  ...
+# Subtest: ECDSA-only wallet reports a signing capability failure, does not publish the signed source
+ok 43 - ECDSA-only wallet reports a signing capability failure, does not publish the signed source
+  ---
+  duration_ms: 24.229125
+  type: 'test'
+  ...
+# Subtest: controlled signer dispatches exact ECDSA/recoverable/BIP340 profiles without fallback
+ok 44 - controlled signer dispatches exact ECDSA/recoverable/BIP340 profiles without fallback
+  ---
+  duration_ms: 6.385792
+  type: 'test'
+  ...
+# Subtest: exact native HTLC code decode preserves script roles and unsigned lock bytes
+ok 45 - exact native HTLC code decode preserves script roles and unsigned lock bytes
+  ---
+  duration_ms: 1.6015
+  type: 'test'
+  ...
+# Subtest: claim and refund share selected sibling parent reads without native funding or ancestor queries
+ok 46 - claim and refund share selected sibling parent reads without native funding or ancestor queries
+  ---
+  duration_ms: 9.028583
+  type: 'test'
+  ...
+# Subtest: claim has no refund deadline; role must match the chosen branch
+ok 47 - claim has no refund deadline; role must match the chosen branch
+  ---
+  duration_ms: 1.498584
+  type: 'test'
+  ...
+# Subtest: refund requires safe locks, one time domain and strict MTP but height equality is mature
+ok 48 - refund requires safe locks, one time domain and strict MTP but height equality is mature
+  ---
+  duration_ms: 0.782459
+  type: 'test'
+  ...
+# Subtest: only missing confirmation height above zero floor refreshes a unique decoded parent
+ok 49 - only missing confirmation height above zero floor refreshes a unique decoded parent
+  ---
+  duration_ms: 0.781208
+  type: 'test'
+  ...
+# Subtest: invalid, duplicate, spent, unexpected or mismatched selected deposits cannot enter material
+ok 50 - invalid, duplicate, spent, unexpected or mismatched selected deposits cannot enter material
+  ---
+  duration_ms: 1.650708
+  type: 'test'
+  ...
+# Subtest: selected points and account role are fixed before asynchronous reads
+ok 51 - selected points and account role are fixed before asynchronous reads
+  ---
+  duration_ms: 0.490291
+  type: 'test'
+  ...
+# Subtest: Core and Prepared project only selected deposit reads, never claim secrets
+ok 52 - Core and Prepared project only selected deposit reads, never claim secrets
+  ---
+  duration_ms: 1.572917
+  type: 'test'
+  ...
+# Subtest: Token HTLC requirements share Core/Prepared identity and never send a preimage to chain data
+ok 53 - Token HTLC requirements share Core/Prepared identity and never send a preimage to chain data
+  ---
+  duration_ms: 3.095334
+  type: 'test'
+  ...
+# Subtest: early approval hides claim secret but keeps complete request binding and disclosure warning
+ok 54 - early approval hides claim secret but keeps complete request binding and disclosure warning
+  ---
+  duration_ms: 0.828083
+  type: 'test'
+  ...
+# Subtest: HTLC helpers use standard methods, exact points and fee limits
+ok 55 - HTLC helpers use standard methods, exact points and fee limits
+  ---
+  duration_ms: 0.791708
+  type: 'test'
+  ...
+# Subtest: Token HTLC client preserves asset selectors without inventing native points
+ok 56 - Token HTLC client preserves asset selectors without inventing native points
+  ---
+  duration_ms: 0.39025
+  type: 'test'
+  ...
+# Subtest: Token HTLC material selects escrow plus Token and reuses unique ancestry without secret or funding reads
+ok 57 - Token HTLC material selects escrow plus Token and reuses unique ancestry without secret or funding reads
+  ---
+  duration_ms: 0.691541
+  type: 'test'
+  ...
+# Subtest: Token HTLC refreshes missing confirmations once and snapshots target before I/O
+ok 58 - Token HTLC refreshes missing confirmations once and snapshots target before I/O
+  ---
+  duration_ms: 0.163458
+  type: 'test'
+  ...
+# Subtest: Token HTLC rejects unavailable siblings, forged rows, wrong roles and immature refunds
+ok 59 - Token HTLC rejects unavailable siblings, forged rows, wrong roles and immature refunds
+  ---
+  duration_ms: 0.91675
+  type: 'test'
+  ...
+# Subtest: native sell cancellation fetches exact order/status plus funding, never quote assets
+ok 60 - native sell cancellation fetches exact order/status plus funding, never quote assets
+  ---
+  duration_ms: 12.458708
+  type: 'test'
+  ...
+# Subtest: availability, amount, script, height and duplicates fail closed
+ok 61 - availability, amount, script, height and duplicates fail closed
+  ---
+  duration_ms: 1.051584
+  type: 'test'
+  ...
+# Subtest: unknown heights only cause a fresh read when confirmation policy needs it
+ok 62 - unknown heights only cause a fresh read when confirmation policy needs it
+  ---
+  duration_ms: 0.540959
+  type: 'test'
+  ...
+# Subtest: invalid LOP selectors fail before any network read
+ok 63 - invalid LOP selectors fail before any network read
+  ---
+  duration_ms: 3.109542
+  type: 'test'
+  ...
+# Subtest: cold confirmation target uses one decode; warm known height adds no query
+ok 64 - cold confirmation target uses one decode; warm known height adds no query
+  ---
+  duration_ms: 0.330583
+  type: 'test'
+  ...
+# Subtest: LOP ordinary and Prepared share exact identity-versus-escrow material projection
+ok 65 - LOP ordinary and Prepared share exact identity-versus-escrow material projection
+  ---
+  duration_ms: 21.762083
+  type: 'test'
+  ...
+# Subtest: LOP exact targets preserve order and reject silent aggregate loss
+ok 66 - LOP exact targets preserve order and reject silent aggregate loss
+  ---
+  duration_ms: 0.422958
+  type: 'test'
+  ...
+# Subtest: LOP strict schemas reject caller script authority and malformed integer terms
+ok 67 - LOP strict schemas reject caller script authority and malformed integer terms
+  ---
+  duration_ms: 1.6355
+  type: 'test'
+  ...
+# Subtest: LOP client uses standard send/sign methods on both configured networks
+ok 68 - LOP client uses standard send/sign methods on both configured networks
+  ---
+  duration_ms: 1.006833
+  type: 'test'
+  ...
+# Subtest: LOP local policy and preparation display bind full terms without any HTTP
+ok 69 - LOP local policy and preparation display bind full terms without any HTTP
+  ---
+  duration_ms: 13.045958
+  type: 'test'
+  ...
+# Subtest: new creation is parent-free; transfer deduplicates origin/ancestry and retains raw only
+ok 70 - new creation is parent-free; transfer deduplicates origin/ancestry and retains raw only
+  ---
+  duration_ms: 16.08375
+  type: 'test'
+  ...
+# Subtest: merge reuses previous finalized raw; trusted metadata replaces historical source audit
+ok 71 - merge reuses previous finalized raw; trusted metadata replaces historical source audit
+  ---
+  duration_ms: 11.252459
+  type: 'test'
+  ...
+# Subtest: trusted metadata starts beside the FT index without fetching historical origin
+ok 72 - trusted metadata starts beside the FT index without fetching historical origin
+  ---
+  duration_ms: 3.33325
+  type: 'test'
+  ...
+# Subtest: positive confirmations do not come from retained immutable Genesis bytes
+ok 73 - positive confirmations do not come from retained immutable Genesis bytes
+  ---
+  duration_ms: 2.384834
+  type: 'test'
+  ...
+# Subtest: confirmed selection skips an earlier sufficient mempool asset before applying input budget
+ok 74 - confirmed selection skips an earlier sufficient mempool asset before applying input budget
+  ---
+  duration_ms: 2.230166
+  type: 'test'
+  ...
+# Subtest: precise requested inputs and bounded new Tape dependencies reject missing material
+ok 75 - precise requested inputs and bounded new Tape dependencies reject missing material
+  ---
+  duration_ms: 3.6985
+  type: 'test'
+  ...
+# Subtest: TBC20 may prepare token-only merge material without inventing native funding
+ok 76 - TBC20 may prepare token-only merge material without inventing native funding
+  ---
+  duration_ms: 2.655833
+  type: 'test'
+  ...
+# Subtest: zero holder outputs never block transfer/merge or add parent/confirmation reads
+ok 77 - zero holder outputs never block transfer/merge or add parent/confirmation reads
+  ---
+  duration_ms: 17.424208
+  type: 'test'
+  ...
+# Subtest: explicit zero inputs fail clearly even after sufficient positive inputs; no zero parent read
+ok 78 - explicit zero inputs fail clearly even after sufficient positive inputs; no zero parent read
+  ---
+  duration_ms: 0.626625
+  type: 'test'
+  ...
+# Subtest: all-zero, malformed and duplicate index rows do not authorize a spend
+ok 79 - all-zero, malformed and duplicate index rows do not authorize a spend
+  ---
+  duration_ms: 0.753583
+  type: 'test'
+  ...
+1..79
+# tests 79
+# suites 0
+# pass 79
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3789.668791

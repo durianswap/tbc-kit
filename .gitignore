@@ -1,6 +1,7 @@
 .DS_Store
 .verify/
 node_modules/
+node_modules
 target/
 build/
 .dart_tool/

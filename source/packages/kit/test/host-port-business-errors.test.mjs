@@ -43,6 +43,8 @@ const backend = await kit.createWasmTbcEngineBackend(await readFile(join(wasm, '
 const tbc = createRequire(import.meta.url)('tbc-lib-js');
 const fixture = JSON.parse(await readFile(join(root, 'packages/tbc-engine/rust/fixtures/amm-explicit173-lifecycle.json'), 'utf8'));
 const row = fixture.cases.find(c => !c.controlled && !c.locked);
+const tokenFixture = JSON.parse(await readFile(join(root, 'packages/tbc-engine/rust/fixtures/tbc20-standard-transfer.json'), 'utf8'));
+const zeroPoint = { txid: '00'.repeat(32), vout: 2 };
 const fixtureScalar = '01'.padStart(64, '0'); // Public synthetic fixture, never a real account.
 const address = '1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH';
 const account = { address, chainId: 'tbc:testnet', accountId: `tbc:testnet:${address}`,
@@ -61,7 +63,8 @@ function permission(capability) {
       { type: 'restrictMethods', value: [capability] }] };
 }
 
-async function setup({ empty = false, reject = false, ecdsaOnly = false, materialNative = native } = {}) {
+async function setup({ empty = false, reject = false, ecdsaOnly = false, materialNative = native,
+  tokenMode = false, zeros = false, corrupt = false, lpMode = false } = {}) {
   const stateId = empty ? row.genesisId : row.actions.find(a => a.operation === 'buy').txid;
   const stateRaw = fixture.raws[stateId];
   const stateTx = new tbc.Transaction(stateRaw);
@@ -69,6 +72,14 @@ async function setup({ empty = false, reject = false, ecdsaOnly = false, materia
     phase: 'inspectPool', pool: { txid: stateId, rawTransaction: stateRaw },
   })));
   const ftTx = new tbc.Transaction(fixture.raws[row.ftGenesisId]);
+  const tokenId = tokenMode ? tokenFixture.stages[1].txid : row.ftGenesisId;
+  const tokenGenesis = tokenMode ? new tbc.Transaction(tokenFixture.stages[1].signedRaw) : ftTx;
+  const holderId = tokenMode ? tokenFixture.stages[2].txid : row.actions.find(a => a.operation === 'add').txid;
+  const holderRows = tokenMode ? tokenFixture.stages[2].tokenOutputs.map(t => ({ txid: holderId, index: t.codeVout, tbc_value: '500', ft_value: t.amount, height: 999 }))
+    : [{ txid: holderId, index: lpMode ? 4 : 6, tbc_value: '500', ft_value: lpMode ? '100000' : '800000', height: 999 }];
+  if (corrupt) holderRows[0].ft_value = '-1';
+  const indexRows = zeros ? [{ txid: zeroPoint.txid, index: zeroPoint.vout, tbc_value: '500', ft_value: '0' }, ...holderRows,
+    { txid: 'ff'.repeat(32), index: 2, tbc_value: '500', ft_value: '0' }] : holderRows;
   const trace = [], ports = [], accepted = [];
   let approvals = 0, signatures = 0;
   const network = kit.createDefaultTbcTestnetNetwork({ accounts: { current: async () => [account] },
@@ -83,12 +94,15 @@ async function setup({ empty = false, reject = false, ecdsaOnly = false, materia
       else if (path === `/api/tbc/utxo/address/${address}`) data = { utxos: [{ txid: fundingId, index: 0, value: 1000000, height: 999 }] };
       else if (path.startsWith('/api/tbc/txraw/txid/')) {
         const id = path.split('/').at(-1);
-        const raw = id === fundingId ? fundingRaw : fixture.raws[id]; assert.ok(raw, `Unexpected proof ${id}`);
+        const raw = id === fundingId ? fundingRaw : tokenFixture.stages.find(s => s.txid === id)?.signedRaw ?? fixture.raws[id]; assert.ok(raw, `Unexpected proof ${id}`);
         data = { txraw: raw };
-      } else if (path === `/api/tbc/ft/info/contract/${row.ftGenesisId}`) data = {
-        code_script: ftTx.outputs[0].script.toHex(), tape_script: ftTx.outputs[1].script.toHex(), amount: '10000000',
+      } else if (path === `/api/tbc/ft/info/contract/${tokenId}`) data = {
+        code_script: tokenGenesis.outputs[0].script.toHex(), tape_script: tokenGenesis.outputs[1].script.toHex(), amount: tokenMode ? tokenFixture.request.mintAmount : '10000000',
         name: 'Controlled Token', symbol: 'CT', decimal: 0,
       };
+      else if (path.startsWith('/api/tbc/ft/utxo/combinescript/')) data = { utxos: path.includes('751e76e8199196d454941c45d1b3a323f1433bd600/contract/')
+        ? indexRows : [{ txid: stateId, index: 5, tbc_value: '500', ft_value: state.state.ftAmount, height: 999 }] };
+      else if (path.startsWith('/api/tbc/pool/lputxo/scriptpubkeyhash/')) data = { utxos: indexRows };
       else if (path === `/api/tbc/pool/poolinfo/poolid/${row.genesisId}`) data = {
         txid: stateId, vout: '0', value: String(stateTx.outputs[0].satoshis), pool_code_script: stateTx.outputs[0].script.toHex(),
         ft_contract_id: row.ftGenesisId, token_balance: state.state.ftAmount, lp_balance: state.state.lpAmount,
@@ -135,7 +149,71 @@ async function setup({ empty = false, reject = false, ecdsaOnly = false, materia
     return response.result;
   }, on() {}, removeListener() {}, destroy() {} };
   const wallet = await kit.createTbcClient({ network: 'testnet', provider }).connect();
-  return { wallet, trace, ports, accepted, session, counts: () => ({ approvals, signatures }) };
+  return { wallet, trace, ports, accepted, session, tokenId, holderRows,
+    poolPoints: [{ txid: stateId, vout: 0 }, { txid: stateId, vout: 5 }],
+    feePoint: { txid: fundingId, vout: 0 }, counts: () => ({ approvals, signatures }) };
+}
+
+const zeroBusiness = {
+  transfer: s => ({ run: constraints => s.wallet.tbc20.transfer({ contractId: s.tokenId, receivers: [{ to: address, amount: '1000' }], constraints }) }),
+  merge: s => ({ run: constraints => s.wallet.tbc20.merge({ contractId: s.tokenId, constraints }) }),
+  htlc: s => ({ run: constraints => s.wallet.htlc.lock({ assetStandard: 'tbc20-standard', contractId: s.tokenId,
+    to: address, amount: '1000', hashlock: 'ab'.repeat(32), lockTime: '2000', constraints }) }),
+  order: s => ({ run: constraints => s.wallet.lop.create({ order: { market: 'native-token', side: 'buy',
+    assetA: { standard: 'tbc20-standard', contractId: s.tokenId }, saleVolume: '1000', unitPrice: '1000000', feeRate: '0', feeRecipient: address }, constraints }) }),
+  addLiquidity: s => ({ run: constraints => s.wallet.amm.addLiquidity({ poolContractId: row.genesisId, amount: '1000', budgetAsset: 'tbc', minimumLpAmount: '1', constraints }) }),
+  swap: s => ({ run: constraints => s.wallet.amm.swap({ poolContractId: row.genesisId, direction: 'ft-to-tbc', amount: '1000', minimumOutput: '1', receiver: address, constraints }) }),
+  lpTransfer: s => ({ run: constraints => s.wallet.tbc20Lp.transfer({ poolContractId: row.genesisId, to: address, amount: '1000', constraints }) }),
+};
+const tokenModeFor = kind => ['transfer', 'merge', 'htlc', 'order'].includes(kind);
+
+test('positive-only hot-path metrics', async t => {
+  const metrics = [];
+  for (const [kind, action] of Object.entries(zeroBusiness)) {
+    const s = await setup({ tokenMode: tokenModeFor(kind), lpMode: kind === 'lpTransfer' });
+    try {
+      const started = performance.now();
+      await action(s).run({ maxFee: '100000', expiresAt: new Date(nowMs + 60000).toISOString() });
+      metrics.push({ kind, milliseconds: performance.now() - started, trace: [...s.trace].sort(),
+        txids: s.accepted.map(x => x.txid), ...s.counts() });
+      assert.equal(s.counts().approvals, 1);
+    } finally { s.session.close(); }
+  }
+  t.diagnostic(`ZERO_HOT_PATH ${JSON.stringify(metrics)}`);
+});
+
+for (const [kind, action] of Object.entries(zeroBusiness)) {
+  test(`zero holder rows: public ${kind} completes with identical transaction bytes, GETs and one approval`, async () => {
+    const snapshots = [];
+    for (const zeros of [false, true]) {
+      const s = await setup({ tokenMode: tokenModeFor(kind), lpMode: kind === 'lpTransfer', zeros });
+      try {
+        const result = await action(s).run({ maxFee: '100000', expiresAt: new Date(nowMs + 60000).toISOString() });
+        assert.ok(result); assert.equal(s.counts().approvals, 1); assert.ok(s.counts().signatures > 0);
+        assert.ok(s.accepted.length > 0);
+        assert.equal(s.trace.some(p => p.endsWith(zeroPoint.txid) || p.endsWith('ff'.repeat(32))), false);
+        assert.equal(new Set(s.trace).size, s.trace.length, 'No repeated network request');
+        snapshots.push({ accepted: s.accepted, trace: [...s.trace].sort(), counts: s.counts() });
+      } finally { s.session.close(); }
+    }
+    assert.deepEqual(snapshots[1], snapshots[0]);
+  });
+  test(`explicit zero input: public ${kind} fails typed, before approval/signing, without replacement`, async () => {
+    const s = await setup({ tokenMode: tokenModeFor(kind), lpMode: kind === 'lpTransfer', zeros: true });
+    try {
+      await assert.rejects(action(s).run({ inputOutpoints: [zeroPoint, ...s.holderRows.map(r => ({ txid: r.txid, vout: r.index })), s.feePoint, ...(['addLiquidity', 'swap'].includes(kind) ? s.poolPoints : [])] }),
+        e => e.code === -32602 && e.data.reason === 'SELECTED_ZERO_BALANCE_INPUT');
+      assert.deepEqual(s.counts(), { approvals: 0, signatures: 0 }); assert.equal(s.accepted.length, 0);
+      assert.equal(s.trace.some(p => p.endsWith(zeroPoint.txid)), false);
+    } finally { s.session.close(); }
+  });
+  test(`zero filtering does not bypass malformed index amount rejection: ${kind}`, async () => {
+    const s = await setup({ tokenMode: tokenModeFor(kind), lpMode: kind === 'lpTransfer', zeros: true, corrupt: true });
+    try {
+      await assert.rejects(action(s).run({ maxFee: '100000' }));
+      assert.deepEqual(s.counts(), { approvals: 0, signatures: 0 }); assert.equal(s.accepted.length, 0);
+    } finally { s.session.close(); }
+  });
 }
 
 test('Coin create 0/6 decimals completes the public client/Host/Engine staged path with one synthetic approval', async () => {

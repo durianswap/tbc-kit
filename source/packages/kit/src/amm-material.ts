@@ -3,6 +3,7 @@ import type { TbcOfficialApiClient } from "./official-api.js";
 import type { PoolMaterialNativeProviderInput } from "./pool-material-native.js";
 import type { TestnetTip } from "./testnet-client.js";
 import { collectTbcUtxoPages } from "./utxo-pages.js";
+import { positiveHolderCandidates } from "./fungible-candidates.js";
 
 const HASH = /^[0-9a-f]{64}$/u;
 const UINT = /^(0|[1-9][0-9]*)$/u;
@@ -70,18 +71,18 @@ export async function resolveLpMaterial(input: MaterialInput & Readonly<{
     { category: "asset-index" }), { maxRows: 128 });
   if (!Array.isArray(utxos) || utxos.length > 128) throw new Error("LP candidate bound exceeded");
   const seen = new Set<string>();
-  const candidates = utxos.map(row => {
+  const candidates = positiveHolderCandidates(utxos.map(row => {
     const balance = row.ft_value ?? row.balance;
     const indexedHeight = row.height === "-1" ? "0" : row.height;
     if (!HASH.test(row.txid) || !UINT.test(row.index) || BigInt(row.index) > 0xffff_ffffn ||
-        typeof balance !== "string" || !UINT.test(balance) || BigInt(balance) === 0n ||
+        typeof balance !== "string" || !UINT.test(balance) ||
         (row.tbc_value ?? row.value) !== "500" || (indexedHeight !== undefined && !UINT.test(indexedHeight))) throw new Error("Invalid LP index row");
     const point = { txid: row.txid, vout: Number(row.index) };
     const key = `${point.txid}:${point.vout}`;
     if (seen.has(key)) throw new Error("Duplicate LP index outpoint");
     seen.add(key);
     return { ...point, balance, height: indexedHeight };
-  }).sort((a, b) => a.txid.localeCompare(b.txid) || a.vout - b.vout);
+  }), row => row.balance, input.inputOutpoints).slice().sort((a, b) => a.txid.localeCompare(b.txid) || a.vout - b.vout);
   const all = input.intentType === "tbc20-lp-merge" || input.intentType === "tbc20-lp-unlock";
   if (!all && (input.amount === undefined || !UINT.test(input.amount) || BigInt(input.amount) === 0n)) throw new Error("Invalid LP amount");
   const wanted = BigInt(input.amount ?? "0"), floor = BigInt(input.minimumConfirmations ?? "0");

@@ -21,12 +21,14 @@ const hooks = registerHooks({
   load(url, context, next) { return url === virtual ? { source: bundled.outputFiles[0].text, format: "module", shortCircuit: true } : next(url, context); },
 });
 const kit = await import(virtual); hooks.deregister();
-const materialNative = await kit.createWasmTbcKeylessEngine(await readFile(`${root}packages/tbc-engine/rust/target/wasm32-unknown-unknown/release/tbc_keyless_wasm.wasm`));
+const materialNative = await kit.createWasmTbcKeylessEngine(await readFile(process.env.TBC_TEST_WASM_DIR
+  ? `${process.env.TBC_TEST_WASM_DIR}/tbc_keyless_wasm.wasm`
+  : `${root}packages/tbc-engine/rust/target/wasm32-unknown-unknown/release/tbc_keyless_wasm.wasm`));
 const fixture = JSON.parse(await readFile(`${root}packages/tbc-engine/rust/fixtures/coin-proof.json`, "utf8"));
 const address = "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH";
 const account = { chainId: "tbc:testnet", address, accountId: `tbc:testnet:${address}`, publicKey: fixture.vectors[0].publicKeyHex };
 
-function setup(locks, median, floor = "0", reverseIndex = false, fragments = 2) {
+function setup(locks, median, floor = "0", reverseIndex = false, fragments = 2, zeros = false) {
   // Synthetic already-indexed outputs. No signatures are created or submitted.
   const tx = new tbc.Transaction(fixture.vectors[0].signedRaw);
   for (const [i, lock] of locks.entries()) {
@@ -57,6 +59,7 @@ function setup(locks, median, floor = "0", reverseIndex = false, fragments = 2) 
     else if (url.pathname.includes("/stablecoin/utxo/")) {
       const utxos = Array.from({length:fragments},(_,i)=>2*i).map((index, i) => ({ txid: parent.txid, index, tbc_value: "500", ft_value: fragments>2?"250":i === 0 ? "250" : "750", height: 99,
         lock_time: 0 })); // Deliberately false index hint: only actual Tape determines lock.
+      if (zeros) utxos.unshift({ txid: '00'.repeat(32), index: 0, tbc_value: '500', ft_value: '0' });
       data = { utxos: reverseIndex ? utxos.reverse() : utxos };
     } else if (url.pathname.includes('/stablecoin/info/')) {
       data = {stablecoin_id: issuer.txid, utxo: {txid: mint.txid, vout: 0}, supply: '1000', decimal: 0,
@@ -84,6 +87,20 @@ test("Coin zero-lock hot path uses five SDK reads without a tip or issuer audit"
   assert.equal(result.payload.block, undefined);
   assert.deepEqual(result.payload.utxos.filter(u => u.classification === "stablecoin").map(u => u.vout), [0]);
   assert.equal(s.trace.length, 5); assert.equal(new Set(s.trace).size, 5);
+});
+
+test("Coin legal zero index rows preserve material and GET count; explicit zero inputs are not ignored", async () => {
+  for (const merge of [false, true]) for (const floor of ['0', '1']) {
+    const before = setup([0, 0], undefined, floor), after = setup([0, 0], undefined, floor, false, 2, true);
+    const expected = await before.resolve(merge), actual = await after.resolve(merge);
+    assert.ok(actual.snapshotHash, JSON.stringify(actual));
+    assert.deepEqual(actual, expected); assert.deepEqual(after.trace, before.trace);
+    after.trace.length = 0;
+    const denied = await after.resolve(merge, [{ txid: '00'.repeat(32), vout: 0 }, { txid: after.parent.txid, vout: 0 }]);
+    assert.equal(denied.portError?.name, 'INVALID_INPUT');
+    assert.equal(denied.portError?.details?.reason, 'SELECTED_ZERO_BALANCE_INPUT');
+    assert.equal(after.trace.some(p => p.endsWith('00'.repeat(32))), false);
+  }
 });
 
 test("Coin holder material selects six and twenty fragments without duplicate ancestry or tip reads", async () => {

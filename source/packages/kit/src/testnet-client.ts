@@ -698,7 +698,9 @@ export function createTestnetClient(
                   : uint(item.height),
             }),
       });
-      if (normalized.satoshis === "0" || normalized.ftAmount === "0") {
+      // Zero token balances are legal contract outputs. Preserve them here so
+      // the holder selector can reject explicit inputs rather than hide them.
+      if (normalized.satoshis === "0") {
         return fail("NODE_RESPONSE_INVALID", "Invalid TBC Testnet FT UTXO");
       }
       const outpoint = `${normalized.txid}:${normalized.vout}`;
@@ -779,7 +781,7 @@ export function createTestnetClient(
           ? {}
           : { height: item.height === -1 || item.height === "-1" ? "0" : uint(item.height) }),
       });
-      if (normalized.satoshis === "0" || normalized.ftAmount === "0") {
+      if (normalized.satoshis === "0") {
         return fail("NODE_RESPONSE_INVALID", "Invalid TBC Testnet StableCoin UTXO");
       }
       const outpoint = `${normalized.txid}:${normalized.vout}`;

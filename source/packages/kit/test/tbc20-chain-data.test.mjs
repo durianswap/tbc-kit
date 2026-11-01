@@ -144,3 +144,36 @@ test("TBC20 may prepare token-only merge material without inventing native fundi
   const create = await run.resolver.resolve(request("tbc20-standard-create"), account);
   assert.equal(create.portError.name, "CONFLICT", "creation still needs native funding");
 });
+
+const zero = { txid: "00".repeat(32), vout: 2, satoshis: "500", ftAmount: "0" };
+test("zero holder outputs never block transfer/merge or add parent/confirmation reads", async () => {
+  for (const kind of ["tbc20-standard-transfer", "tbc20-standard-merge"]) for (const floor of ["0", "1"]) {
+    const baseline = setup(2, floor), withZero = setup(2, floor);
+    withZero.setCandidates([zero, ...withZero.candidates(), { ...zero, txid: "ff".repeat(32) }]);
+    const expected = await baseline.resolver.resolve(request(kind), account);
+    const actual = await withZero.resolver.resolve(request(kind), account);
+    assert.ok(actual.snapshotHash, JSON.stringify(actual));
+    assert.deepEqual(actual, expected);
+    assert.deepEqual(withZero.trace, baseline.trace, "zero rows must not add GETs or alter read ordering");
+  }
+});
+
+test("explicit zero inputs fail clearly even after sufficient positive inputs; no zero parent read", async () => {
+  for (const kind of ["tbc20-standard-transfer", "tbc20-standard-merge"]) {
+    const run = setup(2), point = { ...zero, txid: "ff".repeat(32) };
+    const positives = run.candidates(); run.setCandidates([...positives, point]);
+    const result = await run.resolver.resolve(request(kind, [...positives, point, run.native].map(({ txid, vout }) => ({ txid, vout }))), account);
+    assert.equal(result.portError?.name, "INVALID_INPUT");
+    assert.equal(result.portError?.details?.reason, "SELECTED_ZERO_BALANCE_INPUT");
+    assert.equal(run.trace.some(t => t.includes(point.txid)), false);
+  }
+});
+
+test("all-zero, malformed and duplicate index rows do not authorize a spend", async () => {
+  for (const rows of [[zero], [zero, zero], [{ ...zero, ftAmount: "-1" }], [{ ...zero, ftAmount: "00" }]]) {
+    const run = setup(2); run.setCandidates(rows);
+    const result = await run.resolver.resolve(request("tbc20-standard-transfer"), account);
+    assert.ok(result.portError);
+    assert.equal(run.trace.some(t => t.startsWith("raw:") || t.startsWith("decoded:")), false);
+  }
+});

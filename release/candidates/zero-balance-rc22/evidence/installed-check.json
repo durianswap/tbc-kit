@@ -1,0 +1,229 @@
+{
+  "status": "PASS",
+  "scratch": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/.verify/zero-balance-check-oH1IrO",
+  "consumer": {
+    "dir": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/.verify/zero-balance-check-oH1IrO/candidate",
+    "kit": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/.verify/zero-balance-check-oH1IrO/candidate/node_modules/@tbc/kit"
+  },
+  "kit": {
+    "file": "tbc-kit.tgz",
+    "sha256": "10bb0cf19f8c0e25000fa286d587ae15ba623edd0826856111e64000439c00b3",
+    "bytes": 5544408,
+    "unpackedBytes": 35682690
+  },
+  "esmEntrypoints": 8,
+  "cjsEntrypoints": 8,
+  "examples": [
+    {
+      "name": "independent-wallet/run.mjs",
+      "args": [],
+      "status": "PASS",
+      "outputSha256": "0ade90eea8a2408bf1d1e16bee147508cca4ae175fb5049a0db2a788b38589dd",
+      "identicalToBaseline": true
+    },
+    {
+      "name": "backend-node/run.mjs",
+      "args": [],
+      "status": "PASS",
+      "outputSha256": "4b7cfb237987284411f78b50305f675524803f1d2120798e67e1582d11fa3711",
+      "identicalToBaseline": true
+    },
+    {
+      "name": "approval-presentation/run.mjs",
+      "args": [],
+      "status": "PASS",
+      "outputSha256": "bdaef72ccb1b769154bfafbcfccdd1d0bb6e5f462c70319d31bf14b21b8aed83",
+      "identicalToBaseline": true
+    }
+  ],
+  "profiles": {
+    "status": "SIGNER_PROFILES_PASS",
+    "verified": 3,
+    "mismatchedProfilesRejected": 6,
+    "bip340OfficialVector": true,
+    "alteredDigestRejected": true,
+    "networkRequests": 0,
+    "broadcasts": 0
+  },
+  "installedBusinessTests": 28,
+  "timing": [
+    {
+      "kind": "transfer",
+      "baselineMs": [
+        120.82654100000002,
+        122.12741700000004,
+        127.04958399999998,
+        119.93841700000002
+      ],
+      "candidateMs": [
+        123.12383399999999,
+        121.00491599999998,
+        121.89279199999999,
+        121.31725
+      ],
+      "baselineMedianMs": 121.47697900000003,
+      "candidateMedianMs": 121.605021,
+      "deltaMs": 0.12804199999996513,
+      "GETs": 5,
+      "approvals": 1,
+      "identicalTransactionsAndReads": true
+    },
+    {
+      "kind": "merge",
+      "baselineMs": [
+        63.28129199999995,
+        62.931916,
+        62.928541999999936,
+        63.83141699999999
+      ],
+      "candidateMs": [
+        63.578457999999955,
+        65.40108299999997,
+        63.540459,
+        63.31654100000003
+      ],
+      "baselineMedianMs": 63.106603999999976,
+      "candidateMedianMs": 63.55945849999998,
+      "deltaMs": 0.4528545000000008,
+      "GETs": 5,
+      "approvals": 1,
+      "identicalTransactionsAndReads": true
+    },
+    {
+      "kind": "htlc",
+      "baselineMs": [
+        57.75629200000003,
+        56.773874999999975,
+        56.988000000000056,
+        56.6388750000001
+      ],
+      "candidateMs": [
+        57.67425000000003,
+        57.14549999999997,
+        57.185292000000004,
+        58.097667
+      ],
+      "baselineMedianMs": 56.880937500000016,
+      "candidateMedianMs": 57.42977100000002,
+      "deltaMs": 0.5488335000000006,
+      "GETs": 6,
+      "approvals": 1,
+      "identicalTransactionsAndReads": true
+    },
+    {
+      "kind": "order",
+      "baselineMs": [
+        60.17349999999999,
+        56.54658400000005,
+        57.13366700000006,
+        60.02795800000001
+      ],
+      "candidateMs": [
+        56.954417000000035,
+        56.933291000000054,
+        57.33933400000001,
+        56.27324999999996
+      ],
+      "baselineMedianMs": 58.580812500000036,
+      "candidateMedianMs": 56.943854000000044,
+      "deltaMs": -1.6369584999999915,
+      "GETs": 5,
+      "approvals": 1,
+      "identicalTransactionsAndReads": true
+    },
+    {
+      "kind": "addLiquidity",
+      "baselineMs": [
+        210.61420799999996,
+        206.88025000000005,
+        206.32499999999993,
+        208.52041700000007
+      ],
+      "candidateMs": [
+        206.29483300000004,
+        207.529,
+        205.67866600000002,
+        206.475958
+      ],
+      "baselineMedianMs": 207.70033350000006,
+      "candidateMedianMs": 206.38539550000002,
+      "deltaMs": -1.3149380000000406,
+      "GETs": 9,
+      "approvals": 1,
+      "identicalTransactionsAndReads": true
+    },
+    {
+      "kind": "swap",
+      "baselineMs": [
+        199.856625,
+        196.495,
+        195.21008400000005,
+        196.831458
+      ],
+      "candidateMs": [
+        196.12358400000005,
+        195.85954199999992,
+        195.38474999999994,
+        194.234875
+      ],
+      "baselineMedianMs": 196.663229,
+      "candidateMedianMs": 195.62214599999993,
+      "deltaMs": -1.0410830000000715,
+      "GETs": 9,
+      "approvals": 1,
+      "identicalTransactionsAndReads": true
+    },
+    {
+      "kind": "lpTransfer",
+      "baselineMs": [
+        103.50916700000016,
+        102.00725000000011,
+        102.518959,
+        102.205334
+      ],
+      "candidateMs": [
+        101.584834,
+        102.55562499999996,
+        104.83641699999998,
+        102.81433300000003
+      ],
+      "baselineMedianMs": 102.3621465,
+      "candidateMedianMs": 102.684979,
+      "deltaMs": 0.3228325000000041,
+      "GETs": 7,
+      "approvals": 1,
+      "identicalTransactionsAndReads": true
+    }
+  ],
+  "timingScope": "Mac Node/WASM; synthetic fixture keys and mocked HTTP; no device or live-chain claim",
+  "sdkChecks": [
+    {
+      "platform": "ios",
+      "status": "PASS",
+      "identity": {
+        "kitVersion": "0.1.0-rc.22",
+        "sdkVersion": "0.1.0-rc.19.native.2",
+        "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+        "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+        "sdkLockSha256": "1c1812792106b01591e51bd0d77c0b2e9f9d2e2f0c1dff7e9c772b735fc92558",
+        "platform": "ios"
+      },
+      "deviceBuild": false
+    },
+    {
+      "platform": "android",
+      "status": "PASS",
+      "identity": {
+        "kitVersion": "0.1.0-rc.22",
+        "sdkVersion": "0.1.0-rc.19.native.2",
+        "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+        "artifactSetId": "c3c8c71ffd37f5b921fad90ec796eb9ede0b8c2681d318845300199bcaa1f57c",
+        "sdkLockSha256": "1c1812792106b01591e51bd0d77c0b2e9f9d2e2f0c1dff7e9c772b735fc92558",
+        "platform": "android"
+      },
+      "deviceBuild": false
+    }
+  ],
+  "networkBusinessReads": 0,
+  "realBroadcasts": 0
+}

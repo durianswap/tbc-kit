@@ -1,0 +1,34 @@
+{
+  "files": 174,
+  "allMatch": true,
+  "frozen": {
+    "kit": {
+      "file": "artifacts/tbc-kit.tgz",
+      "sha256": "a7df6f8b6f98dba2b4691dd854eacee5c344b4781422529cd195912cd0bb6c91",
+      "bytes": 5541374,
+      "version": "0.1.0-rc.21",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.21/tbc-kit.tgz"
+    },
+    "flutter": {
+      "file": "artifacts/tbc-kit-flutter.tgz",
+      "sha256": "f782b21ff2aa5d069669ae080615bde083e45006e5536a98b11233025d322b7f",
+      "bytes": 15595700,
+      "version": "0.1.0-rc.1",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit-flutter.tgz"
+    },
+    "sdk-ios": {
+      "file": "artifacts/native/ios-sdk.tgz",
+      "sha256": "514b0922ffefdcfc0a8be13969fbfa76361ad0a1d977a82bdc2b3a2d5a4fa281",
+      "bytes": 43686738,
+      "version": "0.1.0-rc.19.native.2",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/ios-sdk.tgz"
+    },
+    "sdk-android": {
+      "file": "artifacts/native/android-sdk.tgz",
+      "sha256": "4146851beb779b63c080057ec31c0a96ed2ca6a6a24c680e3eb4151a75b5f7b7",
+      "bytes": 36108577,
+      "version": "0.1.0-rc.19.native.2",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/android-sdk.tgz"
+    }
+  }
+}

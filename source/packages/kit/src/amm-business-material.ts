@@ -1,4 +1,5 @@
 import type { NftTransactionMaterial as TransactionMaterial } from "./nft-material.js";
+import { positiveHolderCandidates } from "./fungible-candidates.js";
 import type { TbcOfficialApiClient, TbcApiTbc20Utxo } from "./official-api.js";
 import type { PoolMaterialNativeProviderInput } from "./pool-material-native.js";
 import type { TestnetTip } from "./testnet-client.js";
@@ -151,18 +152,20 @@ export async function resolveAmmBusinessMaterial(input: Readonly<{
   if (floor > 0n && BigInt(poolConfirmations!) < floor) throw new Error("AMM Pool confirmations below policy");
   const utxos: Utxo[] = [{ txid: tx.txid, vout: 0, satoshis: info.value, scriptPubKey: info.pool_code_script,
     classification: "pool", contractId: input.contractId, ...(poolConfirmations === undefined ? {} : { confirmations: poolConfirmations }) }];
-  function candidates(rows: readonly TbcApiTbc20Utxo[], zero: boolean) {
+  function candidates(rows: readonly TbcApiTbc20Utxo[], poolOwned: boolean) {
     if (!Array.isArray(rows) || rows.length > 128) throw new Error("AMM index candidate bound exceeded");
     const seen = new Set<string>();
-    return rows.map(row => {
+    const indexed = rows.map(row => {
       const balance = row.ft_value ?? row.balance;
       if (!HASH.test(row.txid) || !UINT.test(row.index) || BigInt(row.index) > 0xffff_ffffn ||
-          (row.tbc_value ?? row.value) !== "500" || typeof balance !== "string" || !UINT.test(balance) || (!zero && balance === "0")) throw new Error("Invalid AMM asset index row");
+          (row.tbc_value ?? row.value) !== "500" || typeof balance !== "string" || !UINT.test(balance)) throw new Error("Invalid AMM asset index row");
       const point = { txid: row.txid, vout: Number(row.index) };
       const key = `${point.txid}:${point.vout}`;
       if (seen.has(key)) throw new Error("Duplicate AMM asset index output");
       seen.add(key); return { ...point, balance, height: row.height };
     }).sort((a, b) => a.txid.localeCompare(b.txid) || a.vout - b.vout);
+    // A zero Pool reserve is valid state; only holder spend candidates filter it.
+    return poolOwned ? indexed : positiveHolderCandidates(indexed, row => row.balance, input.inputOutpoints);
   }
   async function select(rows: readonly TbcApiTbc20Utxo[], poolOwned: boolean) {
     const kind = poolOwned ? "ft" : wantedKind!;

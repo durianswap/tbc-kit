@@ -182,6 +182,8 @@ function failFromPort(
     ? { reason: suppliedReason, message: "Operation is not supported for the authenticated Pool template" }
     : error.name === "INVALID_INPUT" && suppliedReason === "AMM_RETAINED_FEE_ZERO"
       ? { reason: suppliedReason, message: "AMM swap leaves zero retained pool fee after integer rounding" }
+      : error.name === "INVALID_INPUT" && suppliedReason === "SELECTED_ZERO_BALANCE_INPUT"
+        ? { reason: suppliedReason, message: "An explicitly selected token input has zero balance" }
       : error.name === "CONFLICT" && suppliedReason === "AMM_POOL_INACTIVE"
         ? { reason: suppliedReason, message: "AMM Pool has no active liquidity" } : undefined;
   const details = { operation, portError: error.name,

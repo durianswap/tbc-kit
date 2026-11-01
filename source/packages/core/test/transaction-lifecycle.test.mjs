@@ -396,8 +396,8 @@ test("typed material failures survive Core without approval or signing and witho
   }
 });
 
-test("unsupported Pool and zero-retained-fee reasons are safe typed Provider failures", async () => {
-  for (const reason of ["UNSUPPORTED_POOL_OPERATION", "AMM_RETAINED_FEE_ZERO", "AMM_POOL_INACTIVE"]) {
+test("Pool and explicitly selected zero-token reasons are safe typed Provider failures", async () => {
+  for (const reason of ["UNSUPPORTED_POOL_OPERATION", "AMM_RETAINED_FEE_ZERO", "AMM_POOL_INACTIVE", "SELECTED_ZERO_BALANCE_INPUT"]) {
     const result = await drive("tbc_sendTransaction", createTbcTransferEngine(integration), {
       "chainData.resolve": () => ({ portError: {
         name: reason === "AMM_POOL_INACTIVE" ? "CONFLICT" : "INVALID_INPUT", retryable: false,

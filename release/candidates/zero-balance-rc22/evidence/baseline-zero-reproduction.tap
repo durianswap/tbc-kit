@@ -1,0 +1,115 @@
+TAP version 13
+# Subtest: zero holder rows: public transfer completes with identical transaction bytes, GETs and one approval
+not ok 1 - zero holder rows: public transfer completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 177.946167
+  type: 'test'
+  location: '/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:186:3'
+  failureType: 'testCodeFailure'
+  error: 'Required wallet state or transaction material conflicts with the request'
+  code: -32000
+  stack: |-
+    Object.request (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:148:45)
+    async TestContext.<anonymous> (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:191:24)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: zero holder rows: public merge completes with identical transaction bytes, GETs and one approval
+not ok 2 - zero holder rows: public merge completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 81.016833
+  type: 'test'
+  location: '/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:186:3'
+  failureType: 'testCodeFailure'
+  error: 'Required wallet state or transaction material conflicts with the request'
+  code: -32000
+  stack: |-
+    Object.request (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:148:45)
+    async TestContext.<anonymous> (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:191:24)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: zero holder rows: public htlc completes with identical transaction bytes, GETs and one approval
+not ok 3 - zero holder rows: public htlc completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 70.998292
+  type: 'test'
+  location: '/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:186:3'
+  failureType: 'testCodeFailure'
+  error: 'Required wallet state or transaction material conflicts with the request'
+  code: -32000
+  stack: |-
+    Object.request (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:148:45)
+    async TestContext.<anonymous> (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:191:24)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: zero holder rows: public order completes with identical transaction bytes, GETs and one approval
+not ok 4 - zero holder rows: public order completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 69.781791
+  type: 'test'
+  location: '/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:186:3'
+  failureType: 'testCodeFailure'
+  error: 'Required wallet state or transaction material conflicts with the request'
+  code: -32000
+  stack: |-
+    Object.request (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:148:45)
+    async TestContext.<anonymous> (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:191:24)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: zero holder rows: public addLiquidity completes with identical transaction bytes, GETs and one approval
+not ok 5 - zero holder rows: public addLiquidity completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 230.569
+  type: 'test'
+  location: '/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:186:3'
+  failureType: 'testCodeFailure'
+  error: 'Required wallet state or transaction material conflicts with the request'
+  code: -32000
+  stack: |-
+    Object.request (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:148:45)
+    async TestContext.<anonymous> (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:191:24)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: zero holder rows: public swap completes with identical transaction bytes, GETs and one approval
+not ok 6 - zero holder rows: public swap completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 301.188458
+  type: 'test'
+  location: '/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:186:3'
+  failureType: 'testCodeFailure'
+  error: 'Required wallet state or transaction material conflicts with the request'
+  code: -32000
+  stack: |-
+    Object.request (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:148:45)
+    async TestContext.<anonymous> (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:191:24)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: zero holder rows: public lpTransfer completes with identical transaction bytes, GETs and one approval
+not ok 7 - zero holder rows: public lpTransfer completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 120.829958
+  type: 'test'
+  location: '/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:186:3'
+  failureType: 'testCodeFailure'
+  error: 'Required wallet state or transaction material conflicts with the request'
+  code: -32000
+  stack: |-
+    Object.request (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:148:45)
+    async TestContext.<anonymous> (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:191:24)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 0
+# fail 7
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1380.901375

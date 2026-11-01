@@ -1,4 +1,5 @@
 import { canonicalize, type ChainDataRequirement } from "@tbc-wallet/core";
+import { positiveHolderCandidates } from "./fungible-candidates.js";
 import type { TestnetClient, TestnetTip } from "./testnet-client.js";
 import type { PoolMaterialNativeProviderInput } from "./pool-material-native.js";
 import type { NftTransactionMaterial as Parent } from "./nft-material.js";
@@ -80,7 +81,7 @@ export async function resolveLopMaterial(input:Readonly<{
         const [rows,{tip}]=await Promise.all([hint.standard==="tbc20-standard"?client.getFtUtxos(input.address,hint.contractId):client.getStablecoinUtxos(input.address,hint.contractId),nativeIndex]);
         if(rows.length>input.maxInputs)throw new Error("LOP asset candidate bound exceeded");
         let total=0n;const wanted=BigInt(escrowRequirement!.minimumAmount!),selected:Asset[]=[],seen=new Set<string>();
-        for(const row of [...rows].sort((a,b)=>a.txid.localeCompare(b.txid)||a.vout-b.vout)){
+        for(const row of [...positiveHolderCandidates(rows, row=>row.ftAmount, r.inputOutpoints)].sort((a,b)=>a.txid.localeCompare(b.txid)||a.vout-b.vout)){
           const key=`${row.txid}:${row.vout}`;if(seen.has(key))throw new Error("Duplicate LOP Token candidate");seen.add(key);
           if(!allowed(row)||total>=wanted&&r.inputOutpoints===undefined)continue;
           const c=await confirmation(row.txid,row.height,tip);if(c!==undefined&&BigInt(c)<floor){if(r.inputOutpoints)throw new Error("LOP selected confirmations insufficient");continue;}

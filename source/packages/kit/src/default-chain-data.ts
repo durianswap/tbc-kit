@@ -24,6 +24,7 @@ import { resolveTimelockMaterial } from "./timelock-material.js";
 import { resolveHtlcMaterial } from "./htlc-material.js";
 import { resolveHtlcTokenMaterial } from "./htlc-token-material.js";
 import { resolveLopMaterial } from "./lop-material.js";
+import { positiveHolderCandidates, SelectedZeroBalanceInputError } from "./fungible-candidates.js";
 import { resolveAmmCreateMaterial, resolveLpMaterial } from "./amm-material.js";
 import { AmmBusinessMaterialError, resolveAmmBusinessMaterial, type AmmMaterialAction } from "./amm-business-material.js";
 import type { PoolMaterialNativeProviderInput } from "./pool-material-native.js";
@@ -1247,9 +1248,10 @@ export function createDefaultTbcChainDataResolver(
       const ftNativeAlternatives = ftTransfer || ftMerge || stablecoinTransfer || stablecoinMerge || tbc20Create || ammCreate || lp || ammBusiness || timelockLock || htlcLock || htlcTokenSpend;
       const nativeInputBudget = (count: number) => ftNativeAlternatives || supportedPool ? Math.min(count, 1) : count;
       const ftIndex = directFt
-        ? stablecoinTransfer || stablecoinMerge
+        ? (stablecoinTransfer || stablecoinMerge
           ? client.getStablecoinUtxos(account.address, contractId!)
-          : client.getFtUtxos(account.address, contractId!)
+          : client.getFtUtxos(account.address, contractId!))
+            .then(rows => positiveHolderCandidates(rows, row => row.ftAmount, requestedInputOutpoints))
         : Promise.resolve(undefined);
       const skipTip = minimumConfirmations === "0" && !htlcTokenLock &&
         (nativeTransfer || nativeMerge || poolSwapTbcForToken || poolSwapTokenForTbc || poolFtMerge || poolAdd || poolRemove || poolFtlpMerge || poolFtlpBurn || ammCreate || ammBusiness || lp || (htlcTokenSpend && requirement.intentType === "tbc-htlc-claim") || (ftCreate && !coinCreate) || collectionCreate ||
@@ -1757,6 +1759,10 @@ export function createDefaultTbcChainDataResolver(
       }
       return result;
     } catch (error) {
+      if (error instanceof SelectedZeroBalanceInputError) return Object.freeze({ portError: Object.freeze({
+        name: "INVALID_INPUT", retryable: false, message: error.message,
+        details: Object.freeze({ reason: error.reason }),
+      }) });
       if (error instanceof AmmBusinessMaterialError) return Object.freeze({ portError: Object.freeze({
         name: error.reason === "AMM_POOL_INACTIVE" ? "CONFLICT" : "INVALID_INPUT",
         retryable: false, message: error.message, details: Object.freeze({ reason: error.reason }),

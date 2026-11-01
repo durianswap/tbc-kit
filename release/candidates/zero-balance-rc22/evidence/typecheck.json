@@ -1,0 +1,1 @@
+{"status":"PASS","command":"tsc -p packages/kit/tsconfig.json --noEmit","exitCode":0}
