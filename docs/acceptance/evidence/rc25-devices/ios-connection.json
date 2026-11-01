@@ -1,0 +1,122 @@
+{
+  "platform": "ios",
+  "kind": "connection",
+  "candidate": "0.1.0-rc.25",
+  "account": "1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL",
+  "last": {
+    "method": "wallet_requestPermissions",
+    "outcome": "signed",
+    "code": "",
+    "publicResult": [
+      {
+        "caveats": [
+          {
+            "type": "restrictChains",
+            "value": [
+              "tbc:testnet"
+            ]
+          },
+          {
+            "type": "restrictAccounts",
+            "value": [
+              "tbc:testnet:1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL"
+            ]
+          },
+          {
+            "type": "restrictMethods",
+            "value": [
+              "tbc_accounts"
+            ]
+          }
+        ],
+        "date": 1793545137028,
+        "id": "M_tZX2ZduP7iW85IsdD9YHR6JfN6PQ-N7tST08gDDGI",
+        "invoker": "http://127.0.0.1:4197",
+        "parentCapability": "tbc_accounts"
+      },
+      {
+        "caveats": [
+          {
+            "type": "restrictChains",
+            "value": [
+              "tbc:testnet"
+            ]
+          },
+          {
+            "type": "restrictAccounts",
+            "value": [
+              "tbc:testnet:1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL"
+            ]
+          },
+          {
+            "type": "restrictMethods",
+            "value": [
+              "tbc_sendTransaction"
+            ]
+          }
+        ],
+        "date": 1793545137028,
+        "id": "iU4EzpDLWFk-QN8RyYm2upGOTfWtrICM0kcMrdRLmFk",
+        "invoker": "http://127.0.0.1:4197",
+        "parentCapability": "tbc_sendTransaction"
+      },
+      {
+        "caveats": [
+          {
+            "type": "restrictChains",
+            "value": [
+              "tbc:testnet"
+            ]
+          },
+          {
+            "type": "restrictAccounts",
+            "value": [
+              "tbc:testnet:1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL"
+            ]
+          },
+          {
+            "type": "restrictMethods",
+            "value": [
+              "tbc_signTransaction"
+            ]
+          }
+        ],
+        "date": 1793545137028,
+        "id": "RGAr8jtBwXEvmNRGXLxLA8THCwzj8x-0Xciz2W8vkz8",
+        "invoker": "http://127.0.0.1:4197",
+        "parentCapability": "tbc_signTransaction"
+      }
+    ]
+  },
+  "counts": {
+    "accounts.current": 1,
+    "approval.request": 1,
+    "approvalUI": 1,
+    "approved": 1,
+    "authority.read": 10,
+    "clock.now": 3,
+    "permissions.commit": 1,
+    "permissions.load": 1,
+    "permissionWrites": 1,
+    "request": 1,
+    "sqlite.begin": 1,
+    "sqlite.commit": 1,
+    "sqlite.execute": 6,
+    "wallet.signingRoles": 1
+  },
+  "approvalToSignMs": null,
+  "approvalToReturnMs": 26.539250373840332,
+  "nativeSignMs": 0,
+  "signatureCount": 0,
+  "metrics": [
+    {
+      "monoMs": 3403386697.370375,
+      "phase": "approved"
+    },
+    {
+      "monoMs": 3403386723.9096255,
+      "phase": "wallet-return",
+      "status": "signed"
+    }
+  ]
+}

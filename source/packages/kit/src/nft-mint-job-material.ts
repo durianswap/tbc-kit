@@ -3,7 +3,7 @@ import type { ChainDataResolveResult, ChainDataResolveParams } from "@tbc-wallet
 import { assertTbcAddress, inspectTbcTransaction } from "./testnet-validation.js";
 import type { KitWalletAccount } from "./wallet-runtime.js";
 import type { TbcNetworkContext } from "./network-context.js";
-import { createTbcNftMintJobScope, type TbcNftMintJobScope } from "./nft-mint-job.js";
+import { createTbcNftMintJobScope, TbcNftMintJobExpiredError, type TbcNftMintJobScope } from "./nft-mint-job.js";
 
 type Snapshot = Extract<ChainDataResolveResult, { snapshotHash: string }>;
 type Utxo = Snapshot["payload"]["utxos"][number];
@@ -92,9 +92,10 @@ export async function prepareTbcNftMintJobMaterial(input: Readonly<{
   const ownerScript = assertTbcAddress(account.address, input.network.profile.p2pkhVersion).scriptPubKey;
   const scopeHash = hashCanonical(scope);
   let revision = 0;
-  const selectSlots = (requestedSlots: readonly number[]) => {
-    if (now() >= expires || requestedSlots.length < 1 || requestedSlots.length > 100 || new Set(requestedSlots).size !== requestedSlots.length) {
-      throw new Error("NFT job material is expired or the sub-batch is invalid");
+  const selectSlots = (requestedSlots: readonly number[], requireFresh = true) => {
+    if (requireFresh && now() >= expires) throw new TbcNftMintJobExpiredError();
+    if (requestedSlots.length < 1 || requestedSlots.length > 100 || new Set(requestedSlots).size !== requestedSlots.length) {
+      throw new Error("NFT job sub-batch is invalid");
     }
     return requestedSlots.map(slot => {
       const utxo = slots.get(slot);
@@ -118,7 +119,10 @@ export async function prepareTbcNftMintJobMaterial(input: Readonly<{
       return JSON.parse(canonicalize(result)) as Snapshot;
     },
     acceptValidatedBatch(requestedSlots: readonly number[], transactions: readonly Parent[]) {
-      selectSlots(requestedSlots);
+      // Accounting for an already accepted, validated result is not permission
+      // to sign or send. Keep it even if the final reply crossed the deadline;
+      // the next snapshot still enforces the original expiry above.
+      selectSlots(requestedSlots, false);
       if (transactions.length !== requestedSlots.length) throw new Error("NFT job finalized count differs");
       const nextNative = new Map(native), nextParents = new Map(parents), spent = new Set<string>(), ids = new Set<string>();
       for (let i = 0; i < transactions.length; i++) {

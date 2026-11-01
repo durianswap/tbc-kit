@@ -1,0 +1,57 @@
+{
+  "installed": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/.verify/extreme-rc25-final-consumer/node_modules/@tbc/kit",
+  "version": "0.1.0-rc.25",
+  "status": "FAIL",
+  "results": [
+    {
+      "name": "kit",
+      "files": 79,
+      "code": 1,
+      "ms": 50718.614584,
+      "tests": 552,
+      "passed": 551,
+      "failed": 1,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "d0cf225a67837bad2f3a4653233da888051b8a6d71ee90a1250c0eb22d483e6d"
+    },
+    {
+      "name": "core",
+      "files": 38,
+      "code": 0,
+      "ms": 30346.188875000007,
+      "tests": 208,
+      "passed": 208,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "7e7e10a6e48cebc3e197852ec89d7ae39a531430269b3294a319bb2f8c349d5d"
+    },
+    {
+      "name": "host",
+      "files": 14,
+      "code": 0,
+      "ms": 4062.8260840000003,
+      "tests": 132,
+      "passed": 132,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "bdbaae8dd9696b10569b90e01f707f1ce33af843e88373414bde558c20faef89"
+    },
+    {
+      "name": "provider",
+      "files": 10,
+      "code": 0,
+      "ms": 1022.2355410000018,
+      "tests": 51,
+      "passed": 51,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "f4c167cc4b0c97ff0542840581a460d66583559bbfe77aa7f78acf299ef4a4f8"
+    }
+  ],
+  "realBroadcasts": 0,
+  "devices": false
+}

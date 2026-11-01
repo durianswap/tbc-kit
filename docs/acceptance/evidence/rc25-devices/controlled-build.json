@@ -1,0 +1,9 @@
+{
+  "kit": "0.1.0-rc.25",
+  "native": "0.1.0-rc.23.native.2",
+  "kitSha256": "035364a3251415107cdd14500a84e8b99551f4674a46a65373b5171b14dab746",
+  "bundleSha256": "3b3eac402835f6c8cec291b4c5a550dac1b9faf54d3375874ee07af7636545c9",
+  "fixtureHarnessSha256": "2ee9414bb373d7f9aab6c3d39635ec15fb59667c237082099925dbc16b4f6172",
+  "controlled": true,
+  "broadcasts": 0
+}

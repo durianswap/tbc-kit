@@ -1,0 +1,30 @@
+// Reproducible offline stress + clean install evidence; public fixture keys only.
+import assert from 'node:assert/strict';
+import {readFile,writeFile,mkdtemp} from 'node:fs/promises';
+import {resolve,join} from 'node:path';
+import {spawn} from 'node:child_process';
+import {createHash} from 'node:crypto';
+const repo=resolve(import.meta.dirname,'..'),root=join(repo,'source'),out=resolve(process.argv[2]);
+const hash=b=>createHash('sha256').update(b).digest('hex');
+const lock=JSON.parse(await readFile(join(out,'delivery-lock.json')));assert.equal(hash(await readFile(join(out,'tbc-kit.tgz'))),lock.kit.sha256);
+const scratch=await mkdtemp(join(repo,'.verify/nft-job-install-'));
+const checks=[];
+async function run(name,cmd,args,cwd,env={}){const start=performance.now();let stdout='',stderr='';
+ const code=await new Promise((res,rej)=>{const p=spawn(cmd,args,{cwd,env:{...process.env,...env},stdio:['ignore','pipe','pipe']});p.stdout.on('data',b=>stdout+=b);p.stderr.on('data',b=>stderr+=b);p.on('error',rej);p.on('close',res)});
+ await writeFile(join(out,'evidence',name+'.log'),stdout+stderr);const row={name,code,ms:performance.now()-start,tests:Number(stdout.match(/# tests (\d+)/)?.[1]??0),passed:Number(stdout.match(/# pass (\d+)/)?.[1]??0),failed:Number(stdout.match(/# fail (\d+)/)?.[1]??0)};
+ checks.push(row);console.log(JSON.stringify(row));return code;
+}
+await writeFile(join(scratch,'package.json'),JSON.stringify({name:'nft-job-clean-consumer',private:true,type:'module'})+'\n');
+assert.equal(await run('clean-install','npm',['install','--ignore-scripts','--no-audit','--no-fund',join(out,'tbc-kit.tgz')],scratch),0);
+const installed=join(scratch,'node_modules/@tbc/kit'),env={TBC_TEST_INSTALLED_KIT:installed,TBC_KIT_TEST_ROOT:installed,TBC_KIT_WALLET_TEST_MODULE:join(installed,'dist/esm/wallet.node.js'),TBC_TEST_WASM_DIR:join(installed,'artifacts/wasm')};
+const entries=['','/wallet','/api','/rpc','/engine','/testing','/sqlite','/multisig'];
+await run('esm-cjs-imports',process.execPath,['--input-type=module','-e',`import{createRequire}from'node:module';const r=createRequire(import.meta.url);for(const x of ${JSON.stringify(entries)}){if(!Object.keys(await import('@tbc/kit'+x)).length||!Object.keys(r('@tbc/kit'+x)).length)throw Error(x)}console.log('16 imports PASS')`],scratch);
+await run('installed-job-stress',process.execPath,['--test','packages/kit/test/nft-job-lifecycle-stress.test.mjs','packages/kit/test/nft-job-approval-failure.test.mjs'],root,env);
+await run('job-unit-and-entry',process.execPath,['--test','packages/kit/test/nft-mint-job.test.mjs','packages/kit/test/nft-job-entry.test.mjs'],root);
+const names=['client-and-network','host-port-business-errors','nft-material-batching','nft-three-step','nft-query','nft-public-example','approval-material','approval-presentation','approval-host-evidence','workflow-budget','chain-data-read-scope','legacy-standard-workflow','crypto-byte-budget'];
+await run('installed-adversarial-regression',process.execPath,['--import',join(repo,'scripts/nft-job-installed-test-loader.mjs'),'--test',...names.map(n=>'packages/kit/test/'+n+'.test.mjs')],root,env);
+const core=['transaction-lifecycle','workflow-signing','workflow-signing-roles','approval-binding','authority','cancellation','concurrency','host-replay','prepared-dependencies','typed-boundaries','reviewed-count-boundary'];
+await run('core-adversarial-regression',process.execPath,['--import',join(repo,'scripts/rejection-core-test-loader.mjs'),'--test',...core.map(n=>'packages/core/test/'+n+'.test.mjs')],root);
+for(const p of ['core','kit'])await run('typecheck-'+p,join(root,'node_modules/.bin/tsc'),['--noEmit','-p','packages/'+p+'/tsconfig.json'],root);
+const result={status:checks.every(r=>r.code===0)?'PASS':'FAIL',kitSha256:lock.kit.sha256,installed,checks,realBroadcasts:0,deviceAcceptance:false};
+await writeFile(join(out,'evidence/installed-check.json'),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));process.exitCode=result.status==='PASS'?0:1;

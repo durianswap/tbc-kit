@@ -1,0 +1,77 @@
+{
+  "platform": "ios",
+  "kind": "expiry-during-approval",
+  "candidate": "0.1.0-rc.25",
+  "account": "1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL",
+  "last": {
+    "method": "tbc_runNftMintJob",
+    "outcome": "rejected",
+    "code": "-32603"
+  },
+  "counts": {
+    "accounts.current": 3,
+    "approvalUI": 1,
+    "authority.read": 9,
+    "clock.now": 2,
+    "entropy.bytes": 1,
+    "http.GET": 3,
+    "http.request": 3,
+    "job.approve": 1,
+    "permissions.load": 2,
+    "request": 1,
+    "sqlite.begin": 1,
+    "sqlite.commit": 1,
+    "sqlite.execute": 4,
+    "wallet.signingRoles": 1
+  },
+  "approvalToSignMs": null,
+  "approvalToReturnMs": null,
+  "nativeSignMs": 0,
+  "signatureCount": 0,
+  "metrics": [
+    {
+      "method": "GET",
+      "monoMs": 3404044862.8135834,
+      "phase": "http-start",
+      "url": "https://api.tbcdev.org/api/tbc/utxo/address/1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL"
+    },
+    {
+      "method": "GET",
+      "monoMs": 3404044863.576417,
+      "phase": "http-start",
+      "url": "https://api.tbcdev.org/api/tbc/utxo/scriptpubkeyhash/1ebd8e4264e2af13bff800bde5e0ff0cc527a2ecec23b30ad440443b3e264e92"
+    },
+    {
+      "method": "GET",
+      "monoMs": 3404044863.975917,
+      "phase": "http-start",
+      "url": "https://api.tbcdev.org/api/tbc/txraw/txid/f48e7167ec575c5a5d820a5c72d12e0b7454b66525c322f79a6b8c90688d2fda"
+    },
+    {
+      "elapsedMs": 506.30416674539447,
+      "method": "GET",
+      "monoMs": 3404045370.2751255,
+      "phase": "http-end",
+      "url": "https://api.tbcdev.org/api/tbc/txraw/txid/f48e7167ec575c5a5d820a5c72d12e0b7454b66525c322f79a6b8c90688d2fda"
+    },
+    {
+      "elapsedMs": 672.4227918311954,
+      "method": "GET",
+      "monoMs": 3404045535.232167,
+      "phase": "http-end",
+      "url": "https://api.tbcdev.org/api/tbc/utxo/address/1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL"
+    },
+    {
+      "elapsedMs": 697.6323747076094,
+      "method": "GET",
+      "monoMs": 3404045561.205917,
+      "phase": "http-end",
+      "url": "https://api.tbcdev.org/api/tbc/utxo/scriptpubkeyhash/1ebd8e4264e2af13bff800bde5e0ff0cc527a2ecec23b30ad440443b3e264e92"
+    },
+    {
+      "monoMs": 3404066527.329167,
+      "phase": "wallet-return",
+      "status": "rejected"
+    }
+  ]
+}

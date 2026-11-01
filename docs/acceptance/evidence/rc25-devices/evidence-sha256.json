@@ -1,0 +1,130 @@
+[
+  {
+    "file": "android-collection.json",
+    "sha256": "08057e8e91a157ab431ed2c8aac79f50db86129b542eca1e1ad328433c0d82fb"
+  },
+  {
+    "file": "android-controlled.json",
+    "sha256": "09d5ed2b4aadfe17c70a9947905bba6b0540c57fa75c3db8ead55f3579d1bd9a"
+  },
+  {
+    "file": "android-expired-unused-slot.json",
+    "sha256": "06aaf8e1be5500799e4de1975f604f8e40400a745234b759ae024d4a0c234153"
+  },
+  {
+    "file": "android-expiry-during-approval-ready.json",
+    "sha256": "e7c3a9fc8fa7e547fdffc57f5765e6e61801f7b5b5911f2744762913fee45643"
+  },
+  {
+    "file": "android-expiry-result.png",
+    "sha256": "2d602b78c48244c5942c04298bda6331025119ce73a4f55a7c9af18efbfd1b94"
+  },
+  {
+    "file": "android-journal-summary.json",
+    "sha256": "3eb0cf6bad63736e33f0d50c9367ba9fc094be09dc57675340a7f38231372977"
+  },
+  {
+    "file": "android-mint11.json",
+    "sha256": "91fd26f444dd0db273d5cb059e51a3096d38095b668fd9002f0daa233740b8a5"
+  },
+  {
+    "file": "android-partial-budget-new-process.json",
+    "sha256": "6dab6dd2ce7ad79099fb02f9ef71585546da31593c5a06ce8d8f9b1e59af2a25"
+  },
+  {
+    "file": "android-partial-budget.json",
+    "sha256": "30332354ca73469b4439b43e32dfdd1480d7356b8d6136cde200beb03f940ce2"
+  },
+  {
+    "file": "android-real-build.json",
+    "sha256": "d2907a76671a47c40cd771867d7b7afca98b84ebe48ca0153980ef2e3983ffe2"
+  },
+  {
+    "file": "approval-expiry-repro.json",
+    "sha256": "4e323c6640baed65353df84793f22dd4a8ed74a695344948e7a8c4983781465f"
+  },
+  {
+    "file": "chain-reconciliation.json",
+    "sha256": "1d93f823a894208e9d177dd38ad5b5ec0d02e8e192bf27f0da3045f949244c2f"
+  },
+  {
+    "file": "controlled-build.json",
+    "sha256": "313e36eec68548213a1ddb173c1489388fa91c6995d8148646fb023ec8753cd5"
+  },
+  {
+    "file": "controlled-summary.json",
+    "sha256": "b58bd919b4f1b94d04436cd4e02b6f28019746d0659401a719c6644d659cc88c"
+  },
+  {
+    "file": "final-summary.json",
+    "sha256": "e52e290d833ca7b51d9f72105ae84ffd7a8184357af6d32f9a7c271f1de704c7"
+  },
+  {
+    "file": "ios-collection.json",
+    "sha256": "641d9523ad086bb50acdf2e6896ebd918b9edc7236355791a8b920d683189fdc"
+  },
+  {
+    "file": "ios-connection.json",
+    "sha256": "d97162807545e8d81cb03f7f4b49fd34564bb7de4e8ed3f7f604de27373df113"
+  },
+  {
+    "file": "ios-controlled.json",
+    "sha256": "a6f07d04ba955ce5dd86c036d8121e918ac17f1754764a9f12c536bb5ef9abd2"
+  },
+  {
+    "file": "ios-expired-before-dispatch.json",
+    "sha256": "1028da3409e62c7d68854c4da9dc34f29e944ca1afa06d5950bfd2a0a8c38a9d"
+  },
+  {
+    "file": "ios-expiry-during-approval.json",
+    "sha256": "0cefe8fe32ca89b66c6434a333c40f313744137870615b7daa240095a8577c44"
+  },
+  {
+    "file": "ios-expiry-result.png",
+    "sha256": "1c6a9077f066129207fdc294bc5cf6cb181a5b159058109af10db723aac98353"
+  },
+  {
+    "file": "ios-journal-summary.json",
+    "sha256": "36503eb7a5dbfd9ba3a521a69ce89d05a224c98bf35ca228defbc6e81fa2d379"
+  },
+  {
+    "file": "ios-mint11-envelope.json",
+    "sha256": "6d62a060ebac5b508ac8b80e3d8754ad5530380e28e783e291006325a93b28dc"
+  },
+  {
+    "file": "ios-mint11.json",
+    "sha256": "d5a48e7fee2b2206c25a61423cbcde78108765a2c582c855e6e7d32a1064ed47"
+  },
+  {
+    "file": "ios-partial-budget-after-expiry.json",
+    "sha256": "bcd76f9a28a599dc763a798eb2cb56f3a9e78fc49cde81e8d939452e6fdcff43"
+  },
+  {
+    "file": "ios-partial-budget-new-process.json",
+    "sha256": "bf5b621953ce1f230df584c7fd17a5e382d269e2711d0b71677aad7319a6812c"
+  },
+  {
+    "file": "ios-real-build.json",
+    "sha256": "e60bb2d084876fb50439fd6a2b5ea9b3b7dda5e981d408932fe0e7aac2cfd7cd"
+  },
+  {
+    "file": "runtime/NativeHost.kt",
+    "sha256": "65cda5874e5f58a66c02010131f8dbdc4b6d98af964566db390d99f39a8616c5"
+  },
+  {
+    "file": "runtime/WalletApp.swift",
+    "sha256": "cc8dfc9422abe65fa59d600a01e47084097887ee14f6b116a5ce42a1334079e3"
+  },
+  {
+    "file": "runtime/android-host-bootstrap.js",
+    "sha256": "68e0044f55e7228461ecd9b9c1674bf6555c7d34e39068f1501f2a7c57f393d0"
+  },
+  {
+    "file": "runtime/bootstrap.js",
+    "sha256": "cae2d0c960d474d94594d851adf5868ce77220531343aded3b2a5738f3321a00"
+  },
+  {
+    "file": "runtime/dapp.html",
+    "sha256": "c2d30c54eee4ac6d41d94f35742f1aabc90f2ed5ca44335f4ef030e4c1ada205"
+  }
+]

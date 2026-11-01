@@ -1,6 +1,6 @@
 import { assertValidTws, canonicalize, chainDataRequirement, hashCanonical,
   type TransactionEngine, type PlanParams, type PlanResult, type ApprovalRequestParams } from "@tbc-wallet/core";
-import { createTbcNftMintJobOrchestrator, type TbcNftMintJobScope,
+import { createTbcNftMintJobOrchestrator, TbcNftMintJobExpiredError, TbcNftMintJobFeeBudgetError, type TbcNftMintJobScope,
   type TbcNftMintJobExecution, type TbcNftMintJobTransaction } from "./nft-mint-job.js";
 import type { TbcNftMintJobMaterial } from "./nft-mint-job-material.js";
 import type { KitWalletOptions, KitWalletSession, KitWalletAuthoritySource, KitWalletAccount,
@@ -45,7 +45,10 @@ export function createWalletNftMintJob(input: Readonly<{
     signed: readonly { txid: string; rawTransaction: string }[] | undefined } | undefined;
   const assertCurrent = async () => {
     const active = current;
-    if (!active || active.signal?.aborted || input.now() >= Date.parse(active.approval.expiresAt)) {
+    if (active && input.now() >= Math.min(Date.parse(active.approval.expiresAt), Date.parse(active.prepared.plan.payload.expiresAt))) {
+      throw new TbcNftMintJobExpiredError();
+    }
+    if (!active || active.signal?.aborted) {
       throw new Error("NFT job authorization is no longer active");
     }
     // Live authority freshness is checked by the existing Host before Ports;
@@ -101,6 +104,9 @@ export function createWalletNftMintJob(input: Readonly<{
       // Record the dispatch window before awaiting the normal journaled Port.
       active.transactions.push(tx);
       const result = await input.network.broadcastSubmit(params, call);
+      // Preserve a typed transport failure for Host/Core's existing reconcile
+      // path. It is not a successful result and must not be validated as one.
+      if (result && typeof result === "object" && "portError" in result) return result;
       assertValidTws("broadcastSubmitResult", result);
       const reply = result as { txid?: string; status?: string };
       if (reply.txid === signed.txid && ["accepted", "known", "rejected"].includes(reply.status ?? "")) {
@@ -109,19 +115,40 @@ export function createWalletNftMintJob(input: Readonly<{
       return result;
     },
     async broadcastSubmitBatch() { throw new Error("NFT mint job uses ordered dependent submission"); },
+    async broadcastReconcile(params, call) {
+      const active = current;
+      if (!active) throw new Error("NFT job is not active");
+      const result = await input.network.broadcastReconcile(params, call);
+      if (result && typeof result === "object" && "portError" in result) return result;
+      assertValidTws("broadcastReconcileResult", result);
+      const rows = (result as { transactions: { txid: string; status: string }[] }).transactions;
+      const requested = (params as { txids: string[] }).txids;
+      if (rows.length !== requested.length || rows.some((row, i) => row.txid !== requested[i])) throw new Error("NFT reconciliation identities differ");
+      for (const row of rows) {
+        const i = active.transactions.findIndex(tx => tx.txid === row.txid);
+        if (i >= 0 && active.transactions[i]!.status === "uncertain") {
+          if (row.status === "mempool" || row.status === "confirmed") active.transactions[i] = { ...active.transactions[i]!, status: "known" };
+          else if (row.status === "rejected") active.transactions[i] = { ...active.transactions[i]!, status: "rejected" };
+        }
+      }
+      return result;
+    },
   };
   const runner = createTbcNftMintJobOrchestrator({
     assertAuthority: input.assertAuthority,
     begin: scope => prepareMaterial(scope, input.account),
     async approve(request) {
-      const receipt = await configured.approve(request);
-      // A UI wait must not compare a new receipt with a stale/truncated clock
-      // sample. Read the same trusted clock, never alter the receipt or TTL.
-      await input.refreshTime();
-      return receipt;
+      try { return await configured.approve(request); }
+      finally {
+        // Refresh after both receipt and native fence rejection. The latter
+        // must also be classified against the post-UI trusted clock, not the
+        // cached pre-UI sample. Never alter the receipt or TTL.
+        await input.refreshTime();
+      }
     },
     async prepare({ request, context }) {
       const material = context as TbcNftMintJobMaterial;
+      if (input.now() >= Date.parse(material.expiresAt)) throw new TbcNftMintJobExpiredError();
       const normalized = await input.engine.normalizeRequest({ version: "1.0", request });
       const snapshot = material.snapshot(request.intent.items.map(item => item.slot));
       const policy = await input.network.resolvePolicy({ version: "1.0", ...normalized, snapshotHash: snapshot.snapshotHash });
@@ -130,7 +157,10 @@ export function createWalletNftMintJob(input: Readonly<{
       const params: PlanParams = { version: "1.0", ...normalized, snapshot, policy: policy as PlanParams["policy"] };
       let result: PlanResult;
       try { result = await input.engine.plan(params); }
-      catch (error) { const resource = nftMintPreparationResource(error); if (resource) return { status: "resource-limit", resource }; throw error; }
+      catch (error) {
+        if (error instanceof Error && Reflect.get(error, "rustCode") === "FEE_CAP_EXCEEDED") throw new TbcNftMintJobFeeBudgetError();
+        const resource = nftMintPreparationResource(error); if (resource) return { status: "resource-limit", resource }; throw error;
+      }
       // Core independently validates the exact reused plan before approval and
       // signing. Resizing here is unsigned, local and does not reread material.
       if (result.plan.payload.preview.operationKind !== "transaction") throw new Error("NFT plan has no transaction preview");
@@ -146,6 +176,11 @@ export function createWalletNftMintJob(input: Readonly<{
         signed: undefined as readonly { txid: string; rawTransaction: string }[] | undefined };
       current = active;
       let operationId: string | undefined;
+      const outcomes = () => active.signed
+        ? active.signed.map((tx, i) => active.transactions.find(item => item.txid === tx.txid) ?? {
+          txid: tx.txid, fee: active.prepared.plan.payload.transactions[i]!.fee, status: "not-submitted" as const })
+        : active.transactions;
+      const expired = () => input.now() >= Math.min(Date.parse(approval.expiresAt), Date.parse(active.prepared.plan.payload.expiresAt));
       try {
         const { nftMintJob: _job, multiRoundMerge: _merge, approvalPreparation: _preparation, ...childOptions } = input.wallet;
         if (!execution) execution = await input.openExecution({
@@ -187,13 +222,19 @@ export function createWalletNftMintJob(input: Readonly<{
           (context as TbcNftMintJobMaterial).acceptValidatedBatch(batch.request.intent.items.map(item => item.slot), active.signed);
           return { status: "complete", transactions: active.transactions };
         }
+        const response = operation.status === "complete" && operation.completion.delivery === "respond"
+          ? operation.completion.response as { error?: { code?: number; data?: { reason?: string }; message?: string } } : undefined;
+        const approvalExpired = response?.error?.data?.reason === "RECEIPT_EXPIRED" ||
+          (response?.error?.code === 4100 && response.error.message === "Approval expired before signing");
         return { status: active.transactions.some(tx => tx.status === "uncertain") ? "uncertain"
           : operation.status === "waiting" || operation.status === "busy" ? "pending" : accepted ? "partial" : "failed",
-          transactions: active.transactions, recoveryId: operationId };
-      } catch {
+          transactions: outcomes(), recoveryId: operationId,
+          ...(approvalExpired || expired() ? { stopReason: "expired" as const } : signal?.aborted ? { stopReason: "cancelled" as const } : {}) };
+      } catch (error) {
         return { status: active.transactions.some(tx => tx.status === "uncertain") ? "uncertain"
           : active.transactions.length ? "partial" : operationId ? "pending" : "failed",
-          transactions: active.transactions, ...(operationId ? { recoveryId: operationId } : {}) };
+          transactions: outcomes(), ...(operationId ? { recoveryId: operationId } : {}),
+          ...(error instanceof TbcNftMintJobExpiredError || expired() ? { stopReason: "expired" as const } : signal?.aborted ? { stopReason: "cancelled" as const } : {}) };
       } finally {
         // Fence any delayed Port before disposing the private channel. The
         // normal submit journal remains available through the parent network.

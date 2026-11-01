@@ -1,0 +1,379 @@
+{
+  "status": "PASS",
+  "before": "0.1.0-rc.24",
+  "after": "0.1.0-rc.25",
+  "scope": "3 alternating local Node/WASM samples per count; synthetic API/submit, not iOS/Android or real-chain latency",
+  "comparison": [
+    {
+      "count": 10,
+      "beforeMs": 425.124875,
+      "afterMs": 412.420875,
+      "changePercent": -2.9882984381941813,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1
+    },
+    {
+      "count": 100,
+      "beforeMs": 3311.434292,
+      "afterMs": 3323.900584,
+      "changePercent": 0.37646200711627387,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1
+    },
+    {
+      "count": 101,
+      "beforeMs": 3234.3795000000005,
+      "afterMs": 3254.1661249999997,
+      "changePercent": 0.6117595353297034,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1
+    }
+  ],
+  "samples": [
+    {
+      "round": 0,
+      "which": "before",
+      "count": 10,
+      "ms": 438.892834,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 20,
+      "policyCalls": 1,
+      "accountCalls": 6
+    },
+    {
+      "round": 0,
+      "which": "before",
+      "count": 100,
+      "ms": 3311.434292,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 200,
+      "policyCalls": 10,
+      "accountCalls": 24
+    },
+    {
+      "round": 0,
+      "which": "before",
+      "count": 101,
+      "ms": 3230.5077090000004,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 202,
+      "policyCalls": 11,
+      "accountCalls": 26
+    },
+    {
+      "round": 0,
+      "which": "after",
+      "count": 10,
+      "ms": 413.297959,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 20,
+      "policyCalls": 1,
+      "accountCalls": 6
+    },
+    {
+      "round": 0,
+      "which": "after",
+      "count": 100,
+      "ms": 3350.271875,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 200,
+      "policyCalls": 10,
+      "accountCalls": 24
+    },
+    {
+      "round": 0,
+      "which": "after",
+      "count": 101,
+      "ms": 3272.3124579999994,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 202,
+      "policyCalls": 11,
+      "accountCalls": 26
+    },
+    {
+      "round": 1,
+      "which": "after",
+      "count": 10,
+      "ms": 406.97895900000003,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 20,
+      "policyCalls": 1,
+      "accountCalls": 6
+    },
+    {
+      "round": 1,
+      "which": "after",
+      "count": 100,
+      "ms": 3323.900584,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 200,
+      "policyCalls": 10,
+      "accountCalls": 24
+    },
+    {
+      "round": 1,
+      "which": "after",
+      "count": 101,
+      "ms": 3254.1661249999997,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 202,
+      "policyCalls": 11,
+      "accountCalls": 26
+    },
+    {
+      "round": 1,
+      "which": "before",
+      "count": 10,
+      "ms": 407.51104200000003,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 20,
+      "policyCalls": 1,
+      "accountCalls": 6
+    },
+    {
+      "round": 1,
+      "which": "before",
+      "count": 100,
+      "ms": 3292.129417,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 200,
+      "policyCalls": 10,
+      "accountCalls": 24
+    },
+    {
+      "round": 1,
+      "which": "before",
+      "count": 101,
+      "ms": 3234.3795000000005,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 202,
+      "policyCalls": 11,
+      "accountCalls": 26
+    },
+    {
+      "round": 2,
+      "which": "before",
+      "count": 10,
+      "ms": 425.124875,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 20,
+      "policyCalls": 1,
+      "accountCalls": 6
+    },
+    {
+      "round": 2,
+      "which": "before",
+      "count": 100,
+      "ms": 3376.3700409999997,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 200,
+      "policyCalls": 10,
+      "accountCalls": 24
+    },
+    {
+      "round": 2,
+      "which": "before",
+      "count": 101,
+      "ms": 3246.190917,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 202,
+      "policyCalls": 11,
+      "accountCalls": 26
+    },
+    {
+      "round": 2,
+      "which": "after",
+      "count": 10,
+      "ms": 412.420875,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 20,
+      "policyCalls": 1,
+      "accountCalls": 6
+    },
+    {
+      "round": 2,
+      "which": "after",
+      "count": 100,
+      "ms": 3315.939709,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 200,
+      "policyCalls": 10,
+      "accountCalls": 24
+    },
+    {
+      "round": 2,
+      "which": "after",
+      "count": 101,
+      "ms": 3247.2979579999997,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "approvals": 1,
+      "signatures": 202,
+      "policyCalls": 11,
+      "accountCalls": 26
+    }
+  ]
+}

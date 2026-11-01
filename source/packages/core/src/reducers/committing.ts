@@ -5,7 +5,6 @@ import {
 import { canonicalize } from "../canonical-json.js";
 import type { OperationCheckpoint } from "../checkpoint.js";
 import {
-  TwsApprovalError,
   TwsEngineError,
   TwsStateError,
 } from "../errors.js";
@@ -27,6 +26,7 @@ import {
 } from "./permissions.js";
 import {
   advance,
+  completeError,
   completeSuccess,
   earliestExpiry,
   makeCalls,
@@ -444,7 +444,8 @@ export function reduceCommitClock(
   }
   const result = resultValue as { readonly now: string };
   if (Date.parse(result.now) >= Date.parse(String(checkpoint.payload.expiresAt))) {
-    throw new TwsApprovalError("RECEIPT_EXPIRED", "operation expired before commit");
+    return completeError(checkpoint, 4100, "Approval expired before commit", checkpoint.payload.memory,
+      { reason: "RECEIPT_EXPIRED", stage: "commit", operationId: checkpoint.payload.operationId });
   }
   const kind = (checkpoint.payload.data as { readonly kind?: unknown }).kind;
   if (kind === "permission-store") {

@@ -1,0 +1,225 @@
+{
+  "platform": "android",
+  "kind": "collection",
+  "candidate": "0.1.0-rc.25",
+  "account": "18Dfipm9V56Sx6sKMJNvR9Z2tyLAzJN8Ew",
+  "last": {
+    "method": "tbc_sendTransaction",
+    "outcome": "signed",
+    "code": "",
+    "publicResult": {
+      "approvalId": "394a9330-b78b-43ea-b65e-a3f4bde7403f",
+      "chainId": "tbc:testnet",
+      "from": "18Dfipm9V56Sx6sKMJNvR9Z2tyLAzJN8Ew",
+      "requestHash": "959936f62a0e952fadcb4462ef9853c3c7885008677ff842c6ab443216b04598",
+      "totalFee": "118",
+      "transactions": [
+        {
+          "dependsOn": [],
+          "id": "tbc721-standard-create-collection",
+          "role": "primary",
+          "status": "submitted",
+          "txid": "3c3a5611daad7090e0ab0d7309138fc9455ae586161158cb4098016cf3fe9f4c"
+        }
+      ],
+      "version": "1.0"
+    }
+  },
+  "counts": {
+    "wallet.signingRoles": 1,
+    "sqlite.begin": 4,
+    "sqlite.execute": 14,
+    "sqlite.commit": 4,
+    "accounts.current": 1,
+    "authority.read": 26,
+    "request": 2,
+    "clock.now": 8,
+    "permissions.load": 2,
+    "approval.request": 2,
+    "approvalUI": 2,
+    "approved": 2,
+    "permissions.commit": 1,
+    "permissionWrites": 1,
+    "engine.normalizeRequest": 1,
+    "http.request": 2,
+    "http.GET": 1,
+    "entropy.bytes": 1,
+    "engine.plan": 1,
+    "engine.validate": 4,
+    "signer.sign": 1,
+    "vaultSigns": 1,
+    "engine.finalize": 1,
+    "accounts.forChain": 1,
+    "http.POST": 1,
+    "broadcast.POST": 1
+  },
+  "approvalToSignMs": 253.51999999955297,
+  "approvalToReturnMs": 912.7953749988228,
+  "nativeSignMs": 23.186,
+  "signatureCount": 1,
+  "metrics": [
+    {
+      "iso": "2026-11-01T14:59:49.121Z",
+      "phase": "clock-read",
+      "monoMs": 14896687.686852
+    },
+    {
+      "iso": "2026-11-01T14:59:49.248Z",
+      "phase": "clock-read",
+      "monoMs": 14896814.313936
+    },
+    {
+      "choice": "approve",
+      "pending": true,
+      "phase": "approval-choice",
+      "monoMs": 14911736.98286
+    },
+    {
+      "phase": "approved",
+      "monoMs": 14911738.595943
+    },
+    {
+      "iso": "2026-11-01T15:00:04.418Z",
+      "phase": "clock-read",
+      "monoMs": 14911985.13611
+    },
+    {
+      "status": "signed",
+      "phase": "wallet-return",
+      "monoMs": 14912178.092776
+    },
+    {
+      "iso": "2026-11-01T15:00:18.547Z",
+      "phase": "clock-read",
+      "monoMs": 14926113.269325
+    },
+    {
+      "method": "engine.normalizeRequest",
+      "elapsedMs": 21.96075,
+      "inputChars": 416,
+      "outputChars": 518,
+      "phase": "engine",
+      "monoMs": 14926283.95995
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/utxo/address/18Dfipm9V56Sx6sKMJNvR9Z2tyLAzJN8Ew",
+      "method": "GET",
+      "phase": "http-start",
+      "monoMs": 14926366.649408
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/utxo/address/18Dfipm9V56Sx6sKMJNvR9Z2tyLAzJN8Ew",
+      "method": "GET",
+      "elapsedMs": 2473.163709,
+      "phase": "http-end",
+      "monoMs": 14928839.885034
+    },
+    {
+      "method": "engine.plan",
+      "elapsedMs": 4.4465,
+      "inputChars": 1829,
+      "outputChars": 8637,
+      "phase": "engine",
+      "monoMs": 14928931.701493
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 1.005542,
+      "inputChars": 10443,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 14928958.575243
+    },
+    {
+      "iso": "2026-11-01T15:00:21.423Z",
+      "phase": "clock-read",
+      "monoMs": 14928990.176368
+    },
+    {
+      "choice": "approve",
+      "pending": true,
+      "phase": "approval-choice",
+      "monoMs": 14958350.272507
+    },
+    {
+      "phase": "approved",
+      "monoMs": 14958351.726632
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 16.038292,
+      "inputChars": 11384,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 14958445.514174
+    },
+    {
+      "iso": "2026-11-01T15:00:50.941Z",
+      "phase": "clock-read",
+      "monoMs": 14958507.943049
+    },
+    {
+      "taskId": "sign-tbc721-standard-create-collection-input-0",
+      "nativeMs": 23.186,
+      "phase": "signature",
+      "monoMs": 14958605.246632
+    },
+    {
+      "elapsedMs": 23.634416,
+      "phase": "signer-port",
+      "monoMs": 14958605.260424
+    },
+    {
+      "iso": "2026-11-01T15:00:51.119Z",
+      "phase": "clock-read",
+      "monoMs": 14958685.963465
+    },
+    {
+      "method": "engine.finalize",
+      "elapsedMs": 20.857458,
+      "inputChars": 11615,
+      "outputChars": 3441,
+      "phase": "engine",
+      "monoMs": 14958782.54234
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 1.264,
+      "inputChars": 14994,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 14958802.20309
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 1.060375,
+      "inputChars": 14998,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 14958804.870424
+    },
+    {
+      "iso": "2026-11-01T15:00:51.283Z",
+      "phase": "clock-read",
+      "monoMs": 14958849.967132
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "phase": "http-start",
+      "monoMs": 14958922.029215
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "elapsedMs": 268.869625,
+      "phase": "http-end",
+      "monoMs": 14959190.899757
+    },
+    {
+      "status": "signed",
+      "phase": "wallet-return",
+      "monoMs": 14959264.522007
+    }
+  ]
+}

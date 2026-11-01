@@ -1,0 +1,101 @@
+{
+  "platform": "ios",
+  "kind": "mint11",
+  "candidate": "0.1.0-rc.25",
+  "account": "1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL",
+  "last": {
+    "method": "tbc_runNftMintJob",
+    "outcome": "rejected",
+    "code": "-32602"
+  },
+  "counts": {
+    "accounts.current": 2,
+    "accounts.forChain": 1,
+    "approval.request": 2,
+    "approvalUI": 2,
+    "approved": 2,
+    "authority.read": 27,
+    "broadcast.POST": 1,
+    "clock.now": 8,
+    "engine.finalize": 1,
+    "engine.normalizeRequest": 1,
+    "engine.plan": 1,
+    "engine.validate": 4,
+    "entropy.bytes": 1,
+    "http.GET": 1,
+    "http.POST": 1,
+    "http.request": 2,
+    "permissions.commit": 1,
+    "permissions.load": 2,
+    "permissionWrites": 1,
+    "request": 3,
+    "signer.sign": 1,
+    "sqlite.begin": 5,
+    "sqlite.commit": 5,
+    "sqlite.execute": 18,
+    "vaultSigns": 1,
+    "vmRecreated": 1,
+    "wallet.signingRoles": 2
+  },
+  "approvalToSignMs": 28.175292015075684,
+  "approvalToReturnMs": 45799.24854183197,
+  "nativeSignMs": 2.8049168176949024,
+  "signatureCount": 1,
+  "metrics": [
+    {
+      "monoMs": 3403386697.370375,
+      "phase": "approved"
+    },
+    {
+      "monoMs": 3403386723.9096255,
+      "phase": "wallet-return",
+      "status": "signed"
+    },
+    {
+      "method": "GET",
+      "monoMs": 3403396501.3875837,
+      "phase": "http-start",
+      "url": "https://api.tbcdev.org/api/tbc/utxo/address/1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL"
+    },
+    {
+      "elapsedMs": 249.93970803916454,
+      "method": "GET",
+      "monoMs": 3403396751.319792,
+      "phase": "http-end",
+      "url": "https://api.tbcdev.org/api/tbc/utxo/address/1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL"
+    },
+    {
+      "monoMs": 3403410947.594,
+      "phase": "approved"
+    },
+    {
+      "monoMs": 3403410975.769292,
+      "nativeMs": 2.8049168176949024,
+      "phase": "signature",
+      "taskId": "sign-tbc721-standard-create-collection-input-0"
+    },
+    {
+      "method": "POST",
+      "monoMs": 3403411013.531,
+      "phase": "http-start",
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx"
+    },
+    {
+      "elapsedMs": 115.46454159542918,
+      "method": "POST",
+      "monoMs": 3403411128.989375,
+      "phase": "http-end",
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx"
+    },
+    {
+      "monoMs": 3403411138.7830005,
+      "phase": "wallet-return",
+      "status": "signed"
+    },
+    {
+      "monoMs": 3403456746.8425417,
+      "phase": "wallet-return",
+      "status": "rejected"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "installed": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/.verify/nft-job-install-f1sefH/node_modules/@tbc/kit",
+  "version": "0.1.0-rc.25",
+  "status": "PASS",
+  "results": [
+    {
+      "name": "extreme",
+      "files": 1,
+      "code": 0,
+      "ms": 61977.915417000004,
+      "tests": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "f0132f32771accd74cf35c4d685fceedce091254db98feac49f54485353a39d3"
+    },
+    {
+      "name": "kit",
+      "files": 79,
+      "code": 0,
+      "ms": 52214.439207999996,
+      "tests": 552,
+      "passed": 552,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "d61d3ae6715514b8116655f5f91ccc2ef7ff00f4f92be9ba01102b7b1838cdb6"
+    },
+    {
+      "name": "core",
+      "files": 38,
+      "code": 0,
+      "ms": 33501.270415999985,
+      "tests": 208,
+      "passed": 208,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "f5ce0594d5c456f49a742fe79926d4acaeab03efe15b4e97928ca95dbc19820f"
+    },
+    {
+      "name": "host",
+      "files": 14,
+      "code": 0,
+      "ms": 4480.546957999992,
+      "tests": 132,
+      "passed": 132,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "90c4ec4bd93a4341a92899a20406d0a1f4585a4cc591271ff95b522b676e5d2e"
+    },
+    {
+      "name": "provider",
+      "files": 10,
+      "code": 0,
+      "ms": 1113.291916999995,
+      "tests": 51,
+      "passed": 51,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "b36a15ac6f4952e56efa5b77398b9857d24ae3b87c3fd82aeb9522c5126232ba"
+    }
+  ],
+  "realBroadcasts": 0,
+  "devices": false
+}

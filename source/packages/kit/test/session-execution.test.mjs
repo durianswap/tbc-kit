@@ -718,8 +718,7 @@ test("bounded early consent waits for exact Core material and still signs under 
   assert.equal(observed.at(-1).approvalPreparation, undefined);
   assert.equal(signerCalls, 2, "changed intent must not reuse early consent");
 
-  await assert.rejects(
-    session.handleRequest({
+  const expiredConsent = await session.handleRequest({
       id: "standard-workflow-expired-consent",
       method: "tbc_signWorkflow",
       params: {
@@ -747,9 +746,9 @@ test("bounded early consent waits for exact Core material and still signs under 
           }],
         }],
       },
-    }),
-    /did not produce a response: failed/u,
-  );
+    });
+  assert.equal(expiredConsent.response.error.code, 4100);
+  assert.equal(expiredConsent.response.error.data.reason, "RECEIPT_EXPIRED");
   assert.equal(approvals, 2);
   assert.equal(signerCalls, 2, "expired early consent must not reach Signer");
   session.close();

@@ -1,0 +1,119 @@
+{
+  "status": "PASS",
+  "kit": "0.1.0-rc.26",
+  "kitSha256": "91482055a6567c8064edd523e26a8881a51e653ab7d1613f5973b399f728c471",
+  "nativeSdk": "0.1.0-rc.23.native.2",
+  "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+  "checkedAt": "2026-11-01T16:01:15.434Z",
+  "installedTests": {
+    "passed": 279,
+    "optionalSkipped": 1,
+    "failed": 0
+  },
+  "primaryDeviceGroups": {
+    "ios": 10,
+    "android": 11,
+    "actualApprovalUi": 2
+  },
+  "privateRuntimeUnitTests": 6,
+  "androidLocal11": {
+    "beforeMs": [
+      15462.83779899776,
+      14290.85775699839,
+      14282.14229799807
+    ],
+    "afterMs": [
+      2720.16316800192,
+      1710.8765420019627,
+      1695.2115010023117
+    ],
+    "beforeMedianMs": 14290.85775699839,
+    "afterMedianMs": 1710.8765420019627,
+    "reductionPercent": 88.02817457780567
+  },
+  "iosLocal11": {
+    "beforeMs": [
+      684.0000000000001,
+      360.9999999999999,
+      335.0000000000002,
+      751,
+      362,
+      313
+    ],
+    "afterMs": [
+      774,
+      401,
+      309,
+      665,
+      386,
+      321
+    ],
+    "beforeMedianMs": 361.49999999999994,
+    "afterMedianMs": 393.5,
+    "deltaMs": 32.00000000000006,
+    "deltaPercent": 8.85200553250347,
+    "interpretation": "Six local simulator samples per version, including fresh and warm runs; small measured +32 ms median difference. No additional calls/reads/checks. Not proof of zero performance regression or a physical-device SLA."
+  },
+  "local101": {
+    "iosMs": 2884,
+    "androidMs": 17639.937508001924,
+    "approvalsEach": 1,
+    "signaturesEach": 202,
+    "corePlansEach": 11,
+    "signedTxidsEqual": true,
+    "reads": {
+      "index": 1,
+      "native": 1,
+      "raw": 0,
+      "decoded": 0,
+      "status": 0,
+      "reconcile": 0
+    }
+  },
+  "transactionParity": {
+    "elevenAcrossBothVersionsAndDevices": true,
+    "hundredAndOneAcrossDevices": true,
+    "sameContextBindingsEqual": true
+  },
+  "readsPer11": {
+    "index": 1,
+    "native": 1,
+    "raw": 0,
+    "decoded": 0,
+    "status": 0,
+    "reconcile": 0
+  },
+  "statsPer11": {
+    "approvals": 1,
+    "signatures": 22,
+    "policyCalls": 2,
+    "accountCalls": 8
+  },
+  "realUiExpiry": {
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "result": "stopped/expired",
+    "approvalsEach": 1,
+    "signed": 0,
+    "posted": 0,
+    "readonlyPrefetchGetsEach": 3
+  },
+  "priorChainEvidence": {
+    "observedAt": "2026-11-01T15:13:16.819Z",
+    "height": 839503,
+    "transactions": 44,
+    "minimumConfirmations": 1,
+    "rawMatched": true,
+    "scriptVmPassed": true
+  },
+  "realBroadcastsThisTurn": 0,
+  "acceptedJournalRowsUnchanged": {
+    "ios": 22,
+    "android": 22
+  },
+  "scope": "Controlled local signed-transaction replay plus actual DApp/native approval expiry on simulators. Prior rc25 chain evidence retained; no claim of new rc26 chain broadcast or physical-device timings.",
+  "partnerDeliveryChanged": false,
+  "currentReleaseChanged": false
+}

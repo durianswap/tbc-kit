@@ -1,0 +1,54 @@
+{
+  "platform": "ios",
+  "kind": "partial-budget-after-expiry",
+  "candidate": "0.1.0-rc.25",
+  "account": "1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL",
+  "last": {
+    "method": "tbc_runNftMintJob",
+    "outcome": "rejected",
+    "code": "-32603"
+  },
+  "counts": {
+    "accounts.current": 15,
+    "accounts.forChain": 12,
+    "approval.request": 2,
+    "approvalUI": 3,
+    "approved": 3,
+    "authority.read": 166,
+    "broadcast.POST": 12,
+    "clock.now": 63,
+    "engine.finalize": 12,
+    "engine.normalizeRequest": 5,
+    "engine.plan": 3,
+    "engine.validate": 21,
+    "entropy.bytes": 2,
+    "http.GET": 7,
+    "http.POST": 12,
+    "http.request": 19,
+    "job.approve": 2,
+    "job.authorize": 2,
+    "permissions.commit": 1,
+    "permissions.load": 10,
+    "permissionWrites": 1,
+    "request": 6,
+    "signer.sign": 23,
+    "sqlite.begin": 41,
+    "sqlite.commit": 41,
+    "sqlite.execute": 118,
+    "validatedContinuation": 9,
+    "vaultSigns": 23,
+    "vmRecreated": 4,
+    "wallet.signingRoles": 5
+  },
+  "approvalToSignMs": null,
+  "approvalToReturnMs": null,
+  "nativeSignMs": 0,
+  "signatureCount": 0,
+  "metrics": [
+    {
+      "monoMs": 3403764714.5578756,
+      "phase": "wallet-return",
+      "status": "rejected"
+    }
+  ]
+}

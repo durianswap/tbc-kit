@@ -1,0 +1,3088 @@
+{
+  "diagnostics": [
+    {
+      "mode": "provider",
+      "scenario": "controlled expiry after 33 accepted transactions (not proof of colleague deadline)",
+      "ms": 68176.8795,
+      "firstSubmitMs": 55865.969292,
+      "virtualElapsed": 33000,
+      "counts": {
+        "approvals": 1,
+        "signatures": 200
+      },
+      "accepted": 33,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0
+      },
+      "error": {
+        "message": "Host operation did not produce a response: failed"
+      },
+      "syntheticTxids": [
+        "bf529c698485d7e83d43bb3dd337d17e6af24dd1ec21cf620c06340f14f158be",
+        "4b488f6f75fe77e452e9f2ea132b2d53547be3efb6c740e59205456982cd114b",
+        "c387cdb4081d2be9fa93a0bdee758f18fad7f9590d8c0b7b86d83911d94b8785",
+        "26a700a66fbc324d75f5627a83c01a70f3a3ff69874345fdf2e43fa4b6233438",
+        "074db10bee4e93a8de5e4860e3a901034dc7543dc97d1c32b167991e4b0492df",
+        "0eee52c5ab85387c1091e68ae6632b4a3cd9ca3d02bd248b3050dfb5872701cc",
+        "764aaffe3d3f8838079e9b9b3519e9d41227aac34934ae0e292f75407f4ca4a6",
+        "4fd5cb85861c20f4d91d8b8d24ddd6684406c078b145dcb8d4496ac6ea56138a",
+        "5d79ceb76059df11e316c8e6f7c920082554837d635e24ebb8a9b21edc4cfb20",
+        "e7905981517aa657c69996da0680758b19d8468e0e89bbd565d0822dab5c6b8b",
+        "4297e63125af79144740dc2d190e362b9f6cf8e0cb0b3299752a49ae4764bb8c",
+        "e2aee273b5f4ee22ee320b242dae4779a463b67ee26062ec1a1ea8a1b4b41016",
+        "209f1e47117344ac483009dcc253bb3910bf4104fcafa2bb4eaee4621d03871f",
+        "97d47436ca6ba9394126ce81217ab43381140bce459e2326ba94dae145b0aa39",
+        "79c84e49aeeffa29bbf885e46381401b90a4d26e5907f5f836dd4d3813dc64a8",
+        "9f4f004c9e280964cd053aaeded50962b57e5a163000a424a3dea6a8c23e3721",
+        "e79cdd6ce0a18445d3090051fb49bdeda1833c66b3d1d4061da97c63b7f5fb3c",
+        "c27beb5487d433aa156e77ca9ca9ff6f743a7cbb26b2429336d27b7523ba0b1d",
+        "1889259003991f0f61994feae4ad82ad05696d75ced741846a1af656e5ac123f",
+        "5bdb842a485c95ed9b65c1c86b9ab2b880ca6ffe485b65a6e2f7526f03bfcdfe",
+        "f3f439748d7d9b300fed12e6f655093f8f843bf85b6cacba2d2cfe1e7b59176a",
+        "c7a508413866e47d0499662d4b4cd1336e465922e67d6dcee469e7e18007710b",
+        "022ee4660d55f2e90f2288c5e155cd9700a361493e051fa47e35f7a8a3a216c7",
+        "6d078fd49de597902b9c89ae153b35d79daed3a26879faa54649d7b46f193e73",
+        "7132f20d1203521d1c53a175e0f1df6f249a889a971f103c8d79f3294c30b15d",
+        "5d4d1f4922896d37697fbfbc89e47569c5503e0e038739b52374a57f33309e56",
+        "e78ef2ac070d0008f68ecd627158945c8d5fda5154586e3941c839290e8e6fea",
+        "c34e678754cdbfb08b1bca7e483cc93b2f64e49e79545799bfcc129ed314ff34",
+        "e26a4dbedce31c5c66a8b86f965ced0c3b2a9cfc837720a26a703bf6c2f85145",
+        "31fb0a17b2f9c395e38ee5c11e83b580c5bcc4326be5dcc1f169dbe8db373da0",
+        "ae45fabd3a09400a9941095bc3587999c4c143cf6660777ff29cd21a8bb65b06",
+        "5749fcc8f1c56056432011e9abbe92b4aeff46733ec1b82b147c7e860519019f",
+        "a553801fa44c1c5c5c88665b639e03b9b61d2d1962fa935bd3199aecb23f6272"
+      ],
+      "realBroadcasts": 0
+    },
+    {
+      "mode": "direct-host",
+      "scenario": "controlled expiry after 33 accepted transactions (not proof of colleague deadline)",
+      "ms": 67904.55391699998,
+      "firstSubmitMs": 55630.83466699999,
+      "virtualElapsed": 33000,
+      "counts": {
+        "approvals": 1,
+        "signatures": 200
+      },
+      "accepted": 33,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0
+      },
+      "host": {
+        "status": "failed",
+        "error": {
+          "code": "HOST_INTERNAL",
+          "message": "The Core transition failed.",
+          "retryable": false,
+          "metadata": {
+            "operationId": "E0rg6H5FLbCw6VwjrWAtLVRKHfoiM4ZsiV214ukySHA"
+          }
+        }
+      },
+      "syntheticTxids": [
+        "bf529c698485d7e83d43bb3dd337d17e6af24dd1ec21cf620c06340f14f158be",
+        "4b488f6f75fe77e452e9f2ea132b2d53547be3efb6c740e59205456982cd114b",
+        "c387cdb4081d2be9fa93a0bdee758f18fad7f9590d8c0b7b86d83911d94b8785",
+        "26a700a66fbc324d75f5627a83c01a70f3a3ff69874345fdf2e43fa4b6233438",
+        "074db10bee4e93a8de5e4860e3a901034dc7543dc97d1c32b167991e4b0492df",
+        "0eee52c5ab85387c1091e68ae6632b4a3cd9ca3d02bd248b3050dfb5872701cc",
+        "764aaffe3d3f8838079e9b9b3519e9d41227aac34934ae0e292f75407f4ca4a6",
+        "4fd5cb85861c20f4d91d8b8d24ddd6684406c078b145dcb8d4496ac6ea56138a",
+        "5d79ceb76059df11e316c8e6f7c920082554837d635e24ebb8a9b21edc4cfb20",
+        "e7905981517aa657c69996da0680758b19d8468e0e89bbd565d0822dab5c6b8b",
+        "4297e63125af79144740dc2d190e362b9f6cf8e0cb0b3299752a49ae4764bb8c",
+        "e2aee273b5f4ee22ee320b242dae4779a463b67ee26062ec1a1ea8a1b4b41016",
+        "209f1e47117344ac483009dcc253bb3910bf4104fcafa2bb4eaee4621d03871f",
+        "97d47436ca6ba9394126ce81217ab43381140bce459e2326ba94dae145b0aa39",
+        "79c84e49aeeffa29bbf885e46381401b90a4d26e5907f5f836dd4d3813dc64a8",
+        "9f4f004c9e280964cd053aaeded50962b57e5a163000a424a3dea6a8c23e3721",
+        "e79cdd6ce0a18445d3090051fb49bdeda1833c66b3d1d4061da97c63b7f5fb3c",
+        "c27beb5487d433aa156e77ca9ca9ff6f743a7cbb26b2429336d27b7523ba0b1d",
+        "1889259003991f0f61994feae4ad82ad05696d75ced741846a1af656e5ac123f",
+        "5bdb842a485c95ed9b65c1c86b9ab2b880ca6ffe485b65a6e2f7526f03bfcdfe",
+        "f3f439748d7d9b300fed12e6f655093f8f843bf85b6cacba2d2cfe1e7b59176a",
+        "c7a508413866e47d0499662d4b4cd1336e465922e67d6dcee469e7e18007710b",
+        "022ee4660d55f2e90f2288c5e155cd9700a361493e051fa47e35f7a8a3a216c7",
+        "6d078fd49de597902b9c89ae153b35d79daed3a26879faa54649d7b46f193e73",
+        "7132f20d1203521d1c53a175e0f1df6f249a889a971f103c8d79f3294c30b15d",
+        "5d4d1f4922896d37697fbfbc89e47569c5503e0e038739b52374a57f33309e56",
+        "e78ef2ac070d0008f68ecd627158945c8d5fda5154586e3941c839290e8e6fea",
+        "c34e678754cdbfb08b1bca7e483cc93b2f64e49e79545799bfcc129ed314ff34",
+        "e26a4dbedce31c5c66a8b86f965ced0c3b2a9cfc837720a26a703bf6c2f85145",
+        "31fb0a17b2f9c395e38ee5c11e83b580c5bcc4326be5dcc1f169dbe8db373da0",
+        "ae45fabd3a09400a9941095bc3587999c4c143cf6660777ff29cd21a8bb65b06",
+        "5749fcc8f1c56056432011e9abbe92b4aeff46733ec1b82b147c7e860519019f",
+        "a553801fa44c1c5c5c88665b639e03b9b61d2d1962fa935bd3199aecb23f6272"
+      ],
+      "realBroadcasts": 0
+    }
+  ],
+  "status": "FAIL",
+  "kit": "0.1.0-rc.23",
+  "native": "0.1.0-rc.23.native.2",
+  "userAgent": "Node.js/22",
+  "elapsedMs": 136099.383458,
+  "tests": [
+    {
+      "name": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "status": "FAIL",
+      "message": "assertion failed",
+      "ms": 68189.266417
+    },
+    {
+      "name": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "status": "PASS",
+      "ms": 67908.909584
+    }
+  ],
+  "metrics": [
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "reads": [],
+      "ports": [
+        "chainData.resolve",
+        "policy.resolve"
+      ],
+      "approvals": 1,
+      "signatures": 200,
+      "accepted": 33
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "reads": [],
+      "ports": [
+        "chainData.resolve",
+        "policy.resolve"
+      ],
+      "approvals": 1,
+      "signatures": 200,
+      "accepted": 33
+    }
+  ],
+  "nftMetrics": [
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0
+      },
+      "statusBatchLengths": [],
+      "maxStatusConcurrency": 0
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0
+      },
+      "statusBatchLengths": [],
+      "maxStatusConcurrency": 0
+    }
+  ],
+  "nativeCalls": [
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "keyless",
+      "method": "inspectAmmMaterial",
+      "ms": 4.790042,
+      "inputBytes": 32646
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 4.220459000000005,
+      "inputBytes": 16977
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "plan",
+      "ms": 28.170792000000006,
+      "inputBytes": 80380
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 19.98833300000001,
+      "inputBytes": 281001
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 18.466875000000016,
+      "inputBytes": 281906
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 23.113707999999974,
+      "inputBytes": 282350
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 21.115374999999972,
+      "inputBytes": 287470
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 21.685416999999973,
+      "inputBytes": 286515
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 22.16066699999999,
+      "inputBytes": 293434
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 22.840332999999987,
+      "inputBytes": 288314
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 24.804167000000007,
+      "inputBytes": 297034
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 24.715542000000028,
+      "inputBytes": 290115
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 24.147707999999966,
+      "inputBytes": 300638
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 24.16370900000004,
+      "inputBytes": 291918
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 25.272790999999984,
+      "inputBytes": 304242
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 25.71179200000006,
+      "inputBytes": 293719
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 25.887249999999995,
+      "inputBytes": 307840
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 26.398165999999947,
+      "inputBytes": 295516
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 26.989832999999976,
+      "inputBytes": 311438
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 27.278458,
+      "inputBytes": 297317
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 27.78454099999999,
+      "inputBytes": 315042
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 28.253708000000188,
+      "inputBytes": 299120
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 28.87741600000004,
+      "inputBytes": 318646
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 31.881375000000162,
+      "inputBytes": 300921
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 29.7595409999999,
+      "inputBytes": 322259
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 30.033874999999853,
+      "inputBytes": 302731
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 30.91120899999987,
+      "inputBytes": 325871
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 30.969959000000017,
+      "inputBytes": 304533
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 31.300042000000076,
+      "inputBytes": 329473
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 32.24541699999986,
+      "inputBytes": 306333
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 33.00375000000008,
+      "inputBytes": 333077
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 33.42620799999986,
+      "inputBytes": 308137
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 33.47508300000004,
+      "inputBytes": 336683
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 34.508124999999836,
+      "inputBytes": 309939
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 34.395667,
+      "inputBytes": 340287
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 34.962375000000065,
+      "inputBytes": 311741
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 36.44837499999994,
+      "inputBytes": 343893
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 35.8871250000002,
+      "inputBytes": 313545
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 36.23349999999982,
+      "inputBytes": 347499
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 36.63008300000001,
+      "inputBytes": 315347
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 37.4019159999998,
+      "inputBytes": 351103
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 37.6693750000004,
+      "inputBytes": 317149
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 38.256374999999935,
+      "inputBytes": 354707
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 38.961125000000266,
+      "inputBytes": 318951
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 39.18612499999972,
+      "inputBytes": 358311
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 40.19741699999986,
+      "inputBytes": 320753
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 40.2875839999997,
+      "inputBytes": 361915
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 40.70425000000023,
+      "inputBytes": 322555
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 41.34504199999992,
+      "inputBytes": 365517
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 41.868875000000116,
+      "inputBytes": 324355
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 42.28437499999973,
+      "inputBytes": 369121
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 42.74891600000001,
+      "inputBytes": 326159
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 43.36100000000033,
+      "inputBytes": 372725
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 43.439208999999664,
+      "inputBytes": 327959
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 44.518041999999696,
+      "inputBytes": 376325
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 44.69350000000031,
+      "inputBytes": 329759
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 45.368167000000085,
+      "inputBytes": 379927
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 45.98366699999997,
+      "inputBytes": 331561
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 46.28274999999985,
+      "inputBytes": 383533
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 46.81791700000031,
+      "inputBytes": 333365
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 47.237458000000515,
+      "inputBytes": 387139
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 47.95900000000074,
+      "inputBytes": 335167
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 48.020166999999674,
+      "inputBytes": 390743
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 48.429707999999664,
+      "inputBytes": 336969
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 49.88841700000012,
+      "inputBytes": 394345
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 50.07841700000063,
+      "inputBytes": 338769
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 50.239166000000296,
+      "inputBytes": 397947
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 50.977084000000104,
+      "inputBytes": 340571
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 51.678249999999935,
+      "inputBytes": 401551
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 52.23741699999937,
+      "inputBytes": 342373
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 52.696750000000065,
+      "inputBytes": 405155
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 52.3794170000001,
+      "inputBytes": 344175
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 53.469458000000486,
+      "inputBytes": 408757
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 54.13566699999956,
+      "inputBytes": 345975
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 54.15379200000007,
+      "inputBytes": 412359
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 54.42591600000014,
+      "inputBytes": 347777
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 55.12991599999987,
+      "inputBytes": 415965
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 80.52325000000019,
+      "inputBytes": 349581
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 62.06779099999949,
+      "inputBytes": 419571
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 56.39312500000051,
+      "inputBytes": 351383
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 56.866667000000234,
+      "inputBytes": 423177
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 57.21495800000048,
+      "inputBytes": 353187
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 58.261375000000044,
+      "inputBytes": 426783
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 58.345792000000074,
+      "inputBytes": 354989
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 59.3720830000002,
+      "inputBytes": 430387
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 59.429041999999754,
+      "inputBytes": 356791
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 60.94116699999995,
+      "inputBytes": 433991
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 60.35308299999997,
+      "inputBytes": 358593
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 61.05366700000013,
+      "inputBytes": 437593
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 61.81770900000083,
+      "inputBytes": 360393
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 62.135833000000275,
+      "inputBytes": 441195
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 63.40412499999911,
+      "inputBytes": 362195
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 63.3331249999992,
+      "inputBytes": 444797
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 63.46274999999878,
+      "inputBytes": 363995
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 63.96299999999974,
+      "inputBytes": 448399
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 64.16749999999956,
+      "inputBytes": 365797
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 64.97925000000032,
+      "inputBytes": 452001
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 66.40424999999959,
+      "inputBytes": 367597
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 128.01229199999943,
+      "inputBytes": 455603
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 66.05591699999968,
+      "inputBytes": 369399
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 66.95408300000054,
+      "inputBytes": 459207
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 67.22600000000057,
+      "inputBytes": 371201
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 67.49554100000023,
+      "inputBytes": 462809
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 68.14495799999895,
+      "inputBytes": 373001
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 68.7820840000004,
+      "inputBytes": 466411
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 69.08337500000016,
+      "inputBytes": 374803
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 69.79750000000058,
+      "inputBytes": 470015
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 70.88237500000105,
+      "inputBytes": 376605
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 71.19404200000099,
+      "inputBytes": 473621
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 71.65758300000016,
+      "inputBytes": 378409
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 72.47299999999996,
+      "inputBytes": 477227
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 72.39245800000026,
+      "inputBytes": 380211
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 72.90570899999875,
+      "inputBytes": 480829
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 72.88162499999999,
+      "inputBytes": 382011
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 73.57949999999983,
+      "inputBytes": 484431
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 74.2050419999996,
+      "inputBytes": 383813
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 74.8681660000002,
+      "inputBytes": 488033
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 75.18170899999859,
+      "inputBytes": 385613
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 75.53179199999977,
+      "inputBytes": 491635
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 76.08245799999895,
+      "inputBytes": 387415
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 76.5570000000007,
+      "inputBytes": 495241
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 77.00091600000087,
+      "inputBytes": 389219
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 77.76920800000153,
+      "inputBytes": 498845
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 79.28812499999913,
+      "inputBytes": 391019
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 79.29549999999654,
+      "inputBytes": 502445
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 87.29191599999831,
+      "inputBytes": 392819
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 88.34233300000051,
+      "inputBytes": 506045
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 79.96275000000242,
+      "inputBytes": 394619
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 80.42020799999955,
+      "inputBytes": 509647
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 80.76400000000285,
+      "inputBytes": 396421
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 81.45745900000111,
+      "inputBytes": 513251
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 81.74391699999978,
+      "inputBytes": 398223
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 83.19191599999976,
+      "inputBytes": 516857
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 84.95579100000032,
+      "inputBytes": 400027
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 83.51550000000134,
+      "inputBytes": 520463
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 85.01679100000183,
+      "inputBytes": 401829
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 87.7677079999994,
+      "inputBytes": 524067
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 88.07154100000116,
+      "inputBytes": 403631
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 89.03308399999878,
+      "inputBytes": 527673
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 85.79141700000037,
+      "inputBytes": 405435
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 86.10545800000182,
+      "inputBytes": 531281
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 92.2076249999991,
+      "inputBytes": 407239
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 88.5757080000003,
+      "inputBytes": 534885
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 87.73395899999741,
+      "inputBytes": 409039
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 88.63045899999997,
+      "inputBytes": 538487
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 91.40491699999984,
+      "inputBytes": 410841
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 93.18562499999825,
+      "inputBytes": 542089
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 92.27937500000189,
+      "inputBytes": 412641
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 91.11462499999834,
+      "inputBytes": 545691
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 91.33770899999945,
+      "inputBytes": 414443
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 90.98495799999728,
+      "inputBytes": 549293
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 112.81862499999988,
+      "inputBytes": 416243
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 111.68712500000038,
+      "inputBytes": 552895
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 108.63183299999946,
+      "inputBytes": 418045
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 103.51595799999996,
+      "inputBytes": 556499
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 96.01583299999766,
+      "inputBytes": 419847
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 95.15424999999959,
+      "inputBytes": 560101
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 94.78641699999935,
+      "inputBytes": 421647
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 96.08366699999897,
+      "inputBytes": 563705
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 95.68704200000138,
+      "inputBytes": 423451
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 96.15024999999878,
+      "inputBytes": 567313
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 96.57524999999805,
+      "inputBytes": 425255
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 97.11437499999738,
+      "inputBytes": 570917
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 97.47229100000186,
+      "inputBytes": 427055
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 98.08220799999981,
+      "inputBytes": 574521
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 99.1484169999967,
+      "inputBytes": 428859
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 99.359292000001,
+      "inputBytes": 578129
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 99.45045799999934,
+      "inputBytes": 430663
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 101.72087499999907,
+      "inputBytes": 581733
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 100.52508300000045,
+      "inputBytes": 432463
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 101.44262500000332,
+      "inputBytes": 585333
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 101.3194169999988,
+      "inputBytes": 434263
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 102.22862500000338,
+      "inputBytes": 588937
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 102.94400000000314,
+      "inputBytes": 436067
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 135.93354199999885,
+      "inputBytes": 592543
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 115.43920899999648,
+      "inputBytes": 437869
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 104.17991699999402,
+      "inputBytes": 596145
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 105.17750000000524,
+      "inputBytes": 439669
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 105.99295800000255,
+      "inputBytes": 599749
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 106.52058399999805,
+      "inputBytes": 441473
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 106.16304200000013,
+      "inputBytes": 603355
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 153.10883399999875,
+      "inputBytes": 443275
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 155.15041599999677,
+      "inputBytes": 606961
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 107.67866700000013,
+      "inputBytes": 445079
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 108.47366699999839,
+      "inputBytes": 610567
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 108.17208300000493,
+      "inputBytes": 446881
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 109.4955420000042,
+      "inputBytes": 614171
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 110.32125000000087,
+      "inputBytes": 448683
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 110.98174999999901,
+      "inputBytes": 617775
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 111.33487500000047,
+      "inputBytes": 450485
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 114.52541599999677,
+      "inputBytes": 621377
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 116.95179199999984,
+      "inputBytes": 452285
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 136.6667080000043,
+      "inputBytes": 624979
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 113.05970800000068,
+      "inputBytes": 454087
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 113.56737499999872,
+      "inputBytes": 628581
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 113.45449999999983,
+      "inputBytes": 455887
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 114.06524999999965,
+      "inputBytes": 632183
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 113.8952500000014,
+      "inputBytes": 457689
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 115.20212500000343,
+      "inputBytes": 635785
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 117.53704200000357,
+      "inputBytes": 459489
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 118.96666600000026,
+      "inputBytes": 639385
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 116.09687500000291,
+      "inputBytes": 461289
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 117.13904199999524,
+      "inputBytes": 642985
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 123.5972499999989,
+      "inputBytes": 463089
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 125.26954100000148,
+      "inputBytes": 646886
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / provider",
+      "family": "engine",
+      "method": "validate",
+      "ms": 123.95499999999447,
+      "inputBytes": 646890
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "keyless",
+      "method": "inspectAmmMaterial",
+      "ms": 0.7457499999873107,
+      "inputBytes": 32646
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.5783750000118744,
+      "inputBytes": 16977
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "plan",
+      "ms": 15.970082999992883,
+      "inputBytes": 80380
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 17.52812500001164,
+      "inputBytes": 281001
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 17.516959000000497,
+      "inputBytes": 281906
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 19.820625000007567,
+      "inputBytes": 282350
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 19.825042000011308,
+      "inputBytes": 287470
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 20.674750000005588,
+      "inputBytes": 286515
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 21.63612500000454,
+      "inputBytes": 293434
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 22.114667000001646,
+      "inputBytes": 288314
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 23.26058400000329,
+      "inputBytes": 297034
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 22.657124999997905,
+      "inputBytes": 290115
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 23.787665999989258,
+      "inputBytes": 300638
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 29.735999999989872,
+      "inputBytes": 291918
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 28.704750000004424,
+      "inputBytes": 304242
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 26.57416600000579,
+      "inputBytes": 293719
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 26.041208999988157,
+      "inputBytes": 307840
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 26.388707999998587,
+      "inputBytes": 295516
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 26.79899999999907,
+      "inputBytes": 311438
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 27.318791999990935,
+      "inputBytes": 297317
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 27.72904199999175,
+      "inputBytes": 315042
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 29.09237500000745,
+      "inputBytes": 299120
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 28.40587499999674,
+      "inputBytes": 318646
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 29.785875000001397,
+      "inputBytes": 300921
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 29.559290999997756,
+      "inputBytes": 322259
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 29.966083999999682,
+      "inputBytes": 302731
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 30.52391699999862,
+      "inputBytes": 325871
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 31.867125000004307,
+      "inputBytes": 304533
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 31.730292000007466,
+      "inputBytes": 329473
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 32.2309169999935,
+      "inputBytes": 306333
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 32.42537499999162,
+      "inputBytes": 333077
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 33.711332999999286,
+      "inputBytes": 308137
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 36.27037499999278,
+      "inputBytes": 336683
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 33.837292000011075,
+      "inputBytes": 309939
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 34.328332999997656,
+      "inputBytes": 340287
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 35.15825000000768,
+      "inputBytes": 311741
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 36.43012499999895,
+      "inputBytes": 343893
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 36.45420899998862,
+      "inputBytes": 313545
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 36.7846669999999,
+      "inputBytes": 347499
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 36.904624999995576,
+      "inputBytes": 315347
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 36.9958750000078,
+      "inputBytes": 351103
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 37.8873339999991,
+      "inputBytes": 317149
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 38.40220799999952,
+      "inputBytes": 354707
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 40.11975000001257,
+      "inputBytes": 318951
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 39.630292000001646,
+      "inputBytes": 358311
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 39.754375000004075,
+      "inputBytes": 320753
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 40.4958750000078,
+      "inputBytes": 361915
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 40.85183299999335,
+      "inputBytes": 322555
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 41.10345799999777,
+      "inputBytes": 365517
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 41.600582999992184,
+      "inputBytes": 324355
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 42.12616600000183,
+      "inputBytes": 369121
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 42.739291999998386,
+      "inputBytes": 326159
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 43.0810419999907,
+      "inputBytes": 372725
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 44.443249999996624,
+      "inputBytes": 327959
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 45.47158299999137,
+      "inputBytes": 376325
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 44.96987499999523,
+      "inputBytes": 329759
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 44.99141600000439,
+      "inputBytes": 379927
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 45.54404200000863,
+      "inputBytes": 331561
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 45.93687499999942,
+      "inputBytes": 383533
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 46.34641700000793,
+      "inputBytes": 333365
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 47.40366700000595,
+      "inputBytes": 387139
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 47.561249999998836,
+      "inputBytes": 335167
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 48.06629200000316,
+      "inputBytes": 390743
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 48.9122500000085,
+      "inputBytes": 336969
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 49.40504100000544,
+      "inputBytes": 394345
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 49.804457999998704,
+      "inputBytes": 338769
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 50.19887500000186,
+      "inputBytes": 397947
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 50.953292000005604,
+      "inputBytes": 340571
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 51.438083000000915,
+      "inputBytes": 401551
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 51.443624999999884,
+      "inputBytes": 342373
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 51.85966600000393,
+      "inputBytes": 405155
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 52.22195799999463,
+      "inputBytes": 344175
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 52.79475000000093,
+      "inputBytes": 408757
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 53.57729199998721,
+      "inputBytes": 345975
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 53.90724999998929,
+      "inputBytes": 412359
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 54.11762499999895,
+      "inputBytes": 347777
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 55.0161250000092,
+      "inputBytes": 415965
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 55.09429200000886,
+      "inputBytes": 349581
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 55.97779200000514,
+      "inputBytes": 419571
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 56.56916600000113,
+      "inputBytes": 351383
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 57.84845900000073,
+      "inputBytes": 423177
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 57.45016700000269,
+      "inputBytes": 353187
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 58.53362499999639,
+      "inputBytes": 426783
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 58.29058400000213,
+      "inputBytes": 354989
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 59.03683299999102,
+      "inputBytes": 430387
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 59.29833399999188,
+      "inputBytes": 356791
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 60.69833300000755,
+      "inputBytes": 433991
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 60.558665999997174,
+      "inputBytes": 358593
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 60.65912500000559,
+      "inputBytes": 437593
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 65.06029200000921,
+      "inputBytes": 360393
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 62.79100000001199,
+      "inputBytes": 441195
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 66.49604099999124,
+      "inputBytes": 362195
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 65.61237499999697,
+      "inputBytes": 444797
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 64.16137499999604,
+      "inputBytes": 363995
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 63.757041999997455,
+      "inputBytes": 448399
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 66.11591700000281,
+      "inputBytes": 365797
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 66.81912499999453,
+      "inputBytes": 452001
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 68.5240410000115,
+      "inputBytes": 367597
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 67.07941700000083,
+      "inputBytes": 455603
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 66.73200000000361,
+      "inputBytes": 369399
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 67.00258299999405,
+      "inputBytes": 459207
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 68.13470799999777,
+      "inputBytes": 371201
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 67.83083299999998,
+      "inputBytes": 462809
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 68.1660419999971,
+      "inputBytes": 373001
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 68.73079200000211,
+      "inputBytes": 466411
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 69.36187500000233,
+      "inputBytes": 374803
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 69.86479200000758,
+      "inputBytes": 470015
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 71.72599999999511,
+      "inputBytes": 376605
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 71.38766599999508,
+      "inputBytes": 473621
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 71.46629200001189,
+      "inputBytes": 378409
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 72.69187500000407,
+      "inputBytes": 477227
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 72.09854099999939,
+      "inputBytes": 380211
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 72.8780839999963,
+      "inputBytes": 480829
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 73.26058299999568,
+      "inputBytes": 382011
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 74.08641700001317,
+      "inputBytes": 484431
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 74.49599999999919,
+      "inputBytes": 383813
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 77.45500000000175,
+      "inputBytes": 488033
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 75.97345799999312,
+      "inputBytes": 385613
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 76.66183300000557,
+      "inputBytes": 491635
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 76.82575000000361,
+      "inputBytes": 387415
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 77.43349999999919,
+      "inputBytes": 495241
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 78.21762500000477,
+      "inputBytes": 389219
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 78.15658400001121,
+      "inputBytes": 498845
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 78.33283400000073,
+      "inputBytes": 391019
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 78.81437500000175,
+      "inputBytes": 502445
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 79.21654199999466,
+      "inputBytes": 392819
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 79.6582919999928,
+      "inputBytes": 506045
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 80.00824999999895,
+      "inputBytes": 394619
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 80.93620799999917,
+      "inputBytes": 509647
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 80.90108300000429,
+      "inputBytes": 396421
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 81.93725000000268,
+      "inputBytes": 513251
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 82.80170899999212,
+      "inputBytes": 398223
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 83.50762499999837,
+      "inputBytes": 516857
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 83.55466699998942,
+      "inputBytes": 400027
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 83.77141700001084,
+      "inputBytes": 520463
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 96.23637500000768,
+      "inputBytes": 401829
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 85.94695800000045,
+      "inputBytes": 524067
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 84.89195799999288,
+      "inputBytes": 403631
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 85.606832999998,
+      "inputBytes": 527673
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 85.97795800000313,
+      "inputBytes": 405435
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 86.39308300000266,
+      "inputBytes": 531281
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 86.60133400000632,
+      "inputBytes": 407239
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 87.79479099999298,
+      "inputBytes": 534885
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 88.24725000000035,
+      "inputBytes": 409039
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 88.59058299999742,
+      "inputBytes": 538487
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 89.41675000000396,
+      "inputBytes": 410841
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 89.91141699999571,
+      "inputBytes": 542089
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 90.92041600000812,
+      "inputBytes": 412641
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 90.61145899999246,
+      "inputBytes": 545691
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 90.78050000000803,
+      "inputBytes": 414443
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 91.31954099998984,
+      "inputBytes": 549293
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 91.87766699999338,
+      "inputBytes": 416243
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 93.2934580000001,
+      "inputBytes": 552895
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 93.43341700000747,
+      "inputBytes": 418045
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 93.22762499999953,
+      "inputBytes": 556499
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 94.22783300001174,
+      "inputBytes": 419847
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 95.14104099999531,
+      "inputBytes": 560101
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 95.10479199999827,
+      "inputBytes": 421647
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 95.38850000000093,
+      "inputBytes": 563705
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 96.41712499999267,
+      "inputBytes": 423451
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 96.73391700000502,
+      "inputBytes": 567313
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 97.02945799998997,
+      "inputBytes": 425255
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 97.60679099999834,
+      "inputBytes": 570917
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 97.79849999998987,
+      "inputBytes": 427055
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 98.22729100000288,
+      "inputBytes": 574521
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 99.09745800000383,
+      "inputBytes": 428859
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 99.80025000000023,
+      "inputBytes": 578129
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 99.59658400001354,
+      "inputBytes": 430663
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 100.40854099999706,
+      "inputBytes": 581733
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 100.51470800000243,
+      "inputBytes": 432463
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 101.1126249999943,
+      "inputBytes": 585333
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 102.1914579999866,
+      "inputBytes": 434263
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 102.18291699999827,
+      "inputBytes": 588937
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 102.5473750000092,
+      "inputBytes": 436067
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 103.7737080000079,
+      "inputBytes": 592543
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 103.31612499999756,
+      "inputBytes": 437869
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 104.19058300000324,
+      "inputBytes": 596145
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 105.09791700000642,
+      "inputBytes": 439669
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 105.28149999999732,
+      "inputBytes": 599749
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 107.65329099999508,
+      "inputBytes": 441473
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 129.9030000000057,
+      "inputBytes": 603355
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 108.05195799999638,
+      "inputBytes": 443275
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 107.86816699999326,
+      "inputBytes": 606961
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 107.78366699999606,
+      "inputBytes": 445079
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 107.95937499999127,
+      "inputBytes": 610567
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 108.622583999997,
+      "inputBytes": 446881
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 108.9184580000001,
+      "inputBytes": 614171
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 109.97724999999627,
+      "inputBytes": 448683
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 111.13899999999558,
+      "inputBytes": 617775
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 110.52499999999418,
+      "inputBytes": 450485
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 111.03404199999932,
+      "inputBytes": 621377
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 111.34916699999303,
+      "inputBytes": 452285
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 111.82345900000655,
+      "inputBytes": 624979
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 113.07254100000137,
+      "inputBytes": 454087
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 113.33770899999945,
+      "inputBytes": 628581
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 113.24425000000338,
+      "inputBytes": 455887
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 114.82062500000757,
+      "inputBytes": 632183
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 114.6145000000106,
+      "inputBytes": 457689
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 114.89295799999672,
+      "inputBytes": 635785
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 115.36704199999804,
+      "inputBytes": 459489
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 116.64641600000323,
+      "inputBytes": 639385
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 116.72329100000206,
+      "inputBytes": 461289
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 117.75308300000324,
+      "inputBytes": 642985
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 123.13958299999649,
+      "inputBytes": 463089
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 125.35908399999607,
+      "inputBytes": 646886
+    },
+    {
+      "test": "REPRO: 300 collection / slots 200..299 / 100 NFT / direct-host",
+      "family": "engine",
+      "method": "validate",
+      "ms": 124.18754199999967,
+      "inputBytes": 646890
+    }
+  ],
+  "network": "synthetic fixtures; network forbidden",
+  "signer": "public synthetic scalar; deterministic JS fixture signer",
+  "approval": "controlled approval adapter; one receipt per operation",
+  "realBroadcasts": 0,
+  "physicalDevice": false,
+  "environment": "Node.js controlled browser-bundle execution with frozen WASM; not a device or chain run"
+}

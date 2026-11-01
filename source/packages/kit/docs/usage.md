@@ -1613,6 +1613,8 @@ been upgraded or that its transaction latency has been measured.
 
 See [supported functionality](../SUPPORT.md) for operation boundaries.
 For platform entry points and installation, see [`docs/reference/distribution-and-platform-integration.md`](reference/distribution-and-platform-integration.md).
+For expired approval and partial-submission handling, see
+[approval expiry and partial results](reference/approval-expiry.md).
 
 ## Historical FT approval and selected inputs
 

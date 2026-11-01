@@ -1,0 +1,1006 @@
+{
+  "status": "PASS",
+  "kit": "0.1.0-rc.25",
+  "variant": "ios-baseline-repeat",
+  "profileRuns": [
+    {
+      "repeat": 0,
+      "elapsedMs": 751,
+      "stats": {
+        "approvals": 1,
+        "signatures": 22,
+        "policyCalls": 2,
+        "accountCalls": 8
+      },
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "profile": {
+        "sha256Bytes": {
+          "calls": 1259,
+          "totalMs": 113.99999999999993,
+          "selfMs": 113.99999999999993
+        },
+        "canonicalize": {
+          "calls": 17244,
+          "totalMs": 17.000000000000128,
+          "selfMs": 17.000000000000128
+        },
+        "hashCanonical": {
+          "calls": 683,
+          "totalMs": 129.00000000000006,
+          "selfMs": 10
+        },
+        "assertValidTws": {
+          "calls": 1332,
+          "totalMs": 142.99999999999994,
+          "selfMs": 142.99999999999994
+        },
+        "createCheckpoint": {
+          "calls": 122,
+          "totalMs": 171.0000000000001,
+          "selfMs": 12.000000000000028
+        },
+        "verifyCheckpoint": {
+          "calls": 459,
+          "totalMs": 1,
+          "selfMs": 1
+        },
+        "snapshotTransition": {
+          "calls": 122,
+          "totalMs": 0,
+          "selfMs": 0
+        },
+        "deriveHostTransitionIdentity": {
+          "calls": 122,
+          "totalMs": 59.999999999999886,
+          "selfMs": 0
+        },
+        "signControlledTask": {
+          "calls": 22,
+          "totalMs": 16.99999999999997,
+          "selfMs": 16.99999999999997
+        }
+      },
+      "txids": [
+        "5fe5d158da3bae8e164f5bf8ed8ab74506dce87423f12e76972f3b6aacae5109",
+        "1c0e154bbe879cb723349b3aada92dfe0d62f0bc345008c95668de138ef6ea11",
+        "25bb6013d51b247ac80fa34e5f60c25c6e36df53a53eb3d0026b5128df5c7278",
+        "90bc2c65ba0a3a1b1090aa302363a7c6123d5f78d221e22a18a8b87319c3aeaa",
+        "dbfaa143134a2e4f609706839063f925b05656567bcbaaf12a46154e78d85c89",
+        "362d12b9f8cba59b373beaae395d1e74c826673116a77309b2e9c6b01b20c15c",
+        "aa3f208e9e42c0bbb8350c419baa6279bc65b29714536c3054822066fb5067b6",
+        "412ea25f01c0e02475e3b198cf88de02ec8d2af12524c519feaba8f336039330",
+        "7d11561a0c43a5c9dbe75704d1c5383a3d519b64e2481c18493e01ed483e7d1a",
+        "4c46e06b21c9cc57279c6872976d4d64ec523247250912737650decef30b9a61",
+        "2e98a4028f6d641084ee60e2da913ed8e8a7d14c39ecc08f6e069378aa9ae0fc"
+      ],
+      "bindings": [
+        "9c50271a389c9000466aa5f8e2e7d6f08bd6998f2948da3f05cf463b4af25eb8",
+        "0d36bb29cc800edf26967ab1c92ca793913c69d4af07efd4e139158853eef574"
+      ]
+    },
+    {
+      "repeat": 1,
+      "elapsedMs": 362,
+      "stats": {
+        "approvals": 1,
+        "signatures": 22,
+        "policyCalls": 2,
+        "accountCalls": 8
+      },
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "profile": {
+        "canonicalize": {
+          "calls": 17246,
+          "totalMs": 34.99999999999977,
+          "selfMs": 34.99999999999977
+        },
+        "sha256Bytes": {
+          "calls": 1257,
+          "totalMs": 95.00000000000068,
+          "selfMs": 95.00000000000068
+        },
+        "hashCanonical": {
+          "calls": 683,
+          "totalMs": 125.00000000000023,
+          "selfMs": 8
+        },
+        "assertValidTws": {
+          "calls": 1332,
+          "totalMs": 92.9999999999992,
+          "selfMs": 92.9999999999992
+        },
+        "createCheckpoint": {
+          "calls": 122,
+          "totalMs": 141.9999999999991,
+          "selfMs": 7
+        },
+        "verifyCheckpoint": {
+          "calls": 459,
+          "totalMs": 0,
+          "selfMs": 0
+        },
+        "snapshotTransition": {
+          "calls": 122,
+          "totalMs": 0,
+          "selfMs": 0
+        },
+        "deriveHostTransitionIdentity": {
+          "calls": 122,
+          "totalMs": 55.000000000000455,
+          "selfMs": 0
+        },
+        "signControlledTask": {
+          "calls": 22,
+          "totalMs": 8.000000000000114,
+          "selfMs": 8.000000000000114
+        }
+      },
+      "txids": [
+        "5fe5d158da3bae8e164f5bf8ed8ab74506dce87423f12e76972f3b6aacae5109",
+        "1c0e154bbe879cb723349b3aada92dfe0d62f0bc345008c95668de138ef6ea11",
+        "25bb6013d51b247ac80fa34e5f60c25c6e36df53a53eb3d0026b5128df5c7278",
+        "90bc2c65ba0a3a1b1090aa302363a7c6123d5f78d221e22a18a8b87319c3aeaa",
+        "dbfaa143134a2e4f609706839063f925b05656567bcbaaf12a46154e78d85c89",
+        "362d12b9f8cba59b373beaae395d1e74c826673116a77309b2e9c6b01b20c15c",
+        "aa3f208e9e42c0bbb8350c419baa6279bc65b29714536c3054822066fb5067b6",
+        "412ea25f01c0e02475e3b198cf88de02ec8d2af12524c519feaba8f336039330",
+        "7d11561a0c43a5c9dbe75704d1c5383a3d519b64e2481c18493e01ed483e7d1a",
+        "4c46e06b21c9cc57279c6872976d4d64ec523247250912737650decef30b9a61",
+        "2e98a4028f6d641084ee60e2da913ed8e8a7d14c39ecc08f6e069378aa9ae0fc"
+      ],
+      "bindings": [
+        "50a2de4a765c184c852ea2f734c9f007d45460280c7b036314b24214427a7e38",
+        "b8fb82c3fdb3a3cad2c4fdcc1e0f6656c54a7ab3241b45e367c64725540d6226"
+      ]
+    },
+    {
+      "repeat": 2,
+      "elapsedMs": 313,
+      "stats": {
+        "approvals": 1,
+        "signatures": 22,
+        "policyCalls": 2,
+        "accountCalls": 8
+      },
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "profile": {
+        "canonicalize": {
+          "calls": 17246,
+          "totalMs": 25.000000000000227,
+          "selfMs": 25.000000000000227
+        },
+        "sha256Bytes": {
+          "calls": 1257,
+          "totalMs": 91.99999999999841,
+          "selfMs": 91.99999999999841
+        },
+        "hashCanonical": {
+          "calls": 683,
+          "totalMs": 114.99999999999864,
+          "selfMs": 10.999999999999773
+        },
+        "assertValidTws": {
+          "calls": 1332,
+          "totalMs": 73.00000000000068,
+          "selfMs": 73.00000000000068
+        },
+        "createCheckpoint": {
+          "calls": 122,
+          "totalMs": 112.99999999999977,
+          "selfMs": 8.00000000000091
+        },
+        "verifyCheckpoint": {
+          "calls": 459,
+          "totalMs": 1.9999999999997726,
+          "selfMs": 1
+        },
+        "snapshotTransition": {
+          "calls": 122,
+          "totalMs": 1,
+          "selfMs": 0
+        },
+        "deriveHostTransitionIdentity": {
+          "calls": 122,
+          "totalMs": 54.99999999999909,
+          "selfMs": 0
+        },
+        "signControlledTask": {
+          "calls": 22,
+          "totalMs": 3.0000000000002274,
+          "selfMs": 3.0000000000002274
+        }
+      },
+      "txids": [
+        "5fe5d158da3bae8e164f5bf8ed8ab74506dce87423f12e76972f3b6aacae5109",
+        "1c0e154bbe879cb723349b3aada92dfe0d62f0bc345008c95668de138ef6ea11",
+        "25bb6013d51b247ac80fa34e5f60c25c6e36df53a53eb3d0026b5128df5c7278",
+        "90bc2c65ba0a3a1b1090aa302363a7c6123d5f78d221e22a18a8b87319c3aeaa",
+        "dbfaa143134a2e4f609706839063f925b05656567bcbaaf12a46154e78d85c89",
+        "362d12b9f8cba59b373beaae395d1e74c826673116a77309b2e9c6b01b20c15c",
+        "aa3f208e9e42c0bbb8350c419baa6279bc65b29714536c3054822066fb5067b6",
+        "412ea25f01c0e02475e3b198cf88de02ec8d2af12524c519feaba8f336039330",
+        "7d11561a0c43a5c9dbe75704d1c5383a3d519b64e2481c18493e01ed483e7d1a",
+        "4c46e06b21c9cc57279c6872976d4d64ec523247250912737650decef30b9a61",
+        "2e98a4028f6d641084ee60e2da913ed8e8a7d14c39ecc08f6e069378aa9ae0fc"
+      ],
+      "bindings": [
+        "b9f1b4e21c691997e2b5b42bf25febd61781de0259ec0272747125f7214ea409",
+        "2df4fae20b81c81dcaa6deecd8c7c5a6093af38c4a25aa235c39f0db8fc8a97d"
+      ]
+    }
+  ],
+  "native": "0.1.0-rc.23.native.2",
+  "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_7 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
+  "elapsedMs": 1470,
+  "tests": [
+    {
+      "name": "local 11-NFT batch 1",
+      "status": "PASS",
+      "ms": 782
+    },
+    {
+      "name": "local 11-NFT batch 2",
+      "status": "PASS",
+      "ms": 370
+    },
+    {
+      "name": "local 11-NFT batch 3",
+      "status": "PASS",
+      "ms": 317
+    }
+  ],
+  "metrics": [],
+  "nftMetrics": [],
+  "nativeCalls": [
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 23,
+      "inputBytes": 1454
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "plan",
+      "ms": 8,
+      "inputBytes": 7979
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 3.9999999999999716,
+      "inputBytes": 1454
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5,
+      "inputBytes": 28880
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6,
+      "inputBytes": 29748
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 9,
+      "inputBytes": 30192
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 13.999999999999972,
+      "inputBytes": 34795
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3,
+      "inputBytes": 33840
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7,
+      "inputBytes": 40184
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 12.999999999999943,
+      "inputBytes": 35581
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 195,
+      "inputBytes": 43666
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5,
+      "inputBytes": 37322
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3,
+      "inputBytes": 47148
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4,
+      "inputBytes": 39063
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3,
+      "inputBytes": 50630
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4,
+      "inputBytes": 40804
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.000000000000114,
+      "inputBytes": 54110
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6,
+      "inputBytes": 42543
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4,
+      "inputBytes": 57590
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6,
+      "inputBytes": 44284
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5,
+      "inputBytes": 61072
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 57.000000000000114,
+      "inputBytes": 46025
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.999999999999886,
+      "inputBytes": 64554
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6,
+      "inputBytes": 47766
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6,
+      "inputBytes": 65740
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 10,
+      "inputBytes": 65744
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 1,
+      "inputBytes": 454
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "plan",
+      "ms": 0,
+      "inputBytes": 5835
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0,
+      "inputBytes": 454
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1,
+      "inputBytes": 9377
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1,
+      "inputBytes": 10245
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 1,
+      "inputBytes": 10689
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1,
+      "inputBytes": 12702
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1,
+      "inputBytes": 12706
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 1,
+      "inputBytes": 1454
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "plan",
+      "ms": 2,
+      "inputBytes": 7979
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 1,
+      "inputBytes": 1454
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1,
+      "inputBytes": 28880
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2,
+      "inputBytes": 29748
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 2,
+      "inputBytes": 30192
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2,
+      "inputBytes": 34795
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3,
+      "inputBytes": 33840
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.0000000000001137,
+      "inputBytes": 40184
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3,
+      "inputBytes": 35581
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2,
+      "inputBytes": 43666
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3,
+      "inputBytes": 37322
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3,
+      "inputBytes": 47148
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3,
+      "inputBytes": 39063
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3,
+      "inputBytes": 50630
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.999999999999886,
+      "inputBytes": 40804
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4,
+      "inputBytes": 54110
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4,
+      "inputBytes": 42543
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4,
+      "inputBytes": 57590
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6,
+      "inputBytes": 44284
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6,
+      "inputBytes": 61072
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6,
+      "inputBytes": 46025
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 13,
+      "inputBytes": 64554
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5,
+      "inputBytes": 47766
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 12.000000000000227,
+      "inputBytes": 65740
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6,
+      "inputBytes": 65744
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 1,
+      "inputBytes": 454
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "plan",
+      "ms": 1,
+      "inputBytes": 5835
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0,
+      "inputBytes": 454
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1,
+      "inputBytes": 9377
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 0,
+      "inputBytes": 10245
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 1,
+      "inputBytes": 10689
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 0,
+      "inputBytes": 12702
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 0,
+      "inputBytes": 12706
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 1,
+      "inputBytes": 1454
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "plan",
+      "ms": 2,
+      "inputBytes": 7979
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 1.0000000000002274,
+      "inputBytes": 1454
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 0.9999999999997726,
+      "inputBytes": 28880
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2,
+      "inputBytes": 29748
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 2,
+      "inputBytes": 30192
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.0000000000002274,
+      "inputBytes": 34795
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 2,
+      "inputBytes": 33840
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2,
+      "inputBytes": 40184
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3,
+      "inputBytes": 35581
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2,
+      "inputBytes": 43666
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3,
+      "inputBytes": 37322
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3,
+      "inputBytes": 47148
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3,
+      "inputBytes": 39063
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3,
+      "inputBytes": 50630
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4,
+      "inputBytes": 40804
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3,
+      "inputBytes": 54110
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6,
+      "inputBytes": 42543
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4,
+      "inputBytes": 57590
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.999999999999773,
+      "inputBytes": 44284
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4,
+      "inputBytes": 61072
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5,
+      "inputBytes": 46025
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5,
+      "inputBytes": 64554
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6,
+      "inputBytes": 47766
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5,
+      "inputBytes": 65740
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6,
+      "inputBytes": 65744
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0,
+      "inputBytes": 454
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "plan",
+      "ms": 0,
+      "inputBytes": 5835
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0,
+      "inputBytes": 454
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1,
+      "inputBytes": 9377
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1,
+      "inputBytes": 10245
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 1,
+      "inputBytes": 10689
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1,
+      "inputBytes": 12702
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1,
+      "inputBytes": 12706
+    }
+  ],
+  "network": "synthetic fixtures; network forbidden",
+  "signer": "public synthetic scalar; deterministic JS fixture signer",
+  "approval": "controlled approval adapter; one receipt per operation",
+  "realBroadcasts": 0,
+  "physicalDevice": false,
+  "evidence": {
+    "started": "2026-11-01T16:00:38.121Z",
+    "collected": "2026-11-01T16:00:41.313Z",
+    "platform": "ios",
+    "artifact": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/.verify/rc26-profile/ios-baseline-repeat/Rc26Probe.app/suite.js",
+    "sha256": "2bcff991ed11ef63d0ed210bc5e64716f84639a8d4f2c2a90e27f18f635a3458",
+    "actualNative": true,
+    "syntheticMaterials": true,
+    "realBroadcasts": 0
+  }
+}

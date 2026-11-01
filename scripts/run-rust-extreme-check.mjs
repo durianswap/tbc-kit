@@ -1,0 +1,11 @@
+import {spawn} from 'node:child_process';
+import {mkdir,writeFile} from 'node:fs/promises';
+import {resolve,join} from 'node:path';
+const [rootArg,outArg]=process.argv.slice(2),root=resolve(rootArg),out=resolve(outArg);await mkdir(out,{recursive:true});
+let stdout='',stderr='';const start=performance.now();
+const args=['test','--release','--offline','--locked','-p','tbc-engine-core','-p','tbc-keyless-core','--','--test-threads=2'];
+const code=await new Promise((done,fail)=>{const p=spawn('cargo',args,{cwd:join(root,'packages/tbc-engine/rust'),env:{...process.env,CARGO_BUILD_JOBS:'2'},stdio:['ignore','pipe','pipe']});p.stdout.on('data',b=>stdout+=b);p.stderr.on('data',b=>stderr+=b);p.on('error',fail);p.on('close',done)});
+await writeFile(join(out,'rust.log'),stdout+stderr);
+const rows=[...stdout.matchAll(/test result: (\w+)\. (\d+) passed; (\d+) failed; (\d+) ignored/g)].map(m=>({status:m[1],passed:Number(m[2]),failed:Number(m[3]),ignored:Number(m[4])}));
+const result={status:code===0?'PASS':'FAIL',code,command:['cargo',...args],sourceRoot:root,ms:performance.now()-start,groups:rows,passed:rows.reduce((n,r)=>n+r.passed,0),failed:rows.reduce((n,r)=>n+r.failed,0),ignored:rows.reduce((n,r)=>n+r.ignored,0),realBroadcasts:0,distributionNativeRebuilt:false};
+await writeFile(join(out,'rust-results.json'),JSON.stringify(result,null,2)+'\n');console.log(JSON.stringify(result));process.exitCode=code;

@@ -1,0 +1,15 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>rc.25 NFT batch targeted Testnet acceptance</title>
+<style>body{font:16px system-ui;padding:16px}button{display:block;margin:15px 0;padding:15px;width:100%;font:inherit}pre{white-space:pre-wrap;word-break:break-all}</style>
+<h2>rc.25 · Testnet</h2><p>DApp → Provider → private wallet → Native Engine / Signer. No mainnet.</p>
+<button onclick="send('wallet_requestPermissions',[{tbc_accounts:{chains:['tbc:testnet']},tbc_sendTransaction:{chains:['tbc:testnet']},tbc_signTransaction:{chains:['tbc:testnet']}}])">Connect Testnet wallet</button>
+<button onclick="send('tbc_accounts')">Read account</button>
+<button id="execute" onclick="execute()">Execute selected targeted case once</button>
+<pre id="status">Waiting for wallet…</pre>
+<script>
+let sequence=0;const requests=new Map();
+function ready(){document.querySelector('#status').textContent='Ready · rc.25 · Testnet only'}
+function send(method,params){const id=String(++sequence);requests.set(id,method);document.querySelector('#status').textContent='Pending '+method;window.webkit.messageHandlers.tbc.postMessage({id,request:{method,...(params?{params}:{})}})}
+async function execute(){const button=document.querySelector('#execute');button.disabled=true;const request=await(await fetch('/current.json')).json();send(request.method,request.params)}
+function receive(id,result){document.querySelector('#status').textContent=JSON.stringify({id,ok:result.ok,code:result.code,resultKeys:Object.keys(result.result??{}),status:result.result?.status,reason:result.result?.reason,minted:result.result?.minted,requested:result.result?.requested},null,2);fetch('/result',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({id,method:requests.get(id.split(':').at(-1)),...result})})}
+</script>

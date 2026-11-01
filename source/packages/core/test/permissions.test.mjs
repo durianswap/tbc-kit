@@ -348,13 +348,13 @@ test("permission rejection and atomic CAS conflict fail without a second commit"
 });
 
 test("permission commit rejects expiry and a mismatched CAS result", async () => {
-  await assert.rejects(
-    drive("wallet_requestPermissions", permissionRequest(), {
-      commitClock: "2026-08-31T12:02:00Z",
-    }),
-    (error) =>
-      error instanceof tws.TwsApprovalError && error.code === "RECEIPT_EXPIRED",
-  );
+  const expired = await drive("wallet_requestPermissions", permissionRequest(), {
+    commitClock: "2026-08-31T12:02:00Z",
+  });
+  assert.equal(expired.transition.kind, "complete");
+  assert.equal(expired.transition.completion.response.error.code, 4100);
+  assert.equal(expired.transition.completion.response.error.data.reason, "RECEIPT_EXPIRED");
+  assert.equal(expired.ports.some(p => p.operation === "permissionStore.commit"), false);
   await assert.rejects(
     drive("wallet_requestPermissions", permissionRequest(), {
       commitMismatch: true,

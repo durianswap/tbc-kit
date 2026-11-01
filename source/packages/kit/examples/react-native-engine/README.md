@@ -66,6 +66,9 @@ const nativeEngine = createExpoTbcKeylessEngine();
 ```
 
 Your wallet still supplies its account, native approval UI and secure Signer.
+For a wallet-owned Hermes VM, also follow the [private runtime performance
+guide](../../docs/reference/private-runtime-performance.md). Engine bridging alone
+does not install the optional native SHA-256 backend used by Core bindings.
 The main Engine bridge has `normalizeRequest`, `plan`, `validate`, `finalize`.
 The separate Keyless adapter exposes the shared `protocolInfo`/`execute` interface
 and only the SDK's approved computation operations: Pool preparation, ancestry,

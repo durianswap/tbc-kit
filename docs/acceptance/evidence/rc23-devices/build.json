@@ -1,0 +1,13 @@
+{
+  "kitVersion": "0.1.0-rc.23",
+  "nativeVersion": "0.1.0-rc.23.native.2",
+  "artifactSetId": "0b5afe3c8f986c8e3835cd7488e68b3986c3be46fdef7ea518fa75dd5d4dc9b4",
+  "kitSha256": "14fa77b6af1248edb5fc89c3dd7104d525c0c07a1529dc3dc0f6d6527d62b88b",
+  "bundleSha256": "e94a40bc71002f4ee9228d163a5b1201c1d2af5ee29c36d271d58d6a383e5203",
+  "fixtureSources": {
+    "source/packages/kit/test/host-port-business-errors.test.mjs": "fa41bfcd8c8ed0c20a743f3ef812208316c9f3691a030acfc1789b7d0ff8b538",
+    "source/packages/kit/test/nft-material-batching.test.mjs": "2356254ddae5524de7d2b49f6fc4b272ac182140d793080791d7a7a971f6bbda"
+  },
+  "controlled": true,
+  "broadcasts": 0
+}

@@ -545,11 +545,13 @@ test("Prepared shorter valid proposal retains the same one-approval transaction 
 test("Prepared material that expires before formal approval never opens approval or signs", async () => {
   const fixture = await createSourceTbcTransferEngine();
   let approvals = 0, signatures = 0;
-  await assert.rejects(drive("tbc_signPreparedTransaction", fixture, {
+  const result = await drive("tbc_signPreparedTransaction", fixture, {
     params: preparedWithExpiry("2026-08-31T12:00:05Z"),
     "approval.request": () => { approvals++; throw new Error("Expired review must not open"); },
     "signer.sign": () => { signatures++; throw new Error("Expired review must not sign"); },
-  }), error => error.code === "RECEIPT_EXPIRED");
+  });
+  assert.equal(result.transition.completion.response.error.code, 4100);
+  assert.equal(result.transition.completion.response.error.data.reason, "RECEIPT_EXPIRED");
   assert.equal(approvals + signatures, 0);
   assert.equal(fixture.calls.some(c => c.operation === "finalize"), false);
 });
@@ -1151,15 +1153,14 @@ test("canonical TBC transaction rejects engine shortcuts and mutated security ar
     "2026-08-31T12:00:11Z",
     canonical.approval.expiresAt,
   ];
-  await assert.rejects(
-    drive(
+  const expiredFinalization = await drive(
       "tbc_signTransaction",
       createTbcTransferEngine(integration),
       { "clock.now": () => ({ now: finalizingExpiredClocks.shift() }) },
-    ),
-    (error) =>
-      error instanceof tws.TwsApprovalError && error.code === "RECEIPT_EXPIRED",
   );
+  assert.equal(expiredFinalization.transition.completion.response.error.code, 4100);
+  assert.equal(expiredFinalization.transition.completion.response.error.data.reason, "RECEIPT_EXPIRED");
+  assert.equal(expiredFinalization.ports.some(p => p.operation.startsWith("broadcast.")), false);
 });
 
 test("an approval that expires before signing becomes an auditable terminal failure", async () => {
@@ -1177,6 +1178,7 @@ test("an approval that expires before signing becomes an auditable terminal fail
   assert.deepEqual(result.transition.completion.response.error, {
     code: 4100,
     message: "Approval expired before signing",
+    data: { reason: "RECEIPT_EXPIRED", stage: "signing", operationId: result.transition.checkpoint.payload.operationId },
   });
   assert.equal(
     result.ports.filter(({ operation }) => operation === "signer.sign").length,

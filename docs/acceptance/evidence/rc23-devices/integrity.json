@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "protectedPartnerFiles": 174,
+  "protectedFilesChanged": [],
+  "archives": {
+    "tbc-kit.tgz": "14fa77b6af1248edb5fc89c3dd7104d525c0c07a1529dc3dc0f6d6527d62b88b",
+    "ios-sdk.tgz": "877a715f9ab8d8e640136927c3b7d951c39db0ae3728a24d932eb62580d84e1e",
+    "android-sdk.tgz": "9293208a3da7d57a4ee13f8fbb84838cc4ad3c4d32df750d47a0f9483c7db67c"
+  },
+  "expandedPackageFilesMatched": 973,
+  "sourceRuntimeChanged": false,
+  "realBroadcasts": 0
+}

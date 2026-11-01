@@ -66,6 +66,7 @@ export interface TbcNftMintJobExecution {
   readonly status: "complete" | "partial" | "uncertain" | "failed" | "pending";
   readonly transactions: readonly TbcNftMintJobTransaction[];
   readonly recoveryId?: string;
+  readonly stopReason?: "expired" | "cancelled";
   /** Validated signed parents/change, for the next prepare; never refetched from the API. */
   readonly continuation?: unknown;
 }
@@ -228,7 +229,18 @@ export function createTbcNftMintJobOrchestrator(adapter: TbcNftMintJobAdapter, o
       // while the user decides, but never turn failed reads into empty assets.
       const context = Promise.resolve().then(() => adapter.begin(scope)).then(
         value => ({ ok: true as const, value }), () => ({ ok: false as const }));
-      const decision = frozen(JSON.parse(canonicalize(await adapter.approve({ scope, scopeHash }))) as TbcNftMintJobApproval);
+      let approval: TbcNftMintJobApproval;
+      try {
+        approval = await adapter.approve({ scope, scopeHash });
+      } catch (error) {
+        // A native fence can reject instead of issuing an expired receipt.
+        // Classify only from our trusted deadline/cancellation state; unrelated
+        // adapter failures and malformed returned receipts remain failures.
+        const reason = stopped();
+        if (reason) return result(reason);
+        throw error;
+      }
+      const decision = frozen(JSON.parse(canonicalize(approval)) as TbcNftMintJobApproval);
       if (decision.scopeHash !== scopeHash) throw new Error("NFT job consent binding mismatch");
       if (decision.status === "rejected") return result("rejected");
       if (decision.status !== "approved" || typeof decision.approvalId !== "string" || !decision.approvalId.length ||
@@ -252,7 +264,8 @@ export function createTbcNftMintJobOrchestrator(adapter: TbcNftMintJobAdapter, o
           try {
             candidate = await adapter.prepare({ scope, scopeHash, request, offset, context: loaded.value,
               ...(continuation === undefined ? {} : { continuation }) });
-          } catch { return result("preparation-failed"); }
+          } catch (error) { return result(error instanceof TbcNftMintJobExpiredError ? "expired"
+            : error instanceof TbcNftMintJobFeeBudgetError ? "fee-budget" : stopped() ?? "preparation-failed"); }
           if (candidate.status === "resource-limit") {
             if (!["plan-bytes", "continuation-bytes", "inputs", "outputs"].includes(candidate.resource)) throw new Error("Unknown NFT preparation limit");
           } else {
@@ -316,11 +329,21 @@ export function createTbcNftMintJobOrchestrator(adapter: TbcNftMintJobAdapter, o
           ...(execution.recoveryId === undefined ? {} : { recoveryId: execution.recoveryId }) }));
         if (uncertain) return result("submission-uncertain");
         if (execution.status === "pending") return result("operation-pending");
-        if (execution.status !== "complete" || accepted !== count) return result(stopped() ?? "execution-failed");
+        if (execution.status !== "complete" || accepted !== count) return result(execution.stopReason ?? stopped() ?? "execution-failed");
         continuation = execution.continuation;
         offset += count;
       }
       return result("complete");
     } finally { running = false; }
   } });
+}
+
+/** Private typed stop, not a reason to refresh or extend authenticated material. */
+export class TbcNftMintJobExpiredError extends Error {
+  constructor() { super("NFT mint job material or approval expired"); this.name = "TbcNftMintJobExpiredError"; }
+}
+
+/** The exact Engine cap failure is terminal, never a reason to shrink or retry. */
+export class TbcNftMintJobFeeBudgetError extends Error {
+  constructor() { super("NFT mint job total fee budget exhausted"); this.name = "TbcNftMintJobFeeBudgetError"; }
 }

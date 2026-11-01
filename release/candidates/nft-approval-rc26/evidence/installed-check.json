@@ -1,0 +1,73 @@
+{
+  "status": "PASS",
+  "kitSha256": "91482055a6567c8064edd523e26a8881a51e653ab7d1613f5973b399f728c471",
+  "installed": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/.verify/nft-job-install-gCQAmT/node_modules/@tbc/kit",
+  "checks": [
+    {
+      "name": "clean-install",
+      "code": 0,
+      "ms": 2909.034708,
+      "tests": 0,
+      "passed": 0,
+      "failed": 0
+    },
+    {
+      "name": "esm-cjs-imports",
+      "code": 0,
+      "ms": 125.55712499999981,
+      "tests": 0,
+      "passed": 0,
+      "failed": 0
+    },
+    {
+      "name": "installed-job-stress",
+      "code": 0,
+      "ms": 23487.593334,
+      "tests": 16,
+      "passed": 15,
+      "failed": 0
+    },
+    {
+      "name": "job-unit-and-entry",
+      "code": 0,
+      "ms": 282.34862500000236,
+      "tests": 18,
+      "passed": 18,
+      "failed": 0
+    },
+    {
+      "name": "installed-adversarial-regression",
+      "code": 0,
+      "ms": 5445.834584,
+      "tests": 149,
+      "passed": 149,
+      "failed": 0
+    },
+    {
+      "name": "core-adversarial-regression",
+      "code": 0,
+      "ms": 1939.783374999999,
+      "tests": 97,
+      "passed": 97,
+      "failed": 0
+    },
+    {
+      "name": "typecheck-core",
+      "code": 0,
+      "ms": 1076.9252089999936,
+      "tests": 0,
+      "passed": 0,
+      "failed": 0
+    },
+    {
+      "name": "typecheck-kit",
+      "code": 0,
+      "ms": 2504.3892080000005,
+      "tests": 0,
+      "passed": 0,
+      "failed": 0
+    }
+  ],
+  "realBroadcasts": 0,
+  "deviceAcceptance": false
+}

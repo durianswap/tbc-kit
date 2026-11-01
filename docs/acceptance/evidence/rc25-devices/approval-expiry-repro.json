@@ -1,0 +1,53 @@
+{
+  "kit": "0.1.0-rc.25",
+  "results": [
+    {
+      "mode": "native-rejects-after-expiry",
+      "expected": "stopped/expired",
+      "observed": "provider-error--32603",
+      "passes": false,
+      "signatures": 0,
+      "broadcasts": 0,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      }
+    },
+    {
+      "mode": "native-rejects-before-expiry",
+      "expected": "preserve-error",
+      "observed": "provider-error--32603",
+      "passes": true,
+      "signatures": 0,
+      "broadcasts": 0,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      }
+    },
+    {
+      "mode": "previously-approved-receipt-returned-after-expiry",
+      "expected": "stopped/expired",
+      "observed": "stopped/expired",
+      "passes": true,
+      "signatures": 0,
+      "broadcasts": 0,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      }
+    }
+  ]
+}

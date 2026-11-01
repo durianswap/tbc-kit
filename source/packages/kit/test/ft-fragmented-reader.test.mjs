@@ -243,7 +243,7 @@ test('exact FT Prepared through Host signs all stages under one complete approva
   }
 });
 
-test('automatic FT transaction bytes and digests match frozen RC18; optional paired timing', async () => {
+test('automatic FT transaction bytes and digests match frozen baseline; optional paired timing', async () => {
   const previous = createTbcEngine({ backend: await createWasmTbcEngineBackend(await readFile(
     process.env.TBC_FT_BASELINE_WASM ?? new URL('../../../../packages/kit/artifacts/wasm/tbc_engine_wasm.wasm', import.meta.url))) });
   const measurements = [];
@@ -254,8 +254,16 @@ test('automatic FT transaction bytes and digests match frozen RC18; optional pai
     assert.deepEqual(params.plan.payload.transactions, before.plan.payload.transactions);
     assert.deepEqual(params.plan.payload.signingTasks, before.plan.payload.signingTasks);
     const preview = structuredClone(params.plan.payload.preview);
-    for (const flow of preview.assetFlows) delete flow.contractId;
-    assert.deepEqual(preview, before.plan.payload.preview);
+    const priorPreview = structuredClone(before.plan.payload.preview);
+    for (const flow of preview.assetFlows) {
+      if (flow.kind === 'ft') assert.equal(flow.contractId, contractId, 'current review must identify the asset');
+      delete flow.contractId;
+    }
+    for (const flow of priorPreview.assetFlows) {
+      if (flow.contractId !== undefined) assert.equal(flow.contractId, contractId, 'newer frozen baseline must identify the same asset');
+      delete flow.contractId;
+    }
+    assert.deepEqual(preview, priorPreview);
     if (process.env.TBC_FT_BENCH_OUTPUT) {
       for (const method of ['plan', 'validate']) {
         const oldParams = method === 'validate' ? { ...params, phase: 'plan', plan: before.plan } : planParams;

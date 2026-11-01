@@ -1,0 +1,1104 @@
+{
+  "at": "2026-11-01T11:12:45.281Z",
+  "candidates": [
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.0Mr7mA/8FFEFAC6-6AEC-4830-BC96-1292720572A4/TuringClientLab.app/TuringClientLab",
+      "bytes": 41146864,
+      "allocatedBytes": 41148416,
+      "atime": 1793273434555.9246,
+      "mtime": 1793273418530.7507,
+      "ctime": 1793274978557.8918
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.0kOeCW/F016C0BD-E7EF-4A09-B21C-D86EE6B91074/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793337078544.0608,
+      "mtime": 1793336946662.6733,
+      "ctime": 1793337531153.8818
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.0yCts6/FFF30246-07EE-497B-8998-F6DE909B615E/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793322485407.725,
+      "mtime": 1793322479358.5718,
+      "ctime": 1793322681885.974
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.14cbeV/F1D4E86E-53A1-467B-8C07-88E2C43E5358/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793331166739.7422,
+      "mtime": 1793331160513.9136,
+      "ctime": 1793331406503.4019
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.1DdAoP/F239BFD3-CCA6-4D26-9D57-7283BDE3D6E5/TuringClientLab.app/TuringClientLab",
+      "bytes": 40406720,
+      "allocatedBytes": 40407040,
+      "atime": 1793264899618.0256,
+      "mtime": 1793264872695.3965,
+      "ctime": 1793265732377.3186
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.2FN97D/77805059-C1A2-40F0-B3E6-22B40F6939F6/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793334157213.063,
+      "mtime": 1793334148406.3445,
+      "ctime": 1793334476531.454
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.2WfTTk/B658E11D-6C20-4DEA-8EA6-9E8D91439DF5/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793323538196.0667,
+      "mtime": 1793323531651.9858,
+      "ctime": 1793323830139.2048
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.3cz0IF/42849348-B744-49F8-A106-4BD91F422DC2/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793327590768.0774,
+      "mtime": 1793327584578.9067,
+      "ctime": 1793327742975.541
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.3gHw4Q/F45C5BBA-C9E5-4205-AAC4-F0D8D5A9D02A/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793320696508.8882,
+      "mtime": 1793320668193.6284,
+      "ctime": 1793320877079.1287
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.40CUfa/1FA63DDE-95AD-45F4-ABCF-E5DDE4CF8E66/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793276539927.7217,
+      "mtime": 1793276518250.53,
+      "ctime": 1793277894540.0757
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.4f6IMd/0A4485D1-AC32-4D30-B80F-5A1F04527CDA/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793284718579.7473,
+      "mtime": 1793284679964.6895,
+      "ctime": 1793287592422.4927
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.5AJWmG/5A83CC90-928C-4F26-B3C6-091D0B0CBEAD/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793333287782.418,
+      "mtime": 1793333283079.6733,
+      "ctime": 1793333719147.8413
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.8wQO7K/7E2060F2-6480-4B95-8D55-0C8D45833CDC/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793281598272.2559,
+      "mtime": 1793281577900.7869,
+      "ctime": 1793282115265.7827
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.9WT9tP/3D083055-16CE-4C8A-9262-D141538D72D2/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793322169640.1204,
+      "mtime": 1793322137849.1143,
+      "ctime": 1793322484834.1882
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.9ZVQJA/F7953B99-6FAE-4F61-AA3D-EB4A0B6BB8B0/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793282261635.978,
+      "mtime": 1793282238702.5205,
+      "ctime": 1793282672819.6636
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.A0cte5/2E15ADE6-A777-4F30-A465-E184DA7EAF53/TuringClientLab.app/TuringClientLab",
+      "bytes": 41763648,
+      "allocatedBytes": 41766912,
+      "atime": 1793287948652.553,
+      "mtime": 1793287936914.9814,
+      "ctime": 1793288563012.5183
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.C0vUsx/DBC4B7D3-E059-4F08-9A34-8D9C5323F9BD/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793337946485.3152,
+      "mtime": 1793337934955.4856,
+      "ctime": 1793338360198.8992
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.Cxqtal/FFB81529-EDB2-4B58-9AD2-ECD22A490396/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793282116197.9001,
+      "mtime": 1793282077211.696,
+      "ctime": 1793282261077.9895
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.DHBV2Q/62F6C4D7-BA60-42C7-B858-E7B42AC5FD8B/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793331407088.624,
+      "mtime": 1793331398717.995,
+      "ctime": 1793331883853.628
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.DWnpbP/C95E1950-C516-4E52-9008-4A08ABCA323C/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793322930908.243,
+      "mtime": 1793322667488.322,
+      "ctime": 1793323537659.2349
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.DnJZdd/E4C4467C-6F36-4C7D-9093-00855E36CC60/TuringClientLab.app/TuringClientLab",
+      "bytes": 40301552,
+      "allocatedBytes": 40304640,
+      "atime": 1793260147490.6614,
+      "mtime": 1793260112114.252,
+      "ctime": 1793260804665.8809
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.EDQaqR/A42CB9D0-A46A-49B1-82B5-4DEEC5F68D5C/TuringClientLab.app/TuringClientLab",
+      "bytes": 39664464,
+      "allocatedBytes": 39665664,
+      "atime": 1793239635635.2456,
+      "mtime": 1793239624345.8289,
+      "ctime": 1793240038797.7869
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.FCZhBu/F2A0F9B1-CE7C-4837-AF95-7A8AD9D85994/TuringClientLab.app/TuringClientLab",
+      "bytes": 39664688,
+      "allocatedBytes": 39665664,
+      "atime": 1793240040321.2976,
+      "mtime": 1793240026928.4102,
+      "ctime": 1793240330066.298
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.FMFoGV/890C6610-4A71-46B7-8F09-E9CE10DF4E6D/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793321477276.8318,
+      "mtime": 1793321445008.9463,
+      "ctime": 1793321796473.0867
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.GDPanM/21288B7D-CBF9-4A7C-A8F1-8DA30A876FF5/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793324614128.5508,
+      "mtime": 1793324602117.094,
+      "ctime": 1793324744783.9463
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.H8K0Ic/8EAD6CD0-E4B1-44D0-8778-72E86CE044F0/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793339636385.5017,
+      "mtime": 1793339403028.4397,
+      "ctime": 1793339856090.1042
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.HKWWQg/3D783EB2-1163-46DC-9DA8-40B2C5BB162B/TuringClientLab.app/TuringClientLab",
+      "bytes": 39666016,
+      "allocatedBytes": 39669760,
+      "atime": 1793240330918.7266,
+      "mtime": 1793240285422.9236,
+      "ctime": 1793241114474.427
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.I5nPs5/531BA423-00A7-4A96-8F67-DAE3F836262A/TuringClientLab.app/TuringClientLab",
+      "bytes": 41763648,
+      "allocatedBytes": 41766912,
+      "atime": 1793288766095.715,
+      "mtime": 1793288740777.1143,
+      "ctime": 1793289540317.3074
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.J6toxo/014426A8-3003-4682-8E37-FCFD3E0D2778/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793341142322.7803,
+      "mtime": 1793341126437.9792,
+      "ctime": 1793341321365.4539
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.JSSG68/3C17BBF5-492C-4FEE-93B8-87009CFC6E8A/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793330853955.5342,
+      "mtime": 1793330845674.1628,
+      "ctime": 1793331166234.1448
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.Ji3ad2/6A90EACE-9A16-48EF-BB0F-6339F87A8D95/TuringClientLab.app/TuringClientLab",
+      "bytes": 39775920,
+      "allocatedBytes": 39776256,
+      "atime": 1793253791311.966,
+      "mtime": 1793253773608.1062,
+      "ctime": 1793254190521.1301
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.KPCNt5/C5586F4C-99BF-4890-80DE-834FE91F462F/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793333720110.784,
+      "mtime": 1793333702153.87,
+      "ctime": 1793334153668.657
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.KiYIq5/67476943-0173-4B5B-A66F-6BD2E0D562BA/TuringClientLab.app/TuringClientLab",
+      "bytes": 40300240,
+      "allocatedBytes": 40300544,
+      "atime": 1793259708545.8794,
+      "mtime": 1793259686048.635,
+      "ctime": 1793260146614.3171
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.Kodmq1/4D6A78AF-5592-4DD7-9FC1-CA2A6BE23D71/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793339856572.5818,
+      "mtime": 1793339842212.312,
+      "ctime": 1793340409226.538
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.L0wU9b/FD501C24-E71F-4BB4-87D0-86ACC538CE5E/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793343193387.1155,
+      "mtime": 1793343156909.7085,
+      "ctime": 1793343500086.2231
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.L6nahP/CE7732F1-BC5D-4A4B-BE58-9F3A2E357591/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793281149848.3337,
+      "mtime": 1793281113562.8015,
+      "ctime": 1793281423839.5112
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.LikQP7/E2C48A3F-B3AB-4511-AEFD-8300AC0359CD/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793281424369.8313,
+      "mtime": 1793281408202.9978,
+      "ctime": 1793281597612.845
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.LoSUv2/B586409B-AD39-45B1-A517-C9CE8CE39628/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793278464127.479,
+      "mtime": 1793278438798.729,
+      "ctime": 1793278685678.1472
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.LtLrJb/1C40F392-D7C4-407B-BEAE-7517AC40D0A8/TuringClientLab.app/TuringClientLab",
+      "bytes": 41803520,
+      "allocatedBytes": 41803776,
+      "atime": 1793291542848.6782,
+      "mtime": 1793291534065.6616,
+      "ctime": 1793292298109.6167
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.N138Jn/E3D35181-FA29-416C-B34A-FC5408FD021F/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793336372963.3833,
+      "mtime": 1793336351359.457,
+      "ctime": 1793336959871.014
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.N214UA/F7761A4D-DDB5-4FB9-B860-94E228597661/TuringClientLab.app/TuringClientLab",
+      "bytes": 39775920,
+      "allocatedBytes": 39776256,
+      "atime": 1793251368720.503,
+      "mtime": 1793251347361.1868,
+      "ctime": 1793251839430.7935
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.NhLMkl/9EE1AA74-5CD7-4527-B666-6682B3E8B917/TuringClientLab.app/TuringClientLab",
+      "bytes": 41146864,
+      "allocatedBytes": 41148416,
+      "atime": 1793275325914.8035,
+      "mtime": 1793275295922.9321,
+      "ctime": 1793276538672.5024
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.OJJZ8N/FA7A6DF2-9B68-4C63-9F2E-9E26B3D1324A/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793318989331.8032,
+      "mtime": 1793318978191.6963,
+      "ctime": 1793319942354.8472
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.OcMxZp/3C43BB93-2DF7-426A-B2FB-B2A3507EC937/TuringClientLab.app/TuringClientLab",
+      "bytes": 39775920,
+      "allocatedBytes": 39776256,
+      "atime": 1793251068112.9177,
+      "mtime": 1793251058824.3645,
+      "ctime": 1793251368111.97
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.Q7utmM/3FB4BC08-5740-4A1D-A86D-234E121E2293/TuringClientLab.app/TuringClientLab",
+      "bytes": 40354656,
+      "allocatedBytes": 40357888,
+      "atime": 1793261552547.2593,
+      "mtime": 1793261541054.5527,
+      "ctime": 1793262703778.042
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.QkD22g/BD74B11A-622F-4A45-BF53-0B7DD337B725/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793341322250.8948,
+      "mtime": 1793341317356.2546,
+      "ctime": 1793343190070.8804
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.QsdQ1P/4D3CCB84-4236-4169-8D55-6BA945990336/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793326743831.9082,
+      "mtime": 1793326739338.7388,
+      "ctime": 1793327590176.437
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.REtInj/B5E35C5A-6E6C-485F-95DF-437359D9B118/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793337531940.4092,
+      "mtime": 1793337526978.3792,
+      "ctime": 1793337812973.8547
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.Rsx22d/9053C7AE-2C99-440E-B9E9-32CA4763F2E2/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793284521998.822,
+      "mtime": 1793284512385.6362,
+      "ctime": 1793284717746.5562
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.S3XKwN/B1F6CF7F-4DDF-4D90-A698-146D27D0689A/TuringClientLab.app/TuringClientLab",
+      "bytes": 41143120,
+      "allocatedBytes": 41144320,
+      "atime": 1793270561828.9062,
+      "mtime": 1793270548564.4949,
+      "ctime": 1793272033017.31
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.SRURXn/590ABF5C-D7A7-41A7-B13F-B4167A5734A1/TuringClientLab.app/TuringClientLab",
+      "bytes": 39775776,
+      "allocatedBytes": 39776256,
+      "atime": 1793248475759.947,
+      "mtime": 1793248450630.0537,
+      "ctime": 1793248969406.8118
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.ShJMx0/DF2D38EA-8FCE-438C-9449-9F04EA007586/TuringClientLab.app/TuringClientLab",
+      "bytes": 39775920,
+      "allocatedBytes": 39776256,
+      "atime": 1793249786344.5469,
+      "mtime": 1793249768879.32,
+      "ctime": 1793250408956.1912
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.SjwIBa/D21DAD98-B867-4B76-B961-B7EC9C5C6552/TuringClientLab.app/TuringClientLab",
+      "bytes": 40406720,
+      "allocatedBytes": 40407040,
+      "atime": 1793265736900.4397,
+      "mtime": 1793265705438.0818,
+      "ctime": 1793267160951.6318
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.SvmpOr/0F97FDB6-DB53-4A14-A443-5FF0DEAFEF0B/TuringClientLab.app/TuringClientLab",
+      "bytes": 39775776,
+      "allocatedBytes": 39776256,
+      "atime": 1793248970351.0554,
+      "mtime": 1793248954810.2124,
+      "ctime": 1793249784755.731
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.TEYkDB/D127E730-ADB3-43B6-8275-ACB704360DDA/TuringClientLab.app/TuringClientLab",
+      "bytes": 40954288,
+      "allocatedBytes": 40955904,
+      "atime": 1793268087995.6921,
+      "mtime": 1793268080841.634,
+      "ctime": 1793269496433.688
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.UmNvj0/EADA2E78-E515-43BC-BBE4-9EA899FEB2D4/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793332477795.1956,
+      "mtime": 1793332462676.778,
+      "ctime": 1793332672915.8403
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.UsZYn3/E4B6AC2D-E84A-496B-8F46-C4118395924F/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793280906044.3567,
+      "mtime": 1793280899007.4995,
+      "ctime": 1793281149249.3018
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.Uv2FbO/9340524B-D2EA-4DE3-A595-96C77FB9E5D9/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793334505224.7285,
+      "mtime": 1793334471150.3901,
+      "ctime": 1793335003013.2422
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.WOh7MZ/C7ECFC60-95F0-425D-833B-941B9CA0486C/TuringClientLab.app/TuringClientLab",
+      "bytes": 41803520,
+      "allocatedBytes": 41803776,
+      "atime": 1793294248887.0032,
+      "mtime": 1793294235251.5593,
+      "ctime": 1793315295231.5938
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.Wq6WtT/409836E5-7331-4348-830D-745086E28CE5/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793331884442.6445,
+      "mtime": 1793331876438.4626,
+      "ctime": 1793332476849.177
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.WzUwV6/BDDD41BF-DAB0-47F7-9809-734B8730D691/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793328672286.204,
+      "mtime": 1793328636990.4404,
+      "ctime": 1793328965136.5461
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.Xag9pY/2E06A9A0-CD5B-46BA-9453-AA29CB3EBEF0/TuringClientLab.app/TuringClientLab",
+      "bytes": 39666016,
+      "allocatedBytes": 39669760,
+      "atime": 1793241115665.3643,
+      "mtime": 1793241108633.3826,
+      "ctime": 1793242603059.6462
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.Xib5bN/55F1DC16-050F-4BB9-B4AA-4FCE2BE851BF/TuringClientLab.app/TuringClientLab",
+      "bytes": 40405616,
+      "allocatedBytes": 40407040,
+      "atime": 1793263821667.373,
+      "mtime": 1793263810370.1897,
+      "ctime": 1793264898521.3118
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.YRDGN7/469A18F0-5093-4500-8E51-9B5BD40087B5/TuringClientLab.app/TuringClientLab",
+      "bytes": 41763648,
+      "allocatedBytes": 41766912,
+      "atime": 1793288563528.1902,
+      "mtime": 1793288557904.5876,
+      "ctime": 1793288765594.9812
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.ZSHRnm/46AECD5A-E284-4F1F-802D-0402BD20E259/TuringClientLab.app/TuringClientLab",
+      "bytes": 39666320,
+      "allocatedBytes": 39669760,
+      "atime": 1793242606614.0117,
+      "mtime": 1793242590072.9148,
+      "ctime": 1793246853525.1948
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.ZTMw2u/BD0CF30B-0CA2-4792-8CEA-98C6560A2C38/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793335159517.0217,
+      "mtime": 1793334999148.8977,
+      "ctime": 1793335379679.2947
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.ZZ1JeY/7FDFF08D-F6E5-4BEE-A2A3-1021269A0E3A/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793317171666.836,
+      "mtime": 1793316141842.3562,
+      "ctime": 1793318987734.1567
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.ZglWaQ/B0F50399-C0AE-4FDD-8169-114B4E0182AB/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793328031312.9622,
+      "mtime": 1793327997753.5957,
+      "ctime": 1793328142349.8484
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.ZjESaX/36E276B0-E1BF-4F77-86B9-BAFFA9C51D9F/TuringClientLab.app/TuringClientLab",
+      "bytes": 39666960,
+      "allocatedBytes": 39669760,
+      "atime": 1793237345405.364,
+      "mtime": 1793236729205.3486,
+      "ctime": 1793237720039.8198
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.a7YCbH/8BF787FB-54AB-44A8-AD6B-677B8A4CD4FD/TuringClientLab.app/TuringClientLab",
+      "bytes": 39811376,
+      "allocatedBytes": 39813120,
+      "atime": 1793257049347.1846,
+      "mtime": 1793257039968.809,
+      "ctime": 1793258550195.6523
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.a7p5DU/35D44364-D776-43A9-AD2E-AF404C558E16/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793324745408.7854,
+      "mtime": 1793324740521.97,
+      "ctime": 1793325674998.933
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.aRNlPJ/F1DA73F4-D4DD-4675-87C3-5156DFBD9F30/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793321822573.281,
+      "mtime": 1793321774216.6194,
+      "ctime": 1793321970577.1287
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.bLmEVa/27AE22E8-B963-4F8A-B2E9-C938A36FABBC/TuringClientLab.app/TuringClientLab",
+      "bytes": 41146864,
+      "allocatedBytes": 41148416,
+      "atime": 1793272528852.1296,
+      "mtime": 1793272521904.2588,
+      "ctime": 1793273433852.837
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.bU58Nb/59B1045A-918D-449F-B499-D9EA535176CF/TuringClientLab.app/TuringClientLab",
+      "bytes": 41803520,
+      "allocatedBytes": 41803776,
+      "atime": 1793291203874.1575,
+      "mtime": 1793291192448.821,
+      "ctime": 1793291541412.6626
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.bVBF4h/A2C56829-FB85-462F-90C4-C1B2310C34EB/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793324000388.7834,
+      "mtime": 1793323994237.4993,
+      "ctime": 1793324613513.243
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.byuV31/7BDFD920-B3BF-4942-9EEB-576598C34525/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793328989350.679,
+      "mtime": 1793328961192.3303,
+      "ctime": 1793329222430.9653
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.bzFsvi/C20976C1-2CBD-40FF-8B55-D11D6F666931/TuringClientLab.app/TuringClientLab",
+      "bytes": 39775920,
+      "allocatedBytes": 39776256,
+      "atime": 1793250409543.9875,
+      "mtime": 1793250355923.6658,
+      "ctime": 1793251067193.1082
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.cLo4qv/577DA70C-7AC7-4DB5-89EF-F74A0257AA38/TuringClientLab.app/TuringClientLab",
+      "bytes": 40324992,
+      "allocatedBytes": 40325120,
+      "atime": 1793260805524.1099,
+      "mtime": 1793260794465.277,
+      "ctime": 1793261551453.1301
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.d3nwQ2/D7D9D6F3-7886-49A2-92D6-130590DC6104/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793325675572.1465,
+      "mtime": 1793325668817.2373,
+      "ctime": 1793326325771.5488
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.dVtj6D/588C9957-BFBD-4FDB-8B5C-85FC28B7845E/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793279741366.5977,
+      "mtime": 1793279723826.3665,
+      "ctime": 1793280270578.2224
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.dv6gjH/7C860BDE-F35A-493B-830F-90C11EC07C2E/TuringClientLab.app/TuringClientLab",
+      "bytes": 40408800,
+      "allocatedBytes": 40411136,
+      "atime": 1793262706520.5906,
+      "mtime": 1793262687151.3713,
+      "ctime": 1793263059425.3726
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.e772fP/6D023B20-1B2A-47C3-A6A7-8F0F9813F9BF/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793282673464.56,
+      "mtime": 1793282642965.7498,
+      "ctime": 1793283480561.5342
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.f4Qp3M/59B6163F-019B-4906-9963-2F49B82258A7/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793337813681.5466,
+      "mtime": 1793337806177.482,
+      "ctime": 1793337945864.2642
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.fyfhfH/399F7CDD-2AE6-40A2-8631-97FAC1053221/TuringClientLab.app/TuringClientLab",
+      "bytes": 41146864,
+      "allocatedBytes": 41148416,
+      "atime": 1793272037793.3354,
+      "mtime": 1793272021107.8235,
+      "ctime": 1793272527787.0535
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.fzbxZp/8A10D5C9-AA44-41EB-87E6-D98AEF94CD02/TuringClientLab.app/TuringClientLab",
+      "bytes": 39749872,
+      "allocatedBytes": 39751680,
+      "atime": 1793246856240.9114,
+      "mtime": 1793246829802.1956,
+      "ctime": 1793248471946.3486
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.gSLrwQ/4B2E863A-468F-4BCE-8621-81C6E4763D67/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793340410185.271,
+      "mtime": 1793340384779.5422,
+      "ctime": 1793340731490.843
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.gb7N7L/AADA2E65-F957-4791-AAE6-37BB3FD56084/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793280441770.634,
+      "mtime": 1793280260136.3342,
+      "ctime": 1793280905314.0918
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.hY71eF/C13E6D80-1568-4CB4-8E3A-EE7517FA8AA1/TuringClientLab.app/TuringClientLab",
+      "bytes": 41797328,
+      "allocatedBytes": 41799680,
+      "atime": 1793290468147.0383,
+      "mtime": 1793290451416.703,
+      "ctime": 1793291202959.4126
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.hnizFF/68288F75-754E-4AF9-BD44-D9213EAB552C/TuringClientLab.app/TuringClientLab",
+      "bytes": 39811376,
+      "allocatedBytes": 39813120,
+      "atime": 1793256487702.384,
+      "mtime": 1793256181767.2598,
+      "ctime": 1793256651960.043
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.hrb9VH/6EB809A9-9140-40DD-86D7-AB37C5AFB2FC/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793338360818.661,
+      "mtime": 1793338337119.215,
+      "ctime": 1793339017627.2559
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.hvMy1o/1F27F494-1712-4117-94EF-E6F983224A14/TuringClientLab.app/TuringClientLab",
+      "bytes": 41803520,
+      "allocatedBytes": 41803776,
+      "atime": 1793293419412.444,
+      "mtime": 1793293379828.506,
+      "ctime": 1793294248014.3647
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.iii9pg/B5786C21-2093-4196-A2F9-D624F7419B38/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793330142505.361,
+      "mtime": 1793330130227.4905,
+      "ctime": 1793330574980.1694
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.inQnhx/E7E1EC4D-719F-4736-9996-2CE81D3AB72A/TuringClientLab.app/TuringClientLab",
+      "bytes": 39666960,
+      "allocatedBytes": 39669760,
+      "atime": 1793238000496.6687,
+      "mtime": 1793237699682.4236,
+      "ctime": 1793239634128.886
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.jIrKJd/57EC6CAD-8CA7-4123-8CE5-E66AAED3203F/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793330575563.882,
+      "mtime": 1793330558975.297,
+      "ctime": 1793330849309.5332
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.jrS755/8E6CD90E-70F9-4CE6-AE92-9FC41492053A/TuringClientLab.app/TuringClientLab",
+      "bytes": 41146864,
+      "allocatedBytes": 41148416,
+      "atime": 1793274980176.9492,
+      "mtime": 1793274961232.0837,
+      "ctime": 1793275325402.2944
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.lo7y7O/A939D1B1-1152-48FF-B98C-1A64C5C86DB6/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793335542671.2065,
+      "mtime": 1793335534034.1348,
+      "ctime": 1793335793794.3066
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.loKUxz/D7C870ED-4A8D-4488-9344-BD69522FFE49/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793283481420.0303,
+      "mtime": 1793283460621.2817,
+      "ctime": 1793284518691.3582
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.m6vV80/89F3D3F2-4595-4303-9B11-7F70509C24C1/TuringClientLab.app/TuringClientLab",
+      "bytes": 41098800,
+      "allocatedBytes": 41099264,
+      "atime": 1793269498265.453,
+      "mtime": 1793269468578.4878,
+      "ctime": 1793270557383.8228
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.mcClxr/3E3957E5-F889-490D-813D-7EF1F341CB44/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793320896949.959,
+      "mtime": 1793320870167.0376,
+      "ctime": 1793321455425.8047
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.mo4Vak/8A0A33CF-5E79-46E2-8E96-762AE8B40B81/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793321989923.594,
+      "mtime": 1793321939125.4475,
+      "ctime": 1793322154947.0366
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.n6QYop/476596CC-64AC-40EB-9B22-EA4EC33FDB83/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793340732018.4246,
+      "mtime": 1793340726327.6975,
+      "ctime": 1793341141565.4495
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.nAFJB9/A9788806-06ED-4798-A236-F8D40C933F4C/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793315303523.1284,
+      "mtime": 1793315235152.6433,
+      "ctime": 1793316212689.9905
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.nJ4Cf8/874CE151-8881-4118-8A22-D6A463E0196B/TuringClientLab.app/TuringClientLab",
+      "bytes": 39775920,
+      "allocatedBytes": 39776256,
+      "atime": 1793251840044.6704,
+      "mtime": 1793251807203.4573,
+      "ctime": 1793253028759.1113
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.nKFbqS/BE703D60-1A05-4E58-844A-C384B1C5B478/TuringClientLab.app/TuringClientLab",
+      "bytes": 39811376,
+      "allocatedBytes": 39813120,
+      "atime": 1793256652911.974,
+      "mtime": 1793256631349.0676,
+      "ctime": 1793257048588.9922
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.nLDfQ3/57F104F0-4741-497D-937A-1F743D3FDB0D/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793326326331.4854,
+      "mtime": 1793326318120.6936,
+      "ctime": 1793326743262.3855
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.nbIz77/98F62184-3DF7-4F3D-AFA9-CF9D4A660581/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793339018224.7542,
+      "mtime": 1793339013588.6868,
+      "ctime": 1793339407174.0925
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.p0dwRq/DE9F8BD8-EB0A-4E7D-BE6C-DAC8970BCAEE/TuringClientLab.app/TuringClientLab",
+      "bytes": 41803520,
+      "allocatedBytes": 41803776,
+      "atime": 1793292298743.4277,
+      "mtime": 1793292291676.12,
+      "ctime": 1793292679465.3323
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.p3Hfwm/958BC602-9481-48BE-B200-01017331B54D/TuringClientLab.app/TuringClientLab",
+      "bytes": 41767984,
+      "allocatedBytes": 41771008,
+      "atime": 1793289541496.7712,
+      "mtime": 1793289535259.986,
+      "ctime": 1793290466019.0742
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.pLkqdr/DF87100A-B633-4E86-84CA-C905747BAD67/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793277895847.4128,
+      "mtime": 1793277885544.193,
+      "ctime": 1793278456917.421
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.pZaLzH/22374D00-DFB7-4CF4-8D77-5C7D71EED450/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793327892596.3035,
+      "mtime": 1793327835067.288,
+      "ctime": 1793328006477.3503
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.pwi2li/9370F84A-1BD1-4C32-9E31-40B8CF553FF1/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793328382409.5168,
+      "mtime": 1793328333550.8416,
+      "ctime": 1793328521395.1707
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.q4s9Ld/9ADE9190-8CF4-400E-869B-C7B659B4F121/TuringClientLab.app/TuringClientLab",
+      "bytes": 40408800,
+      "allocatedBytes": 40411136,
+      "atime": 1793263063550.5435,
+      "mtime": 1793263022155.995,
+      "ctime": 1793263816394.4353
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.qLQUln/229D452C-32BD-4505-991C-FFFEA49260DE/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793320436975.9558,
+      "mtime": 1793320425381.4773,
+      "ctime": 1793320695940.1672
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.qQyqEm/509979B8-AD57-4368-93B8-F97E032B4767/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793327743503.1787,
+      "mtime": 1793327733976.5815,
+      "ctime": 1793327839063.1846
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.qSrYYj/F07A32DF-A987-4080-A6DB-291B7E7EC91A/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793319942877.2915,
+      "mtime": 1793319887780.2683,
+      "ctime": 1793320436460.9
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.qlWLIY/C4CF9CB3-7911-4ED1-B715-6CD70E5AD652/TuringClientLab.app/TuringClientLab",
+      "bytes": 39775920,
+      "allocatedBytes": 39776256,
+      "atime": 1793253030580.3738,
+      "mtime": 1793252989388.2998,
+      "ctime": 1793253789552.6091
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.r0zxSd/0B474484-C9EF-44F8-B299-A6D60D7FD089/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793278686290.4333,
+      "mtime": 1793278673661.6843,
+      "ctime": 1793278878784.2456
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.ruHmCR/B5810952-1A69-4DF6-A4B1-52B7225DA336/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793336170393.6191,
+      "mtime": 1793336161514.2712,
+      "ctime": 1793336372342.753
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.sA37eF/E28DB965-564F-499F-85B6-AC8EA918364B/TuringClientLab.app/TuringClientLab",
+      "bytes": 40299584,
+      "allocatedBytes": 40300544,
+      "atime": 1793258552404.8342,
+      "mtime": 1793258535393.658,
+      "ctime": 1793259707207.833
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.tiH5yu/2D5ECBA1-F602-4B05-9B13-C5C78817D618/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793328169453.147,
+      "mtime": 1793328134762.7021,
+      "ctime": 1793328344704.9822
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.ulZKpb/29119C10-D8CF-4111-BBCC-D2EFFC8C23E8/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793279398770.3882,
+      "mtime": 1793279377048.1238,
+      "ctime": 1793279740694.3267
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.vwg4oz/782C8785-6456-4283-97C2-445D36E742EA/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793329285969.6394,
+      "mtime": 1793329217546.6877,
+      "ctime": 1793329863109.3381
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.wJeJIh/73DF0740-1D13-4781-BF53-6FD57D1BF52A/TuringClientLab.app/TuringClientLab",
+      "bytes": 41803520,
+      "allocatedBytes": 41803776,
+      "atime": 1793292680022.1248,
+      "mtime": 1793292642351.9624,
+      "ctime": 1793292858489.4363
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.wRk7aR/DE752513-80FD-41A6-93FA-9EA18A484596/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793323830755.3877,
+      "mtime": 1793323814750.8518,
+      "ctime": 1793323999817.979
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.wmCXi1/EDDF02DF-45D7-4B9D-B1A3-50C2D22652D3/TuringClientLab.app/TuringClientLab",
+      "bytes": 41803520,
+      "allocatedBytes": 41803776,
+      "atime": 1793292858975.403,
+      "mtime": 1793292839765.5154,
+      "ctime": 1793293418768.3418
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.wr5QFF/372404D0-C8E5-4724-AD2A-8BB4AD358F36/TuringClientLab.app/TuringClientLab",
+      "bytes": 41762704,
+      "allocatedBytes": 41762816,
+      "atime": 1793287594595.953,
+      "mtime": 1793287571521.283,
+      "ctime": 1793287947786.8894
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.wt01Ht/35446D92-6622-4442-A09F-F632BD13BAAB/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793329864313.474,
+      "mtime": 1793329856158.1406,
+      "ctime": 1793330141859.7686
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.xduZDe/A99C3BEA-435B-4AC6-B699-5437AABEC478/TuringClientLab.app/TuringClientLab",
+      "bytes": 41268880,
+      "allocatedBytes": 41271296,
+      "atime": 1793278879329.805,
+      "mtime": 1793278864700.2273,
+      "ctime": 1793279394952.9204
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.xtUfuI/BA662BA2-8F2A-40F4-84A8-1D9230F9D773/TuringClientLab.app/TuringClientLab",
+      "bytes": 39775920,
+      "allocatedBytes": 39776256,
+      "atime": 1793254191714.5142,
+      "mtime": 1793254183013.8018,
+      "ctime": 1793256485709.454
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.yH8Vpd/0CF93C3F-2E8E-441C-8E04-8016E8D11E43/TuringClientLab.app/TuringClientLab",
+      "bytes": 39665168,
+      "allocatedBytes": 39665664,
+      "atime": 1793235647400.0637,
+      "mtime": 1793235608617.2632,
+      "ctime": 1793237342496.7896
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.yNT8Hb/875AA8F0-AD15-4900-A6F2-C48890E7AE93/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793332673436.5742,
+      "mtime": 1793332636624.5728,
+      "ctime": 1793333059415.7405
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.zEJksA/5832570D-1F72-48BD-ACBC-0AF827BAAA8A/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793333060209.4895,
+      "mtime": 1793333046819.2876,
+      "ctime": 1793333287180.24
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.zKTPBw/27F4BDEF-317F-44F5-8AB1-636F00AB1C7F/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793328552660.1902,
+      "mtime": 1793328516856.4983,
+      "ctime": 1793328641516.0457
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.zaRQA6/29559756-B3B5-4EF8-A419-1AAD348E45BD/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793335794314.9272,
+      "mtime": 1793335787417.7317,
+      "ctime": 1793336169321.7087
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.zsCPRN/5A4F7481-1DC7-4236-A19A-56CDDCACCD11/TuringClientLab.app/TuringClientLab",
+      "bytes": 58496,
+      "allocatedBytes": 61440,
+      "atime": 1793335380371.6177,
+      "mtime": 1793335344224.563,
+      "ctime": 1793335541998.2856
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.zyuWv8/D95A6D92-D72D-460B-B31F-B080A33CFDAC/TuringClientLab.app/TuringClientLab",
+      "bytes": 40926624,
+      "allocatedBytes": 40927232,
+      "atime": 1793267162429.074,
+      "mtime": 1793266954782.7334,
+      "ctime": 1793268087120.6843
+    }
+  ],
+  "skipped": [
+    "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.0Hae7E/F8E50243-3AE2-42E4-B850-28585CE40B3C/TuringClientLab.app/TuringClientLab",
+    "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.Aosmxh/940A2808-3077-4BE7-83D2-1106932FC067/TuringClientLab.app/TuringClientLab",
+    "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.KajhOW/1DA13072-AC29-4743-8A25-A01641E7C6F7/TuringClientLab.app/TuringClientLab",
+    "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.VN7ohN/4B0592B9-BBC6-46E5-B8A3-52A8C06AF427/TuringClientLab.app/TuringClientLab",
+    "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.aXxR9B/5503E375-EB69-4E75-AEEE-248995A1D380/TuringClientLab.app/TuringClientLab",
+    "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Library/Caches/com.apple.containermanagerd/Dead/temp.lbMyAH/EEB7FD9B-4D90-4518-9528-908256DEB904/TuringClientLab.app/TuringClientLab"
+  ],
+  "bytes": 2937571520,
+  "allocatedBytes": 2937876480,
+  "rule": "Only TuringClientLab Mach-O executable inside simulator-owned Dead cache; file atime/mtime/ctime older than 48h; not installed or open; no app data or evidence"
+}

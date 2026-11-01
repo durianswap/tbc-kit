@@ -1,0 +1,134 @@
+{
+  "ios": {
+    "status": "PASS",
+    "groups": 11,
+    "elapsedMs": 6060,
+    "tests": [
+      {
+        "name": "101 NFT task: actual Native plan/validate/finalize, one approval, shared material",
+        "status": "PASS",
+        "ms": 4158
+      },
+      {
+        "name": "expiry after 1 accepted: retain successful prefix and stop",
+        "status": "PASS",
+        "ms": 274
+      },
+      {
+        "name": "expiry after 10 accepted: retain successful prefix and stop",
+        "status": "PASS",
+        "ms": 320
+      },
+      {
+        "name": "expiry after 11 accepted: retain successful prefix and stop",
+        "status": "PASS",
+        "ms": 337
+      },
+      {
+        "name": "approval expires before submission: zero signatures and zero submit",
+        "status": "PASS",
+        "ms": 10
+      },
+      {
+        "name": "transport rejected: retain results, no duplicate submit",
+        "status": "PASS",
+        "ms": 268
+      },
+      {
+        "name": "transport unknown: retain results, no duplicate submit",
+        "status": "PASS",
+        "ms": 275.0000000000009
+      },
+      {
+        "name": "transport known: retain results, no duplicate submit",
+        "status": "PASS",
+        "ms": 319
+      },
+      {
+        "name": "low-level broadcast expiry contains accepted and not-submitted txids",
+        "status": "PASS",
+        "ms": 75.99999999999909
+      },
+      {
+        "name": "approval and prefetch overlap; rejected job never signs",
+        "status": "PASS",
+        "ms": 8.99999999999909
+      },
+      {
+        "name": "tampered whole-job consent cannot sign or submit",
+        "status": "PASS",
+        "ms": 9
+      }
+    ]
+  },
+  "android": {
+    "status": "PASS",
+    "groups": 11,
+    "elapsedMs": 9009.300000000745,
+    "tests": [
+      {
+        "name": "101 NFT task: actual Native plan/validate/finalize, one approval, shared material",
+        "status": "PASS",
+        "ms": 6084.799999998882
+      },
+      {
+        "name": "expiry after 1 accepted: retain successful prefix and stop",
+        "status": "PASS",
+        "ms": 377.5
+      },
+      {
+        "name": "expiry after 10 accepted: retain successful prefix and stop",
+        "status": "PASS",
+        "ms": 499.09999999962747
+      },
+      {
+        "name": "expiry after 11 accepted: retain successful prefix and stop",
+        "status": "PASS",
+        "ms": 545.8000000007451
+      },
+      {
+        "name": "approval expires before submission: zero signatures and zero submit",
+        "status": "PASS",
+        "ms": 10.400000000372529
+      },
+      {
+        "name": "transport rejected: retain results, no duplicate submit",
+        "status": "PASS",
+        "ms": 395.59999999962747
+      },
+      {
+        "name": "transport unknown: retain results, no duplicate submit",
+        "status": "PASS",
+        "ms": 417.5
+      },
+      {
+        "name": "transport known: retain results, no duplicate submit",
+        "status": "PASS",
+        "ms": 532.7999999988824
+      },
+      {
+        "name": "low-level broadcast expiry contains accepted and not-submitted txids",
+        "status": "PASS",
+        "ms": 115.09999999962747
+      },
+      {
+        "name": "approval and prefetch overlap; rejected job never signs",
+        "status": "PASS",
+        "ms": 10.5
+      },
+      {
+        "name": "tampered whole-job consent cannot sign or submit",
+        "status": "PASS",
+        "ms": 9.599999999627471
+      }
+    ]
+  },
+  "integrity": {
+    "protectedFiles": 174,
+    "changed": 0
+  },
+  "limitations": [
+    "Synthetic reads and submission; public fixture signer; simulated approvals",
+    "Not Testnet broadcast evidence or real-device performance"
+  ]
+}

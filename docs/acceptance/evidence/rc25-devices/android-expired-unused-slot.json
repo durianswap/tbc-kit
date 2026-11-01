@@ -1,0 +1,70 @@
+{
+  "platform": "android",
+  "kind": "expired-unused-slot",
+  "candidate": "0.1.0-rc.25",
+  "account": "18Dfipm9V56Sx6sKMJNvR9Z2tyLAzJN8Ew",
+  "last": {
+    "method": "tbc_runNftMintJob",
+    "outcome": "signed",
+    "code": "",
+    "publicResult": {
+      "batches": [],
+      "confirmedSubmissionFee": "0",
+      "minted": 0,
+      "reason": "expired",
+      "requested": 1,
+      "scopeHash": "6af8794e0d417bfc867ab1fcbaa6aa61555445f8f1369fa4835048a215020d28",
+      "status": "stopped"
+    }
+  },
+  "counts": {
+    "wallet.signingRoles": 2,
+    "sqlite.begin": 32,
+    "sqlite.execute": 88,
+    "sqlite.commit": 32,
+    "accounts.current": 9,
+    "authority.read": 111,
+    "request": 2,
+    "clock.now": 47,
+    "permissions.load": 5,
+    "job.approve": 1,
+    "approvalUI": 1,
+    "http.request": 13,
+    "http.GET": 3,
+    "entropy.bytes": 1,
+    "approved": 1,
+    "engine.normalizeRequest": 3,
+    "engine.plan": 2,
+    "engine.validate": 13,
+    "job.authorize": 1,
+    "signer.sign": 20,
+    "vaultSigns": 20,
+    "engine.finalize": 10,
+    "validatedContinuation": 9,
+    "accounts.forChain": 10,
+    "http.POST": 10,
+    "broadcast.POST": 10,
+    "vmRecreated": 1
+  },
+  "approvalToSignMs": null,
+  "approvalToReturnMs": null,
+  "nativeSignMs": 0,
+  "signatureCount": 0,
+  "metrics": [
+    {
+      "iso": "2026-11-01T15:09:30.353Z",
+      "phase": "clock-read",
+      "monoMs": 15477919.802546
+    },
+    {
+      "iso": "2026-11-01T15:09:30.454Z",
+      "phase": "clock-read",
+      "monoMs": 15478020.708338
+    },
+    {
+      "status": "signed",
+      "phase": "wallet-return",
+      "monoMs": 15478027.055671
+    }
+  ]
+}

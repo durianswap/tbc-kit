@@ -1,5 +1,5 @@
 import type { OperationCheckpoint } from "../checkpoint.js";
-import { TwsApprovalError, TwsStateError } from "../errors.js";
+import { TwsStateError } from "../errors.js";
 import { deriveBroadcastIdempotencyKey } from "../identifiers.js";
 import { hashCanonical } from "../hash.js";
 import type { PortCall } from "../ports.js";
@@ -63,6 +63,32 @@ function isSendWorkflow(checkpoint: OperationCheckpoint): boolean {
   return method === "tbc_sendWorkflow" || method === "tbc_sendPreparedWorkflow";
 }
 
+/** Public, non-secret progress for a terminal send error; never infer acceptance
+ * from dispatch alone. Reuses the authenticated checkpoint, without new reads. */
+function broadcastFailureData(checkpoint: OperationCheckpoint, reason: string, rejectedTxid?: string,
+  memory: Readonly<Record<string, unknown>> = checkpoint.payload.memory): Readonly<Record<string, unknown>> {
+  const recorded = memory.broadcastProgress as { attempts?: readonly { params?: { transaction?: { txid?: string } }; result?: { txid?: string; status?: string } }[];
+    reconciliation?: { transactions?: readonly { txid: string; status: string }[] } } | undefined;
+  const accepted = new Set<string>(), uncertain = new Set<string>(), rejected = new Set<string>();
+  for (const attempt of recorded?.attempts ?? []) {
+    const id = attempt.params?.transaction?.txid;
+    if (!id) continue;
+    if (attempt.result?.txid === id && ["accepted", "known"].includes(attempt.result.status ?? "")) accepted.add(id);
+    else uncertain.add(id);
+  }
+  for (const tx of recorded?.reconciliation?.transactions ?? []) {
+    if (tx.status === "mempool" || tx.status === "confirmed") { accepted.add(tx.txid); uncertain.delete(tx.txid); }
+    if (tx.status === "rejected") { rejected.add(tx.txid); uncertain.delete(tx.txid); }
+  }
+  if (rejectedTxid) { rejected.add(rejectedTxid); uncertain.delete(rejectedTxid); }
+  const ids = bundle(checkpoint).transactions.map(t => t.txid);
+  return { reason, operationId: checkpoint.payload.operationId,
+    submittedTransactionIds: ids.filter(id => accepted.has(id)),
+    uncertainTransactionIds: ids.filter(id => uncertain.has(id)),
+    rejectedTransactionIds: ids.filter(id => rejected.has(id)),
+    notSubmittedTransactionIds: ids.filter(id => !accepted.has(id) && !uncertain.has(id) && !rejected.has(id)) };
+}
+
 function waitForBroadcastClock(
   checkpoint: OperationCheckpoint,
   memory: Readonly<Record<string, unknown>>,
@@ -124,7 +150,8 @@ export function reduceBroadcastClock(
   }
   const result = resultValue as { readonly now: string };
   if (Date.parse(result.now) >= Date.parse(String(checkpoint.payload.expiresAt))) {
-    throw new TwsApprovalError("RECEIPT_EXPIRED", "approval expired before broadcast");
+    return completeError(checkpoint, 4100, "Approval expired before broadcast", checkpoint.payload.memory,
+      broadcastFailureData(checkpoint, "RECEIPT_EXPIRED"));
   }
   const transactions = bundle(checkpoint).transactions;
   if (isSendWorkflow(checkpoint)) {
@@ -318,7 +345,8 @@ export function reduceBroadcastResponse(
     );
   }
   if (result.status === "rejected") {
-    return completeError(checkpoint, -32603, "TBC transaction broadcast was rejected");
+    return completeError(checkpoint, -32603, "TBC transaction broadcast was rejected", checkpoint.payload.memory,
+      broadcastFailureData(checkpoint, "BROADCAST_REJECTED", result.txid));
   }
   const previous = progress(checkpoint);
   const submittedTransactionIds = Object.freeze([
@@ -468,6 +496,7 @@ export function reduceReconciliationResponse(
       -32603,
       "TBC transaction broadcast could not be confirmed",
       memory,
+      broadcastFailureData(checkpoint, "SUBMISSION_UNCERTAIN", undefined, memory),
     );
   }
   const nextTransaction = transactions[requested.length];

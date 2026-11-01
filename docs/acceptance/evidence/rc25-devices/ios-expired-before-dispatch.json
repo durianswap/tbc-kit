@@ -1,0 +1,63 @@
+{
+  "platform": "ios",
+  "kind": "expired-before-dispatch",
+  "candidate": "0.1.0-rc.25",
+  "account": "1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL",
+  "last": {
+    "method": "tbc_runNftMintJob",
+    "outcome": "signed",
+    "code": "",
+    "publicResult": {
+      "batches": [],
+      "confirmedSubmissionFee": "0",
+      "minted": 0,
+      "reason": "expired",
+      "requested": 11,
+      "scopeHash": "53862fcce6ed447c8e4f9149db7184a32b844dd1c0f3c1e470221f3c3dce31f8",
+      "status": "stopped"
+    }
+  },
+  "counts": {
+    "accounts.current": 12,
+    "accounts.forChain": 12,
+    "approval.request": 2,
+    "approvalUI": 3,
+    "approved": 3,
+    "authority.read": 157,
+    "broadcast.POST": 12,
+    "clock.now": 61,
+    "engine.finalize": 12,
+    "engine.normalizeRequest": 5,
+    "engine.plan": 3,
+    "engine.validate": 21,
+    "entropy.bytes": 2,
+    "http.GET": 4,
+    "http.POST": 12,
+    "http.request": 16,
+    "job.approve": 1,
+    "job.authorize": 2,
+    "permissions.commit": 1,
+    "permissions.load": 8,
+    "permissionWrites": 1,
+    "request": 5,
+    "signer.sign": 23,
+    "sqlite.begin": 40,
+    "sqlite.commit": 40,
+    "sqlite.execute": 114,
+    "validatedContinuation": 9,
+    "vaultSigns": 23,
+    "vmRecreated": 3,
+    "wallet.signingRoles": 4
+  },
+  "approvalToSignMs": null,
+  "approvalToReturnMs": null,
+  "nativeSignMs": 0,
+  "signatureCount": 0,
+  "metrics": [
+    {
+      "monoMs": 3403729343.3952084,
+      "phase": "wallet-return",
+      "status": "signed"
+    }
+  ]
+}

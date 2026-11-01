@@ -1,0 +1,84 @@
+{
+  "time": "2026-11-01T11:07:54.946Z",
+  "rule": "Last access/modification/change older than 48h; unchanged audited file; not open; allowlisted regenerable GPU cache only",
+  "deleted": [
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Containers/Data/Application/F98ADCC9-2B6B-4EDD-AB0A-9A3F297E3222/Library/Caches/com.apple.WebKit.GPU/V8KWYKUAR4CE/modules.idx",
+      "bytes": 140136,
+      "blocks": 280,
+      "atimeMs": 1793218113985.1414,
+      "mtimeMs": 1793218113985.2783,
+      "ctimeMs": 1793218113985.496,
+      "eligibleTime": true,
+      "allocatedBytes": 143360
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Containers/Data/Application/F98ADCC9-2B6B-4EDD-AB0A-9A3F297E3222/Library/Caches/com.apple.WebKit.GPU/V8KWYKUAR4CE/monolithic_metal.pcm",
+      "bytes": 9803448,
+      "blocks": 19152,
+      "atimeMs": 1793218114591.019,
+      "mtimeMs": 1793218113947.6519,
+      "ctimeMs": 1793218113958.4272,
+      "eligibleTime": true,
+      "allocatedBytes": 9805824
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Containers/Data/Application/F98ADCC9-2B6B-4EDD-AB0A-9A3F297E3222/Library/Caches/com.apple.WebKit.GPU/functions.data",
+      "bytes": 458752,
+      "blocks": 896,
+      "atimeMs": 1793242904416.7974,
+      "mtimeMs": 1793229759369.2844,
+      "ctimeMs": 1793243314291.8313,
+      "eligibleTime": true,
+      "allocatedBytes": 458752
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Containers/Data/Application/F98ADCC9-2B6B-4EDD-AB0A-9A3F297E3222/Library/Caches/com.apple.WebKit.GPU/functions.list",
+      "bytes": 5084,
+      "blocks": 16,
+      "atimeMs": 1793242904416.5337,
+      "mtimeMs": 1793242904416.6333,
+      "ctimeMs": 1793242904416.7302,
+      "eligibleTime": true,
+      "allocatedBytes": 8192
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Containers/Data/Application/F98ADCC9-2B6B-4EDD-AB0A-9A3F297E3222/Library/Caches/com.apple.WebKit.GPU/libraries.data",
+      "bytes": 491520,
+      "blocks": 960,
+      "atimeMs": 1793242904415.8289,
+      "mtimeMs": 1793229759327.9272,
+      "ctimeMs": 1793243314290.9663,
+      "eligibleTime": true,
+      "allocatedBytes": 491520
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Containers/Data/Application/F98ADCC9-2B6B-4EDD-AB0A-9A3F297E3222/Library/Caches/com.apple.WebKit.GPU/libraries.list",
+      "bytes": 2172,
+      "blocks": 8,
+      "atimeMs": 1793242904415.4873,
+      "mtimeMs": 1793242904415.6106,
+      "ctimeMs": 1793242904415.768,
+      "eligibleTime": true,
+      "allocatedBytes": 4096
+    },
+    {
+      "path": "/Users/alex/Library/Developer/CoreSimulator/Devices/CCD4C673-62BE-41EA-8209-1519ED0BD392/data/Containers/Data/Application/F98ADCC9-2B6B-4EDD-AB0A-9A3F297E3222/Library/Caches/com.apple.WebKit.GPU/modules.timestamp",
+      "bytes": 0,
+      "blocks": 0,
+      "atimeMs": 1793218113558.4763,
+      "mtimeMs": 1793218113558.4763,
+      "ctimeMs": 1793218113558.4763,
+      "eligibleTime": true,
+      "allocatedBytes": 0
+    }
+  ],
+  "skipped": [],
+  "deletedBytes": 10901112,
+  "allocatedBytes": 10911744,
+  "filesystemAvailableDelta": 10240000,
+  "permanent": true,
+  "regenerable": true,
+  "appsRemoved": 0,
+  "accountOrDatabaseFilesRemoved": 0
+}

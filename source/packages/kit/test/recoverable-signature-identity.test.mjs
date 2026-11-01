@@ -4,7 +4,9 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import test from "node:test";
 
-const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+// Observe the same dependency instance as the installed bundle; patching a
+// workspace copy of noble cannot count calls made by a clean installed copy.
+const packageRoot = process.env.TBC_TEST_INSTALLED_KIT ?? resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 function observe(format) {
   const extension = format === "esm" ? "js" : "cjs";

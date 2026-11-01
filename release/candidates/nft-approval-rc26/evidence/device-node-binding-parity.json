@@ -1,0 +1,140 @@
+{
+  "status": "PASS",
+  "transactionsEqual": true,
+  "callsEqual": true,
+  "bindingsEqual": true,
+  "contextNote": "Uncontrolled device-run binding hashes differ because openSession binds wall-clock createdAt. With the same session creation time, complete binding payloads and hashes match.",
+  "kits": [
+    ".verify/nft-job-install-f1sefH/node_modules/@tbc/kit",
+    ".verify/nft-job-install-gCQAmT/node_modules/@tbc/kit"
+  ],
+  "diffs": [],
+  "runs": [
+    {
+      "bindings": [
+        {
+          "bindingHash": "6643282664d02439c8d48624ad27e5a949403aec117fa192a9308802cba61bce",
+          "payload": {
+            "accountId": "tbc:testnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+            "chainId": "tbc:testnet",
+            "contextHash": "84e95db7a5da1bf69cfb0aab5048193e696a6816680c8492588150259e871a33",
+            "expiresAt": "2026-11-01T00:02:00.000Z",
+            "method": "tbc_sendTransaction",
+            "operationHash": "a34b220f56e1d069ec955ca6e46ce9662ac2adb97bbc56e7a3676ca6b29d23cf",
+            "operationKind": "transaction",
+            "origin": "https://nft-stress.example",
+            "requestHash": "53843c9880f5a081d0b63f36f280c0949f93fa6faeacdeefac2f5a37cf81c6a8",
+            "sessionId": "stress",
+            "version": "1.0"
+          }
+        },
+        {
+          "bindingHash": "8c16df2fb9d097bac2f1dd21343701c5e3f61cd2fe8a2a8d6e573ad39ac9207d",
+          "payload": {
+            "accountId": "tbc:testnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+            "chainId": "tbc:testnet",
+            "contextHash": "84e95db7a5da1bf69cfb0aab5048193e696a6816680c8492588150259e871a33",
+            "expiresAt": "2026-11-01T00:02:00.000Z",
+            "method": "tbc_sendTransaction",
+            "operationHash": "8649e6bf94a21d6d3570b09a4cdc24220ca2610df4cd94c27b7eea1f618688fb",
+            "operationKind": "transaction",
+            "origin": "https://nft-stress.example",
+            "requestHash": "2d7681af055a19e4fbbfafc84bc1a1e095d30cc797053915f95cb550c0fa69f4",
+            "sessionId": "stress",
+            "version": "1.0"
+          }
+        }
+      ],
+      "txids": [
+        "5fe5d158da3bae8e164f5bf8ed8ab74506dce87423f12e76972f3b6aacae5109",
+        "1c0e154bbe879cb723349b3aada92dfe0d62f0bc345008c95668de138ef6ea11",
+        "25bb6013d51b247ac80fa34e5f60c25c6e36df53a53eb3d0026b5128df5c7278",
+        "90bc2c65ba0a3a1b1090aa302363a7c6123d5f78d221e22a18a8b87319c3aeaa",
+        "dbfaa143134a2e4f609706839063f925b05656567bcbaaf12a46154e78d85c89",
+        "362d12b9f8cba59b373beaae395d1e74c826673116a77309b2e9c6b01b20c15c",
+        "aa3f208e9e42c0bbb8350c419baa6279bc65b29714536c3054822066fb5067b6",
+        "412ea25f01c0e02475e3b198cf88de02ec8d2af12524c519feaba8f336039330",
+        "7d11561a0c43a5c9dbe75704d1c5383a3d519b64e2481c18493e01ed483e7d1a",
+        "4c46e06b21c9cc57279c6872976d4d64ec523247250912737650decef30b9a61",
+        "2e98a4028f6d641084ee60e2da913ed8e8a7d14c39ecc08f6e069378aa9ae0fc"
+      ],
+      "stats": {
+        "approvals": 1,
+        "signatures": 22,
+        "policyCalls": 2,
+        "accountCalls": 8
+      },
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      }
+    },
+    {
+      "bindings": [
+        {
+          "bindingHash": "6643282664d02439c8d48624ad27e5a949403aec117fa192a9308802cba61bce",
+          "payload": {
+            "accountId": "tbc:testnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+            "chainId": "tbc:testnet",
+            "contextHash": "84e95db7a5da1bf69cfb0aab5048193e696a6816680c8492588150259e871a33",
+            "expiresAt": "2026-11-01T00:02:00.000Z",
+            "method": "tbc_sendTransaction",
+            "operationHash": "a34b220f56e1d069ec955ca6e46ce9662ac2adb97bbc56e7a3676ca6b29d23cf",
+            "operationKind": "transaction",
+            "origin": "https://nft-stress.example",
+            "requestHash": "53843c9880f5a081d0b63f36f280c0949f93fa6faeacdeefac2f5a37cf81c6a8",
+            "sessionId": "stress",
+            "version": "1.0"
+          }
+        },
+        {
+          "bindingHash": "8c16df2fb9d097bac2f1dd21343701c5e3f61cd2fe8a2a8d6e573ad39ac9207d",
+          "payload": {
+            "accountId": "tbc:testnet:1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH",
+            "chainId": "tbc:testnet",
+            "contextHash": "84e95db7a5da1bf69cfb0aab5048193e696a6816680c8492588150259e871a33",
+            "expiresAt": "2026-11-01T00:02:00.000Z",
+            "method": "tbc_sendTransaction",
+            "operationHash": "8649e6bf94a21d6d3570b09a4cdc24220ca2610df4cd94c27b7eea1f618688fb",
+            "operationKind": "transaction",
+            "origin": "https://nft-stress.example",
+            "requestHash": "2d7681af055a19e4fbbfafc84bc1a1e095d30cc797053915f95cb550c0fa69f4",
+            "sessionId": "stress",
+            "version": "1.0"
+          }
+        }
+      ],
+      "txids": [
+        "5fe5d158da3bae8e164f5bf8ed8ab74506dce87423f12e76972f3b6aacae5109",
+        "1c0e154bbe879cb723349b3aada92dfe0d62f0bc345008c95668de138ef6ea11",
+        "25bb6013d51b247ac80fa34e5f60c25c6e36df53a53eb3d0026b5128df5c7278",
+        "90bc2c65ba0a3a1b1090aa302363a7c6123d5f78d221e22a18a8b87319c3aeaa",
+        "dbfaa143134a2e4f609706839063f925b05656567bcbaaf12a46154e78d85c89",
+        "362d12b9f8cba59b373beaae395d1e74c826673116a77309b2e9c6b01b20c15c",
+        "aa3f208e9e42c0bbb8350c419baa6279bc65b29714536c3054822066fb5067b6",
+        "412ea25f01c0e02475e3b198cf88de02ec8d2af12524c519feaba8f336039330",
+        "7d11561a0c43a5c9dbe75704d1c5383a3d519b64e2481c18493e01ed483e7d1a",
+        "4c46e06b21c9cc57279c6872976d4d64ec523247250912737650decef30b9a61",
+        "2e98a4028f6d641084ee60e2da913ed8e8a7d14c39ecc08f6e069378aa9ae0fc"
+      ],
+      "stats": {
+        "approvals": 1,
+        "signatures": 22,
+        "policyCalls": 2,
+        "accountCalls": 8
+      },
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      }
+    }
+  ]
+}

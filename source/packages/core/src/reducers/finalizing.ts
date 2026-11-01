@@ -3,7 +3,7 @@ import {
   invokeTransactionEngine,
   type TransactionEngine,
 } from "../engine.js";
-import { TwsApprovalError, TwsEngineError, TwsStateError } from "../errors.js";
+import { TwsEngineError, TwsStateError } from "../errors.js";
 import type { PortCall } from "../ports.js";
 import type { CoreTransition } from "../transitions.js";
 import { continueTransition, waitingTransition } from "../transitions.js";
@@ -109,7 +109,8 @@ export function reduceFinalizingClock(
   }
   const result = resultValue as { readonly now: string };
   if (Date.parse(result.now) >= Date.parse(String(checkpoint.payload.expiresAt))) {
-    throw new TwsApprovalError("RECEIPT_EXPIRED", "approval expired before finalizing");
+    return completeError(checkpoint, 4100, "Approval expired before finalizing", checkpoint.payload.memory,
+      { reason: "RECEIPT_EXPIRED", stage: "finalizing", operationId: checkpoint.payload.operationId });
   }
   const next = advance(checkpoint, {
     state: "finalizing",

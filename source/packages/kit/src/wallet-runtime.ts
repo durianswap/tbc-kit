@@ -2580,7 +2580,7 @@ export function createTbcWallet(options: KitWalletOptions): KitWalletRuntime {
       }
     };
     async function executeDappNftMintJobRequest(request: TbcJsonRpcRequest): Promise<TbcTransportDelivery> {
-      let body: { result: TbcNftMintJobResult } | { error: { code: -32603; message: string } };
+      let body: { result: TbcNftMintJobResult } | { error: { code: -32603 | -32602 | 4200 | 4100 | -32000; message: string; data?: { reason: string } | { name: "CONFLICT"; stage: "validation"; retryable: false; details: { reason: string } } } };
       const abort = new AbortController();
       try {
         const p = request.params as { version: string; chainId: string; from: string; collectionId: string;
@@ -2589,11 +2589,25 @@ export function createTbcWallet(options: KitWalletOptions): KitWalletRuntime {
         if (!p || typeof p !== "object" || Array.isArray(p) || p.version !== "1.0" ||
             p.chainId !== account.chainId || p.from !== account.address ||
             Object.keys(p).some(k => !["version", "chainId", "from", "collectionId", "items", "limits"].includes(k))) {
-          throw new Error("Invalid NFT mint job request");
+          throw Object.assign(new Error("Invalid NFT mint job request"), { code: -32602, reason: "INVALID_NFT_JOB" });
         }
         dappMultiRoundAbortByRequest.set(request.id, abort);
         body = { result: await runNftMintJob({ collectionId: p.collectionId, items: p.items, limits: p.limits, signal: abort.signal }) };
-      } catch { body = { error: { code: -32603, message: "NFT mint job unavailable or invalid; no automatic retry" } }; }
+      } catch (error) {
+        const code = error && typeof error === "object" ? Reflect.get(error, "code") : undefined;
+        const reason = error && typeof error === "object" ? Reflect.get(error, "reason") : undefined;
+        const messages: Readonly<Record<string, string>> = {
+          INVALID_NFT_JOB: "Invalid NFT mint job parameters",
+          NFT_JOB_UNAVAILABLE: "Wallet must configure nftMintJob approval and shared material adapters",
+          NFT_JOB_NOT_AUTHORIZED: "NFT mint job is not authorized for this account",
+          NFT_JOB_BUSY: "A bounded wallet job is already active",
+        };
+        body = reason === "NFT_JOB_BUSY"
+          ? { error: { code: -32000, message: messages.NFT_JOB_BUSY!, data: { name: "CONFLICT", stage: "validation", retryable: false, details: { reason } } } }
+          : typeof reason === "string" && Object.hasOwn(messages, reason)
+          ? { error: { code: code === -32602 || code === 4200 || code === 4100 || code === -32000 ? code : -32603, message: messages[reason]!, data: { reason } } }
+          : { error: { code: -32603, message: "NFT mint job failed; inspect retained results before any retry" } };
+      }
       finally { if (dappMultiRoundAbortByRequest.get(request.id) === abort) dappMultiRoundAbortByRequest.delete(request.id); }
       return immutable({ deliveryId: hashCanonical({ request, body, sessionId }),
         response: { jsonrpc: "2.0" as const, id: request.id, ...body }, events: [] });
@@ -3087,12 +3101,15 @@ export function createTbcWallet(options: KitWalletOptions): KitWalletRuntime {
       }
     };
     runNftMintJob = async (input) => {
-      if (activeNftMintJob || activeMultiRoundRun) throw new Error("A bounded wallet job is already active");
+      if (activeNftMintJob || activeMultiRoundRun) throw Object.assign(new Error("A bounded wallet job is already active"), { code: -32000, reason: "NFT_JOB_BUSY" });
       const view = activeAccountView(), account = view.accounts[0]!;
       const authority = { chainId: account.chainId, accountId: account.accountId, address: account.address,
         origin: boundAuthority.currentContext.origin, sessionId: boundAuthority.currentContext.sessionId };
       // Validate and own every item before awaiting permission or account reads.
-      const scope = createTbcNftMintJobScope({ authority, collectionId: input.collectionId, items: input.items, limits: input.limits });
+      let scope: TbcNftMintJobScope;
+      try { scope = createTbcNftMintJobScope({ authority, collectionId: input.collectionId, items: input.items, limits: input.limits }); }
+      catch { throw Object.assign(new Error("Invalid NFT mint job parameters"), { code: -32602, reason: "INVALID_NFT_JOB" }); }
+      if (!options.nftMintJob || !view.network.prepareNftMintJob) throw Object.assign(new Error("NFT mint job adapters are not configured"), { code: 4200, reason: "NFT_JOB_UNAVAILABLE" });
       const expectedAuthority = immutable(clone(boundAuthority));
       activeNftMintJob = true;
       try {
@@ -3103,7 +3120,7 @@ export function createTbcWallet(options: KitWalletOptions): KitWalletRuntime {
           const ids = p.caveats?.find(c => c.type === "restrictAccounts")?.value;
           return p.parentCapability === capability && Array.isArray(ids) && ids.includes(account.accountId);
         });
-        if (!permits("tbc_accounts") || !permits("tbc_sendTransaction")) throw new Error("NFT mint job is not authorized for this account");
+        if (!permits("tbc_accounts") || !permits("tbc_sendTransaction")) throw Object.assign(new Error("NFT mint job is not authorized for this account"), { code: 4100, reason: "NFT_JOB_NOT_AUTHORIZED" });
         const initial = checkedAuthority(await authoritySource.read());
         if (!same(initial, expectedAuthority) || initial.currentSession.state.connected !== true) {
           throw new Error("NFT mint job authority changed before authorization");

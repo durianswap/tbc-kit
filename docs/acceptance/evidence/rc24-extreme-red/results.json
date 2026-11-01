@@ -1,0 +1,21 @@
+{
+  "installed": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/.verify/nft-job-install-GLthHa/node_modules/@tbc/kit",
+  "version": "0.1.0-rc.24",
+  "status": "FAIL",
+  "results": [
+    {
+      "name": "extreme",
+      "files": 1,
+      "code": 1,
+      "ms": 25795.024125,
+      "tests": 7,
+      "passed": 6,
+      "failed": 1,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "5e74c32b75403d94b829cf86a245c8a4212c6ef92ab78c6a1f01c9a8b25166d2"
+    }
+  ],
+  "realBroadcasts": 0,
+  "devices": false
+}

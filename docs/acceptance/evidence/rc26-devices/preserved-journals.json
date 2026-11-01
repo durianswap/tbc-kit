@@ -1,0 +1,287 @@
+{
+  "status": "PASS",
+  "checkedAt": "2026-11-01T15:59:47.026Z",
+  "scope": "Local read-only equality against prior accepted records; no new chain query or submission",
+  "result": {
+    "ios": {
+      "status": "PASS",
+      "rows": 22,
+      "newTransactions": 0,
+      "pending": 0,
+      "records": [
+        {
+          "txid": "229675e2730c11989c4d3a77a00c899a1313fb5617b9efe8c442ab4dec9317b1",
+          "raw_hash": "264541745322fa095a075877f0ef08b5ad32104a27b4c726d19d4230851dc33f",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "257f123b5b970a9929814175f65270a18aee4837ebb165ff10d47a83cb387935",
+          "raw_hash": "1ff92b7cdc7e9f89a618b77d279bbcec1821e7716ee00e6a45b435b4c1024283",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "360c22d42697764bdb8799041c430df0ed00a611d26f5cb71ea31c6e2758c0e2",
+          "raw_hash": "269f03cebf417f71521a26e4bc38a1fb16fda8ed6186f1ed86b0323bb972d968",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "3d536f3fb00dfacb43885e45f33c39f8e0a46c53cc2701f92e3dcfdb75d90f9e",
+          "raw_hash": "41b9dca35fe86c0d6284c8cbd9bff5bd7e1409118b3e13d4357d12ad2b8e3f9c",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "4ccfd33d6b62654bd6f2dc475095b90f00e3e05bc8d3fca8972e0cf1f745a958",
+          "raw_hash": "0dd91001976933303b7947640c50e677cadf8fd45d18406412984ce25acc8b80",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "5bf250a77874f95ef8bd1818adc4ddf945b6baf145a4af443d97ffffa9773f23",
+          "raw_hash": "8326a6e9a588349948168b9fa6fa263f980b79deb2c03aefe04f061d2e379c99",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "5bf78c57cf6748a8a1fb071d2717817a134d0ff287c920e33039ed4e796f1a7e",
+          "raw_hash": "9c8d241e011bf43d37d9cdea46f118f655999453155f255731ad6388ec64fb73",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "6c1eac54310b8d884fd51e16ec5d8fc39cfd456a6c20ad944e7792915ab90fed",
+          "raw_hash": "a8b5f3d00f9cc1af0ec6507a42abf84cb38215d7955f2bbae88b9bfaaa067704",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "70c48e8ceb5ccf4fe81a1d6f0f003e5cb5d5c954994d9139b40b29909e6e5afd",
+          "raw_hash": "4816470584275825bda7247d1ab73379855c0c0c1185b746791814f45ced4410",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "83ba688068e60cfe6aa1401513fda687b9ef4720d6d3bcde74cb5e5fa7ad69aa",
+          "raw_hash": "ae94a659eb847bf152b12f26ef7d03a5c7e54eb5818b8eae09acbd534e498149",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "902a5d98d19edab9aa23dc99194598201dd65c83978ff05281318af6082e14de",
+          "raw_hash": "e9a78746087c2b036ab3a49c8a964d9b0012bc0a6ca1d8694945935fff8ebcc1",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "9b1ef788d0073127f242fe1151fa2c7d82dd489bae188a5bf293d09e462520f5",
+          "raw_hash": "d0a6ffa223ed4d755f69b4acbd29997966aaca38f8b88f5e6ece6fd41777bcdf",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "b32d982c0488317483324f7d6a9ae49df4992dcae24d35755f8fc3afefa3483c",
+          "raw_hash": "a4c22ce2db1ee9b3267c3e8a0f83f3d8b8053271a76ba80e11ccbc8e0c2691ed",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "b87b7c3001a57508392b63bdd7e148f40f66e81341fcc288f54329c8989cbc8b",
+          "raw_hash": "0864ac5aa3a08d604f89c24ac5e12b5acb2b5c688e019693b616c7c8614c9433",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "c4e4744a4dac89b725f5b1df28921bcb9445c16d6168d95c3d45a0620f4a9470",
+          "raw_hash": "3266b71577b334afa39bf32347139bce33837ef24982b6de42e5ce6f8c193128",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "c7a6c27a6451a69ed4567526c5ce4ca00084ed0bb106f8cb4dafba9580f2f26b",
+          "raw_hash": "bad6229831a604fad26bf73db5412c14f30ce827b8685886d346262143ddf07d",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "c88ebbe804e1f9f672fcc984bed9e4e2b09d286ac3b5de9d86721faeae472258",
+          "raw_hash": "1625f1884cd2312095c1866be2139a2a03a03bce108a3a64fbb77b0f6d686ff8",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "d2c61a16d396b14a536e11e83abaee2b6094761043f3d4f8818e064fb6feddf7",
+          "raw_hash": "5d5ffdc6650b553dc63147a67a0cdebc4b988ca0fb165f57797499542d6b0d0c",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "d43a6139be51e62d3ea144e416e56e8371b285ac5d9bb1774f988b8e6eb49528",
+          "raw_hash": "b174b99958600927e83c520890412a345fab378d46a1c9ba78d0febe42c628b3",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "dca5d8371c4c83ced2bbc1144b354d4aaab913160dd780eb7918b511fe3fbaf6",
+          "raw_hash": "af4aafcb30c5092de2eac062133bc6b336fe5eca9df18016c57259f02eb0d837",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "dd7e78b57db6eba13aa0f03e594e30f6c9113bec4bb322a3aaa6b303cf3b35cf",
+          "raw_hash": "3bd2c45d6a6bca46376ad9f0972a207cc43f20892edf99accbf08624301fa8f1",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "f48e7167ec575c5a5d820a5c72d12e0b7454b66525c322f79a6b8c90688d2fda",
+          "raw_hash": "c5825d061e7fcb8c8d99a9e866fd3bad24dce2959b095136c0c7c603637bf380",
+          "state": "completed",
+          "status": "accepted"
+        }
+      ]
+    },
+    "android": {
+      "status": "PASS",
+      "rows": 22,
+      "newTransactions": 0,
+      "pending": 0,
+      "records": [
+        {
+          "txid": "1a81ac0ad5c080440a3c311446381b05446dd3b2f4d4497f79cad8b3dffb35f0",
+          "raw_hash": "34764307a3f98e534b0c94acbe7519c870417fe6749023d6405c5ec524ed33c7",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "2b604bcccbf3b32267d45679ce30458444d74c80d369c1679051c861f396bc74",
+          "raw_hash": "5bf04b0ccdd7db09403e6034e01b592b22f89152683970c2e27a203147132c2d",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "34cee872733e497a39896fd1f8de9d910d4146d93073a0e769b7bb958a5e89a7",
+          "raw_hash": "775cefe9ba139caa07480ef52c84bf8e9f23ce04eb5a80ccdb42b3f7407ff826",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "3c3a5611daad7090e0ab0d7309138fc9455ae586161158cb4098016cf3fe9f4c",
+          "raw_hash": "6b24a4495639029bb9b95818fd9dc35f3bd8afc34e6dc6734c609827a71225ae",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "5129a4b5ad11e6e8d8626412b27ee1d44905a585585fd3dc1affcb17f4d961e1",
+          "raw_hash": "3b8d9a28456aee52c5556558fbebb399afd853fa09e038df7952128bbcad7e1a",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "6124f0423e33daed0e0cade5cf52eeb6bce36b0fa8def54f9ba159e98f064e1e",
+          "raw_hash": "3b337d2b813bd45385311c9950758f5a5a748676c3fa83fcbb31c9561b66a413",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "63fa1a08a3ba342494bddbc775d4f091d5c27e0dd3b3156401c433ab4aae3512",
+          "raw_hash": "3a75dd6fe66e22c22a75719f6e409bb14a251d3bdd9b3dc2fcde316dd1bb935d",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "7bab60e165c246ef300b8fa2f313d2b5b430f044d689588a094ecbf37c590a72",
+          "raw_hash": "63cb692a79d83461d40dbafb1988f9d1ffde74e31ce29452909ab2b1bfff7ac3",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "7d05c71a593e0b0057122ec077c525e0ec7844542d32292b691d5ff0af25c266",
+          "raw_hash": "061e7a30ee671b679a5b1c21e4307ee85f4509661b3150080cf453954bad703a",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "8762b93f76adc9be6daf1011e2835b8eff5361d4fdf4b3d36872c85c5f96ff3d",
+          "raw_hash": "fe485f509f826424d6db77cf4389b9be75d283182d7bdc6f17b5a56bb3092f70",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "89523b51b056ed0aa2bd8ac24193fd9e0a05473730d959cb49449de230bd56d9",
+          "raw_hash": "eba25a44540663a2f37655ac9c164e98ab3baf034a762b7bb1b4270d00deb51c",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "8dbc918e9e81db5014120391e3cb8ded7d16448f26ff719c1bb4485e8295c98e",
+          "raw_hash": "e4c986f2030fc426f6025141c4f3c0cf7fdc7bc8b5b258a6ad93b3c896f93b25",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "966ff9e42a252da5fbc884b36a9e583db9e4e894e078dc6d4039d3654878adb3",
+          "raw_hash": "4f2803ba345ff25060682079d6721f0ff85529cd733d713dbd1f9fa11245f5e0",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "9a3d38131bc7b8849b82ab469dde2361fee62b1986d186c318138420911f56e7",
+          "raw_hash": "a08bccbf043a14b3ed64a4404bfebe727dbe2426b975559477b9205a677773dd",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "a863fa9c4dc563ece4f2f46f1cc5e55888ea9387ad6af1f77bd9c3f07b543c00",
+          "raw_hash": "d40a33264086340cd547e4058a5b4e7fe50690f9f3bbc2b1f5b59e5686678fc6",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "c278c3cb666e2cec557ebb5f114e15c84a001dcafe3066e85813f9c3adbe7a6a",
+          "raw_hash": "71bd248844e9ac8436a7493ffc822f5cfa55f009f9ab743f72a9d32f92f346d7",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "d14f6dd9f4a3f85384d2c3672e564a177087494e44cec673f1bd05aeb5c480af",
+          "raw_hash": "2a7ee52fabec8e19522da5aa187b84b1f6425455ea4bb9d75f3af25792d121b7",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "d2bc97e3fb296b0f71e140004464fba0dd5a092aa6e8aa07a560448990a5f246",
+          "raw_hash": "b9c1b3a857f87ada7fb86b7257a99ebaf2cde3babc71327104c160b7dae9bba9",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "d6ffc05d228adaf6a5eb5dd62dc0a0085ede2560befd62b0a27e07f0c647dac1",
+          "raw_hash": "fc2d7256054e6b74760880d805341c99dd815424c4e8b188e31055e7f9ac7459",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "e86b1d44bd8fd162da9cb7c0b3d25794793b4ca3f2da5f9e6f5a6b3637844e87",
+          "raw_hash": "d92efd1270979b9b8aab225e4281a1d75bec3ba44e0e5e416a2ebfe0a7c7b585",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "f3bb3b01e9c7fe419ef3a70e1f52f8586f2b5bf7e9849fdc95f6ee7b047e4cbf",
+          "raw_hash": "574d5d40d8dc47325178ccf442fe2b2e66b540dcc72ac52c450d1afa1add7662",
+          "state": "completed",
+          "status": "accepted"
+        },
+        {
+          "txid": "f710035e90573304ae221add9d9b426edac8672bac29e03866262b4037dcf445",
+          "raw_hash": "6ad82be6222c1e64c076bbdd7d932a944f08ac79cae3e92aaf4b08ec4d062f6b",
+          "state": "completed",
+          "status": "accepted"
+        }
+      ]
+    }
+  }
+}

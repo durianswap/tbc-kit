@@ -1,0 +1,64 @@
+{
+  "platform": "android",
+  "kind": "partial-budget",
+  "candidate": "0.1.0-rc.25",
+  "account": "18Dfipm9V56Sx6sKMJNvR9Z2tyLAzJN8Ew",
+  "last": {
+    "method": "tbc_runNftMintJob",
+    "outcome": "rejected",
+    "code": "-32603"
+  },
+  "counts": {
+    "wallet.signingRoles": 3,
+    "sqlite.begin": 39,
+    "sqlite.execute": 110,
+    "sqlite.commit": 39,
+    "accounts.current": 12,
+    "authority.read": 157,
+    "request": 4,
+    "clock.now": 61,
+    "permissions.load": 8,
+    "approval.request": 2,
+    "approvalUI": 3,
+    "approved": 3,
+    "permissions.commit": 1,
+    "permissionWrites": 1,
+    "engine.normalizeRequest": 5,
+    "http.request": 19,
+    "http.GET": 7,
+    "entropy.bytes": 2,
+    "engine.plan": 3,
+    "engine.validate": 21,
+    "signer.sign": 23,
+    "vaultSigns": 23,
+    "engine.finalize": 12,
+    "accounts.forChain": 12,
+    "http.POST": 12,
+    "broadcast.POST": 12,
+    "vmRecreated": 2,
+    "job.approve": 2,
+    "job.authorize": 2,
+    "validatedContinuation": 9
+  },
+  "approvalToSignMs": null,
+  "approvalToReturnMs": null,
+  "nativeSignMs": 0,
+  "signatureCount": 0,
+  "metrics": [
+    {
+      "iso": "2026-11-01T15:05:50.010Z",
+      "phase": "clock-read",
+      "monoMs": 15257576.765316
+    },
+    {
+      "iso": "2026-11-01T15:05:50.131Z",
+      "phase": "clock-read",
+      "monoMs": 15257697.901358
+    },
+    {
+      "status": "rejected",
+      "phase": "wallet-return",
+      "monoMs": 15257763.923525
+    }
+  ]
+}

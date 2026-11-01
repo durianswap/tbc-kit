@@ -17,6 +17,7 @@ import { waitingTransition } from "../transitions.js";
 import { assertPortResult, assertValidTws } from "../validation.js";
 import {
   advance,
+  completeError,
   makeCalls,
   nextRevision,
   operationOf,
@@ -213,7 +214,8 @@ export function reduceApprovalClock(
   assertPortResult("clock.now", resultValue);
   const result = resultValue as { readonly now: string };
   if (Date.parse(result.now) >= Date.parse(String(checkpoint.payload.expiresAt))) {
-    throw new TwsApprovalError("RECEIPT_EXPIRED", "approval binding has expired");
+    return completeError(checkpoint, 4100, "Approval expired before review", checkpoint.payload.memory,
+      { reason: "RECEIPT_EXPIRED", stage: "approval", operationId: checkpoint.payload.operationId });
   }
   const binding = checkpoint.payload.memory.approvalBinding as ApprovalBinding;
   const preview = checkpoint.payload.memory.approvalPreview;

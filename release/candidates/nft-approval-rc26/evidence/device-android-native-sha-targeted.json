@@ -1,0 +1,3188 @@
+{
+  "status": "PASS",
+  "kit": "0.1.0-rc.26",
+  "variant": "native-sha-targeted",
+  "profileRuns": [
+    {
+      "repeat": 0,
+      "elapsedMs": 2720.16316800192,
+      "stats": {
+        "approvals": 1,
+        "signatures": 22,
+        "policyCalls": 2,
+        "accountCalls": 8
+      },
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "profile": {
+        "sha256Bytes": {
+          "calls": 1259,
+          "totalMs": 57.08975496888161,
+          "selfMs": 57.08975496888161
+        },
+        "canonicalize": {
+          "calls": 17244,
+          "totalMs": 341.6766158081591,
+          "selfMs": 341.6766158081591
+        },
+        "hashCanonical": {
+          "calls": 683,
+          "totalMs": 1035.4220059849322,
+          "selfMs": 804.136592976749
+        },
+        "assertValidTws": {
+          "calls": 1332,
+          "totalMs": 679.2889991477132,
+          "selfMs": 679.2889991477132
+        },
+        "createCheckpoint": {
+          "calls": 122,
+          "totalMs": 951.3559139966965,
+          "selfMs": 78.91819815337658
+        },
+        "verifyCheckpoint": {
+          "calls": 459,
+          "totalMs": 7.307620953768492,
+          "selfMs": 4.262286905199289
+        },
+        "snapshotTransition": {
+          "calls": 122,
+          "totalMs": 11.077336005866528,
+          "selfMs": 7.849138036370277
+        },
+        "deriveHostTransitionIdentity": {
+          "calls": 122,
+          "totalMs": 469.80088498070836,
+          "selfMs": 0.745381984859705
+        },
+        "signControlledTask": {
+          "calls": 22,
+          "totalMs": 381.03070299327374,
+          "selfMs": 381.03070299327374
+        }
+      },
+      "txids": [
+        "5fe5d158da3bae8e164f5bf8ed8ab74506dce87423f12e76972f3b6aacae5109",
+        "1c0e154bbe879cb723349b3aada92dfe0d62f0bc345008c95668de138ef6ea11",
+        "25bb6013d51b247ac80fa34e5f60c25c6e36df53a53eb3d0026b5128df5c7278",
+        "90bc2c65ba0a3a1b1090aa302363a7c6123d5f78d221e22a18a8b87319c3aeaa",
+        "dbfaa143134a2e4f609706839063f925b05656567bcbaaf12a46154e78d85c89",
+        "362d12b9f8cba59b373beaae395d1e74c826673116a77309b2e9c6b01b20c15c",
+        "aa3f208e9e42c0bbb8350c419baa6279bc65b29714536c3054822066fb5067b6",
+        "412ea25f01c0e02475e3b198cf88de02ec8d2af12524c519feaba8f336039330",
+        "7d11561a0c43a5c9dbe75704d1c5383a3d519b64e2481c18493e01ed483e7d1a",
+        "4c46e06b21c9cc57279c6872976d4d64ec523247250912737650decef30b9a61",
+        "2e98a4028f6d641084ee60e2da913ed8e8a7d14c39ecc08f6e069378aa9ae0fc"
+      ],
+      "bindings": [
+        "e415e88f3a1a3de5c4af0c4c57b3ef580cf78a20d36a1d734b41e8a5d6723288",
+        "e91cb1605d7a8853ab4376b5a1a10bb3776ff70ce0cc11daee6e8c15adc24f26"
+      ]
+    },
+    {
+      "repeat": 1,
+      "elapsedMs": 1710.8765420019627,
+      "stats": {
+        "approvals": 1,
+        "signatures": 22,
+        "policyCalls": 2,
+        "accountCalls": 8
+      },
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "profile": {
+        "canonicalize": {
+          "calls": 17246,
+          "totalMs": 288.8882280178368,
+          "selfMs": 288.8882280178368
+        },
+        "sha256Bytes": {
+          "calls": 1257,
+          "totalMs": 46.45659602060914,
+          "selfMs": 46.45659602060914
+        },
+        "hashCanonical": {
+          "calls": 683,
+          "totalMs": 988.7652909904718,
+          "selfMs": 772.0244990997016
+        },
+        "assertValidTws": {
+          "calls": 1332,
+          "totalMs": 265.8653339743614,
+          "selfMs": 265.8653339743614
+        },
+        "createCheckpoint": {
+          "calls": 122,
+          "totalMs": 789.0192090086639,
+          "selfMs": 51.335287023335695
+        },
+        "verifyCheckpoint": {
+          "calls": 459,
+          "totalMs": 4.828095030039549,
+          "selfMs": 2.2864340357482433
+        },
+        "snapshotTransition": {
+          "calls": 122,
+          "totalMs": 5.957666032016277,
+          "selfMs": 2.3896609507501125
+        },
+        "deriveHostTransitionIdentity": {
+          "calls": 122,
+          "totalMs": 460.7615459598601,
+          "selfMs": 0.5839239545166492
+        },
+        "signControlledTask": {
+          "calls": 22,
+          "totalMs": 93.40200099349022,
+          "selfMs": 93.40200099349022
+        }
+      },
+      "txids": [
+        "5fe5d158da3bae8e164f5bf8ed8ab74506dce87423f12e76972f3b6aacae5109",
+        "1c0e154bbe879cb723349b3aada92dfe0d62f0bc345008c95668de138ef6ea11",
+        "25bb6013d51b247ac80fa34e5f60c25c6e36df53a53eb3d0026b5128df5c7278",
+        "90bc2c65ba0a3a1b1090aa302363a7c6123d5f78d221e22a18a8b87319c3aeaa",
+        "dbfaa143134a2e4f609706839063f925b05656567bcbaaf12a46154e78d85c89",
+        "362d12b9f8cba59b373beaae395d1e74c826673116a77309b2e9c6b01b20c15c",
+        "aa3f208e9e42c0bbb8350c419baa6279bc65b29714536c3054822066fb5067b6",
+        "412ea25f01c0e02475e3b198cf88de02ec8d2af12524c519feaba8f336039330",
+        "7d11561a0c43a5c9dbe75704d1c5383a3d519b64e2481c18493e01ed483e7d1a",
+        "4c46e06b21c9cc57279c6872976d4d64ec523247250912737650decef30b9a61",
+        "2e98a4028f6d641084ee60e2da913ed8e8a7d14c39ecc08f6e069378aa9ae0fc"
+      ],
+      "bindings": [
+        "9033d7b1bf4bd9cdd3152e075538f1bb5252548f75b4e18df3fec17cda1a0c4e",
+        "70afe2d51e7d3914f428422301a929813c44b68f3cebd54e35a2d409ba035568"
+      ]
+    },
+    {
+      "repeat": 2,
+      "elapsedMs": 1695.2115010023117,
+      "stats": {
+        "approvals": 1,
+        "signatures": 22,
+        "policyCalls": 2,
+        "accountCalls": 8
+      },
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "profile": {
+        "canonicalize": {
+          "calls": 17246,
+          "totalMs": 286.90709288418293,
+          "selfMs": 286.90709288418293
+        },
+        "sha256Bytes": {
+          "calls": 1257,
+          "totalMs": 44.7328180000186,
+          "selfMs": 44.7328180000186
+        },
+        "hashCanonical": {
+          "calls": 683,
+          "totalMs": 981.9573760330677,
+          "selfMs": 769.7335660494864
+        },
+        "assertValidTws": {
+          "calls": 1332,
+          "totalMs": 254.6410989165306,
+          "selfMs": 254.6410989165306
+        },
+        "createCheckpoint": {
+          "calls": 122,
+          "totalMs": 782.1450789794326,
+          "selfMs": 50.93332405760884
+        },
+        "verifyCheckpoint": {
+          "calls": 459,
+          "totalMs": 4.730464994907379,
+          "selfMs": 2.331674035638571
+        },
+        "snapshotTransition": {
+          "calls": 122,
+          "totalMs": 4.344038017094135,
+          "selfMs": 1.9423760324716568
+        },
+        "deriveHostTransitionIdentity": {
+          "calls": 122,
+          "totalMs": 457.6942560002208,
+          "selfMs": 0.5696710050106049
+        },
+        "signControlledTask": {
+          "calls": 22,
+          "totalMs": 96.74925000593066,
+          "selfMs": 96.74925000593066
+        }
+      },
+      "txids": [
+        "5fe5d158da3bae8e164f5bf8ed8ab74506dce87423f12e76972f3b6aacae5109",
+        "1c0e154bbe879cb723349b3aada92dfe0d62f0bc345008c95668de138ef6ea11",
+        "25bb6013d51b247ac80fa34e5f60c25c6e36df53a53eb3d0026b5128df5c7278",
+        "90bc2c65ba0a3a1b1090aa302363a7c6123d5f78d221e22a18a8b87319c3aeaa",
+        "dbfaa143134a2e4f609706839063f925b05656567bcbaaf12a46154e78d85c89",
+        "362d12b9f8cba59b373beaae395d1e74c826673116a77309b2e9c6b01b20c15c",
+        "aa3f208e9e42c0bbb8350c419baa6279bc65b29714536c3054822066fb5067b6",
+        "412ea25f01c0e02475e3b198cf88de02ec8d2af12524c519feaba8f336039330",
+        "7d11561a0c43a5c9dbe75704d1c5383a3d519b64e2481c18493e01ed483e7d1a",
+        "4c46e06b21c9cc57279c6872976d4d64ec523247250912737650decef30b9a61",
+        "2e98a4028f6d641084ee60e2da913ed8e8a7d14c39ecc08f6e069378aa9ae0fc"
+      ],
+      "bindings": [
+        "7027ef3c71e1f01c7cc073ecf25a1786c246991be7ea67af1e6ec9c122c8039a",
+        "70a39ae4300d53c993ac1cf5b2e5c10175de87f1cb616606dbbf464ca23a484c"
+      ]
+    }
+  ],
+  "native": "0.1.0-rc.23.native.2",
+  "userAgent": "Android private Hermes 0.81.5; isolated synthetic profile",
+  "elapsedMs": 24881.388137001544,
+  "tests": [
+    {
+      "name": "local 11-NFT batch 1",
+      "status": "PASS",
+      "ms": 2993.1300849989057
+    },
+    {
+      "name": "local 11-NFT batch 2",
+      "status": "PASS",
+      "ms": 1741.7430840022862
+    },
+    {
+      "name": "local 11-NFT batch 3",
+      "status": "PASS",
+      "ms": 1725.9670009985566
+    },
+    {
+      "name": "native fence expiry 120000: typed result, no signing or submission",
+      "status": "PASS",
+      "ms": 52.44562499970198
+    },
+    {
+      "name": "native fence expiry 120001: typed result, no signing or submission",
+      "status": "PASS",
+      "ms": 48.55066600069404
+    },
+    {
+      "name": "before-deadline adapter failure stays an error",
+      "status": "PASS",
+      "ms": 59.524499997496605
+    },
+    {
+      "name": "tampered consent is still rejected after expiry",
+      "status": "PASS",
+      "ms": 51.65316699817777
+    },
+    {
+      "name": "parallel prefetch survives; rejection never signs",
+      "status": "PASS",
+      "ms": 49.78658299893141
+    },
+    {
+      "name": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "status": "PASS",
+      "ms": 407.6475419998169
+    },
+    {
+      "name": "101 NFT bounded job: one approval, unchanged material reads",
+      "status": "PASS",
+      "ms": 17691.8084250018
+    },
+    {
+      "name": "native SHA exact subviews, independent vectors, unchanged inputs",
+      "status": "PASS",
+      "ms": 53.796667002141476
+    }
+  ],
+  "metrics": [
+    {
+      "test": "native fence expiry 120000: typed result, no signing or submission",
+      "approvals": 1,
+      "signatures": 0,
+      "policyCalls": 0,
+      "accountCalls": 3,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "submissions": 0
+    },
+    {
+      "test": "native fence expiry 120001: typed result, no signing or submission",
+      "approvals": 1,
+      "signatures": 0,
+      "policyCalls": 0,
+      "accountCalls": 3,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "submissions": 0
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "ms": 17639.937508001924,
+      "approvals": 1,
+      "signatures": 202,
+      "policyCalls": 11,
+      "accountCalls": 26,
+      "reads": {
+        "index": 1,
+        "native": 1,
+        "raw": 0,
+        "decoded": 0,
+        "status": 0,
+        "reconcile": 0
+      },
+      "minted": 101,
+      "batches": 11,
+      "txids": [
+        "c9b05ac0536422c7129ffd5017f072da8a28a3504a1ef3ea20e3850504ae39e3",
+        "9f4ba98f8f8f7d7667852188d001de2c8543d290f0126c45e1db6a8b807c6784",
+        "51481a910ae97e983a691cec5d183796a7b7f3275f325af162073a6099b5cea5",
+        "cbfdd172900f144430388dd2cafadb24c0061c33b391e556dac6fb57b2bceed3",
+        "28768c23d9644fc22854dd3e93349bf455df65508cc4c4273ce3953765363eb4",
+        "060aa321fdb7dced35907b33d15772d8974d0ff7d060f10d25d101d09c2b1334",
+        "6b5dcd485f2d22e5b27dcbe7d0f850cce3ac893f62536dafc6f866aa6934ad72",
+        "e91934945c0bba58e72da2b1ef0f216ee47cf23e63223ff91286169d511099ea",
+        "61ff360979b72b59e86fb07cbe0f80f49ad4fd8e2a7d479c9d6b687f4e58d625",
+        "f0b51dacb87ef1197def1dab18eedb3aa3611b88b7453c28f34b68686baa0277",
+        "220f92e9b56a52da4945ef4d544c46dee7548ca99a66c7b4339ea8b0ba4a8936",
+        "7116e5ee2f2cfac4741f69f2101182b3aab675c5f76479c34ef8474ef47e0829",
+        "e1b22a0c67b6e4dd52bb2175326463e555483df6850c9c41d9d7ef74a27f679f",
+        "d11d005d97b384326a33b041682c6c35814cd46f0f3ada27cc22051d51974d83",
+        "1cbb2063b1f26c3daa680b8072f8f32e5dcaf416792a8a22125c281f00ea859c",
+        "b2d6c8f844123f667747f811437a5c81507b531bee23511b89e8e3ec0ab05e68",
+        "4fe11bdfdb1b416e0b2df12ecea4e6ff62401ff0ad04f8ee12783d53c146ee88",
+        "4e59cce79fe026be4fdf63e4897a420620efeff0beb7c03a503b989e147179a8",
+        "b7652c42c49d0a452ef493ec865786572ffaa4581858bdc74f55e7f87ff10f1d",
+        "f5e90cce1cc83df3138b90bb76be4e972023e4db0a0189158c5458677f00d9b9",
+        "24709b82f6ec3715d7310115c148cc84305d366b30b552d406a24a80988076f6",
+        "bb7bfbf08915ea923fb846f568740380d7a5d25c2a3688c1e0673354b153af2b",
+        "8515ca6abd3f784f4ab1640a9c901fc8b1a1cd311f6c0b97247e81bea71d5689",
+        "c15b4ab8594e647b6b81f0d97ecc6c2f3d9fc3f6c7496a2de6f0b67eb5b79148",
+        "89149d664d135f9720de3cf9c620d6a2cfb910843c06b0b3adca4e57c36885a1",
+        "15da4baf8c8f97d01a3507fe4e9e787ec4f73d43201e6f3a3bdc15888bfd883a",
+        "40267eaccf927d70f81096599ddb1be2c706f19ea622709d22b4ebc1195a3d42",
+        "6c4eff3a479753c793f400c661c3a29f05ae29d92c117f71c614512b5e25afbe",
+        "b2d8fdf005c2a0ec1b1a32ddbb89c9dfa9096d53965089f8e9a397717e047cbd",
+        "d7df9fbfa08f1d7a488bbe8f7f31cf8216c381508184e4915db1c90bb86646d8",
+        "e57ce3f6ab56a974db86a76bd84908d408956a7f4edab8521606656fe20d525c",
+        "1ac3d800442174135a7a7e901a77f767bfca7d84fda1441d0ecbd39e10e897c6",
+        "9a63a8856304c53bc3be9f958e8586c9b560e8ec7003bf6f4c61f4660f2a60b5",
+        "bacc89c1747dd7796d92ba079c0ff833f9137fed0d5413969a6b6ac62c3f6460",
+        "518cdf0016a10ff81c6cfbd53e47774ab809fd728f8c4806bdb0392ad0e1bfd6",
+        "7ed3535514560979b5d2e8b38e47882391ff1ff45c06f19d6c756ca3c25ce331",
+        "8132d9a138bce5ad8179a51f900c8bca64a58d8d6a2a36e6ce2eaf9fd3839ccf",
+        "121617851d5011ddb25c3684918bfe421641f5694ac450384f67f7e8e90bb068",
+        "89d92b27cf7b4e8877ebfb27ff68a687698ec28d0de8ad5b82acaf9a440cc886",
+        "6abd5ec248fd5df2a4182b7fb6c443867615e6d99277fde4896a056fd21d1fd1",
+        "c7c4875e36ea4a6a51e07dc05a2660338365818a19294eacce2b2500080b528f",
+        "e32e63a55370de4ff1add9076e2193a107b27787143c3c41c1fc612f02d07aef",
+        "678fd2e45345bcfd3e3f717266bbd61d9d944178cd47206140a78f1551842fc7",
+        "6457a041265f3984c839b999a9da6e92e7bd850824437c547296ece24c5f3100",
+        "881c1f4a04cd1c406ffdfc050c235875eeda5d4e0d3b7217d9bcfdff3b553c98",
+        "a1b1cd139aa3e48f4b43e7185dbf5e35aab3a218b08a4bbf8d5b13ca037c82b4",
+        "e17fc118d3d32b28c4107964d136d5eb04d0b0a226d929197a9df692fd28692d",
+        "3d0e9fb82f9f0d2ac1f364214964592841bd4fcf325e646c294f4d71fdc9c2e5",
+        "11eed4003bce2d83a8407e8a97b21b392fe9cd0baa266ea1d06f4e964d7212fd",
+        "add727f3598dee2c68c06be60335ce9061ffd0044a6958bc94ee73e7c7be789d",
+        "3ac43103c6eaf85d910278ee0678dc3b626773f86fbc5d513f54c8343e8cb9ce",
+        "57aa1871c899179cbc60b362182d4810e99d0b04b8b6be11083fe6a411b21232",
+        "7686e2d8ada40de0c6dce4f3904038ef7ca638d05890a8dc6c9de0d2dea0dbd2",
+        "53b65d39f2ee5341302842624a61ccdf51d49b45b8697e4e092f8cf9b35048f9",
+        "1bc3ad32cc3b9d4f7d57d989862bb8429a5721e5fe70ce6ff4b54778b721ae9e",
+        "f2b3019f2cc57b418c2d793830946fb18e8fb3d2d3d926082329608ff6bedea4",
+        "bf06d6cfc4aef3f4620d68da70d722ddaaa8355ece84268f360456e65703f6cf",
+        "2100e03663a478ec7bea97361c14fff521798c407400d8be566adc4e582fd86f",
+        "af68600f599225eccff61ee68827fdeeb542d84878641a235d8361a4c73ef024",
+        "ba09b7a14e1ee1ffa10dd8d3303dfbd08e6d6568c75ec71deb6ba8a964055e90",
+        "797818a195f179efd3e72918f2edae2886c241e1b95a84cbfb767ba55cfad89f",
+        "1d747e27b33cec19f737022294819dae1c9fa806d93529249a00a244f7edca37",
+        "a41f101b1f64ca80dc2af41a59b59625138c872fa0591877ca0ea80b5a480098",
+        "908d76dcd3131b5a1fdc593792351faeaafca9bd66b6e985eea71dba2dd43898",
+        "ca145faafd76f702e1bc5715b4c9f673b67a04cbd77ce6126039626dfe5357a6",
+        "074a36ef1052e576cff03f9bd3c03f6b8109d95eac1a399ea254dbf065357e79",
+        "5ed7d810dd8d18ce60405b82a3c435d0cd134be8fe79189d32e22ed97a205d1a",
+        "1edc1113074e511bf5d7f61ae946ca3d2c536b87ec9f5a31ed0ed6ba053703f7",
+        "28fe9e7d01ef03d9103e4dddb9ec9b7ae8b8afc4f98a3f89fc21572d60f6eff2",
+        "74d2f8362b69e8d3a92da168a924bc8419414882c5da7e0d68b023ff8cdc5ce6",
+        "93b1ed766ad7b29ef2d616bed2893200bc63b302c3771c8b691d654a312502f2",
+        "bcca4964daa3ccc41b5191ad0dfe468963b000ae28c425d81ca56accf178404c",
+        "d0b00b971bed05854ef9d6ccc2f4619f61eb84d377468909e3a6d12c2b352170",
+        "2533dd14df0a603e44651fc778204de4bd88c895f84da4975f7c764e9fa5d38c",
+        "97512f0a5d7e1588b797e8e7699e820d4ccd115a5cc44d3bf11a97a4db68a2f5",
+        "12d8c141bf6610ddf6c9be6a0a95600abc3dcc4eed2c63a9531e206b4c283953",
+        "6d3903a0b5d4750b48be1a0f1b87e6700768ee50248d7cc1d1ae094609ebce60",
+        "ceedda2e089d9d168a3a43b8f8de4628f6e8ca300bc53cf4a2091c20c5d243eb",
+        "e897f46f70fe197ea4f0ec0952a706bbbfd60f5df21ebad03eddea7450adce3a",
+        "9e2af443a909a2169cae5daebc12348d506ad8e5b219a7406bc2dc9915c83064",
+        "f4d1336088edda8ff45d9ef54a81413a1e32d9f03070d1723ec201be330fd18d",
+        "a7ac46b40a5a9509fc63f850fedde1079c56a0425efd5268b44f85d5688d0517",
+        "96beb9dfd26885b59eb65aeb17fac4799784841a6f212d67346139eb79e477a7",
+        "7e58d4b4684ac34c94cc09d115a680676479aa7e569dcd92c5663f6e4f69b8ab",
+        "ed6474ea5e7d387f0846eee3d15347a16d07ed2513da108da31d3de7246ad4c2",
+        "47603bef7dc322d332f69281a491f4bef7b00c7878f8e0b5af6f58666124b21f",
+        "49d505b0416ea516526cfd099b99f132b440d0923984f17a780d83c1e3b2486f",
+        "2f4b61505d5fd64fb59ac2d57d4c205355f31f1c18d117c0ff52d4f4249fdec4",
+        "1edc275a0e120f758e222df059bf2a4585402732ba7a4f06376981a38bf2c38b",
+        "f29f71de024294ed12951f2027fda95c187f164ff4905f5b5fc2a46ae5683f87",
+        "8e15aecd81ff7ab1685d3f42eb7e6f9cb4e07c2632397b3c767e0828b924e2be",
+        "40b57174045f00e4e121f06e9b565ab9a9d3c50542cc6537be694b4a4bdec32d",
+        "25acc4834253497a1ac24e75477796ef20133104c65224c3e4feebc1d71dfee3",
+        "92fea0916241f373f36b7d750f72baed6bc139cf2476c468fc6f2cae6bb377d9",
+        "5f639b68af69a90a094f6ececcf801236027eedfa767d0a50b7fc05b64b0b4f5",
+        "a94a863dfd3e79f2da19473bc7430adb8c17a4c71494c9f7e5f9272b971da0d9",
+        "8bbe5020bad0201688ed1c093edae968b8be65015793f3ddd21358cbecc5e037",
+        "a91f1d4f6d0839029f05a3042dd19a5a26ad37ad73d7e75f22e43c853793f8e1",
+        "42e94eb69f78ee2612130ab9e3b1aa2f06e8ccd2df6ae004c08f3b9a8ad22dd1",
+        "75dcad42cb7c3dd334a14fc3e961bc311b1e15b6da48af18758558b560effa2f",
+        "3a639cd9ccdc8cf936eca12a5e68f271617ad7765a3220af9bcaece5dcc42530"
+      ]
+    }
+  ],
+  "nftMetrics": [],
+  "nativeCalls": [
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 31.690832998603582,
+      "inputBytes": 1454
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "plan",
+      "ms": 85.38491700217128,
+      "inputBytes": 7979
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 13.78116600215435,
+      "inputBytes": 1454
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.333624999970198,
+      "inputBytes": 28880
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.546333998441696,
+      "inputBytes": 29748
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.604375001043081,
+      "inputBytes": 30192
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.049667000770569,
+      "inputBytes": 34795
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.463375002145767,
+      "inputBytes": 33840
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.038791999220848,
+      "inputBytes": 40184
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.96433399990201,
+      "inputBytes": 35581
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.4886660017073154,
+      "inputBytes": 43666
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.199667003005743,
+      "inputBytes": 37322
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.016959000378847,
+      "inputBytes": 47148
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.80120800063014,
+      "inputBytes": 39063
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.7041659988462925,
+      "inputBytes": 50630
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.24320799857378,
+      "inputBytes": 40804
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.829084001481533,
+      "inputBytes": 54110
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.737583998590708,
+      "inputBytes": 42543
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.62279099971056,
+      "inputBytes": 57590
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.497457999736071,
+      "inputBytes": 44284
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.8829160034656525,
+      "inputBytes": 61072
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.660875000059605,
+      "inputBytes": 46025
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.648417003452778,
+      "inputBytes": 64554
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 7.454332999885082,
+      "inputBytes": 47766
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.271290998905897,
+      "inputBytes": 65740
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.471292000263929,
+      "inputBytes": 65744
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.806207999587059,
+      "inputBytes": 454
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "plan",
+      "ms": 1.0997500009834766,
+      "inputBytes": 5835
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.6670409999787807,
+      "inputBytes": 454
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.1776250004768372,
+      "inputBytes": 9377
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.0376670025289059,
+      "inputBytes": 10245
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 1.5748750008642673,
+      "inputBytes": 10689
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.4278330020606518,
+      "inputBytes": 12702
+    },
+    {
+      "test": "local 11-NFT batch 1",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.359416000545025,
+      "inputBytes": 12706
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 9.126792002469301,
+      "inputBytes": 1454
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "plan",
+      "ms": 3.6925409995019436,
+      "inputBytes": 7979
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 1.496917001903057,
+      "inputBytes": 1454
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.348124999552965,
+      "inputBytes": 28880
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.2747499980032444,
+      "inputBytes": 29748
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 2.9945000000298023,
+      "inputBytes": 30192
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.752624999731779,
+      "inputBytes": 34795
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.382999997586012,
+      "inputBytes": 33840
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.3572499975562096,
+      "inputBytes": 40184
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.9545830003917217,
+      "inputBytes": 35581
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.7591249980032444,
+      "inputBytes": 43666
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.522583000361919,
+      "inputBytes": 37322
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.212625000625849,
+      "inputBytes": 47148
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.835292000323534,
+      "inputBytes": 39063
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.929666999727488,
+      "inputBytes": 50630
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.32820799946785,
+      "inputBytes": 40804
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.126834001392126,
+      "inputBytes": 54110
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.074707999825478,
+      "inputBytes": 42543
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.787500001490116,
+      "inputBytes": 57590
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.031458999961615,
+      "inputBytes": 44284
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.670958001166582,
+      "inputBytes": 61072
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.825875002890825,
+      "inputBytes": 46025
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.297624997794628,
+      "inputBytes": 64554
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 7.193250000476837,
+      "inputBytes": 47766
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.431125000119209,
+      "inputBytes": 65740
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.672207999974489,
+      "inputBytes": 65744
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.7077909968793392,
+      "inputBytes": 454
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "plan",
+      "ms": 0.9675830006599426,
+      "inputBytes": 5835
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.47224999964237213,
+      "inputBytes": 454
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.1420830003917217,
+      "inputBytes": 9377
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.082166999578476,
+      "inputBytes": 10245
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 1.5571250021457672,
+      "inputBytes": 10689
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.2411659993231297,
+      "inputBytes": 12702
+    },
+    {
+      "test": "local 11-NFT batch 2",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.6832499988377094,
+      "inputBytes": 12706
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 5.73879199847579,
+      "inputBytes": 1454
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "plan",
+      "ms": 2.9349589981138706,
+      "inputBytes": 7979
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 16.093708001077175,
+      "inputBytes": 1454
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.5324169993400574,
+      "inputBytes": 28880
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.2992499992251396,
+      "inputBytes": 29748
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.1417080014944077,
+      "inputBytes": 30192
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.671125002205372,
+      "inputBytes": 34795
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.502624999731779,
+      "inputBytes": 33840
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.933958999812603,
+      "inputBytes": 40184
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.030916001647711,
+      "inputBytes": 35581
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.618249997496605,
+      "inputBytes": 43666
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.314583998173475,
+      "inputBytes": 37322
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.221999999135733,
+      "inputBytes": 47148
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.536459002643824,
+      "inputBytes": 39063
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.125375002622604,
+      "inputBytes": 50630
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.053790997713804,
+      "inputBytes": 40804
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.264042001217604,
+      "inputBytes": 54110
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.865958001464605,
+      "inputBytes": 42543
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.459458999335766,
+      "inputBytes": 57590
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.2266670018434525,
+      "inputBytes": 44284
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.652707997709513,
+      "inputBytes": 61072
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.645416002720594,
+      "inputBytes": 46025
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.877709001302719,
+      "inputBytes": 64554
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 7.2403339967131615,
+      "inputBytes": 47766
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.386416997760534,
+      "inputBytes": 65740
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.268582999706268,
+      "inputBytes": 65744
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.7746249996125698,
+      "inputBytes": 454
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "plan",
+      "ms": 0.8537499979138374,
+      "inputBytes": 5835
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.5992499999701977,
+      "inputBytes": 454
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.1246249973773956,
+      "inputBytes": 9377
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.1030419990420341,
+      "inputBytes": 10245
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 1.5857499986886978,
+      "inputBytes": 10689
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.5011660009622574,
+      "inputBytes": 12702
+    },
+    {
+      "test": "local 11-NFT batch 3",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.3572500012814999,
+      "inputBytes": 12706
+    },
+    {
+      "test": "native fence expiry 120000: typed result, no signing or submission",
+      "family": "fence",
+      "method": "expire",
+      "ms": 4.3322919979691505,
+      "inputBytes": 18
+    },
+    {
+      "test": "native fence expiry 120001: typed result, no signing or submission",
+      "family": "fence",
+      "method": "expire",
+      "ms": 3.6765829995274544,
+      "inputBytes": 18
+    },
+    {
+      "test": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 13.049625001847744,
+      "inputBytes": 786
+    },
+    {
+      "test": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "family": "engine",
+      "method": "plan",
+      "ms": 9.22079199925065,
+      "inputBytes": 4732
+    },
+    {
+      "test": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 1.6105829998850822,
+      "inputBytes": 786
+    },
+    {
+      "test": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.779874999076128,
+      "inputBytes": 14072
+    },
+    {
+      "test": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.5516670010983944,
+      "inputBytes": 14940
+    },
+    {
+      "test": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 1.923666998744011,
+      "inputBytes": 15384
+    },
+    {
+      "test": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.8923330008983612,
+      "inputBytes": 19961
+    },
+    {
+      "test": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 2.3735410012304783,
+      "inputBytes": 19006
+    },
+    {
+      "test": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.2694579996168613,
+      "inputBytes": 25324
+    },
+    {
+      "test": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 2.964749999344349,
+      "inputBytes": 20747
+    },
+    {
+      "test": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.2262500002980232,
+      "inputBytes": 28804
+    },
+    {
+      "test": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.4278329983353615,
+      "inputBytes": 22486
+    },
+    {
+      "test": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.1206660009920597,
+      "inputBytes": 29816
+    },
+    {
+      "test": "expired after accepted prefix: preserve txids, no duplicate submit",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.0553340017795563,
+      "inputBytes": 29820
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.9957909993827343,
+      "inputBytes": 1454
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "plan",
+      "ms": 2.698249999433756,
+      "inputBytes": 16801
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 5.9471670016646385,
+      "inputBytes": 1454
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.5827500000596046,
+      "inputBytes": 37702
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.8157499991357327,
+      "inputBytes": 38570
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.259417001157999,
+      "inputBytes": 39014
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.4058339968323708,
+      "inputBytes": 43619
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.001124996691942,
+      "inputBytes": 42664
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.612125001847744,
+      "inputBytes": 49010
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.252875000238419,
+      "inputBytes": 44405
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.927166998386383,
+      "inputBytes": 52494
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.543582998216152,
+      "inputBytes": 46148
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.8626659996807575,
+      "inputBytes": 55978
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.074292000383139,
+      "inputBytes": 47889
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.378042001277208,
+      "inputBytes": 59460
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.702082999050617,
+      "inputBytes": 49630
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.467666998505592,
+      "inputBytes": 62942
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.193292003124952,
+      "inputBytes": 51371
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.654667001217604,
+      "inputBytes": 66426
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.544541001319885,
+      "inputBytes": 53114
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.870000001043081,
+      "inputBytes": 69908
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.750667002052069,
+      "inputBytes": 54853
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.174625001847744,
+      "inputBytes": 73390
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 7.746249999850988,
+      "inputBytes": 56596
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.671583000570536,
+      "inputBytes": 74578
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.865750003606081,
+      "inputBytes": 74582
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 1.6532499976456165,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "plan",
+      "ms": 3.1887089982628822,
+      "inputBytes": 18518
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.7524580024182796,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.997583996504545,
+      "inputBytes": 39446
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.0010830014944077,
+      "inputBytes": 40314
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.2904159985482693,
+      "inputBytes": 40758
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.197041999548674,
+      "inputBytes": 45363
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.9256250001490116,
+      "inputBytes": 44408
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.8684169985353947,
+      "inputBytes": 50756
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.315999999642372,
+      "inputBytes": 46151
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.03787500038743,
+      "inputBytes": 54240
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.721499998122454,
+      "inputBytes": 47892
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.2560419999063015,
+      "inputBytes": 57726
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.111958000808954,
+      "inputBytes": 49637
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.150374997407198,
+      "inputBytes": 61214
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.544167000800371,
+      "inputBytes": 51380
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.842291999608278,
+      "inputBytes": 64698
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.433874998241663,
+      "inputBytes": 53121
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.93529200181365,
+      "inputBytes": 68182
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.8480410017073154,
+      "inputBytes": 54864
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.856708999723196,
+      "inputBytes": 71668
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.950874999165535,
+      "inputBytes": 56607
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.159167002886534,
+      "inputBytes": 75154
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 7.892790999263525,
+      "inputBytes": 58350
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.729540999978781,
+      "inputBytes": 76342
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.442625001072884,
+      "inputBytes": 76346
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 2.351750001311302,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "plan",
+      "ms": 7.059167001396418,
+      "inputBytes": 18518
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.9818329997360706,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.8015830032527447,
+      "inputBytes": 39446
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.757292002439499,
+      "inputBytes": 40314
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.8926249966025352,
+      "inputBytes": 40758
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.145667001605034,
+      "inputBytes": 45365
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.051915999501944,
+      "inputBytes": 44410
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.762332998216152,
+      "inputBytes": 50760
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.4890410006046295,
+      "inputBytes": 46153
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.0331669971346855,
+      "inputBytes": 54246
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.767875000834465,
+      "inputBytes": 47896
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.7242910005152225,
+      "inputBytes": 57732
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.398250002413988,
+      "inputBytes": 49639
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.231166001409292,
+      "inputBytes": 61216
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.664541997015476,
+      "inputBytes": 51380
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.704374998807907,
+      "inputBytes": 64700
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.997000001370907,
+      "inputBytes": 53123
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.306166000664234,
+      "inputBytes": 68186
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.606499999761581,
+      "inputBytes": 54866
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.818291999399662,
+      "inputBytes": 71672
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.761916000396013,
+      "inputBytes": 56609
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.247542001307011,
+      "inputBytes": 75160
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 7.805083002895117,
+      "inputBytes": 58354
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.5796669982373714,
+      "inputBytes": 76350
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.865333002060652,
+      "inputBytes": 76354
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 2.4567909985780716,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "plan",
+      "ms": 2.5971670001745224,
+      "inputBytes": 18518
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.6641669981181622,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.6457919999957085,
+      "inputBytes": 39446
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.7355000004172325,
+      "inputBytes": 40314
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.554083000868559,
+      "inputBytes": 40758
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.3055419996380806,
+      "inputBytes": 45365
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.8044170029461384,
+      "inputBytes": 44410
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.209332998842001,
+      "inputBytes": 50760
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.407957997173071,
+      "inputBytes": 46153
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.792750000953674,
+      "inputBytes": 54244
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.62958399951458,
+      "inputBytes": 47894
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.738542001694441,
+      "inputBytes": 57728
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.1194580011069775,
+      "inputBytes": 49637
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.99083299934864,
+      "inputBytes": 61216
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.875459000468254,
+      "inputBytes": 51382
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.431584000587463,
+      "inputBytes": 64706
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.16058399900794,
+      "inputBytes": 53127
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.153250001370907,
+      "inputBytes": 68194
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.643875002861023,
+      "inputBytes": 54870
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.981125000864267,
+      "inputBytes": 71680
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 7.437040999531746,
+      "inputBytes": 56613
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.5814159996807575,
+      "inputBytes": 75166
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 8.479375001043081,
+      "inputBytes": 58356
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.927874997258186,
+      "inputBytes": 76354
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 8.167417000979185,
+      "inputBytes": 76358
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 1.6044999994337559,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "plan",
+      "ms": 2.6221660003066063,
+      "inputBytes": 18518
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.6936669982969761,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.8278329968452454,
+      "inputBytes": 39446
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.6386669985949993,
+      "inputBytes": 40314
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.411541000008583,
+      "inputBytes": 40758
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.8614999987185,
+      "inputBytes": 45367
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.954041000455618,
+      "inputBytes": 44412
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.8849579989910126,
+      "inputBytes": 50764
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.330749999731779,
+      "inputBytes": 46155
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.934417001903057,
+      "inputBytes": 54250
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.743999999016523,
+      "inputBytes": 47898
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.823208000510931,
+      "inputBytes": 57734
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.178334001451731,
+      "inputBytes": 49639
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.348457999527454,
+      "inputBytes": 61220
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.776875000447035,
+      "inputBytes": 51384
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.768042001873255,
+      "inputBytes": 64710
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.082208000123501,
+      "inputBytes": 53129
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.478957999497652,
+      "inputBytes": 68198
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.63825000077486,
+      "inputBytes": 54872
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.970042001456022,
+      "inputBytes": 71684
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 7.147291999310255,
+      "inputBytes": 56615
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.0947909988462925,
+      "inputBytes": 75170
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 7.557790998369455,
+      "inputBytes": 58358
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.866124998778105,
+      "inputBytes": 76356
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.875957999378443,
+      "inputBytes": 76360
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 1.4717920012772083,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "plan",
+      "ms": 2.6359999999403954,
+      "inputBytes": 18516
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.680333998054266,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.6766670010983944,
+      "inputBytes": 39444
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.8725830018520355,
+      "inputBytes": 40312
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.116208001971245,
+      "inputBytes": 40756
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.3618750013411045,
+      "inputBytes": 45365
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.926249999552965,
+      "inputBytes": 44410
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.300167001783848,
+      "inputBytes": 50762
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.2292089983820915,
+      "inputBytes": 46153
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.819083001464605,
+      "inputBytes": 54250
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.183207999914885,
+      "inputBytes": 47898
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.962999999523163,
+      "inputBytes": 57736
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.002958998084068,
+      "inputBytes": 49639
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.2475830018520355,
+      "inputBytes": 61220
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.930291000753641,
+      "inputBytes": 51382
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.525875002145767,
+      "inputBytes": 64706
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.416916999965906,
+      "inputBytes": 53125
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.041540998965502,
+      "inputBytes": 68194
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.614957999438047,
+      "inputBytes": 54870
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.091125000268221,
+      "inputBytes": 71684
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.861958000808954,
+      "inputBytes": 56615
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.321457996964455,
+      "inputBytes": 75174
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 7.606332998722792,
+      "inputBytes": 58360
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.698291998356581,
+      "inputBytes": 76364
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 8.165042001754045,
+      "inputBytes": 76368
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 1.7415409982204437,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "plan",
+      "ms": 2.528083000332117,
+      "inputBytes": 18518
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.5938329994678497,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.1626669988036156,
+      "inputBytes": 39446
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.820041000843048,
+      "inputBytes": 40314
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.1233749985694885,
+      "inputBytes": 40758
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.178125001490116,
+      "inputBytes": 45365
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.760207999497652,
+      "inputBytes": 44410
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.959874998778105,
+      "inputBytes": 50760
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.157417003065348,
+      "inputBytes": 46153
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.480374999344349,
+      "inputBytes": 54246
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.663791999220848,
+      "inputBytes": 47896
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.783917002379894,
+      "inputBytes": 57732
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.1979589983820915,
+      "inputBytes": 49639
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.891499999910593,
+      "inputBytes": 61214
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.585166998207569,
+      "inputBytes": 51378
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.5002500005066395,
+      "inputBytes": 64698
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.159792002290487,
+      "inputBytes": 53123
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.937167000025511,
+      "inputBytes": 68188
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.854499999433756,
+      "inputBytes": 54868
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.734707999974489,
+      "inputBytes": 71678
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.97104100137949,
+      "inputBytes": 56613
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.752707999199629,
+      "inputBytes": 75168
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 8.081457998603582,
+      "inputBytes": 58358
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.661958001554012,
+      "inputBytes": 76358
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 8.02429100126028,
+      "inputBytes": 76362
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 1.6690829992294312,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "plan",
+      "ms": 2.5596660003066063,
+      "inputBytes": 18518
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.6271250024437904,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.7252920009195805,
+      "inputBytes": 39446
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.6685409992933273,
+      "inputBytes": 40314
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.018042001873255,
+      "inputBytes": 40758
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.41304200142622,
+      "inputBytes": 45367
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.143457997590303,
+      "inputBytes": 44412
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.81691699847579,
+      "inputBytes": 50764
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.028499998152256,
+      "inputBytes": 46155
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.0733749978244305,
+      "inputBytes": 54250
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.998833000659943,
+      "inputBytes": 47898
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.323499999940395,
+      "inputBytes": 57734
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.134666997939348,
+      "inputBytes": 49639
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.223666001111269,
+      "inputBytes": 61220
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.137125000357628,
+      "inputBytes": 51384
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.102207999676466,
+      "inputBytes": 64708
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.715250000357628,
+      "inputBytes": 53127
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.266166001558304,
+      "inputBytes": 68192
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.9130829982459545,
+      "inputBytes": 54868
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.44870799779892,
+      "inputBytes": 71678
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 7.146749999374151,
+      "inputBytes": 56613
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.106833003461361,
+      "inputBytes": 75164
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 8.222999997437,
+      "inputBytes": 58354
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.690124999731779,
+      "inputBytes": 76350
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.988416001200676,
+      "inputBytes": 76354
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 1.9552090018987656,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "plan",
+      "ms": 2.632708001881838,
+      "inputBytes": 18518
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.6586249992251396,
+      "inputBytes": 1471
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.7597080022096634,
+      "inputBytes": 39446
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.6774999983608723,
+      "inputBytes": 40314
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.3699170015752316,
+      "inputBytes": 40758
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.9354589991271496,
+      "inputBytes": 45365
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.927915997803211,
+      "inputBytes": 44410
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.5547089986503124,
+      "inputBytes": 50760
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.405375000089407,
+      "inputBytes": 46153
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.787415999919176,
+      "inputBytes": 54244
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.967207998037338,
+      "inputBytes": 47894
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.8435830026865005,
+      "inputBytes": 57728
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.231499999761581,
+      "inputBytes": 49637
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.320000000298023,
+      "inputBytes": 61214
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.653083998709917,
+      "inputBytes": 51380
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.712666001170874,
+      "inputBytes": 64700
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.976042002439499,
+      "inputBytes": 53123
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.295040998607874,
+      "inputBytes": 68186
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.507999997586012,
+      "inputBytes": 54866
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.578917000442743,
+      "inputBytes": 71672
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.964375000447035,
+      "inputBytes": 56609
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.323790997266769,
+      "inputBytes": 75158
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 7.449667003005743,
+      "inputBytes": 58352
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.6104159988462925,
+      "inputBytes": 76346
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 8.00016600266099,
+      "inputBytes": 76350
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 2.1037499979138374,
+      "inputBytes": 1473
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "plan",
+      "ms": 3.6712919995188713,
+      "inputBytes": 18521
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.8382080011069775,
+      "inputBytes": 1473
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.8991659991443157,
+      "inputBytes": 39452
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 2.7422080002725124,
+      "inputBytes": 40320
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.1962090022861958,
+      "inputBytes": 40764
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.349750000983477,
+      "inputBytes": 45373
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 3.85699999704957,
+      "inputBytes": 44418
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 3.583000000566244,
+      "inputBytes": 50768
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.569499999284744,
+      "inputBytes": 46159
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.2122079990804195,
+      "inputBytes": 54254
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 4.738625001162291,
+      "inputBytes": 47904
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 4.782249998301268,
+      "inputBytes": 57744
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.175583999603987,
+      "inputBytes": 49649
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.155958000570536,
+      "inputBytes": 61230
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 5.694499999284744,
+      "inputBytes": 51390
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 5.516208000481129,
+      "inputBytes": 64714
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.013291999697685,
+      "inputBytes": 53133
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.9408750012516975,
+      "inputBytes": 68202
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.563666999340057,
+      "inputBytes": 54878
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 6.649125002324581,
+      "inputBytes": 71690
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 6.75662500038743,
+      "inputBytes": 56621
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.556540999561548,
+      "inputBytes": 75176
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 7.547333002090454,
+      "inputBytes": 58364
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 8.554375000298023,
+      "inputBytes": 76368
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 7.66516700014472,
+      "inputBytes": 76372
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 2.0156659968197346,
+      "inputBytes": 456
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "plan",
+      "ms": 1.4662920013070107,
+      "inputBytes": 14665
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "normalizeRequest",
+      "ms": 0.5724169984459877,
+      "inputBytes": 456
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.4078749977052212,
+      "inputBytes": 18210
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.4396250024437904,
+      "inputBytes": 19078
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "finalize",
+      "ms": 1.8382089994847775,
+      "inputBytes": 19522
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.6546670012176037,
+      "inputBytes": 21535
+    },
+    {
+      "test": "101 NFT bounded job: one approval, unchanged material reads",
+      "family": "engine",
+      "method": "validate",
+      "ms": 1.4051660001277924,
+      "inputBytes": 21539
+    }
+  ],
+  "network": "synthetic fixtures; network forbidden",
+  "signer": "public synthetic scalar; deterministic JS fixture signer",
+  "approval": "controlled approval adapter; one receipt per operation",
+  "realBroadcasts": 0,
+  "physicalDevice": false,
+  "evidence": {
+    "started": "2026-11-01T15:53:29.345Z",
+    "collected": "2026-11-01T15:53:55.975Z",
+    "platform": "android",
+    "artifact": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/.verify/rc26-profile/android-native-sha/build/outputs/apk/release/rc26-local-profile-release.apk",
+    "sha256": "172aa2a7ee57daf29557ddc6537842dd210af9a8a91cc7b50bd566136abe9a23",
+    "actualNative": true,
+    "syntheticMaterials": true,
+    "realBroadcasts": 0
+  }
+}

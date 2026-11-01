@@ -1,0 +1,105 @@
+{
+  "targets": [
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-NEigVp/old/libtbc_compute_native.so",
+      "sha256": "2baa2ed61ee83b7b4f054926bccbaf6ef3abe5b23587fd0dc043773445261a56",
+      "bytes": 9747176,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/old-libtbc_compute_native.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-NEigVp/old/libtbc_signer_kernel.so",
+      "sha256": "8f9c6a20595945c7977898306420e84c3024ab68ea977cbdfe6bb768c47eec0e",
+      "bytes": 1784632,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/old-libtbc_signer_kernel.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-NEigVp/new/libtbc_compute_native.so",
+      "sha256": "79993fc8593f5688d4135a6962e1fc4f8aae806b474cabeb5bc91fa116b86bbc",
+      "bytes": 7235392,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/new-libtbc_compute_native.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-NEigVp/new/libtbc_signer_kernel.so",
+      "sha256": "38e00bbf434180fc1a37a03b9d08f00fd1f5baca3930af31f49c3309a9f982fd",
+      "bytes": 1605184,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/new-libtbc_signer_kernel.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-Wadmi4/old/libtbc_compute_native.so",
+      "sha256": "2baa2ed61ee83b7b4f054926bccbaf6ef3abe5b23587fd0dc043773445261a56",
+      "bytes": 9747176,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/old-libtbc_compute_native.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-Wadmi4/old/libtbc_signer_kernel.so",
+      "sha256": "8f9c6a20595945c7977898306420e84c3024ab68ea977cbdfe6bb768c47eec0e",
+      "bytes": 1784632,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/old-libtbc_signer_kernel.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-Wadmi4/new/libtbc_compute_native.so",
+      "sha256": "79993fc8593f5688d4135a6962e1fc4f8aae806b474cabeb5bc91fa116b86bbc",
+      "bytes": 7235392,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/new-libtbc_compute_native.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-Wadmi4/new/libtbc_signer_kernel.so",
+      "sha256": "38e00bbf434180fc1a37a03b9d08f00fd1f5baca3930af31f49c3309a9f982fd",
+      "bytes": 1605184,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/new-libtbc_signer_kernel.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-TLOBM2/old/libtbc_compute_native.so",
+      "sha256": "2baa2ed61ee83b7b4f054926bccbaf6ef3abe5b23587fd0dc043773445261a56",
+      "bytes": 9747176,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/old-libtbc_compute_native.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-TLOBM2/old/libtbc_signer_kernel.so",
+      "sha256": "8f9c6a20595945c7977898306420e84c3024ab68ea977cbdfe6bb768c47eec0e",
+      "bytes": 1784632,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/old-libtbc_signer_kernel.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-TLOBM2/new/libtbc_compute_native.so",
+      "sha256": "79993fc8593f5688d4135a6962e1fc4f8aae806b474cabeb5bc91fa116b86bbc",
+      "bytes": 7235392,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/new-libtbc_compute_native.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-TLOBM2/new/libtbc_signer_kernel.so",
+      "sha256": "38e00bbf434180fc1a37a03b9d08f00fd1f5baca3930af31f49c3309a9f982fd",
+      "bytes": 1605184,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/new-libtbc_signer_kernel.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-3S7g8G/old/libtbc_compute_native.so",
+      "sha256": "2baa2ed61ee83b7b4f054926bccbaf6ef3abe5b23587fd0dc043773445261a56",
+      "bytes": 9747176,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/old-libtbc_compute_native.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-3S7g8G/old/libtbc_signer_kernel.so",
+      "sha256": "8f9c6a20595945c7977898306420e84c3024ab68ea977cbdfe6bb768c47eec0e",
+      "bytes": 1784632,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/old-libtbc_signer_kernel.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-3S7g8G/new/libtbc_compute_native.so",
+      "sha256": "79993fc8593f5688d4135a6962e1fc4f8aae806b474cabeb5bc91fa116b86bbc",
+      "bytes": 7235392,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/new-libtbc_compute_native.so"
+    },
+    {
+      "path": "/data/local/tmp/tbc-slim-native-probe-3S7g8G/new/libtbc_signer_kernel.so",
+      "sha256": "38e00bbf434180fc1a37a03b9d08f00fd1f5baca3930af31f49c3309a9f982fd",
+      "bytes": 1605184,
+      "backup": ".verify/rc23-device-app/emulator-cache-backup/new-libtbc_signer_kernel.so"
+    }
+  ],
+  "removedDuplicateBytes": 81489536,
+  "recoverable": true,
+  "accountsOrDatabasesTouched": false,
+  "before": "Filesystem       1K-blocks    Used Available Use% Mounted on\n/dev/block/dm-53  10167132 9502228    517448  95% /data/user/0\n",
+  "after": "Filesystem       1K-blocks    Used Available Use% Mounted on\n/dev/block/dm-53  10167132 9422588    597088  95% /data/user/0\n"
+}

@@ -1,0 +1,112 @@
+{
+  "platform": "ios",
+  "kind": "collection",
+  "candidate": "0.1.0-rc.25",
+  "account": "1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL",
+  "last": {
+    "method": "tbc_sendTransaction",
+    "outcome": "signed",
+    "code": "",
+    "publicResult": {
+      "approvalId": "17D45365-F005-4E29-B06D-B09C2A7F5744",
+      "chainId": "tbc:testnet",
+      "from": "1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL",
+      "requestHash": "68a719e9033cb2186fa40ca710da53df27cffd9403dac4bb9bd8b7061b226936",
+      "totalFee": "118",
+      "transactions": [
+        {
+          "dependsOn": [],
+          "id": "tbc721-standard-create-collection",
+          "role": "primary",
+          "status": "submitted",
+          "txid": "f48e7167ec575c5a5d820a5c72d12e0b7454b66525c322f79a6b8c90688d2fda"
+        }
+      ],
+      "version": "1.0"
+    }
+  },
+  "counts": {
+    "accounts.current": 1,
+    "accounts.forChain": 1,
+    "approval.request": 2,
+    "approvalUI": 2,
+    "approved": 2,
+    "authority.read": 26,
+    "broadcast.POST": 1,
+    "clock.now": 8,
+    "engine.finalize": 1,
+    "engine.normalizeRequest": 1,
+    "engine.plan": 1,
+    "engine.validate": 4,
+    "entropy.bytes": 1,
+    "http.GET": 1,
+    "http.POST": 1,
+    "http.request": 2,
+    "permissions.commit": 1,
+    "permissions.load": 2,
+    "permissionWrites": 1,
+    "request": 2,
+    "signer.sign": 1,
+    "sqlite.begin": 4,
+    "sqlite.commit": 4,
+    "sqlite.execute": 14,
+    "vaultSigns": 1,
+    "wallet.signingRoles": 1
+  },
+  "approvalToSignMs": 28.175292015075684,
+  "approvalToReturnMs": 191.18900060653687,
+  "nativeSignMs": 2.8049168176949024,
+  "signatureCount": 1,
+  "metrics": [
+    {
+      "monoMs": 3403386697.370375,
+      "phase": "approved"
+    },
+    {
+      "monoMs": 3403386723.9096255,
+      "phase": "wallet-return",
+      "status": "signed"
+    },
+    {
+      "method": "GET",
+      "monoMs": 3403396501.3875837,
+      "phase": "http-start",
+      "url": "https://api.tbcdev.org/api/tbc/utxo/address/1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL"
+    },
+    {
+      "elapsedMs": 249.93970803916454,
+      "method": "GET",
+      "monoMs": 3403396751.319792,
+      "phase": "http-end",
+      "url": "https://api.tbcdev.org/api/tbc/utxo/address/1ERo1RicqQBr1CkqdKgf4JdBEoPETyhVyL"
+    },
+    {
+      "monoMs": 3403410947.594,
+      "phase": "approved"
+    },
+    {
+      "monoMs": 3403410975.769292,
+      "nativeMs": 2.8049168176949024,
+      "phase": "signature",
+      "taskId": "sign-tbc721-standard-create-collection-input-0"
+    },
+    {
+      "method": "POST",
+      "monoMs": 3403411013.531,
+      "phase": "http-start",
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx"
+    },
+    {
+      "elapsedMs": 115.46454159542918,
+      "method": "POST",
+      "monoMs": 3403411128.989375,
+      "phase": "http-end",
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx"
+    },
+    {
+      "monoMs": 3403411138.7830005,
+      "phase": "wallet-return",
+      "status": "signed"
+    }
+  ]
+}

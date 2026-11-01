@@ -1,0 +1,57 @@
+{
+  "installed": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/.verify/nft-job-install-GLthHa/node_modules/@tbc/kit",
+  "version": "0.1.0-rc.24",
+  "status": "FAIL",
+  "results": [
+    {
+      "name": "kit",
+      "files": 79,
+      "code": 1,
+      "ms": 24878.186542,
+      "tests": 517,
+      "passed": 501,
+      "failed": 16,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "7af77a010ebbea69a5eb93727c1ab720e4c32af2f9329ea1cac333cf804260f3"
+    },
+    {
+      "name": "core",
+      "files": 38,
+      "code": 0,
+      "ms": 7113.899125,
+      "tests": 208,
+      "passed": 208,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "bfa460bccc59f25d6683aa70e914d1a84693b2303b8d24525992ba108f43c1b8"
+    },
+    {
+      "name": "host",
+      "files": 14,
+      "code": 1,
+      "ms": 1471.5282079999997,
+      "tests": 14,
+      "passed": 0,
+      "failed": 14,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "e6b75a235e3805957dcdcf95bd6f36466d9cb17382d47a29410d65278b6caff5"
+    },
+    {
+      "name": "provider",
+      "files": 10,
+      "code": 1,
+      "ms": 846.4878339999996,
+      "tests": 10,
+      "passed": 0,
+      "failed": 10,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "1f860b9130817e86718c6fb45335ebbdaff9ff4cedf9a31d85ec741f13a85177"
+    }
+  ],
+  "realBroadcasts": 0,
+  "devices": false
+}

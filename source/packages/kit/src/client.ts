@@ -99,7 +99,7 @@ export type TbcWorkflowSendResult = WorkflowSendResult;
 export type Tbc721MintJobInput = Omit<Tbc721StandardBatchMintIntent, "type" | "version"> &
   Readonly<{ limits: TbcNftMintJobLimits; constraints?: never }>;
 export type Tbc721SingleBatchMintInput = Omit<Tbc721StandardBatchMintIntent, "type" | "version"> &
-  Readonly<{ constraints?: KitTransactionConstraints; limits?: never }>;
+  Readonly<{ constraints: Readonly<{ maxFee: string; expiresAt: string }>; limits?: never }>;
 
 export type TbcEncodedMessage = Readonly<{
   encoding: "utf8" | "hex" | "base64";
@@ -302,7 +302,7 @@ export interface TbcConnectedWallet {
     /** Add job limits for automatic resource-bounded sub-batches and one whole-job approval. */
     batchMint: {
       (input: Tbc721MintJobInput, options?: KitRequestOptions): Promise<TbcNftMintJobResult>;
-      (input: Tbc721SingleBatchMintInput, options?: KitRequestOptions): Promise<unknown>;
+      (input: Tbc721SingleBatchMintInput, options?: KitRequestOptions): Promise<TbcNftMintJobResult>;
     };
     transfer: (input: Omit<Tbc721TransferIntent, "type" | "version"> & Readonly<{ constraints?: KitTransactionConstraints }>) => Promise<unknown>;
     batchTransfer: (input: Omit<Tbc721BatchTransferIntent, "type" | "version"> & Readonly<{ constraints?: KitTransactionConstraints }>) => Promise<unknown>;
@@ -654,18 +654,25 @@ export function createTbcClientWithWalletDiscovery(
       return { intent, constraints };
     };
     function batchMint(input: Tbc721MintJobInput, requestOptions?: KitRequestOptions): Promise<TbcNftMintJobResult>;
-    function batchMint(input: Tbc721SingleBatchMintInput, requestOptions?: KitRequestOptions): Promise<unknown>;
-    function batchMint(input: Tbc721MintJobInput | Tbc721SingleBatchMintInput, requestOptions?: KitRequestOptions): Promise<unknown> {
-      if (input.limits !== undefined) {
-        if (input.constraints !== undefined) throw new TypeError("Use whole-job limits, not per-batch constraints");
-        return provider!.request({ method: "tbc_runNftMintJob", params: {
-          version: "1.0", chainId, from: account, collectionId: input.collectionId, items: input.items, limits: input.limits,
-        } }, requestOptions);
+    function batchMint(input: Tbc721SingleBatchMintInput, requestOptions?: KitRequestOptions): Promise<TbcNftMintJobResult>;
+    function batchMint(input: Tbc721MintJobInput | Tbc721SingleBatchMintInput, requestOptions?: KitRequestOptions): Promise<TbcNftMintJobResult> {
+      const invalid = (message: string): never => { throw Object.assign(new TypeError(message), { code: -32602 }); };
+      if (!input || Object.keys(input).some(k => !["collectionId", "items", "limits", "constraints"].includes(k))) {
+        return invalid("Unknown NFT batch field");
       }
-      if (input.items.length > 100) throw new TypeError("More than 100 NFTs require whole-job limits");
-      const { intent, constraints } = split(input);
-      return send({ ...intent, type: "tbc721-standard-batch-mint", version: "1.0" } as Tbc721StandardBatchMintIntent,
-        constraints === undefined ? {} : { constraints });
+      if (input.limits !== undefined && input.constraints !== undefined) return invalid("Use whole-job limits, not per-batch constraints");
+      const constraints = input.constraints;
+      if (constraints !== undefined && (!constraints || Object.keys(constraints).some(k => !["maxFee", "expiresAt"].includes(k)))) {
+        return invalid("NFT job constraints support only whole-job maxFee and expiresAt; exact inputs and feePreference are not silently ignored");
+      }
+      const limits = input.limits ?? (constraints && typeof constraints.maxFee === "string" && typeof constraints.expiresAt === "string"
+        ? { maxTotalFee: constraints.maxFee, expiresAt: constraints.expiresAt } : undefined);
+      if (!limits) return invalid("NFT batchMint requires whole-job limits.maxTotalFee and limits.expiresAt (or constraints.maxFee and constraints.expiresAt)");
+      // Every public batch size uses one bounded consent and the same executor.
+      // Never invent a fee allowance/deadline or fall back to a monolithic send.
+      return provider!.request({ method: "tbc_runNftMintJob", params: {
+        version: "1.0", chainId, from: account, collectionId: input.collectionId, items: input.items, limits,
+      } }, requestOptions);
     }
     const splitPoolSwap = <T extends object>(input: T & Readonly<{ constraints?: KitTransactionConstraints }>) => {
       const separated = split(input);

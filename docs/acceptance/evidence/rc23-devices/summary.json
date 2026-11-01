@@ -1,0 +1,137 @@
+{
+  "ios": {
+    "status": "PASS",
+    "groups": 10,
+    "passed": 10,
+    "nativeCalls": 308,
+    "successfulProviderOperations": 23,
+    "oneApprovalForEverySuccessfulOperation": true,
+    "rejectedOrInvalidNeverSigned": true,
+    "tests": [
+      {
+        "name": "AMM controller permutations produce identical signed bytes and reads through Provider, including workflow",
+        "status": "PASS",
+        "ms": 1544
+      },
+      {
+        "name": "invalid AMM semantics return parameter errors, never Host internal errors or approval",
+        "status": "PASS",
+        "ms": 31.999999999999773
+      },
+      {
+        "name": "plain LP lock is a typed unsupported operation before approval",
+        "status": "PASS",
+        "ms": 19
+      },
+      {
+        "name": "plain LP unlock is a typed unsupported operation before approval",
+        "status": "PASS",
+        "ms": 15
+      },
+      {
+        "name": "NFT fee alternatives do not consume the mint-slot budget; exact inputs and candidate bounds remain strict",
+        "status": "PASS",
+        "ms": 15
+      },
+      {
+        "name": "failures, missing rows and spent selected slots stop before a usable snapshot without retry",
+        "status": "PASS",
+        "ms": 55
+      },
+      {
+        "name": "a selected slot outside its collection is a typed conflict without substitute reads",
+        "status": "PASS",
+        "ms": 1.0000000000002274
+      },
+      {
+        "name": "NFT 122 fee alternatives: 1/7/100 mint plans validate on Native using the same material",
+        "status": "PASS",
+        "ms": 46
+      },
+      {
+        "name": "NFT 7 mint Provider-to-Native-finalize: 1/122/256 fee alternatives, identical signed transactions and one approval",
+        "status": "PASS",
+        "ms": 601
+      },
+      {
+        "name": "NFT Provider slot conflict is typed; approval rejection never reaches signer or mock submit",
+        "status": "PASS",
+        "ms": 39
+      }
+    ]
+  },
+  "android": {
+    "status": "PASS",
+    "groups": 10,
+    "passed": 10,
+    "nativeCalls": 308,
+    "successfulProviderOperations": 23,
+    "oneApprovalForEverySuccessfulOperation": true,
+    "rejectedOrInvalidNeverSigned": true,
+    "tests": [
+      {
+        "name": "AMM controller permutations produce identical signed bytes and reads through Provider, including workflow",
+        "status": "PASS",
+        "ms": 2128.9000000000233
+      },
+      {
+        "name": "invalid AMM semantics return parameter errors, never Host internal errors or approval",
+        "status": "PASS",
+        "ms": 44.20000000001164
+      },
+      {
+        "name": "plain LP lock is a typed unsupported operation before approval",
+        "status": "PASS",
+        "ms": 46.699999999953434
+      },
+      {
+        "name": "plain LP unlock is a typed unsupported operation before approval",
+        "status": "PASS",
+        "ms": 32.70000000001164
+      },
+      {
+        "name": "NFT fee alternatives do not consume the mint-slot budget; exact inputs and candidate bounds remain strict",
+        "status": "PASS",
+        "ms": 24.099999999976717
+      },
+      {
+        "name": "failures, missing rows and spent selected slots stop before a usable snapshot without retry",
+        "status": "PASS",
+        "ms": 76.70000000001164
+      },
+      {
+        "name": "a selected slot outside its collection is a typed conflict without substitute reads",
+        "status": "PASS",
+        "ms": 1.2000000000116415
+      },
+      {
+        "name": "NFT 122 fee alternatives: 1/7/100 mint plans validate on Native using the same material",
+        "status": "PASS",
+        "ms": 65.90000000002328
+      },
+      {
+        "name": "NFT 7 mint Provider-to-Native-finalize: 1/122/256 fee alternatives, identical signed transactions and one approval",
+        "status": "PASS",
+        "ms": 1130.2999999999884
+      },
+      {
+        "name": "NFT Provider slot conflict is typed; approval rejection never reaches signer or mock submit",
+        "status": "PASS",
+        "ms": 73.90000000002328
+      }
+    ]
+  },
+  "integrity": {
+    "status": "PASS",
+    "protectedPartnerFiles": 174,
+    "protectedFilesChanged": [],
+    "archives": {
+      "tbc-kit.tgz": "14fa77b6af1248edb5fc89c3dd7104d525c0c07a1529dc3dc0f6d6527d62b88b",
+      "ios-sdk.tgz": "877a715f9ab8d8e640136927c3b7d951c39db0ae3728a24d932eb62580d84e1e",
+      "android-sdk.tgz": "9293208a3da7d57a4ee13f8fbb84838cc4ad3c4d32df750d47a0f9483c7db67c"
+    },
+    "expandedPackageFilesMatched": 973,
+    "sourceRuntimeChanged": false,
+    "realBroadcasts": 0
+  }
+}

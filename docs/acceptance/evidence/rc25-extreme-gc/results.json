@@ -1,0 +1,21 @@
+{
+  "installed": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/.verify/extreme-rc25-consumer/node_modules/@tbc/kit",
+  "version": "0.1.0-rc.25",
+  "status": "PASS",
+  "results": [
+    {
+      "name": "extreme",
+      "files": 1,
+      "code": 0,
+      "ms": 49047.006209,
+      "tests": 9,
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "logSha256": "d8e5a49cc7aa7ac025a0c6b170ccac272b3ec3d12b5866061899465e27c69e63"
+    }
+  ],
+  "realBroadcasts": 0,
+  "devices": false
+}

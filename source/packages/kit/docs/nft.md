@@ -32,12 +32,15 @@ const result = await wallet.tbc721.batchMint({
 });
 ```
 
-使用 `limits` 时进入 Kit 的整任务入口 `tbc_runNftMintJob`。一次同意绑定
+所有 `batchMint` 调用均进入 Kit 的整任务入口 `tbc_runNftMintJob`，包括 1～100 项。
+一次同意绑定
 全部有序内容、槽位、收款人、总费用和期限；省略 `to` 时会在同意前明确为
 当前账户。任务最多 2000 项，仍不得超过合集实际可用槽位。
 
-Kit 内部按不超过 100 个组成子批，再根据计划字节和 Engine 资源限制下调。
-例如 250 个小项目通常分成 100／100／50；大媒体可能更少。资源不足才允许
+`maxItemsPerBatch` 是批准的上限，不保证单次构建该数量。默认钱包执行器
+使用不超过 10 项的工作集，避免大型计划在签名过程中反复复制和校验。
+例如 250 个小项目通常执行 25 个 10 项子批；仍只审批一次，且不是 25 次取数。
+大媒体可能更少。资源不足才允许
 本地缩小重规划，余额不足、归属错误或材料冲突不会通过缩小批次掩盖。
 整个任务的 JSON 材料上限为 8 MiB，累计计划上限默认 32 MiB；可用
 `maxPlanBytes`、`maxTotalPlanBytes` 和 `maxItemsPerBatch` 收紧，不能放大硬上限。
@@ -47,9 +50,13 @@ Kit 内部按不超过 100 个组成子批，再根据计划字节和 Engine 资
 
 取数与一次审批并行。任务内索引/原文请求去重，后续子批使用已验证签名
 交易的找零，不为自己的新输出再查 API。原始观察期限不会因复用而延长；
-过期会停止，不自动重新取数或延长授权。普通不超过 100 个的单构建调用
-仍可使用原来的 `constraints`，不增加任务预取或额外网络请求。
-`limits` 与 `constraints` 不可同时提供。
+过期会停止，不自动重新取数或延长授权。已有调用可传
+`constraints: { maxFee, expiresAt }`，两个字段必须齐全，分别映射为整任务的
+`maxTotalFee` 和 `expiresAt`，返回同一个任务结果，不再返回普通交易 bundle。
+不提供预算或期限会在取数之前返回 `-32602`；Kit 不代替用户放大预算。
+`limits` 与 `constraints` 不可同时提供。任务入口暂不支持
+`constraints.inputOutpoints` 或 `feePreference`，明确拒绝，不静默忽略。
+如需精确输入的单构建，使用有相应支持的底层交易入口，不冒充自动分批任务。
 
 结果包含 `status`、`reason`、`requested`、`minted`、各子批及交易状态：
 
@@ -60,6 +67,18 @@ Kit 内部按不超过 100 个组成子批，再根据计划字节和 Engine 资
 
 `confirmedSubmissionFee` 统计已接受/已知提交的手续费，不是链上确认数量。
 用原有交易查询/广播日志核对结果；不要直接重复提交原任务。
+
+到期返回 `reason: 'expired'`，保留成功数量、各批 `offset/count`、已生成交易的
+`accepted / known / uncertain / rejected / not-submitted` 状态及可用的
+`recoveryId`。未开始的子批通过 `requested - minted` 与已返回批次区分，
+不能把所有剩余项都当作“可以直接重发”：先消歧 `uncertain` 项并核对已成功槽位。
+提交已完成、回复恰好跨过期限的交易仍计入结果，但不会据此延长下一批授权。
+
+直接调用底层 `tbc_sendTransaction` 时，广播前到期返回 `4100` 和
+`data.reason: 'RECEIPT_EXPIRED'`，以及 `operationId`、
+`submittedTransactionIds`、`uncertainTransactionIds`、`rejectedTransactionIds`、
+`notSubmittedTransactionIds`。这些来自现有执行记录，不新增链上查询。
+只有节点明确接受/已知的提交进入 `submittedTransactionIds`；它不表示已确认。
 
 ### 钱包接入
 
@@ -76,6 +95,11 @@ Kit 在签发回调前核对请求、计划、账户、来源、会话、费用�
 `prepareNftMintJob(scope, account)`，并满足相同的材料身份、期限和复用约束。
 钱包原生页面可直接调用 `session.runNftMintJob({ collectionId, items, limits })`。
 独立执行通道只在当前会话内存中存活，不新增持久 UTXO 池或后台自动重试。
+
+缺少任务审批或材料适配时，在取数前返回 `4200 / NFT_JOB_UNAVAILABLE`，
+不回退成大型普通交易。无账户权限返回 `4100 / NFT_JOB_NOT_AUTHORIZED`。
+同一会话另有批次运行时，返回 `-32000`，`data.name = 'CONFLICT'`、
+`data.details.reason = 'NFT_JOB_BUSY'`。请先处理已有任务，不自动重试。
 
 ## 查询合集可铸造状态
 

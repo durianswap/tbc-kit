@@ -1,0 +1,969 @@
+{
+  "platform": "android",
+  "kind": "partial-budget-new-process",
+  "candidate": "0.1.0-rc.25",
+  "account": "18Dfipm9V56Sx6sKMJNvR9Z2tyLAzJN8Ew",
+  "last": {
+    "method": "tbc_runNftMintJob",
+    "outcome": "signed",
+    "code": "",
+    "publicResult": {
+      "batches": [
+        {
+          "count": 10,
+          "offset": 0,
+          "planHash": "fd585af43f8c75819eff601cb6ce8242974ee14053cb4a92b02d8b30a074642b",
+          "status": "complete",
+          "transactions": [
+            {
+              "fee": "80",
+              "status": "accepted",
+              "txid": "5129a4b5ad11e6e8d8626412b27ee1d44905a585585fd3dc1affcb17f4d961e1"
+            },
+            {
+              "fee": "80",
+              "status": "accepted",
+              "txid": "a863fa9c4dc563ece4f2f46f1cc5e55888ea9387ad6af1f77bd9c3f07b543c00"
+            },
+            {
+              "fee": "80",
+              "status": "accepted",
+              "txid": "f3bb3b01e9c7fe419ef3a70e1f52f8586f2b5bf7e9849fdc95f6ee7b047e4cbf"
+            },
+            {
+              "fee": "80",
+              "status": "accepted",
+              "txid": "d2bc97e3fb296b0f71e140004464fba0dd5a092aa6e8aa07a560448990a5f246"
+            },
+            {
+              "fee": "80",
+              "status": "accepted",
+              "txid": "7bab60e165c246ef300b8fa2f313d2b5b430f044d689588a094ecbf37c590a72"
+            },
+            {
+              "fee": "80",
+              "status": "accepted",
+              "txid": "63fa1a08a3ba342494bddbc775d4f091d5c27e0dd3b3156401c433ab4aae3512"
+            },
+            {
+              "fee": "80",
+              "status": "accepted",
+              "txid": "1a81ac0ad5c080440a3c311446381b05446dd3b2f4d4497f79cad8b3dffb35f0"
+            },
+            {
+              "fee": "80",
+              "status": "accepted",
+              "txid": "e86b1d44bd8fd162da9cb7c0b3d25794793b4ca3f2da5f9e6f5a6b3637844e87"
+            },
+            {
+              "fee": "80",
+              "status": "accepted",
+              "txid": "2b604bcccbf3b32267d45679ce30458444d74c80d369c1679051c861f396bc74"
+            },
+            {
+              "fee": "80",
+              "status": "accepted",
+              "txid": "34cee872733e497a39896fd1f8de9d910d4146d93073a0e769b7bb958a5e89a7"
+            }
+          ]
+        }
+      ],
+      "confirmedSubmissionFee": "800",
+      "minted": 10,
+      "reason": "fee-budget",
+      "requested": 11,
+      "scopeHash": "f6575afbf99951d71cba0ea59327466d54febf5a6b38f8232775f9d79912119c",
+      "status": "partial"
+    }
+  },
+  "counts": {
+    "wallet.signingRoles": 1,
+    "sqlite.begin": 31,
+    "sqlite.execute": 84,
+    "sqlite.commit": 31,
+    "accounts.current": 7,
+    "authority.read": 103,
+    "request": 1,
+    "clock.now": 45,
+    "permissions.load": 3,
+    "job.approve": 1,
+    "approvalUI": 1,
+    "http.request": 13,
+    "http.GET": 3,
+    "entropy.bytes": 1,
+    "approved": 1,
+    "engine.normalizeRequest": 3,
+    "engine.plan": 2,
+    "engine.validate": 13,
+    "job.authorize": 1,
+    "signer.sign": 20,
+    "vaultSigns": 20,
+    "engine.finalize": 10,
+    "validatedContinuation": 9,
+    "accounts.forChain": 10,
+    "http.POST": 10,
+    "broadcast.POST": 10
+  },
+  "approvalToSignMs": 8401.943629000336,
+  "approvalToReturnMs": 17599.552716000006,
+  "nativeSignMs": 39.076249,
+  "signatureCount": 20,
+  "metrics": [
+    {
+      "iso": "2026-11-01T15:07:16.923Z",
+      "phase": "clock-read",
+      "monoMs": 15344489.513983
+    },
+    {
+      "iso": "2026-11-01T15:07:17.035Z",
+      "phase": "clock-read",
+      "monoMs": 15344601.315483
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/utxo/address/18Dfipm9V56Sx6sKMJNvR9Z2tyLAzJN8Ew",
+      "method": "GET",
+      "phase": "http-start",
+      "monoMs": 15344679.447483
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/utxo/scriptpubkeyhash/b65be2fa8171cfa77d7f85cc43b81117bea26fe91a391a15bcb5b1fc806c9d61",
+      "method": "GET",
+      "phase": "http-start",
+      "monoMs": 15344680.333941
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/txraw/txid/3c3a5611daad7090e0ab0d7309138fc9455ae586161158cb4098016cf3fe9f4c",
+      "method": "GET",
+      "phase": "http-start",
+      "monoMs": 15344680.761774
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/utxo/scriptpubkeyhash/b65be2fa8171cfa77d7f85cc43b81117bea26fe91a391a15bcb5b1fc806c9d61",
+      "method": "GET",
+      "elapsedMs": 2479.309376,
+      "phase": "http-end",
+      "monoMs": 15347159.653817
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/utxo/address/18Dfipm9V56Sx6sKMJNvR9Z2tyLAzJN8Ew",
+      "method": "GET",
+      "elapsedMs": 2532.742543,
+      "phase": "http-end",
+      "monoMs": 15347212.190776
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/txraw/txid/3c3a5611daad7090e0ab0d7309138fc9455ae586161158cb4098016cf3fe9f4c",
+      "method": "GET",
+      "elapsedMs": 2676.352251,
+      "phase": "http-end",
+      "monoMs": 15347357.118859
+    },
+    {
+      "kind": "nft-job",
+      "items": 11,
+      "approvedAt": "2026-11-01T15:07:22.521Z",
+      "expiresAt": "2026-11-01T15:08:09.915Z",
+      "phase": "approved",
+      "monoMs": 15350088.235194
+    },
+    {
+      "iso": "2026-11-01T15:07:22.604Z",
+      "phase": "clock-read",
+      "monoMs": 15350171.162944
+    },
+    {
+      "method": "engine.normalizeRequest",
+      "elapsedMs": 41.756542,
+      "inputChars": 2498,
+      "outputChars": 2600,
+      "phase": "engine",
+      "monoMs": 15350248.99336
+    },
+    {
+      "method": "engine.plan",
+      "elapsedMs": 106.201583,
+      "inputChars": 10838,
+      "outputChars": 21531,
+      "phase": "engine",
+      "monoMs": 15350447.826402
+    },
+    {
+      "iso": "2026-11-01T15:07:22.961Z",
+      "phase": "clock-read",
+      "monoMs": 15350527.369861
+    },
+    {
+      "method": "engine.normalizeRequest",
+      "elapsedMs": 1.622291,
+      "inputChars": 2498,
+      "outputChars": 2600,
+      "phase": "engine",
+      "monoMs": 15350569.564819
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 2.06225,
+      "inputChars": 32346,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 15350740.293902
+    },
+    {
+      "iso": "2026-11-01T15:07:23.258Z",
+      "phase": "clock-read",
+      "monoMs": 15350824.511986
+    },
+    {
+      "tasks": 2,
+      "phase": "batch-credential",
+      "monoMs": 15350918.536402
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 1.960291,
+      "inputChars": 33287,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 15350931.924319
+    },
+    {
+      "iso": "2026-11-01T15:07:23.435Z",
+      "phase": "clock-read",
+      "monoMs": 15351002.288902
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-0-input-0",
+      "nativeMs": 3.452875,
+      "phase": "signature",
+      "monoMs": 15351074.017111
+    },
+    {
+      "elapsedMs": 3.664625,
+      "phase": "signer-port",
+      "monoMs": 15351074.026027
+    },
+    {
+      "iso": "2026-11-01T15:07:23.575Z",
+      "phase": "clock-read",
+      "monoMs": 15351142.021902
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-0-input-1",
+      "nativeMs": 1.752041,
+      "phase": "signature",
+      "monoMs": 15351210.198319
+    },
+    {
+      "elapsedMs": 1.993083,
+      "phase": "signer-port",
+      "monoMs": 15351210.204152
+    },
+    {
+      "iso": "2026-11-01T15:07:23.708Z",
+      "phase": "clock-read",
+      "monoMs": 15351274.498278
+    },
+    {
+      "method": "engine.finalize",
+      "elapsedMs": 2.691667,
+      "inputChars": 33731,
+      "outputChars": 4693,
+      "phase": "engine",
+      "monoMs": 15351348.917319
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 2.548458,
+      "inputChars": 38418,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 15351359.235569
+    },
+    {
+      "iso": "2026-11-01T15:07:23.864Z",
+      "phase": "clock-read",
+      "monoMs": 15351430.907153
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-1-input-0",
+      "nativeMs": 1.514334,
+      "phase": "signature",
+      "monoMs": 15351507.077986
+    },
+    {
+      "elapsedMs": 1.8035,
+      "phase": "signer-port",
+      "monoMs": 15351507.083486
+    },
+    {
+      "iso": "2026-11-01T15:07:24.034Z",
+      "phase": "clock-read",
+      "monoMs": 15351600.485903
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-1-input-1",
+      "nativeMs": 1.989167,
+      "phase": "signature",
+      "monoMs": 15351684.941069
+    },
+    {
+      "elapsedMs": 2.366209,
+      "phase": "signer-port",
+      "monoMs": 15351684.945778
+    },
+    {
+      "iso": "2026-11-01T15:07:24.190Z",
+      "phase": "clock-read",
+      "monoMs": 15351757.050028
+    },
+    {
+      "method": "engine.finalize",
+      "elapsedMs": 2.754125,
+      "inputChars": 37463,
+      "outputChars": 6496,
+      "phase": "engine",
+      "monoMs": 15351835.423819
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 2.857917,
+      "inputChars": 43953,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 15351841.456861
+    },
+    {
+      "iso": "2026-11-01T15:07:24.356Z",
+      "phase": "clock-read",
+      "monoMs": 15351922.940653
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-2-input-0",
+      "nativeMs": 1.896917,
+      "phase": "signature",
+      "monoMs": 15352009.525986
+    },
+    {
+      "elapsedMs": 2.287292,
+      "phase": "signer-port",
+      "monoMs": 15352009.530778
+    },
+    {
+      "iso": "2026-11-01T15:07:24.525Z",
+      "phase": "clock-read",
+      "monoMs": 15352091.441195
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-2-input-1",
+      "nativeMs": 1.921208,
+      "phase": "signature",
+      "monoMs": 15352178.686986
+    },
+    {
+      "elapsedMs": 2.412375,
+      "phase": "signer-port",
+      "monoMs": 15352178.69432
+    },
+    {
+      "iso": "2026-11-01T15:07:24.696Z",
+      "phase": "clock-read",
+      "monoMs": 15352262.446945
+    },
+    {
+      "method": "engine.finalize",
+      "elapsedMs": 3.243959,
+      "inputChars": 39266,
+      "outputChars": 8301,
+      "phase": "engine",
+      "monoMs": 15352354.314778
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 3.415083,
+      "inputChars": 47561,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 15352361.236653
+    },
+    {
+      "iso": "2026-11-01T15:07:24.892Z",
+      "phase": "clock-read",
+      "monoMs": 15352458.471695
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-3-input-0",
+      "nativeMs": 1.779458,
+      "phase": "signature",
+      "monoMs": 15352558.059111
+    },
+    {
+      "elapsedMs": 2.289291,
+      "phase": "signer-port",
+      "monoMs": 15352558.065028
+    },
+    {
+      "iso": "2026-11-01T15:07:25.087Z",
+      "phase": "clock-read",
+      "monoMs": 15352654.187153
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-3-input-1",
+      "nativeMs": 2.155167,
+      "phase": "signature",
+      "monoMs": 15352752.118362
+    },
+    {
+      "elapsedMs": 2.754792,
+      "phase": "signer-port",
+      "monoMs": 15352752.123862
+    },
+    {
+      "iso": "2026-11-01T15:07:25.285Z",
+      "phase": "clock-read",
+      "monoMs": 15352851.349153
+    },
+    {
+      "method": "engine.finalize",
+      "elapsedMs": 3.496875,
+      "inputChars": 41071,
+      "outputChars": 10102,
+      "phase": "engine",
+      "monoMs": 15352952.357903
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 3.80125,
+      "inputChars": 51167,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 15352959.57607
+    },
+    {
+      "iso": "2026-11-01T15:07:25.501Z",
+      "phase": "clock-read",
+      "monoMs": 15353068.10657
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-4-input-0",
+      "nativeMs": 1.863875,
+      "phase": "signature",
+      "monoMs": 15353218.01932
+    },
+    {
+      "elapsedMs": 2.452417,
+      "phase": "signer-port",
+      "monoMs": 15353218.025112
+    },
+    {
+      "iso": "2026-11-01T15:07:25.760Z",
+      "phase": "clock-read",
+      "monoMs": 15353326.843112
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-4-input-1",
+      "nativeMs": 1.912208,
+      "phase": "signature",
+      "monoMs": 15353439.358487
+    },
+    {
+      "elapsedMs": 2.617792,
+      "phase": "signer-port",
+      "monoMs": 15353439.363945
+    },
+    {
+      "iso": "2026-11-01T15:07:25.983Z",
+      "phase": "clock-read",
+      "monoMs": 15353549.492279
+    },
+    {
+      "method": "engine.finalize",
+      "elapsedMs": 3.7365,
+      "inputChars": 42872,
+      "outputChars": 11905,
+      "phase": "engine",
+      "monoMs": 15353666.50207
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 4.1955,
+      "inputChars": 54771,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 15353674.26657
+    },
+    {
+      "iso": "2026-11-01T15:07:26.235Z",
+      "phase": "clock-read",
+      "monoMs": 15353801.389904
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-5-input-0",
+      "nativeMs": 2.118333,
+      "phase": "signature",
+      "monoMs": 15353933.559112
+    },
+    {
+      "elapsedMs": 2.763708,
+      "phase": "signer-port",
+      "monoMs": 15353933.565529
+    },
+    {
+      "iso": "2026-11-01T15:07:26.494Z",
+      "phase": "clock-read",
+      "monoMs": 15354060.444154
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-5-input-1",
+      "nativeMs": 1.823833,
+      "phase": "signature",
+      "monoMs": 15354190.514279
+    },
+    {
+      "elapsedMs": 2.5215,
+      "phase": "signer-port",
+      "monoMs": 15354190.518946
+    },
+    {
+      "iso": "2026-11-01T15:07:26.752Z",
+      "phase": "clock-read",
+      "monoMs": 15354318.774904
+    },
+    {
+      "method": "engine.finalize",
+      "elapsedMs": 4.076208,
+      "inputChars": 44675,
+      "outputChars": 13706,
+      "phase": "engine",
+      "monoMs": 15354454.824779
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 4.287,
+      "inputChars": 58375,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 15354462.472071
+    },
+    {
+      "iso": "2026-11-01T15:07:27.041Z",
+      "phase": "clock-read",
+      "monoMs": 15354607.889154
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-6-input-0",
+      "nativeMs": 1.838417,
+      "phase": "signature",
+      "monoMs": 15354758.685988
+    },
+    {
+      "elapsedMs": 2.53875,
+      "phase": "signer-port",
+      "monoMs": 15354758.691821
+    },
+    {
+      "iso": "2026-11-01T15:07:27.336Z",
+      "phase": "clock-read",
+      "monoMs": 15354902.285446
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-6-input-1",
+      "nativeMs": 1.873208,
+      "phase": "signature",
+      "monoMs": 15355052.798321
+    },
+    {
+      "elapsedMs": 2.692417,
+      "phase": "signer-port",
+      "monoMs": 15355052.803571
+    },
+    {
+      "iso": "2026-11-01T15:07:27.635Z",
+      "phase": "clock-read",
+      "monoMs": 15355201.297863
+    },
+    {
+      "method": "engine.finalize",
+      "elapsedMs": 4.46025,
+      "inputChars": 46476,
+      "outputChars": 15507,
+      "phase": "engine",
+      "monoMs": 15355358.519113
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 5.23325,
+      "inputChars": 61977,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 15355368.951904
+    },
+    {
+      "iso": "2026-11-01T15:07:27.972Z",
+      "phase": "clock-read",
+      "monoMs": 15355538.444988
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-7-input-0",
+      "nativeMs": 1.79025,
+      "phase": "signature",
+      "monoMs": 15355710.619696
+    },
+    {
+      "elapsedMs": 2.630917,
+      "phase": "signer-port",
+      "monoMs": 15355710.62478
+    },
+    {
+      "iso": "2026-11-01T15:07:28.312Z",
+      "phase": "clock-read",
+      "monoMs": 15355878.556655
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-7-input-1",
+      "nativeMs": 1.8985,
+      "phase": "signature",
+      "monoMs": 15356055.403113
+    },
+    {
+      "elapsedMs": 2.836916,
+      "phase": "signer-port",
+      "monoMs": 15356055.408363
+    },
+    {
+      "iso": "2026-11-01T15:07:28.662Z",
+      "phase": "clock-read",
+      "monoMs": 15356228.309488
+    },
+    {
+      "method": "engine.finalize",
+      "elapsedMs": 4.925375,
+      "inputChars": 48277,
+      "outputChars": 17310,
+      "phase": "engine",
+      "monoMs": 15356409.53653
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 5.752041,
+      "inputChars": 65581,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 15356419.439363
+    },
+    {
+      "iso": "2026-11-01T15:07:29.047Z",
+      "phase": "clock-read",
+      "monoMs": 15356613.846113
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-8-input-0",
+      "nativeMs": 1.746958,
+      "phase": "signature",
+      "monoMs": 15356810.930905
+    },
+    {
+      "elapsedMs": 2.653458,
+      "phase": "signer-port",
+      "monoMs": 15356810.936238
+    },
+    {
+      "iso": "2026-11-01T15:07:29.435Z",
+      "phase": "clock-read",
+      "monoMs": 15357001.935905
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-8-input-1",
+      "nativeMs": 1.927958,
+      "phase": "signature",
+      "monoMs": 15357197.842322
+    },
+    {
+      "elapsedMs": 2.895375,
+      "phase": "signer-port",
+      "monoMs": 15357197.848155
+    },
+    {
+      "iso": "2026-11-01T15:07:29.830Z",
+      "phase": "clock-read",
+      "monoMs": 15357396.599239
+    },
+    {
+      "method": "engine.finalize",
+      "elapsedMs": 5.441166,
+      "inputChars": 50080,
+      "outputChars": 19113,
+      "phase": "engine",
+      "monoMs": 15357598.047447
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 5.681541,
+      "inputChars": 69187,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 15357608.100239
+    },
+    {
+      "iso": "2026-11-01T15:07:30.261Z",
+      "phase": "clock-read",
+      "monoMs": 15357828.146031
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-9-input-0",
+      "nativeMs": 1.934958,
+      "phase": "signature",
+      "monoMs": 15358053.111614
+    },
+    {
+      "elapsedMs": 2.991459,
+      "phase": "signer-port",
+      "monoMs": 15358053.116864
+    },
+    {
+      "iso": "2026-11-01T15:07:30.702Z",
+      "phase": "clock-read",
+      "monoMs": 15358268.755656
+    },
+    {
+      "taskId": "sign-tbc721-standard-mint-9-input-1",
+      "nativeMs": 1.886584,
+      "phase": "signature",
+      "monoMs": 15358490.178823
+    },
+    {
+      "elapsedMs": 2.975125,
+      "phase": "signer-port",
+      "monoMs": 15358490.183823
+    },
+    {
+      "iso": "2026-11-01T15:07:31.214Z",
+      "phase": "clock-read",
+      "monoMs": 15358780.465073
+    },
+    {
+      "method": "engine.finalize",
+      "elapsedMs": 5.820459,
+      "inputChars": 51883,
+      "outputChars": 18674,
+      "phase": "engine",
+      "monoMs": 15359015.619865
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 6.480959,
+      "inputChars": 70495,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 15359046.707406
+    },
+    {
+      "method": "engine.validate",
+      "elapsedMs": 6.262917,
+      "inputChars": 70499,
+      "outputChars": 67,
+      "phase": "engine",
+      "monoMs": 15359057.440698
+    },
+    {
+      "iso": "2026-11-01T15:07:31.766Z",
+      "phase": "clock-read",
+      "monoMs": 15359332.354531
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "phase": "http-start",
+      "monoMs": 15359634.09849
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "elapsedMs": 211.939458,
+      "phase": "http-end",
+      "monoMs": 15359846.038323
+    },
+    {
+      "iso": "2026-11-01T15:07:32.589Z",
+      "phase": "clock-read",
+      "monoMs": 15360155.366615
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "phase": "http-start",
+      "monoMs": 15360446.665074
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "elapsedMs": 168.800792,
+      "phase": "http-end",
+      "monoMs": 15360615.470074
+    },
+    {
+      "iso": "2026-11-01T15:07:33.342Z",
+      "phase": "clock-read",
+      "monoMs": 15360908.654949
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "phase": "http-start",
+      "monoMs": 15361209.800574
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "elapsedMs": 170.892375,
+      "phase": "http-end",
+      "monoMs": 15361380.692741
+    },
+    {
+      "iso": "2026-11-01T15:07:34.115Z",
+      "phase": "clock-read",
+      "monoMs": 15361681.719616
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "phase": "http-start",
+      "monoMs": 15362014.380616
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "elapsedMs": 178.336292,
+      "phase": "http-end",
+      "monoMs": 15362192.719616
+    },
+    {
+      "iso": "2026-11-01T15:07:34.949Z",
+      "phase": "clock-read",
+      "monoMs": 15362515.388866
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "phase": "http-start",
+      "monoMs": 15362813.525491
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "elapsedMs": 179.808542,
+      "phase": "http-end",
+      "monoMs": 15362993.335366
+    },
+    {
+      "iso": "2026-11-01T15:07:35.735Z",
+      "phase": "clock-read",
+      "monoMs": 15363302.060367
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "phase": "http-start",
+      "monoMs": 15363604.089242
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "elapsedMs": 161.536584,
+      "phase": "http-end",
+      "monoMs": 15363765.628575
+    },
+    {
+      "iso": "2026-11-01T15:07:36.503Z",
+      "phase": "clock-read",
+      "monoMs": 15364069.912409
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "phase": "http-start",
+      "monoMs": 15364379.423075
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "elapsedMs": 404.104376,
+      "phase": "http-end",
+      "monoMs": 15364783.530576
+    },
+    {
+      "iso": "2026-11-01T15:07:37.543Z",
+      "phase": "clock-read",
+      "monoMs": 15365110.100534
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "phase": "http-start",
+      "monoMs": 15365425.018118
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "elapsedMs": 298.858416,
+      "phase": "http-end",
+      "monoMs": 15365723.878784
+    },
+    {
+      "iso": "2026-11-01T15:07:38.477Z",
+      "phase": "clock-read",
+      "monoMs": 15366043.25766
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "phase": "http-start",
+      "monoMs": 15366360.740618
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "elapsedMs": 200.993292,
+      "phase": "http-end",
+      "monoMs": 15366561.734201
+    },
+    {
+      "iso": "2026-11-01T15:07:39.299Z",
+      "phase": "clock-read",
+      "monoMs": 15366865.725285
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "phase": "http-start",
+      "monoMs": 15367183.321368
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/broadcasttx",
+      "method": "POST",
+      "elapsedMs": 163.600376,
+      "phase": "http-end",
+      "monoMs": 15367346.922869
+    },
+    {
+      "method": "engine.normalizeRequest",
+      "elapsedMs": 0.508292,
+      "inputChars": 553,
+      "outputChars": 655,
+      "phase": "engine",
+      "monoMs": 15367672.720244
+    },
+    {
+      "method": "engine.plan",
+      "elapsedMs": 0.503125,
+      "inputChars": 7619,
+      "outputChars": 108,
+      "phase": "engine",
+      "monoMs": 15367680.706369
+    },
+    {
+      "status": "signed",
+      "phase": "wallet-return",
+      "monoMs": 15367687.78791
+    }
+  ]
+}

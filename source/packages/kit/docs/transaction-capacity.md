@@ -38,6 +38,13 @@ after approval. This does not reorder recipients, workflow steps, or multisig ke
 
 ## NFT inputs and slots
 
+`tbc721.batchMint` always uses the bounded mint-job executor, including 1–100
+items. Supply a whole-task fee ceiling and deadline; see [NFT jobs](./nft.md).
+The 100-item schema ceiling is not an execution-chunk recommendation. The default
+wallet uses at most ten items per working set with one approval and retained
+materials. Expiry stops further effects and returns the accepted prefix; it does
+not reset the deadline or resend already accepted transactions.
+
 NFT minting and transfers can receive up to 256 automatic native funding candidates.
 Those are alternatives, not 256 selected transaction inputs. The resolver counts
 the funding role separately from NFT slots/outputs; the Engine selects and validates

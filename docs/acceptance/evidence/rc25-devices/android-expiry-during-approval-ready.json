@@ -1,0 +1,87 @@
+{
+  "platform": "android",
+  "kind": "expiry-during-approval-ready",
+  "candidate": "0.1.0-rc.25",
+  "account": "18Dfipm9V56Sx6sKMJNvR9Z2tyLAzJN8Ew",
+  "last": {
+    "method": "tbc_runNftMintJob",
+    "outcome": "rejected",
+    "code": "-32603"
+  },
+  "counts": {
+    "wallet.signingRoles": 1,
+    "sqlite.begin": 1,
+    "sqlite.execute": 4,
+    "sqlite.commit": 1,
+    "accounts.current": 3,
+    "authority.read": 14,
+    "request": 2,
+    "clock.now": 3,
+    "permissions.load": 3,
+    "job.approve": 1,
+    "approvalUI": 1,
+    "http.request": 3,
+    "http.GET": 3,
+    "entropy.bytes": 1
+  },
+  "approvalToSignMs": null,
+  "approvalToReturnMs": null,
+  "nativeSignMs": 0,
+  "signatureCount": 0,
+  "metrics": [
+    {
+      "iso": "2026-11-01T15:11:02.520Z",
+      "phase": "clock-read",
+      "monoMs": 15570086.59334
+    },
+    {
+      "iso": "2026-11-01T15:11:02.601Z",
+      "phase": "clock-read",
+      "monoMs": 15570167.542632
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/utxo/address/18Dfipm9V56Sx6sKMJNvR9Z2tyLAzJN8Ew",
+      "method": "GET",
+      "phase": "http-start",
+      "monoMs": 15570246.227715
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/utxo/scriptpubkeyhash/b65be2fa8171cfa77d7f85cc43b81117bea26fe91a391a15bcb5b1fc806c9d61",
+      "method": "GET",
+      "phase": "http-start",
+      "monoMs": 15570246.579757
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/txraw/txid/3c3a5611daad7090e0ab0d7309138fc9455ae586161158cb4098016cf3fe9f4c",
+      "method": "GET",
+      "phase": "http-start",
+      "monoMs": 15570247.775882
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/utxo/scriptpubkeyhash/b65be2fa8171cfa77d7f85cc43b81117bea26fe91a391a15bcb5b1fc806c9d61",
+      "method": "GET",
+      "elapsedMs": 722.751667,
+      "phase": "http-end",
+      "monoMs": 15570969.334841
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/txraw/txid/3c3a5611daad7090e0ab0d7309138fc9455ae586161158cb4098016cf3fe9f4c",
+      "method": "GET",
+      "elapsedMs": 878.554334,
+      "phase": "http-end",
+      "monoMs": 15571126.302966
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/utxo/address/18Dfipm9V56Sx6sKMJNvR9Z2tyLAzJN8Ew",
+      "method": "GET",
+      "elapsedMs": 1004.88125,
+      "phase": "http-end",
+      "monoMs": 15571251.107632
+    },
+    {
+      "status": "rejected",
+      "phase": "wallet-return",
+      "monoMs": 15594333.731643
+    }
+  ]
+}

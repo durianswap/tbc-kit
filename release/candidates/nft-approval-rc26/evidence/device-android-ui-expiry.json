@@ -1,0 +1,122 @@
+{
+  "status": "PASS",
+  "platform": "android",
+  "loadedKit": "0.1.0-rc.26",
+  "jsSha256": "978988d83f077c31ebf567de18ca3a0d4bc73b2b867315981a44e88fa812a177",
+  "nativeSdk": "0.1.0-rc.23.native.2",
+  "harnessReportingVersion": "rc.25 (unchanged native shell)",
+  "expiresAt": "2026-11-01T15:56:45.780Z",
+  "last": {
+    "outcome": "signed",
+    "code": "",
+    "counts": {
+      "wallet.signingRoles": 1,
+      "sqlite.begin": 1,
+      "sqlite.execute": 4,
+      "sqlite.commit": 1,
+      "accounts.current": 3,
+      "authority.read": 14,
+      "request": 2,
+      "clock.now": 4,
+      "permissions.load": 3,
+      "job.approve": 1,
+      "approvalUI": 1,
+      "http.request": 3,
+      "http.GET": 3,
+      "entropy.bytes": 1
+    },
+    "items": -1,
+    "time": "2026-11-01T15:57:01.819Z",
+    "method": "tbc_runNftMintJob",
+    "publicResult": {
+      "batches": [],
+      "confirmedSubmissionFee": "0",
+      "minted": 0,
+      "reason": "expired",
+      "requested": 1,
+      "scopeHash": "bdf08758b53b846bab9cc1ad6de5e180b3f08c4a564902021313c84bcc84bd98",
+      "status": "stopped"
+    }
+  },
+  "deltas": {
+    "approvalUI": 1,
+    "job.approve": 1,
+    "approved": 0,
+    "job.authorize": 0,
+    "signer.sign": 0,
+    "broadcast.POST": 0,
+    "http.GET": 3
+  },
+  "metrics": [
+    {
+      "iso": "2026-11-01T15:56:01.616Z",
+      "phase": "clock-read",
+      "monoMs": 18269183.215169
+    },
+    {
+      "status": "signed",
+      "phase": "wallet-return",
+      "monoMs": 18269238.958711
+    },
+    {
+      "iso": "2026-11-01T15:56:22.076Z",
+      "phase": "clock-read",
+      "monoMs": 18289642.709387
+    },
+    {
+      "iso": "2026-11-01T15:56:22.113Z",
+      "phase": "clock-read",
+      "monoMs": 18289679.86447
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/utxo/address/18Dfipm9V56Sx6sKMJNvR9Z2tyLAzJN8Ew",
+      "method": "GET",
+      "phase": "http-start",
+      "monoMs": 18289781.856804
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/utxo/scriptpubkeyhash/b65be2fa8171cfa77d7f85cc43b81117bea26fe91a391a15bcb5b1fc806c9d61",
+      "method": "GET",
+      "phase": "http-start",
+      "monoMs": 18289790.235929
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/txraw/txid/3c3a5611daad7090e0ab0d7309138fc9455ae586161158cb4098016cf3fe9f4c",
+      "method": "GET",
+      "phase": "http-start",
+      "monoMs": 18289805.906595
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/utxo/scriptpubkeyhash/b65be2fa8171cfa77d7f85cc43b81117bea26fe91a391a15bcb5b1fc806c9d61",
+      "method": "GET",
+      "elapsedMs": 683.332375,
+      "phase": "http-end",
+      "monoMs": 18290473.560012
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/txraw/txid/3c3a5611daad7090e0ab0d7309138fc9455ae586161158cb4098016cf3fe9f4c",
+      "method": "GET",
+      "elapsedMs": 812.216083,
+      "phase": "http-end",
+      "monoMs": 18290618.119554
+    },
+    {
+      "url": "https://api.tbcdev.org/api/tbc/utxo/address/18Dfipm9V56Sx6sKMJNvR9Z2tyLAzJN8Ew",
+      "method": "GET",
+      "elapsedMs": 1191.875334,
+      "phase": "http-end",
+      "monoMs": 18290973.724346
+    },
+    {
+      "iso": "2026-11-01T15:57:01.816Z",
+      "phase": "clock-read",
+      "monoMs": 18329383.271531
+    },
+    {
+      "status": "signed",
+      "phase": "wallet-return",
+      "monoMs": 18329385.905531
+    }
+  ],
+  "scope": "real DApp bridge and native approval; expiry-only, zero signing and broadcast"
+}

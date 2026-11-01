@@ -112,7 +112,8 @@ export function reduceSigningClock(
     );
   }
   if (Date.parse(result.now) >= Date.parse(String(checkpoint.payload.expiresAt))) {
-    return completeError(checkpoint, 4100, "Approval expired before signing");
+    return completeError(checkpoint, 4100, "Approval expired before signing", checkpoint.payload.memory,
+      { reason: "RECEIPT_EXPIRED", stage: "signing", operationId: checkpoint.payload.operationId });
   }
   const tasks = checkpoint.payload.memory.signingTasks as readonly SigningTask[];
   const signatures = (checkpoint.payload.memory.signatures ?? []) as readonly unknown[];
