@@ -1,0 +1,155 @@
+{
+  "status": "READ_ONLY_PLAN_COMPARISON",
+  "observedAt": "2026-11-01T08:55:58.463Z",
+  "address": "164nB7hUpDSx3neWu293wKqW1sRNBg1e3X",
+  "collectionId": "e7f266c86c6b8981fcfdcd377c15d03f1218202dd7466600a42bed16fb9f86ad",
+  "results": [
+    {
+      "version": "rc22",
+      "count": 1,
+      "available": 199,
+      "spent": 101,
+      "materialUtxos": 123,
+      "nativeCandidates": 122,
+      "transactions": 1,
+      "totalFee": "87",
+      "planValidated": true
+    },
+    {
+      "version": "rc22",
+      "count": 2,
+      "available": 199,
+      "spent": 101,
+      "materialUtxos": 124,
+      "nativeCandidates": 122,
+      "transactions": 2,
+      "totalFee": "160",
+      "planValidated": true
+    },
+    {
+      "version": "rc22",
+      "count": 6,
+      "available": 199,
+      "spent": 101,
+      "materialUtxos": 128,
+      "nativeCandidates": 122,
+      "transactions": 6,
+      "totalFee": "480",
+      "planValidated": true
+    },
+    {
+      "version": "rc22",
+      "count": 7,
+      "available": 199,
+      "spent": 101,
+      "error": {
+        "name": "CONFLICT",
+        "retryable": false,
+        "message": "TBC chain data could not be verified for the configured network"
+      }
+    },
+    {
+      "version": "rc22",
+      "count": 100,
+      "available": 199,
+      "spent": 101,
+      "error": {
+        "name": "CONFLICT",
+        "retryable": false,
+        "message": "TBC chain data could not be verified for the configured network"
+      }
+    },
+    {
+      "version": "rc23",
+      "count": 1,
+      "available": 199,
+      "spent": 101,
+      "materialUtxos": 123,
+      "nativeCandidates": 122,
+      "transactions": 1,
+      "totalFee": "87",
+      "planValidated": true
+    },
+    {
+      "version": "rc23",
+      "count": 2,
+      "available": 199,
+      "spent": 101,
+      "materialUtxos": 124,
+      "nativeCandidates": 122,
+      "transactions": 2,
+      "totalFee": "160",
+      "planValidated": true
+    },
+    {
+      "version": "rc23",
+      "count": 6,
+      "available": 199,
+      "spent": 101,
+      "materialUtxos": 128,
+      "nativeCandidates": 122,
+      "transactions": 6,
+      "totalFee": "480",
+      "planValidated": true
+    },
+    {
+      "version": "rc23",
+      "count": 7,
+      "available": 199,
+      "spent": 101,
+      "materialUtxos": 129,
+      "nativeCandidates": 122,
+      "transactions": 7,
+      "totalFee": "600",
+      "planValidated": true
+    },
+    {
+      "version": "rc23",
+      "count": 100,
+      "available": 199,
+      "spent": 101,
+      "materialUtxos": 222,
+      "nativeCandidates": 122,
+      "transactions": 100,
+      "totalFee": "8000",
+      "planValidated": true
+    }
+  ],
+  "trace": [
+    {
+      "path": "/api/tbc/txraw/txid/e7f266c86c6b8981fcfdcd377c15d03f1218202dd7466600a42bed16fb9f86ad",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tbc/utxo/scriptpubkeyhash/a7b5091077d3c4e1bc7debeee7392a77c3f1e3b93900aecfe820f4086dc85a44",
+      "method": "GET"
+    },
+    {
+      "path": "/api/tbc/txo/status",
+      "method": "POST"
+    },
+    {
+      "path": "/api/tbc/txo/status",
+      "method": "POST"
+    },
+    {
+      "path": "/api/tbc/txo/status",
+      "method": "POST"
+    },
+    {
+      "path": "/api/tbc/txo/status",
+      "method": "POST"
+    },
+    {
+      "path": "/api/tbc/txo/status",
+      "method": "POST"
+    },
+    {
+      "path": "/api/tbc/utxo/address/164nB7hUpDSx3neWu293wKqW1sRNBg1e3X",
+      "method": "GET"
+    }
+  ],
+  "totalReadRequests": 8,
+  "signatures": 0,
+  "broadcasts": 0
+}

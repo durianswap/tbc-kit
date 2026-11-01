@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 import test from 'node:test';
 const base = process.env.TBC_KIT_TEST_ROOT ? new URL(`file://${process.env.TBC_KIT_TEST_ROOT}/`) : new URL('../', import.meta.url);
@@ -24,7 +25,7 @@ function harness(supply=101,{retained=true,minimum='0'}={}) {
   const collectionId=turingTransactionId(raw), funding=rawWithOutputs([{satoshis:9000000,script:tbc.Script.fromHex(script)}]),fundingId=turingTransactionId(funding);
   const calls={index:0,native:0,raw:0,decoded:0,status:0}, batches=[],rawIds=[];
   const row=(index,spent=false)=>({txid:collectionId,index:String(index),value:'100',spent,scriptPubKey:slotScript});
-  const state={indexed:[], alter:(_batch,rows)=>rows,failAt:undefined,active:0,maxActive:0};
+  const state={indexed:[], nativeCount:1, alter:(_batch,rows)=>rows,failAt:undefined,active:0,maxActive:0};
   const unused=async()=>{throw Error('Unexpected extra data request')};
   const client={
     api:{poolInfo:unused,ftUtxosByCombineScript:unused,poolLpUtxosByScriptHash:unused,
@@ -36,7 +37,7 @@ function harness(supply=101,{retained=true,minimum='0'}={}) {
         }finally{state.active--;}
       }},
     getFtUtxos:unused,getStablecoinUtxos:unused,getStablecoinInfo:unused,
-    async getUtxos(){calls.native++;return{tip:{height:'1000',hash:'aa'.repeat(32)},utxos:[{txid:fundingId,vout:0,satoshis:'9000000',height:minimum==='0'?'0':'990'}]}},
+    async getUtxos(){calls.native++;return{tip:{height:'1000',hash:'aa'.repeat(32)},utxos:Array.from({length:state.nativeCount},(_,i)=>({txid:i===0?fundingId:i.toString(16).padStart(64,'0'),vout:0,satoshis:'9000000',height:minimum==='0'?'0':'990'}))}},
     async getRawTransactionBytes(id){calls.raw++;rawIds.push(id);assert.ok([collectionId,fundingId].includes(id));return id===collectionId?raw:funding},
     async getRawTransaction(id){calls.decoded++;assert.equal(id,collectionId);const parsed=inspectTbcTransaction(raw).transaction;
       return{txid:id,rawTransaction:raw,confirmations:'12',inputs:parsed.inputs,outputs:parsed.outputs.map((o,vout)=>({vout,satoshis:o.satoshis.toString(),scriptPubKey:Buffer.from(o.scriptPubKey).toString('hex')}))}},
@@ -51,6 +52,25 @@ function harness(supply=101,{retained=true,minimum='0'}={}) {
   return{raw,collectionId,funding,fundingId,calls,batches,rawIds,row,state,client,resolver,request};
 }
 const slotsFrom=result=>result.payload.utxos.filter(u=>u.classification==='collection-slot').map(u=>u.vout);
+
+test('NFT fee alternatives do not consume the mint-slot budget; exact inputs and candidate bounds remain strict',async()=>{
+  for(const count of [122,128,256]) {
+    const h=harness(100);h.state.nativeCount=count;h.state.indexed=range(100);
+    const result=await h.resolver.resolve(h.request(range(100)));
+    assert.equal(result.portError,undefined,`native alternatives ${count}`);
+    assert.deepEqual(slotsFrom(result),range(100));
+    assert.equal(result.payload.utxos.length,count+100);
+    assert.deepEqual(h.calls,{index:1,native:1,raw:0,decoded:0,status:0});
+  }
+  const h=harness(100);h.state.nativeCount=257;h.state.indexed=range(100);
+  assert.ok((await h.resolver.resolve(h.request(range(100)))).portError,'candidate bound remains');
+  h.state.nativeCount=122;
+  const exact=h.request(range(100));exact.requirement.inputOutpoints=[{txid:h.fundingId,vout:0},...range(100).map(vout=>({txid:h.collectionId,vout}))];
+  const result=await h.resolver.resolve(exact);assert.equal(result.portError,undefined);
+  assert.equal(result.payload.utxos.filter(u=>u.classification==='native').length,1);
+  exact.requirement.inputOutpoints.push(...range(28).map(i=>({txid:i.toString(16).padStart(64,'0'),vout:0})));
+  assert.ok((await h.resolver.resolve(exact)).portError,'129 exact inputs must not be silently truncated');
+});
 
 test('public resolver splits exact new-NFT missing slots at 25/26/100 without substituting slots',async()=>{
   for(const count of [25,26,100]){
@@ -89,10 +109,19 @@ test('failures, missing rows and spent selected slots stop before a usable snaps
     if(!standard&&fail==='spent')h.state.alter=(_b,rows)=>rows.map(r=>({...r,spent:true}));
     const result=await h.resolver.resolve(h.request(range(100),standard));
     assert.ok(result.portError,`${standard}/${fail}`);assert.equal(result.snapshotHash,undefined);
+    if(standard&&fail==='spent')assert.equal(result.portError.details.reason,'NFT_SLOT_SPENT');
+    if(!standard&&fail==='spent')assert.equal(result.portError.details.reason,'NFT_NO_AVAILABLE_SLOT');
     assert.equal(h.calls.status,4);assert.equal(h.state.active,0);
     h.state.failAt=undefined;h.state.alter=(_b,rows)=>rows;
     assert.equal((await h.resolver.resolve(h.request(range(100),standard))).portError,undefined,'a later preparation can recover');
   }
+});
+
+test('a selected slot outside its collection is a typed conflict without substitute reads',async()=>{
+  const h=harness(100);h.state.indexed=range(100);
+  const result=await h.resolver.resolve(h.request([101]));
+  assert.equal(result.portError.details.reason,'NFT_SLOT_MISMATCH');
+  assert.deepEqual(h.calls,{index:1,native:1,raw:0,decoded:0,status:0});
 });
 
 test('each chunk rejects cross-chunk identities, duplicates, wrong txid/value/script and noncanonical index',async()=>{
@@ -160,4 +189,38 @@ test('batched fallback and fully indexed path produce identical validated Engine
   const plan=async snapshot=>{const args={version:'1.0',request:normalized.request,requestHash:normalized.requestHash,snapshot,policy};
     const result=await engine.plan(args);assert.deepEqual(await engine.validate({...args,phase:'plan',plan:result.plan}),{valid:true,violations:[]});return result;};
   assert.deepEqual(await plan(fallback),await plan(indexed));
+});
+
+test('reported attribute/media/recipient matrix and 1/2/100 mint plans reuse one material observation',async t=>{
+  const backend=await createWasmTbcEngineBackend(await readFile(new URL('artifacts/wasm/tbc_engine_wasm.wasm',base)));
+  const engine=createTbcEngine({backend}),h=harness(100);h.state.nativeCount=122;h.state.indexed=range(100);
+  const snapshot=await h.resolver.resolve(h.request(range(100)));assert.equal(snapshot.portError,undefined);
+  const {hashCanonical}=await import('@tbc-wallet/core');
+  const payload={version:'1.0',policyId:'matrix',revision:'1',chainId,feeRateSatPerKb:'80',dustThreshold:'42',minConfirmations:'0',
+    maxBundleTransactions:100,sighashType:65,contractPolicies:[],amountLimits:[{scope:'native',maximum:'2100000000000000'}],expiresAt:'2026-10-27T12:05:00Z'};
+  const policy={payload,policyHash:hashCanonical(payload)};
+  const plan=async intent=>{
+    const n=await engine.normalizeRequest({version:'1.0',request:{version:'1.0',chainId,from:address,intent,
+      constraints:{expiresAt:'2026-10-27T12:02:00Z',maxFee:'1000000',feePreference:'standard'}}});
+    const params={version:'1.0',request:n.request,requestHash:n.requestHash,snapshot,policy};
+    const result=await engine.plan(params);assert.deepEqual(await engine.validate({...params,phase:'plan',plan:result.plan}),{valid:true,violations:[]});return result.plan;
+  };
+  const attributes=[[],[{traitType:'s',value:'one'}],[{traitType:'n',value:1}],[{traitType:'b',value:true}],
+    [{traitType:'s',value:'one'},{traitType:'n',value:1},{traitType:'b',value:true}],range(64).map(i=>({traitType:'a'+i,value:i}))];
+  const medias=[undefined,{kind:'uri',uri:'https://example.com/matrix.png'},
+    {kind:'uri',uri:'https://example.com/matrix.png',sha256:'ab'.repeat(32)},
+    {kind:'base64',mediaType:'text/plain',data:Buffer.from('fixture').toString('base64'),sha256:createHash('sha256').update('fixture').digest('hex')}];
+  let variants=0;
+  for(const attrs of attributes)for(const media of medias)for(const to of [undefined,'1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP']) {
+    const result=await plan({type:'tbc721-standard-mint',version:'1.0',collectionId:h.collectionId,slot:1,
+      name:'Matrix',symbol:'M',description:'',attributes:attrs,...(media?{media}:{}),...(to?{to}:{})});
+    assert.equal(result.payload.transactions.length,1);variants++;
+  }
+  for(const count of [1,2,100])for(const to of [undefined,'1cMh228HTCiwS8ZsaakH8A8wze1JR5ZsP']) {
+    const result=await plan({type:'tbc721-standard-batch-mint',version:'1.0',collectionId:h.collectionId,
+      items:range(count).map(slot=>({slot,name:'Batch '+slot,symbol:'B',description:'',attributes:attributes[4],...(to?{to}:{})}))});
+    assert.equal(result.payload.transactions.length,count);variants++;
+  }
+  assert.deepEqual(h.calls,{index:1,native:1,raw:0,decoded:0,status:0});
+  t.diagnostic(`NFT_MATRIX ${JSON.stringify({variants,reads:h.calls,signatures:0,broadcasts:0})}`);
 });

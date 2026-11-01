@@ -1,0 +1,30 @@
+TAP version 13
+# Subtest: LOP 1/128/256 native alternatives keep identical Engine transactions, one approval and the same reads
+not ok 1 - LOP 1/128/256 native alternatives keep identical Engine transactions, one approval and the same reads
+  ---
+  duration_ms: 359.004666
+  type: 'test'
+  location: '/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:180:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The validation function is expected to return "true". Received false
+    
+    Caught error:
+    
+    Error: Required wallet state or transaction material conflicts with the request
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    async TestContext.<anonymous> (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:191:8)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 684.449375

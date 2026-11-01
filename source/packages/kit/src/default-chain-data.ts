@@ -16,7 +16,8 @@ import type { KitWalletAccount } from "./wallet-runtime.js";
 import { createChainDataReadScope } from "./chain-data-read-scope.js";
 import { identifyTbcFungibleContracts, identifyTbcFungibleOrigin, identifyTbcNftOrigin, identifyTbcPoolOrigin, type TbcFungibleOriginHint, type TbcNftOriginHint, type TbcPoolOriginHint } from "./contract-identification.js";
 import { inspectReviewedTokenCodes } from "./reviewed-token.js";
-import { NftMaterialUnavailableError, resolveNftMaterial } from "./nft-material.js";
+import { NftMaterialError, NftMaterialUnavailableError, resolveNftMaterial } from "./nft-material.js";
+import { MaterialBusinessError } from "./material-business-error.js";
 import { prepareTbcNftMintJobMaterial, type TbcNftMintJobMaterial } from "./nft-mint-job-material.js";
 import type { TbcNftMintJobScope } from "./nft-mint-job.js";
 import { resolveCoinManagementMaterial } from "./coin-management-material.js";
@@ -25,7 +26,7 @@ import { resolveHtlcMaterial } from "./htlc-material.js";
 import { resolveHtlcTokenMaterial } from "./htlc-token-material.js";
 import { resolveLopMaterial } from "./lop-material.js";
 import { positiveHolderCandidates, SelectedZeroBalanceInputError } from "./fungible-candidates.js";
-import { resolveAmmCreateMaterial, resolveLpMaterial } from "./amm-material.js";
+import { UnsupportedPoolOperationError, resolveAmmCreateMaterial, resolveLpMaterial } from "./amm-material.js";
 import { AmmBusinessMaterialError, resolveAmmBusinessMaterial, type AmmMaterialAction } from "./amm-business-material.js";
 import type { PoolMaterialNativeProviderInput } from "./pool-material-native.js";
 import { TbcTransportError } from "./network-transport.js";
@@ -725,6 +726,7 @@ export function createDefaultTbcChainDataResolver(
         r.includeAncestry !== true || r.assets.length !== ids.length + 1 || native?.kind !== "native" ||
         native.contractId !== undefined || native.contractDependency !== undefined || native.minimumAmount !== r.nativeAmount ||
         r.collectionSlots !== undefined || r.targetOutpoints !== undefined || r.certificateOutpoint !== undefined ||
+        (r.inputOutpoints !== undefined && r.inputOutpoints.length > (options.maxInputs ?? 2 * ids.length + DEFAULT_MAX_INPUTS)) ||
         ids.some((id, index) => { const asset = r.assets[index + 1]; return asset?.kind !== "nft" ||
           asset.contractId !== id || asset.minimumAmount !== "1" || asset.contractDependency !== undefined; })) {
       return failure("INVALID_INPUT");
@@ -775,7 +777,12 @@ export function createDefaultTbcChainDataResolver(
         merge(contracts, String(item.contractId), item);
       }
     }
-    if (contracts.size !== ids.length || utxos.size > (options.maxInputs ?? 2 * ids.length + DEFAULT_MAX_INPUTS) || parents.size > 10_000) return failure("INVALID_INPUT");
+    // Child snapshots share one bounded native alternative set. Count its
+    // funding role once, not once per candidate, at this composition boundary.
+    const nativeCount = [...utxos.values()].filter(u => u.classification === "native").length;
+    const inputBudget = utxos.size - nativeCount + Math.min(nativeCount, 1);
+    if (contracts.size !== ids.length || nativeCount > MAX_NATIVE_UTXO_CANDIDATES ||
+        inputBudget > (options.maxInputs ?? 2 * ids.length + DEFAULT_MAX_INPUTS) || parents.size > 10_000) return failure("INVALID_INPUT");
     const payload = Object.freeze({ ...first!, snapshotId: await snapshotId(), capturedAt: canonicalTime(capturedAt), expiresAt: canonicalTime(expiresAt),
       utxos: Object.freeze([...utxos.values()]), parents: Object.freeze([...parents.values()]), contracts: Object.freeze([...contracts.values()]) });
     const result = Object.freeze({ payload, snapshotHash: hashCanonical(payload) });
@@ -1246,7 +1253,12 @@ export function createDefaultTbcChainDataResolver(
       // Historical profiles normally select one fee input; new TBC20 can select
       // multiple fee inputs inside its total six-input bound (accounted below).
       const ftNativeAlternatives = ftTransfer || ftMerge || stablecoinTransfer || stablecoinMerge || tbc20Create || ammCreate || lp || ammBusiness || timelockLock || htlcLock || htlcTokenSpend;
-      const nativeInputBudget = (count: number) => ftNativeAlternatives || supportedPool ? Math.min(count, 1) : count;
+      // Automatic NFT funding is a bounded set of alternatives, just like FT
+      // funding, not 256 already-selected inputs. Rust selects the funding and
+      // validates its value, fees and dependent transactions. Exact input sets
+      // still count every requested native input and may not be truncated.
+      const nftNativeAlternatives = (nftSpend || collectionCreate) && requestedInputOutpoints === undefined;
+      const nativeInputBudget = (count: number) => ftNativeAlternatives || supportedPool || nftNativeAlternatives ? Math.min(count, 1) : count;
       const ftIndex = directFt
         ? (stablecoinTransfer || stablecoinMerge
           ? client.getStablecoinUtxos(account.address, contractId!)
@@ -1373,7 +1385,7 @@ export function createDefaultTbcChainDataResolver(
       });
       prefetchDirectProofs.catch(() => undefined);
       const nativeIndexPreparation = nativeIndex.then(({ tip, utxos: nativeCandidates }) => {
-        if (nativeCandidates.length > (nativeMerge ? MAX_TBC_MERGE_INPUTS : MAX_NATIVE_UTXO_CANDIDATES)) throw new ChainDataConflictError("Too many native UTXO candidates");
+        if (nativeCandidates.length > (nativeMerge ? MAX_TBC_MERGE_INPUTS : MAX_NATIVE_UTXO_CANDIDATES)) throw new MaterialBusinessError("CANDIDATE_LIMIT_EXCEEDED");
         const tipHeight = tip === undefined ? undefined : BigInt(tip.height);
         const sortedNative = [...nativeCandidates].sort((a, b) => a.txid.localeCompare(b.txid) || a.vout - b.vout);
         validateNativeCandidates(sortedNative, tipHeight);
@@ -1415,7 +1427,8 @@ export function createDefaultTbcChainDataResolver(
         if (ammBusiness && requestedInputOutpoints !== undefined && selectedNative.length !== 1) throw new ChainDataConflictError("AMM explicit inputs require one selected native funding output");
         // TBC20 merging can release enough native value from spent Code outputs
         // to pay fees without a separate native input. Rust computes sufficiency.
-        if ((selectedNative.length === 0 && !(tbc20 && directFt)) || nativeInputBudget(selectedNative.length) > maxInputs) throw new ChainDataConflictError("Selected UTXO count exceeds policy");
+        if (selectedNative.length === 0 && !(tbc20 && directFt)) throw new ChainDataConflictError("Selected funding is unavailable");
+        if (nativeInputBudget(selectedNative.length) > maxInputs) throw new MaterialBusinessError("INPUT_BUDGET_EXCEEDED");
         const indexedHeights = Object.freeze(Object.fromEntries(sortedNative.map((utxo) => [utxo.txid, utxo.height])));
         return { tip, tipHeight, selectedNative, indexedHeights };
       });
@@ -1587,7 +1600,7 @@ export function createDefaultTbcChainDataResolver(
         const selectedInputBudget = tbc20 && !htlcTokenLock
           ? Math.min(nativeUtxos.length, preparedFt.selected.length > MAX_TBC20_INPUTS ? 1 : MAX_TBC20_INPUTS - preparedFt.selected.length) + preparedFt.selected.length
           : nativeInputBudget(nativeUtxos.length) + preparedFt.selected.length;
-        if (selectedInputBudget > maxInputs) throw new ChainDataConflictError("FT input count exceeds policy");
+        if (selectedInputBudget > maxInputs) throw new MaterialBusinessError("INPUT_BUDGET_EXCEEDED");
         const parentMap = new Map(preparedFt.selectedParents.map((value) => [value.txid, value]));
         assetUtxos = Object.freeze(preparedFt.selected.map((candidate) => {
           const parent = parentMap.get(candidate.txid);
@@ -1688,7 +1701,8 @@ export function createDefaultTbcChainDataResolver(
       const inputBudget = tbc20 && directFt && !htlcTokenLock
         ? Math.min(nativeUtxos.length, assetUtxos.length > MAX_TBC20_INPUTS ? 1 : MAX_TBC20_INPUTS - assetUtxos.length) + assetUtxos.length
         : nativeInputBudget(nativeUtxos.length) + assetUtxos.length + (poolMaterial?.utxos.length ?? 0) + (nftMaterial?.utxos.length ?? 0) + (coinManagementMaterial?.utxos.length ?? 0) + (ammMaterial?.utxos.length ?? 0) + (htlcTokenMaterial?.utxos.length ?? 0);
-      if (inputBudget > maxInputs || new Set(allUtxos.map((value) => {
+      if (inputBudget > maxInputs) throw new MaterialBusinessError("INPUT_BUDGET_EXCEEDED");
+      if (new Set(allUtxos.map((value) => {
         const utxo = value as Readonly<{ txid: string; vout: number }>;
         return `${utxo.txid}:${utxo.vout}`;
       })).size !== allUtxos.length) throw new ChainDataConflictError("Invalid snapshot input set");
@@ -1759,6 +1773,16 @@ export function createDefaultTbcChainDataResolver(
       }
       return result;
     } catch (error) {
+      if (error instanceof MaterialBusinessError) return Object.freeze({ portError: Object.freeze({
+        name: "CONFLICT", retryable: false, message: error.message, details: Object.freeze({ reason: error.reason }),
+      }) });
+      if (error instanceof UnsupportedPoolOperationError) return Object.freeze({ portError: Object.freeze({
+        name: "INVALID_INPUT", retryable: false, message: error.message,
+        details: Object.freeze({ reason: "UNSUPPORTED_POOL_OPERATION" }),
+      }) });
+      if (error instanceof NftMaterialError) return Object.freeze({ portError: Object.freeze({
+        name: "CONFLICT", retryable: false, message: error.message, details: Object.freeze({ reason: error.reason }),
+      }) });
       if (error instanceof SelectedZeroBalanceInputError) return Object.freeze({ portError: Object.freeze({
         name: "INVALID_INPUT", retryable: false, message: error.message,
         details: Object.freeze({ reason: error.reason }),
@@ -1861,7 +1885,7 @@ function selectRequestedNativeOutpoints(
   return Object.freeze(requested.map((outpoint) => {
     const candidate = byOutpoint.get(`${outpoint.txid}:${outpoint.vout}`);
     if (candidate === undefined) {
-      throw new ChainDataConflictError("Requested native UTXO is unavailable");
+      throw new MaterialBusinessError("SELECTED_INPUT_UNAVAILABLE");
     }
     return candidate;
   }));

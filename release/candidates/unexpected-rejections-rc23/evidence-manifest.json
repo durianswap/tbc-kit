@@ -1,0 +1,133 @@
+{
+  "schema": 1,
+  "files": {
+    "bootstrap.json": {
+      "sha256": "84d478f0bb4e92a87de4628def1e0cf15b1d982bac638872d229643bccb91585",
+      "bytes": 157
+    },
+    "build.json": {
+      "sha256": "e9f8c6adb5d03ea35a0c463c4d78e1fa916b038e94fb164f1c00f07dab2c2c1c",
+      "bytes": 470057
+    },
+    "check-candidate.log": {
+      "sha256": "414d88cf917fe60f401eab0ad3b1c9d5d7c96a52a6c6a70b040ad35041ce0669",
+      "bytes": 4787
+    },
+    "code-frozen-installed-check.json": {
+      "sha256": "3e3ae299730e5dc9212025defadae61b529506a06108c2086be97aca8ebcece9",
+      "bytes": 6489
+    },
+    "coin-targeted.tap": {
+      "sha256": "9168bf6c43a3fe50248995d09a08e0e6d05d3b272d5fe379783a171d06a5aad2",
+      "bytes": 1959
+    },
+    "controller-native-vectors.json": {
+      "sha256": "d0fbe2b4edbecb503eec2bdbf89155a268806d974e41cebe63adea4f387ff6ea",
+      "bytes": 17298
+    },
+    "controller-public.tap": {
+      "sha256": "545910fd1fa5a05f45438de9d2396eae7fe766fbff5903785324e918a111543c",
+      "bytes": 1328
+    },
+    "core-targeted.tap": {
+      "sha256": "4273bd3e6c8d6a227a4c27946b2dfbf8139b8c61926a9eb6df5d45fee54ed125",
+      "bytes": 16839
+    },
+    "core-typecheck.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "host-business.tap": {
+      "sha256": "2d45c303e03e89b3c83ff86d499b535001aa36bd487586544efe334c650746f8",
+      "bytes": 13368
+    },
+    "installed-business-tests.tap": {
+      "sha256": "d00858aa55950501c64c45f1d196b7dbf2afd0a03cf67489575ef562e95d2f3b",
+      "bytes": 13863
+    },
+    "installed-check.json": {
+      "sha256": "72d9bfe72d6299023396b7c947b70ba273c98d1f65e06005fee3cbf7ead76ee1",
+      "bytes": 6484
+    },
+    "lop-public.tap": {
+      "sha256": "15e56466d42c4d24de86b2ad1949abdd1f5238af4a9e5bb3080865ca6aee221e",
+      "bytes": 1142
+    },
+    "lop-red.tap": {
+      "sha256": "4dfe77ee3c7bd56e30fe4761bd917a9600ee6be41afd4fc7daf04a14476e1009",
+      "bytes": 27485
+    },
+    "native-consumers.json": {
+      "sha256": "be7212b5e1f8dff5c70ec0efed7caf47b246e6549a3187319099d81aa5380bb7",
+      "bytes": 1119
+    },
+    "native-consumers.log": {
+      "sha256": "be7212b5e1f8dff5c70ec0efed7caf47b246e6549a3187319099d81aa5380bb7",
+      "bytes": 1119
+    },
+    "native-prepare.log": {
+      "sha256": "ee22806cbeadab2f8142936393dbdb140548012ef201f2893574fc7bcf13861d",
+      "bytes": 252
+    },
+    "nft-combined.tap": {
+      "sha256": "fecf31104cec38636223b916f9c323fb2f78eb10471f92cddc5198cc4ec6a5f0",
+      "bytes": 8692
+    },
+    "nft-material.tap": {
+      "sha256": "f370e18e358a3713c568ace05398bdef6b288eb7582a57a720cdb5d49a137388",
+      "bytes": 2703
+    },
+    "nft-readonly-comparison.json": {
+      "sha256": "28f3470aa2c2cf4224b6296a8457b9aeb48959df247849954d2c374e86c1c70c",
+      "bytes": 3517
+    },
+    "nft-readonly-error.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "nft-targeted.tap": {
+      "sha256": "8b078aa5a11c720d6ab170df2473e46ec298cfa51e79b55d9cd8f004f8045746",
+      "bytes": 4741
+    },
+    "nft-three-step.tap": {
+      "sha256": "340b435035480080be2346a580ac68151787fdd07f4553bbbc2e9062e7a8ecac",
+      "bytes": 1532
+    },
+    "protected-after.json": {
+      "sha256": "4aab6b6935b76f5da6d2b0b65d1e30b7cb5915039b4245c772fd35ca1f9fc795",
+      "bytes": 423
+    },
+    "recipient-capacity.tap": {
+      "sha256": "c7dd2509190148bb63c009f1dc72b4c7fae700f03c13b667a32031f38811cee4",
+      "bytes": 356
+    },
+    "reseal-code-equivalence.json": {
+      "sha256": "1268797c676baea2e54f906b6d8e33714b6889ce10a9d696f5d3eb4efeed8c8d",
+      "bytes": 112
+    },
+    "rust-amm.log": {
+      "sha256": "7c557a197f385c001824fc025e91ab07e956cd30f9a764a8d86b4236d4387300",
+      "bytes": 4395
+    },
+    "seal.log": {
+      "sha256": "acc240a791b4d3dfecefb5520b601cac5808dd6500c0b65153ee1071c05cf479",
+      "bytes": 514
+    },
+    "sibling-material-targeted.tap": {
+      "sha256": "b90daae96fd4e312dd27d406045bccdd089388f3f60b0d6a09834e33499201a5",
+      "bytes": 5146
+    },
+    "source-targeted-final.tap": {
+      "sha256": "787c8d216704b085a4fc73587578f37dac089d072b29297105b10170e4b72308",
+      "bytes": 22303
+    },
+    "stage.json": {
+      "sha256": "5e113061530b9298b041a775e55e0e16749b8e2b7efb060a6190ed49fa5959df",
+      "bytes": 1810
+    },
+    "typecheck.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  }
+}

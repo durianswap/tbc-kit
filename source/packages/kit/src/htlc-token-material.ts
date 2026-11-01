@@ -2,6 +2,7 @@ import type { TbcOfficialApiClient } from "./official-api.js";
 import type { TestnetTip } from "./testnet-client.js";
 import type { NftTransactionMaterial as TransactionMaterial } from "./nft-material.js";
 import { inspectHtlcCode } from "./htlc-material.js";
+import { MaterialBusinessError } from "./material-business-error.js";
 
 const HASH = /^[0-9a-f]{64}$/u;
 const UINT = /^(0|[1-9][0-9]*)$/u;
@@ -60,9 +61,11 @@ export async function resolveHtlcTokenMaterial(input: Readonly<{
   if (observedHeights.size > 1) throw new Error("Token HTLC sibling heights inconsistent");
   for (const [index, row] of rows.entries()) {
     const output = parent.outputs[index], expected = index === 0 ? "100" : "500";
-    if (row.txid !== target.txid || row.index !== String(index) || row.spent !== false || row.value !== expected ||
+    if (row.txid !== target.txid || row.index !== String(index) || row.value !== expected ||
         !output || output.vout !== index || output.satoshis !== expected ||
         (row.scriptPubKey !== undefined && row.scriptPubKey !== output.scriptPubKey)) throw new Error("Token HTLC output unavailable or inconsistent");
+    if (row.spent === true) throw new MaterialBusinessError("SELECTED_INPUT_SPENT");
+    if (row.spent !== false) throw new Error("Token HTLC spent status invalid");
   }
   if (parent.outputs[2]?.vout !== 2 || parent.outputs[2]?.satoshis !== "0") throw new Error("Token HTLC Tape absent");
   const code = inspectHtlcCode(parent.outputs[0]!.scriptPubKey);

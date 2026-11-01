@@ -70,11 +70,12 @@ const sdkChecks = [];
 await platformCatalog(after.kit);
 for (const platform of ['ios', 'android']) {
   const item = lock.pairedNative[platform];
-  assert.equal(sha256(await readFile(join(baseline, item.file))), item.sha256);
+  const sdkBase = item.file.startsWith('artifacts/') ? baseline : out;
+  assert.equal(sha256(await readFile(join(sdkBase, item.file))), item.sha256);
   const sdk = join(scratch, `${platform}-sdk`), app = join(scratch, `${platform}-app`);
   await mkdir(sdk); await mkdir(join(app, 'node_modules/@tbc'), { recursive: true });
   await writeFile(join(app, 'package.json'), '{"name":"native-adapter-consumer","private":true}');
-  run(repo, 'tar', ['-xzf', join(baseline, item.file), '-C', sdk]);
+  run(repo, 'tar', ['-xzf', join(sdkBase, item.file), '-C', sdk]);
   await cp(after.kit, join(app, 'node_modules/@tbc/kit'), { recursive: true });
   run(repo, process.execPath, [join(after.kit, 'examples/react-native-engine/install.mjs'), app, sdk, '--platform', platform]);
   const identity = await syncNative({ moduleRoot: join(app, 'modules/tbc-kit-engine'), kitRoot: after.kit, check: true, platform });

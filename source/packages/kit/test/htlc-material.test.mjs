@@ -246,3 +246,12 @@ test('Token HTLC rejects unavailable siblings, forged rows, wrong roles and imma
   const f=tokenSetup();f.input.branch='refund';f.parent.outputs[0].scriptPubKey=code(830000);
   assert.equal((await resolveHtlcTokenMaterial(f.input)).utxos.length,2);
 });
+
+test('native and Token HTLC classify only a verified selected spent flag as spent',async()=>{
+  for(const token of [false,true])for(const spent of [true,undefined]) {
+    const f=token?tokenSetup():setup();
+    (token?f.rows:f.status.txos)[0].spent=spent;
+    await assert.rejects((token?resolveHtlcTokenMaterial:resolveHtlcMaterial)(f.input),
+      e=>spent===true?e.reason==='SELECTED_INPUT_SPENT':e.reason===undefined);
+  }
+});

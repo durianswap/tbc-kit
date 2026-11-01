@@ -1,6 +1,7 @@
 import { bytesToHex, hexToBytes, sha256Bytes } from "./network-bytes.js";
 import type { TbcOfficialApiClient, TbcApiTxoStatus } from "./official-api.js";
 import { forEachTxoStatusBatch } from "./txo-status-batches.js";
+import { MaterialBusinessError } from "./material-business-error.js";
 
 /** Matches the same-source Rust NFT mint/hold script markers. */
 const MINT_SUFFIX = "6a0d5630204d696e74204e486f6c64";
@@ -20,6 +21,14 @@ export class NftMaterialUnavailableError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "NftMaterialUnavailableError";
+  }
+}
+
+/** Fixed public reasons only; never expose raw proofs or transport diagnostics. */
+export class NftMaterialError extends Error {
+  constructor(readonly reason: "NFT_SLOT_SPENT" | "NFT_SLOT_MISMATCH") {
+    super(reason === "NFT_SLOT_SPENT" ? "A requested NFT mint slot is already spent"
+      : "A requested NFT mint slot does not match the collection and owner");
   }
 }
 
@@ -58,6 +67,10 @@ export async function resolveNftMaterial(input: Readonly<{
   standardId?: "tbc721-standard";
   collectionSlots?: readonly number[];
 }>) {
+  // Some valid zero-confirmation paths never need a tip. Observe concurrent
+  // failure immediately without changing the original promise: callers that
+  // require it still reject, and the parent resolver still rejects funding.
+  void input.tipHeight.catch(() => undefined);
   const { api, contractId, readHistory, readDecoded } = input;
   if (!HASH.test(contractId)) throw new Error("Invalid NFT identity");
   const parents = new Map<string, NftTransactionMaterial>();
@@ -113,7 +126,7 @@ export async function resolveNftMaterial(input: Readonly<{
       const bySlot = new Map(candidates.map(candidate => [candidate.vout, candidate.row]));
       for (const slot of slots) {
         const output = creation.outputs[slot];
-        if (!output || output.vout !== slot || output.scriptPubKey !== script || output.satoshis !== "100") throw new Error("Requested collection slot identity/owner mismatch");
+        if (!output || output.vout !== slot || output.scriptPubKey !== script || output.satoshis !== "100") throw new NftMaterialError("NFT_SLOT_MISMATCH");
       }
       const missing = slots.filter(slot => !bySlot.has(slot));
       if (missing.length > 0) {
@@ -129,7 +142,8 @@ export async function resolveNftMaterial(input: Readonly<{
             if (status.txid !== contractId || !wanted.has(slot) || seen.has(slot) || status.value !== "100" ||
                 (status.scriptPubKey !== undefined && status.scriptPubKey !== output!.scriptPubKey)) throw new Error("Selected slot status mismatch");
             seen.add(slot);
-            if (status.spent !== false) throw new Error("Requested collection slot has been spent");
+            if (status.spent === true) throw new NftMaterialError("NFT_SLOT_SPENT");
+            if (status.spent !== false) throw new Error("Invalid requested collection slot status");
             bySlot.set(slot, status);
           }
           if (seen.size !== requested.length) throw new NftMaterialUnavailableError("Requested collection slots are not indexed yet");
@@ -171,7 +185,7 @@ export async function resolveNftMaterial(input: Readonly<{
         if (response.txos.length !== requested.length) throw new NftMaterialUnavailableError("Collection slot status is not indexed yet");
       });
       const available = expected.find(output => statusByVout.get(output.vout)?.spent === false);
-      if (available === undefined) throw new Error("No unspent collection slot");
+      if (available === undefined) throw new MaterialBusinessError("NFT_NO_AVAILABLE_SLOT");
       const status = statusByVout.get(available.vout)!;
       selected = {
         vout: available.vout,
@@ -183,7 +197,7 @@ export async function resolveNftMaterial(input: Readonly<{
         }),
       };
     }
-    if (!selected || selected.vout === 0) throw new Error("No unspent collection slot");
+    if (!selected || selected.vout === 0) throw new MaterialBusinessError("NFT_NO_AVAILABLE_SLOT");
     const output = creation.outputs[selected.vout];
     if (!output || output.scriptPubKey !== script || output.satoshis !== "100" || uint(selected.row.value) !== output.satoshis) throw new Error("Collection slot identity/owner mismatch");
     const count = await confirmation(selected.row, creation.txid);

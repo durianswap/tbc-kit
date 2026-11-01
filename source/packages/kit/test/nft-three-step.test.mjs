@@ -4,10 +4,10 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { hashCanonical, chainDataRequirement } from "@tbc-wallet/core";
-import { createTbcOfficialApi } from "../dist/esm/api.js";
-import { createTbcEngine, createWasmTbcEngineBackend } from "../dist/esm/engine.js";
-import { createDefaultTbcChainDataResolver } from "../dist/esm/wallet.js";
-import { assertTestnetAddress, inspectTbcTransaction, turingTransactionId } from "../dist/esm/api.js";
+const base = process.env.TBC_KIT_TEST_ROOT ? new URL(`file://${process.env.TBC_KIT_TEST_ROOT}/`) : new URL('../', import.meta.url);
+const { createTbcOfficialApi, assertTestnetAddress, inspectTbcTransaction, turingTransactionId } = await import(new URL('dist/esm/api.js', base));
+const { createTbcEngine, createWasmTbcEngineBackend } = await import(new URL('dist/esm/engine.js', base));
+const { createDefaultTbcChainDataResolver, createWasmTbcKeylessEngine } = await import(new URL('dist/esm/wallet.js', base));
 
 const CHAIN_ID = "tbc:testnet";
 const ADDRESS = "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH";
@@ -35,7 +35,7 @@ const native = ["11", "12", "13"].map((tag) => {
 });
 
 function requirement(intent) {
-  if (intent.type.startsWith('tbc721-standard-')) return chainDataRequirement({intent});
+  if (intent.type.startsWith('tbc721-standard-') || intent.type === 'tbc721.batchTransfer') return chainDataRequirement({intent});
   if (intent.type === "tbc.collection.create") return {
     intentType: intent.type, assets: [{ kind: "native" }], includeAncestry: false,
   };
@@ -98,17 +98,18 @@ async function planIntent(engine, resolver, intent, sequence) {
   return { ...params, plan: result.plan };
 }
 
-for (const mediaBytes of [4, 70_000]) {
-test(`collection create -> NFT mint -> NFT transfer retains ${mediaBytes} media bytes through Rust-WASM plans`, async () => {
+for (const mediaBytes of [4, 70_000]) for (const nativeCount of [1,256]) {
+test(`collection/mint/transfer/batch with ${nativeCount} fee alternatives retains ${mediaBytes} media bytes`, async () => {
   const mediaBuffer = mediaBytes === 4 ? Buffer.from([1, 2, 3, 4]) : Buffer.alloc(mediaBytes, 42);
   const media = { kind: "base64", mediaType: "image/png", data: mediaBuffer.toString("base64"),
     sha256: createHash("sha256").update(mediaBuffer).digest("hex") };
   const backend = await createWasmTbcEngineBackend(await readFile(
-    new URL("../artifacts/wasm/tbc_engine_wasm.wasm", import.meta.url),
+    new URL("artifacts/wasm/tbc_engine_wasm.wasm", base),
   ));
   const engine = createTbcEngine({ backend });
+  const materialNative=await createWasmTbcKeylessEngine(await readFile(new URL('artifacts/wasm/tbc_keyless_wasm.wasm',base)));
   const state = { phase: 0, collectionId: undefined, mintId: undefined };
-  const calls = { collectionIndex: 0, nftIndex: 0, txoStatus: 0, raw: 0, decoded: 0 };
+  const calls = { collectionIndex: 0, nftIndex: 0, txoStatus: 0, raw: 0, decoded: 0, native: 0 };
   const rawById = new Map(native.map((item) => [item.txid, item.rawTransaction]));
   const api = createTbcOfficialApi({
     baseUrl: "https://controlled.example",
@@ -140,11 +141,15 @@ test(`collection create -> NFT mint -> NFT transfer retains ${mediaBytes} media 
   });
   const client = {
     api,
+    getFtUtxos:async()=>{throw Error('unexpected FT read')},
+    getStablecoinUtxos:async()=>{throw Error('unexpected Coin read')},
+    getStablecoinInfo:async()=>{throw Error('unexpected Coin metadata read')},
     async getUtxos() {
+      calls.native++;
       const funding = native[state.phase];
-      return { tip: { height: "1000", hash: "aa".repeat(32) }, utxos: [{
-        txid: funding.txid, vout: 0, satoshis: "10000000", height: "0",
-      }] };
+      return { tip: { height: "1000", hash: "aa".repeat(32) }, utxos: Array.from({length:nativeCount},(_,i)=>({
+        txid: i===0?funding.txid:i.toString(16).padStart(64,'0'), vout: 0, satoshis: "10000000", height: "0",
+      })) };
     },
     async getRawTransactionBytes(txid) {
       calls.raw += 1;
@@ -160,7 +165,7 @@ test(`collection create -> NFT mint -> NFT transfer retains ${mediaBytes} media 
     },
   };
   const resolver = createDefaultTbcChainDataResolver({
-    accounts: { current: async () => [ACCOUNT] }, client,
+    accounts: { current: async () => [ACCOUNT] }, client, materialNative,
     confirmationPolicy: { minConfirmations: "0" },
     now: () => Date.parse(NOW), snapshotId: (() => { let id = 0; return () => `snapshot-nft-${++id}`; })(),
   });
@@ -187,7 +192,7 @@ test(`collection create -> NFT mint -> NFT transfer retains ${mediaBytes} media 
   const mint = await planIntent(engine, resolver, {
     type: "tbc721-standard-mint", version: "1.0", collectionId: state.collectionId, slot: 1,
     name: "Kit NFT", symbol: "KNFT", description: "Controlled NFT",
-    attributes: [{ traitType: "rarity", value: "genesis" }],
+    attributes: [{ traitType: "rarity", value: "genesis" },{traitType:'level',value:7},{traitType:'active',value:true}],
     media,
   }, "mint");
   assert.equal(mint.snapshot.payload.utxos.filter((item) => item.classification === "collection-slot").length, 1);
@@ -215,8 +220,13 @@ test(`collection create -> NFT mint -> NFT transfer retains ${mediaBytes} media 
     { kind: "nft", direction: "send", amount: "1", to: RECIPIENT },
     { kind: "native", direction: "fee", amount: transfer.plan.payload.preview.totalFee },
   ]);
-  assert.deepEqual(calls, { collectionIndex: 1, nftIndex: 1, txoStatus: 0, raw: 0, decoded: 0 },
+  assert.deepEqual(calls, { collectionIndex: 1, nftIndex: 1, txoStatus: 0, raw: 0, decoded: 0, native:3 },
     "zero-floor immediate successor path reuses retained bytes and performs no confirmation decode");
+  const batch=await planIntent(engine,resolver,{type:'tbc721.batchTransfer',version:'1.0',
+    transfers:[{contractId:state.mintId,to:RECIPIENT}]},'batch');
+  assert.equal(batch.snapshot.payload.utxos.length,nativeCount+2);
+  assert.equal(batch.plan.payload.transactions.length,1);
+  assert.deepEqual(calls,{collectionIndex:1,nftIndex:2,txoStatus:0,raw:0,decoded:0,native:4});
 });
 }
 

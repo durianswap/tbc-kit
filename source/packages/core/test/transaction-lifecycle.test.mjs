@@ -396,16 +396,19 @@ test("typed material failures survive Core without approval or signing and witho
   }
 });
 
-test("Pool and explicitly selected zero-token reasons are safe typed Provider failures", async () => {
-  for (const reason of ["UNSUPPORTED_POOL_OPERATION", "AMM_RETAINED_FEE_ZERO", "AMM_POOL_INACTIVE", "SELECTED_ZERO_BALANCE_INPUT"]) {
+test("Pool, explicit zero-token and NFT slot reasons are safe typed Provider failures", async () => {
+  const conflicts = ["AMM_POOL_INACTIVE", "NFT_SLOT_SPENT", "NFT_SLOT_MISMATCH", "SELECTED_INPUT_SPENT", "SELECTED_INPUT_UNAVAILABLE",
+    "INPUT_BUDGET_EXCEEDED", "CANDIDATE_LIMIT_EXCEEDED", "NFT_NO_AVAILABLE_SLOT"];
+  for (const reason of ["UNSUPPORTED_POOL_OPERATION", "AMM_RETAINED_FEE_ZERO", "SELECTED_ZERO_BALANCE_INPUT", ...conflicts]) {
+    const conflict = conflicts.includes(reason);
     const result = await drive("tbc_sendTransaction", createTbcTransferEngine(integration), {
       "chainData.resolve": () => ({ portError: {
-        name: reason === "AMM_POOL_INACTIVE" ? "CONFLICT" : "INVALID_INPUT", retryable: false,
+        name: conflict ? "CONFLICT" : "INVALID_INPUT", retryable: false,
         message: "must-not-be-forwarded", details: { reason, privateValue: "must-not-be-forwarded" },
       } }),
     });
     const error = result.transition.completion.response.error;
-    assert.equal(error.code, reason === "AMM_POOL_INACTIVE" ? -32000 : -32602);
+    assert.equal(error.code, conflict ? -32000 : -32602);
     assert.equal((error.data.details ?? error.data).reason, reason);
     assert.equal(JSON.stringify(error).includes("must-not-be-forwarded"), false);
     assert.equal(result.ports.some(p => p.operation === "signer.sign"), false);

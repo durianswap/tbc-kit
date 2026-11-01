@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "protectedFiles": 174,
+  "frozenArchives": 4,
+  "sourceFiles": 2223,
+  "testCounts": {
+    "source-targeted-final.tap": 71,
+    "core-targeted.tap": 72,
+    "nft-targeted.tap": 18,
+    "installed-business-tests.tap": 34
+  },
+  "rustAmmTests": 13,
+  "nativeVectors": 22,
+  "currentReleaseChanged": false,
+  "partnerDeliveryChanged": false,
+  "realBroadcasts": 0,
+  "deviceRuntimeAcceptance": false
+}

@@ -65,3 +65,36 @@ test('cold confirmation target uses one decode; warm known height adds no query'
     assert.equal(s.reads.filter(v=>v==='status').length,1);
   }
 });
+
+test('token cancellation budgets the funding role, not all 128 fee alternatives',async()=>{
+  const s=setup();
+  const asset='55'.repeat(32);
+  s.input.readHistory=async(txid)=>{s.reads.push(`raw:${txid}`);return{txid,rawTransaction:'00',inputs:[],outputs:[
+    {vout:0,satoshis:'10000',scriptPubKey:'51'},{vout:1,satoshis:'500',scriptPubKey:'52'}]}};
+  s.rows.push({txid:id,index:'1',value:'500',height:'1',spent:false,scriptPubKey:'52'});
+  s.input.native.execute=async()=>JSON.stringify({standardId:'tbc-lop',txid:id,vout:0,side:'buy',market:'native-token',ownerHash:owner,
+    escrow:{standardId:'tbc20-standard',contractId:asset,dependencies:[],lockTime:0}});
+  s.input.client.getFtInfo=async()=>{s.reads.push('info');return{contractId:asset,codeScript:'51',tapeScript:'52',totalSupply:'10'}};
+  s.input.client.getUtxos=async()=>{s.reads.push('native');return{utxos:Array.from({length:128},(_,vout)=>({txid:fee,vout,satoshis:'1000',height:'0'}))}};
+  const value=await resolveLopMaterial(s.input);
+  assert.equal(value.utxos.length,130);
+  assert.deepEqual(s.reads.slice().sort(),['native',`raw:${id}`,'status','info'].sort());
+  // Exact inputs retain their full budget and cannot be silently dropped.
+  s.input.requirement.inputOutpoints=value.utxos.map(({txid,vout})=>({txid,vout}));
+  await assert.rejects(resolveLopMaterial(s.input),e=>e.reason==='INPUT_BUDGET_EXCEEDED');
+});
+
+test('unambiguous spent output has a safe reason; corrupt status remains a material failure',async()=>{
+  const spent=setup();spent.rows[0].spent=true;
+  await assert.rejects(resolveLopMaterial(spent.input),e=>e.reason==='SELECTED_INPUT_SPENT');
+  const malformed=setup();delete malformed.rows[0].spent;
+  await assert.rejects(resolveLopMaterial(malformed.input),e=>e.reason!== 'SELECTED_INPUT_SPENT');
+});
+
+test('LOP exact input sets preserve selected originals and reject an unavailable extra input',async()=>{
+  const s=setup();s.input.requirement.inputOutpoints=[{txid:id,vout:0},{txid:fee,vout:0}];
+  const value=await resolveLopMaterial(s.input);assert.equal(value.utxos.length,2);
+  s.input.requirement.inputOutpoints.push({txid:'99'.repeat(32),vout:0});
+  await assert.rejects(resolveLopMaterial(s.input),e=>e.reason==='SELECTED_INPUT_UNAVAILABLE');
+  assert.equal(s.reads.filter(r=>r==='decoded').length,0);
+});

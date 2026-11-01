@@ -13,6 +13,7 @@ const bundled = await build({ stdin: { contents: `
   export { createTestnetClient } from './packages/kit/src/testnet-client.ts';
   export { inspectTbcTransaction } from './packages/kit/src/testnet-validation.ts';
   export { createWasmTbcKeylessEngine } from './packages/kit/src/keyless.ts';
+  export { resolveCoinManagementMaterial } from './packages/kit/src/coin-management-material.ts';
 `, resolveDir: root, loader: "ts" }, bundle: true, write: false, format: "esm", platform: "node",
   alias: { "@tbc-wallet/core": `${root}packages/core/src/index.ts` }, logLevel: "silent" });
 const virtual = new URL("./.coin-chain-data-source.mjs", import.meta.url).href;
@@ -27,6 +28,21 @@ const materialNative = await kit.createWasmTbcKeylessEngine(await readFile(proce
 const fixture = JSON.parse(await readFile(`${root}packages/tbc-engine/rust/fixtures/coin-proof.json`, "utf8"));
 const address = "1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH";
 const account = { chainId: "tbc:testnet", address, accountId: `tbc:testnet:${address}`, publicKey: fixture.vectors[0].publicKeyHex };
+
+test('Coin management observes unused concurrent failures without suppressing required tip validation',async()=>{
+  const id='aa'.repeat(32),raw={txid:id,rawTransaction:'',inputs:[],outputs:[{vout:0,satoshis:'500',scriptPubKey:'51'}]};
+  const input={mint:false,contractId:id,targetOutpoints:[{txid:id,vout:0}],minimumConfirmations:'0',
+    readHistory:async()=>raw,readDecoded:async()=>raw,ancestors:()=>[],
+    api:{txoStatus:async()=>({txos:[{txid:id,index:'0',value:'500',spent:false,scriptPubKey:'51',height:'1'}]})}};
+  await assert.rejects(kit.resolveCoinManagementMaterial({...input,tipHeight:Promise.reject(Error('tip unavailable'))}),/tip unavailable/);
+  await assert.rejects(kit.resolveCoinManagementMaterial({...input,contractId:'invalid',tipHeight:Promise.reject(Error('unused tip failure'))}),/Invalid Coin asset ID/);
+  for(const spent of [true,undefined]) {
+    const api={txoStatus:async()=>({txos:[{txid:id,index:'0',value:'500',spent}]})};
+    await assert.rejects(kit.resolveCoinManagementMaterial({...input,api,tipHeight:Promise.resolve(10n)}),
+      e=>spent===true?e.reason==='SELECTED_INPUT_SPENT':e.reason===undefined);
+  }
+  await new Promise(resolve=>setImmediate(resolve));
+});
 
 function setup(locks, median, floor = "0", reverseIndex = false, fragments = 2, zeros = false) {
   // Synthetic already-indexed outputs. No signatures are created or submitted.

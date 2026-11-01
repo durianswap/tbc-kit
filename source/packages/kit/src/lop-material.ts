@@ -1,5 +1,6 @@
 import { canonicalize, type ChainDataRequirement } from "@tbc-wallet/core";
 import { positiveHolderCandidates } from "./fungible-candidates.js";
+import { MaterialBusinessError } from "./material-business-error.js";
 import type { TestnetClient, TestnetTip } from "./testnet-client.js";
 import type { PoolMaterialNativeProviderInput } from "./pool-material-native.js";
 import type { NftTransactionMaterial as Parent } from "./nft-material.js";
@@ -32,6 +33,7 @@ export async function resolveLopMaterial(input:Readonly<{
       new Set(hints.map(a=>a.contractId)).size!==hints.length||hints.filter(a=>a.purpose==="escrow").length>1):
     hints.length!==0||targets.length!==(cancel?1:2)||targets.some(p=>!point(p))||new Set(targets.map(p=>`${p.txid}:${p.vout}`)).size!==targets.length)throw new TypeError("Invalid LOP exact selectors");
   if(r.inputOutpoints?.some(p=>!point(p))||r.certificateOutpoint!==undefined||r.collectionSlots!==undefined)throw new TypeError("Invalid LOP input selectors");
+  if(r.inputOutpoints!==undefined&&r.inputOutpoints.length>input.maxInputs)throw new MaterialBusinessError("INPUT_BUDGET_EXCEEDED");
   const escrowHint=hints.find(h=>h.purpose==="escrow"),escrowRequirement=r.assets[1];
   if(r.assets[0]?.kind!=="native"||r.assets[0].contractId!==undefined||r.assets[0].contractDependency!==undefined||
     (create?(escrowHint===undefined?(r.assets.length!==1||!r.nativeAmount||r.assets[0].minimumAmount!==r.nativeAmount):
@@ -112,7 +114,9 @@ export async function resolveLopMaterial(input:Readonly<{
       if(!Array.isArray(txos)||txos.length!==points.length)throw new Error("LOP status count mismatch");
       const status=new Map<string,typeof txos[number]>();const heights=new Map<string,string>();
       for(const row of txos){const key=`${row.txid}:${row.index}`;
-        if(!points.some(p=>p.txid===row.txid&&String(p.vout)===row.index)||status.has(key)||row.spent!==false)throw new Error("LOP output unavailable or repeated");status.set(key,row);
+        if(!points.some(p=>p.txid===row.txid&&String(p.vout)===row.index)||status.has(key))throw new Error("LOP output unavailable or repeated");
+        if(row.spent===true)throw new MaterialBusinessError("SELECTED_INPUT_SPENT");
+        if(row.spent!==false)throw new Error("LOP output spent status invalid");status.set(key,row);
         if(row.height!==undefined){const height=row.height==="-1"?"0":row.height,prior=heights.get(row.txid);if(prior!==undefined&&prior!==height)throw new Error("LOP sibling heights inconsistent");heights.set(row.txid,height);}
       }
       await Promise.all(orders.map(async({parent,order,target})=>{
@@ -133,12 +137,21 @@ export async function resolveLopMaterial(input:Readonly<{
   })();
   const [index]=await Promise.all([nativeIndex,assetsWork]);
   const tip=observedTip??index.tip,funding=index.utxos;
-  if(tip!==undefined&&(!UINT.test(tip.height)||!HASH.test(tip.hash))||funding.length>input.maxInputs)throw new Error("LOP tip/funding bound invalid");
+  const tokenFunding=create?escrowHint!==undefined:utxos.some(u=>u.classification==="ft"||u.classification==="stablecoin");
+  const alternativeFunding=tokenFunding&&r.inputOutpoints===undefined;
+  // Token make/cancel/match selects one fee output in Rust. Native sell/cancel
+  // can accumulate several inputs, so retain its original full input budget.
+  if(tip!==undefined&&(!UINT.test(tip.height)||!HASH.test(tip.hash)))throw new Error("LOP tip/funding bound invalid");
+  if(funding.length>(alternativeFunding?256:input.maxInputs))throw new MaterialBusinessError("CANDIDATE_LIMIT_EXCEEDED");
   const feeRows:Utxo[]=[];
   for(const row of funding){if(!allowed(row))continue;const c=await confirmation(row.txid,row.height,tip);if(c!==undefined&&BigInt(c)<floor)continue;
     feeRows.push({txid:row.txid,vout:row.vout,satoshis:row.satoshis,scriptPubKey:input.ownerScript,classification:"native",...(c===undefined?{}:{confirmations:c})});}
   if(feeRows.length===0)throw new Error("LOP native funding unavailable");
-  const all=[...feeRows,...utxos];if(all.length>input.maxInputs||new Set(all.map(p=>`${p.txid}:${p.vout}`)).size!==all.length)throw new Error("LOP snapshot input bound or duplication");
+  const all=[...feeRows,...utxos];
+  if((alternativeFunding?utxos.length+1:all.length)>input.maxInputs)throw new MaterialBusinessError("INPUT_BUDGET_EXCEEDED");
+  if(new Set(all.map(p=>`${p.txid}:${p.vout}`)).size!==all.length)throw new Error("LOP snapshot input duplication");
+  if(r.inputOutpoints!==undefined&&(r.inputOutpoints.length!==all.length||r.inputOutpoints.some(p=>!all.some(u=>u.txid===p.txid&&u.vout===p.vout))))
+    throw new MaterialBusinessError("SELECTED_INPUT_UNAVAILABLE");
   // Completion order changes on warm cache hits. Snapshot material order must
   // not: Prepared approval/binding compares the same canonical material set.
   return {tip,utxos:all.sort((a,b)=>a.txid.localeCompare(b.txid)||a.vout-b.vout),

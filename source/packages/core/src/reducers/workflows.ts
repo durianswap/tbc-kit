@@ -448,11 +448,17 @@ function transactionRequestFor(
   workflow: WorkflowRequest,
   step: TransactionLikeStep,
 ): Readonly<Record<string, unknown>> & TransactionRoleRequest {
+  // Match Engine canonicalization at every workflow request/hash checkpoint,
+  // not only initial planning. Other arrays retain their semantic order.
+  const controllers = step.intent.controllers;
+  const intent = step.intent.type === "tbc-amm-create" && Array.isArray(controllers)
+    ? { ...step.intent, controllers: [...controllers].sort() }
+    : step.intent;
   return Object.freeze({
     version: "1.0",
     chainId: workflow.chainId,
     from: workflow.from,
-    intent: step.intent,
+    intent,
     ...(step.signingRoles === undefined ? {} : { signingRoles: step.signingRoles }),
     ...(step.constraints === undefined ? {} : { constraints: step.constraints }),
   });
@@ -880,7 +886,7 @@ async function normalizeStep(
     !sameJson(normalized.request, requested) ||
     normalized.request.chainId !== workflow.chainId ||
     normalized.request.from !== workflow.from ||
-    !sameJson(normalized.request.intent, step.intent)
+    !sameJson(normalized.request.intent, requested.intent)
   ) {
     throw new TwsEngineError(
       "ENGINE_ARTIFACT_MISMATCH",

@@ -1,6 +1,7 @@
 import { bytesToHex, hexToBytes, sha256Bytes } from "./network-bytes.js";
 import type { TbcOfficialApiClient } from "./official-api.js";
 import type { NftTransactionMaterial as TransactionMaterial } from "./nft-material.js";
+import { MaterialBusinessError } from "./material-business-error.js";
 
 const HASH = /^[0-9a-f]{64}$/u;
 const UINT = /^(0|[1-9][0-9]*)$/u;
@@ -21,6 +22,10 @@ export async function resolveCoinManagementMaterial(input: Readonly<{
   tipHeight: Promise<bigint>;
   minimumConfirmations: string | undefined;
 }>) {
+  // Do not leave an unused concurrent tip rejection unhandled when material
+  // fails earlier or a zero-confirmation row does not require height. Keep the
+  // original rejecting promise for the paths that do require it.
+  void input.tipHeight.catch(() => undefined);
   const { api, contractId, readHistory } = input;
   if (!HASH.test(contractId)) throw new Error("Invalid Coin asset ID");
   const minimum = BigInt(input.minimumConfirmations ?? "0");
@@ -70,7 +75,8 @@ export async function resolveCoinManagementMaterial(input: Readonly<{
     if (typeof row.index !== "string" || !UINT.test(row.index) || BigInt(row.index) > 0xffff_ffffn) throw new Error("Invalid Coin target index");
     const key = `${row.txid}:${row.index}`;
     if (observed.has(key) || !targets.some(p => p.txid === row.txid && String(p.vout) === row.index)) throw new Error("Unexpected or duplicate Coin target status");
-    if (row.spent !== false) throw new Error("Coin target is already spent");
+    if (row.spent === true) throw new MaterialBusinessError("SELECTED_INPUT_SPENT");
+    if (row.spent !== false) throw new Error("Coin target spent status is invalid");
     observed.set(key, row);
   }
   const utxos = await Promise.all(targets.map(async point => {

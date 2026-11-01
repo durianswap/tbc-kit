@@ -9,6 +9,9 @@ const HASH = /^[0-9a-f]{64}$/u;
 const UINT = /^(0|[1-9][0-9]*)$/u;
 const FT_TEMPLATE = "0f5db33bb46e4517963cbd383518f74283b5c2c4efb0a733522a1fbc0d4a9f84";
 type Point = Readonly<{ txid: string; vout: number }>;
+export class UnsupportedPoolOperationError extends Error {
+  constructor() { super("Operation is not supported for the authenticated Pool template"); }
+}
 type MaterialInput = Readonly<{
   contractId: string;
   readHistory: (txid: string) => Promise<TransactionMaterial>;
@@ -65,7 +68,7 @@ export async function resolveLpMaterial(input: MaterialInput & Readonly<{
   const descriptor = await inspect({ phase: "describe", poolContractId:input.contractId,indexedPool,currentPool:raw(pool), publicKey: input.publicKey });
   if (descriptor.poolContractId !== input.contractId || !HASH.test(descriptor.ownerLpScriptHash) ||
       typeof descriptor.ownerLpScript !== "string" || !HASH.test(descriptor.templateRevision)) throw new Error("Invalid LP descriptor");
-  if ((input.intentType === "tbc20-lp-lock" || input.intentType === "tbc20-lp-unlock") && descriptor.lpTimelock !== true) throw new Error("Plain LP has no timelock operation");
+  if ((input.intentType === "tbc20-lp-lock" || input.intentType === "tbc20-lp-unlock") && descriptor.lpTimelock !== true) throw new UnsupportedPoolOperationError();
   const { utxos } = await collectTbcUtxoPages(after => input.api.poolLpUtxosByScriptHash({
     scriptpubkeyhash: descriptor.ownerLpScriptHash, ...(after === undefined ? {} : { after }) },
     { category: "asset-index" }), { maxRows: 128 });

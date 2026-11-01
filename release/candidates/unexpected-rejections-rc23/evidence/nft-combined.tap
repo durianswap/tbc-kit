@@ -1,0 +1,212 @@
+TAP version 13
+# Subtest: NFT fee alternatives do not consume the mint-slot budget; exact inputs and candidate bounds remain strict
+ok 1 - NFT fee alternatives do not consume the mint-slot budget; exact inputs and candidate bounds remain strict
+  ---
+  duration_ms: 34.773792
+  type: 'test'
+  ...
+# Subtest: public resolver splits exact new-NFT missing slots at 25/26/100 without substituting slots
+ok 2 - public resolver splits exact new-NFT missing slots at 25/26/100 without substituting slots
+  ---
+  duration_ms: 13.093125
+  type: 'test'
+  ...
+# Subtest: indexed and partial-index paths reuse retained bytes and never requery known slots
+ok 3 - indexed and partial-index paths reuse retained bytes and never requery known slots
+  ---
+  duration_ms: 7.537167
+  type: 'test'
+  ...
+# Subtest: historical NFT slot selection batches 26/101/4095 outputs and still chooses the first unspent slot
+ok 4 - historical NFT slot selection batches 26/101/4095 outputs and still chooses the first unspent slot
+  ---
+  duration_ms: 52.619708
+  type: 'test'
+  ...
+# Subtest: failures, missing rows and spent selected slots stop before a usable snapshot without retry
+ok 5 - failures, missing rows and spent selected slots stop before a usable snapshot without retry
+  ---
+  duration_ms: 12.890375
+  type: 'test'
+  ...
+# Subtest: a selected slot outside its collection is a typed conflict without substitute reads
+ok 6 - a selected slot outside its collection is a typed conflict without substitute reads
+  ---
+  duration_ms: 0.953
+  type: 'test'
+  ...
+# Subtest: each chunk rejects cross-chunk identities, duplicates, wrong txid/value/script and noncanonical index
+ok 7 - each chunk rejects cross-chunk identities, duplicates, wrong txid/value/script and noncanonical index
+  ---
+  duration_ms: 11.824916
+  type: 'test'
+  ...
+# Subtest: positive confirmation policy still observes confirmation once, zero floor does not fetch it
+ok 8 - positive confirmation policy still observes confirmation once, zero floor does not fetch it
+  ---
+  duration_ms: 3.876833
+  type: 'test'
+  ...
+# Subtest: public resolver and official API normalization handle the 25-output HTTP contract together
+ok 9 - public resolver and official API normalization handle the 25-output HTTP contract together
+  ---
+  duration_ms: 16.309458
+  type: 'test'
+  ...
+# Subtest: 201-item public mint preparation shares one native/index/raw observation across subgroups and snapshots
+ok 10 - 201-item public mint preparation shares one native/index/raw observation across subgroups and snapshots
+  ---
+  duration_ms: 28.795583
+  type: 'test'
+  ...
+# Subtest: batched fallback and fully indexed path produce identical validated Engine plans
+ok 11 - batched fallback and fully indexed path produce identical validated Engine plans
+  ---
+  duration_ms: 52.422791
+  type: 'test'
+  ...
+# Subtest: collection/mint/transfer/batch with 1 fee alternatives retains 4 media bytes
+not ok 12 - collection/mint/transfer/batch with 1 fee alternatives retains 4 media bytes
+  ---
+  duration_ms: 73.603375
+  type: 'test'
+  location: '/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/nft-three-step.test.mjs:102:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + {
+    +   message: 'TBC chain data could not be verified for the configured network',
+    +   name: 'CONFLICT',
+    +   retryable: false
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    name: 'CONFLICT'
+    retryable: false
+    message: 'TBC chain data could not be verified for the configured network'
+  operator: 'strictEqual'
+  stack: |-
+    planIntent (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/nft-three-step.test.mjs:80:10)
+    async TestContext.<anonymous> (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/nft-three-step.test.mjs:221:15)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: collection/mint/transfer/batch with 256 fee alternatives retains 4 media bytes
+not ok 13 - collection/mint/transfer/batch with 256 fee alternatives retains 4 media bytes
+  ---
+  duration_ms: 39.238583
+  type: 'test'
+  location: '/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/nft-three-step.test.mjs:102:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + {
+    +   message: 'TBC chain data could not be verified for the configured network',
+    +   name: 'CONFLICT',
+    +   retryable: false
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    name: 'CONFLICT'
+    retryable: false
+    message: 'TBC chain data could not be verified for the configured network'
+  operator: 'strictEqual'
+  stack: |-
+    planIntent (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/nft-three-step.test.mjs:80:10)
+    async TestContext.<anonymous> (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/nft-three-step.test.mjs:221:15)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: collection/mint/transfer/batch with 1 fee alternatives retains 70000 media bytes
+not ok 14 - collection/mint/transfer/batch with 1 fee alternatives retains 70000 media bytes
+  ---
+  duration_ms: 140.258625
+  type: 'test'
+  location: '/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/nft-three-step.test.mjs:102:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + {
+    +   message: 'TBC chain data could not be verified for the configured network',
+    +   name: 'CONFLICT',
+    +   retryable: false
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    name: 'CONFLICT'
+    retryable: false
+    message: 'TBC chain data could not be verified for the configured network'
+  operator: 'strictEqual'
+  stack: |-
+    planIntent (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/nft-three-step.test.mjs:80:10)
+    async TestContext.<anonymous> (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/nft-three-step.test.mjs:221:15)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: collection/mint/transfer/batch with 256 fee alternatives retains 70000 media bytes
+not ok 15 - collection/mint/transfer/batch with 256 fee alternatives retains 70000 media bytes
+  ---
+  duration_ms: 142.263542
+  type: 'test'
+  location: '/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/nft-three-step.test.mjs:102:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + {
+    +   message: 'TBC chain data could not be verified for the configured network',
+    +   name: 'CONFLICT',
+    +   retryable: false
+    + }
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+    name: 'CONFLICT'
+    retryable: false
+    message: 'TBC chain data could not be verified for the configured network'
+  operator: 'strictEqual'
+  stack: |-
+    planIntent (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/nft-three-step.test.mjs:80:10)
+    async TestContext.<anonymous> (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/nft-three-step.test.mjs:221:15)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: NFT material fails closed on mismatched collection slot and positive-floor missing confirmation
+ok 16 - NFT material fails closed on mismatched collection slot and positive-floor missing confirmation
+  ---
+  duration_ms: 3.446167
+  type: 'test'
+  ...
+# Subtest: collection mint uses one exact TXO fallback only while the script index is lagging
+ok 17 - collection mint uses one exact TXO fallback only while the script index is lagging
+  ---
+  duration_ms: 1.210667
+  type: 'test'
+  ...
+1..17
+# tests 17
+# suites 0
+# pass 13
+# fail 4
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 522.684083

@@ -57,6 +57,11 @@ const funding = new tbc.Transaction().from({ txId: 'aa'.repeat(32), outputIndex:
 funding.version = 10;
 const fundingRaw = funding.uncheckedSerialize();
 const fundingId = funding.id;
+const wideFunding = new tbc.Transaction().from({ txId: 'bb'.repeat(32), outputIndex: 0,
+  script: tbc.Script.buildPublicKeyHashOut(address).toHex(), satoshis: 300000000 });
+wideFunding.version = 10;
+for (let i=0;i<257;i++)wideFunding.to(address,1000000);
+const wideFundingRaw=wideFunding.uncheckedSerialize(),wideFundingId=wideFunding.id;
 function permission(capability) {
   return { id: `controlled-${capability}`, parentCapability: capability, invoker: origin, date: nowMs,
     caveats: [{ type: 'restrictChains', value: [account.chainId] }, { type: 'restrictAccounts', value: [account.accountId] },
@@ -64,7 +69,8 @@ function permission(capability) {
 }
 
 async function setup({ empty = false, reject = false, ecdsaOnly = false, materialNative = native,
-  tokenMode = false, zeros = false, corrupt = false, lpMode = false } = {}) {
+  tokenMode = false, zeros = false, corrupt = false, lpMode = false, nativeCount=1, wide=false } = {}) {
+  const feeId=wide?wideFundingId:fundingId;
   const stateId = empty ? row.genesisId : row.actions.find(a => a.operation === 'buy').txid;
   const stateRaw = fixture.raws[stateId];
   const stateTx = new tbc.Transaction(stateRaw);
@@ -91,10 +97,10 @@ async function setup({ empty = false, reject = false, ecdsaOnly = false, materia
       const path = url.pathname; trace.push(path);
       let data;
       if (path === '/api/tbc/nodeinfo') data = { blocks: 1000, bestblockhash: 'bb'.repeat(32) };
-      else if (path === `/api/tbc/utxo/address/${address}`) data = { utxos: [{ txid: fundingId, index: 0, value: 1000000, height: 999 }] };
+      else if (path === `/api/tbc/utxo/address/${address}`) data = { utxos: Array.from({length:nativeCount},(_,index)=>({ txid: feeId, index, value: 1000000, height: 999 })) };
       else if (path.startsWith('/api/tbc/txraw/txid/')) {
         const id = path.split('/').at(-1);
-        const raw = id === fundingId ? fundingRaw : tokenFixture.stages.find(s => s.txid === id)?.signedRaw ?? fixture.raws[id]; assert.ok(raw, `Unexpected proof ${id}`);
+        const raw = id === wideFundingId ? wideFundingRaw : id === fundingId ? fundingRaw : tokenFixture.stages.find(s => s.txid === id)?.signedRaw ?? fixture.raws[id]; assert.ok(raw, `Unexpected proof ${id}`);
         data = { txraw: raw };
       } else if (path === `/api/tbc/ft/info/contract/${tokenId}`) data = {
         code_script: tokenGenesis.outputs[0].script.toHex(), tape_script: tokenGenesis.outputs[1].script.toHex(), amount: tokenMode ? tokenFixture.request.mintAmount : '10000000',
@@ -116,13 +122,14 @@ async function setup({ empty = false, reject = false, ecdsaOnly = false, materia
   const runtime = kit.createTbcWallet({ accounts: { current: async () => [account] },
     engine: kit.createTbcEngine({ backend }),
     storage: { hostStore: kit.createMemoryTwsHostStore({ now: () => nowMs }),
-      loadPermissions: async () => ({ revision: '0', permissions: ['tbc_accounts', 'tbc_sendTransaction'].map(permission) }),
+      loadPermissions: async () => ({ revision: '0', permissions: ['tbc_accounts', 'tbc_sendTransaction', 'tbc_signTransaction', 'tbc_signWorkflow'].map(permission) }),
       commitPermissions: async params => ({ revisions: params.changes.map(({ scope }) => ({ scope, revision: '1' })) }),
     },
     network: {
       resolveChainData(params, _call, active) { ports.push('chainData.resolve'); return network.resolveChainData(params, active); },
       resolvePolicy(params) { ports.push('policy.resolve'); return network.resolvePolicy(params); },
       async broadcastSubmit(params) { accepted.push(params.transaction); return { txid: params.transaction.txid, status: 'accepted' }; },
+      async broadcastSubmitBatch(params) { accepted.push(...params.transactions); return {transactions:params.transactions.map(({txid})=>({txid,status:'accepted'}))}; },
       broadcastReconcile() { throw Error('Unexpected reconciliation'); },
     },
     approval: { async request(params) {
@@ -151,7 +158,7 @@ async function setup({ empty = false, reject = false, ecdsaOnly = false, materia
   const wallet = await kit.createTbcClient({ network: 'testnet', provider }).connect();
   return { wallet, trace, ports, accepted, session, tokenId, holderRows,
     poolPoints: [{ txid: stateId, vout: 0 }, { txid: stateId, vout: 5 }],
-    feePoint: { txid: fundingId, vout: 0 }, counts: () => ({ approvals, signatures }) };
+    feePoint: { txid: feeId, vout: 0 }, counts: () => ({ approvals, signatures }) };
 }
 
 const zeroBusiness = {
@@ -165,6 +172,74 @@ const zeroBusiness = {
   swap: s => ({ run: constraints => s.wallet.amm.swap({ poolContractId: row.genesisId, direction: 'ft-to-tbc', amount: '1000', minimumOutput: '1', receiver: address, constraints }) }),
   lpTransfer: s => ({ run: constraints => s.wallet.tbc20Lp.transfer({ poolContractId: row.genesisId, to: address, amount: '1000', constraints }) }),
 };
+const controllerHashes=['378f9624c2004981bc2a23117e4d41247de4f3ad','a3c16b99f8af5abafece1dcb9b46756e3f28f2e8',
+  '4cb59d2f28f69a64862b99e94e90886856fe1111','11'.repeat(20),'ee'.repeat(20)];
+const createInput=s=>({ftContractId:s.tokenId,lpTimelock:false,
+  feePolicy:{lpFeeRate:30,taxFeeRate:0,serviceProviderFeeRate:0,protocolFeeRate:0,feeAddress:address}});
+const constraints={maxFee:'100000',expiresAt:new Date(nowMs+60000).toISOString()};
+test('LOP 1/128/256 native alternatives keep identical Engine transactions, one approval and the same reads',async()=>{
+  const values=[];
+  for(const nativeCount of [1,128,256]) {
+    const s=await setup({tokenMode:true,wide:true,nativeCount});
+    try{await zeroBusiness.order(s).run(constraints);
+      assert.equal(s.counts().approvals,1);assert.equal(s.accepted.length,1);
+      values.push({raw:s.accepted,reads:s.trace,counts:s.counts()});
+    }finally{s.session.close();}
+  }
+  assert.deepEqual(values[0],values[1]);assert.deepEqual(values[0],values[2]);
+  const s=await setup({tokenMode:true,wide:true,nativeCount:257});
+  // The official client rejects this oversized response before material loading.
+  try {await assert.rejects(zeroBusiness.order(s).run(constraints),e=>e.code===-32000&&e.data.name==='CONFLICT');
+    assert.equal(s.counts().approvals,0);assert.equal(s.counts().signatures,0);assert.equal(s.accepted.length,0);
+  }finally{s.session.close();}
+});
+test('AMM controller permutations produce identical signed bytes and reads through Provider, including workflow',async()=>{
+  for(const count of [1,2,3,4,5]) for(const workflow of [false,true]) {
+    const outcomes=[];
+    for(const controllers of [controllerHashes.slice(0,count),controllerHashes.slice(0,count).sort()]) {
+      const s=await setup();
+      try {
+        const input={...createInput(s),controllers};
+        if(workflow) await s.wallet.walletBuild.sendWorkflow({steps:[{id:'create',kind:'transaction',dependsOn:[],
+          intent:{type:'tbc-amm-create',version:'1.0',...input}}],maxTotalFee:constraints.maxFee,expiresAt:constraints.expiresAt});
+        else await s.wallet.amm.create({...input,constraints});
+        assert.equal(s.counts().approvals,1);assert.equal(s.accepted.length,2);
+        outcomes.push({transactions:s.accepted,trace:[...s.trace].sort(),counts:s.counts()});
+      }finally{s.session.close();}
+    }
+    assert.deepEqual(outcomes[0],outcomes[1],`count=${count} workflow=${workflow}`);
+  }
+});
+test('invalid AMM semantics return parameter errors, never Host internal errors or approval',async()=>{
+  for(const change of [i=>({...i,controllers:[]}),i=>({...i,controllers:[controllerHashes[0],controllerHashes[0]]}),
+    i=>({...i,controllers:[...controllerHashes,'22'.repeat(20)]}),
+    i=>({...i,feePolicy:{...i.feePolicy,lpFeeRate:9999,taxFeeRate:1}})]) {
+    const s=await setup();
+    try{await assert.rejects(s.wallet.amm.create({...change(createInput(s)),constraints}),e=>e.code===-32602);
+      assert.deepEqual(s.counts(),{approvals:0,signatures:0});assert.equal(s.accepted.length,0);
+    }finally{s.session.close();}
+  }
+});
+test('TBC20 recipient capacity includes token change, native change and optional payment',async()=>{
+  for(const payment of [undefined,{to:address,amount:'1000'}])for(const count of [payment?5:6,payment?6:7]) {
+    const s=await setup({tokenMode:true});
+    const receivers=Array.from({length:count},(_,i)=>({
+      to:tbc.PrivateKey.fromHex((i+2).toString(16).padStart(64,'0')).toAddress().toString(),amount:'1'}));
+    try {
+      const run=s.wallet.tbc20.transfer({contractId:s.tokenId,receivers,...(payment?{payment}:{}),constraints});
+      if(count===(payment?5:6)){await run;assert.equal(s.counts().approvals,1);}
+      else{await assert.rejects(run,e=>e.code===-32602);assert.deepEqual(s.counts(),{approvals:0,signatures:0});assert.equal(s.accepted.length,0);}
+    }finally{s.session.close();}
+  }
+});
+for (const method of ['lock','unlock']) test(`plain LP ${method} is a typed unsupported operation before approval`,async()=>{
+  const s=await setup({lpMode:true});
+  try {
+    const input={poolContractId:row.genesisId,...(method==='lock'?{amount:'1',lockTime:'2000'}:{}),constraints:{maxFee:'100000',expiresAt:new Date(nowMs+60000).toISOString()}};
+    await assert.rejects(s.wallet.tbc20Lp[method](input),e=>e.code===-32602&&e.data?.reason==='UNSUPPORTED_POOL_OPERATION');
+    assert.deepEqual(s.counts(),{approvals:0,signatures:0});assert.equal(s.accepted.length,0);
+  }finally{s.session.close();}
+});
 const tokenModeFor = kind => ['transfer', 'merge', 'htlc', 'order'].includes(kind);
 
 test('positive-only hot-path metrics', async t => {

@@ -178,6 +178,15 @@ function failFromPort(
   // Do not forward arbitrary adapter messages/details: those may contain Vault
   // diagnostics, full materials or credentials. Only fixed public reasons pass.
   const suppliedReason = operation === "chainData.resolve" ? error.details?.reason : undefined;
+  const materialReasons: Readonly<Record<string, string>> = {
+    SELECTED_INPUT_SPENT: "An explicitly selected transaction output is already spent",
+    SELECTED_INPUT_UNAVAILABLE: "An explicitly selected transaction output is unavailable",
+    INPUT_BUDGET_EXCEEDED: "The selected inputs exceed the configured input budget",
+    CANDIDATE_LIMIT_EXCEEDED: "The funding candidate set exceeds the supported bound",
+    NFT_NO_AVAILABLE_SLOT: "The collection has no available mint slot",
+  };
+  const materialReason = error.name === "CONFLICT" && typeof suppliedReason === "string" && Object.hasOwn(materialReasons, suppliedReason)
+    ? { reason: suppliedReason, message: materialReasons[suppliedReason]! } : undefined;
   const publicReason = error.name === "INVALID_INPUT" && suppliedReason === "UNSUPPORTED_POOL_OPERATION"
     ? { reason: suppliedReason, message: "Operation is not supported for the authenticated Pool template" }
     : error.name === "INVALID_INPUT" && suppliedReason === "AMM_RETAINED_FEE_ZERO"
@@ -185,7 +194,11 @@ function failFromPort(
       : error.name === "INVALID_INPUT" && suppliedReason === "SELECTED_ZERO_BALANCE_INPUT"
         ? { reason: suppliedReason, message: "An explicitly selected token input has zero balance" }
       : error.name === "CONFLICT" && suppliedReason === "AMM_POOL_INACTIVE"
-        ? { reason: suppliedReason, message: "AMM Pool has no active liquidity" } : undefined;
+        ? { reason: suppliedReason, message: "AMM Pool has no active liquidity" }
+      : error.name === "CONFLICT" && suppliedReason === "NFT_SLOT_SPENT"
+        ? { reason: suppliedReason, message: "A requested NFT mint slot is already spent" }
+      : error.name === "CONFLICT" && suppliedReason === "NFT_SLOT_MISMATCH"
+        ? { reason: suppliedReason, message: "A requested NFT mint slot does not match the collection and owner" } : materialReason;
   const details = { operation, portError: error.name,
     ...(publicReason === undefined ? {} : { reason: publicReason.reason }) };
   const finish = (code: number, message: string, data?: Readonly<Record<string, unknown>>) =>

@@ -35,8 +35,16 @@ const POOL_INTENTS: [&str; 9] = [
 
 pub(crate) fn normalize_request(input: Value) -> Result<Value, EngineError> {
     reject_unsupported_intent(&input)?;
-    let params: NormalizeRequestParams = parse_input(input)?;
+    let mut params: NormalizeRequestParams = parse_input(input)?;
     validate_version(&params.version, "version")?;
+    // Controller authorization is a set, not a user-selected signing order.
+    // Canonicalize before hashing/binding, without deduplicating or repairing
+    // invalid hashes. Plan/finalize still require the exact canonical request.
+    if params.request.intent.intent_type == "tbc-amm-create" {
+        if let Some(controllers) = &mut params.request.intent.controllers {
+            if (1..=5).contains(&controllers.len()) { controllers.sort(); }
+        }
+    }
     validate_request(&params.request)?;
     let request_hash = canonical_hash(&params.request)?;
     to_value(NormalizeRequestResult {

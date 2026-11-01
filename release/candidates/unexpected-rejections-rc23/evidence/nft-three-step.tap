@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: collection/mint/transfer/batch with 1 fee alternatives retains 4 media bytes
+ok 1 - collection/mint/transfer/batch with 1 fee alternatives retains 4 media bytes
+  ---
+  duration_ms: 91.098
+  type: 'test'
+  ...
+# Subtest: collection/mint/transfer/batch with 256 fee alternatives retains 4 media bytes
+ok 2 - collection/mint/transfer/batch with 256 fee alternatives retains 4 media bytes
+  ---
+  duration_ms: 46.10575
+  type: 'test'
+  ...
+# Subtest: collection/mint/transfer/batch with 1 fee alternatives retains 70000 media bytes
+ok 3 - collection/mint/transfer/batch with 1 fee alternatives retains 70000 media bytes
+  ---
+  duration_ms: 226.990292
+  type: 'test'
+  ...
+# Subtest: collection/mint/transfer/batch with 256 fee alternatives retains 70000 media bytes
+ok 4 - collection/mint/transfer/batch with 256 fee alternatives retains 70000 media bytes
+  ---
+  duration_ms: 226.438792
+  type: 'test'
+  ...
+# Subtest: NFT material fails closed on mismatched collection slot and positive-floor missing confirmation
+ok 5 - NFT material fails closed on mismatched collection slot and positive-floor missing confirmation
+  ---
+  duration_ms: 0.909292
+  type: 'test'
+  ...
+# Subtest: collection mint uses one exact TXO fallback only while the script index is lagging
+ok 6 - collection mint uses one exact TXO fallback only while the script index is lagging
+  ---
+  duration_ms: 1.00375
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 706.488084

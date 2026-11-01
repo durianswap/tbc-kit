@@ -348,9 +348,29 @@ fn public_amm_native_descriptor_needs_no_extra_raw_and_exact_scope_is_preserved(
     testnet["snapshot"]["payload"]["account"]["accountId"]=json!(format!("tbc:testnet:{}",testnet["request"]["from"].as_str().unwrap()));testnet["policy"]["payload"]["chainId"]=json!("tbc:testnet");testnet=bind(testnet);ok(EngineMethod::Plan,&testnet);
 }
 #[test]
+fn public_amm_controller_sets_normalize_before_hash_and_preserve_binding() {
+    let p=input(&fixture()["cases"][0]);
+    let hashes=["378f9624c2004981bc2a23117e4d41247de4f3ad", "a3c16b99f8af5abafece1dcb9b46756e3f28f2e8",
+        "4cb59d2f28f69a64862b99e94e90886856fe1111", "12aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "ffbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"];
+    for count in 1..=5 {
+        let mut request=p["request"].clone();request["intent"]["controllers"]=json!(hashes[..count]);
+        let normalized=ok(EngineMethod::NormalizeRequest,&json!({"version":"1.0","request":request}));
+        let mut sorted=hashes[..count].to_vec();sorted.sort();
+        assert_eq!(normalized["request"]["intent"]["controllers"],json!(sorted));
+        request["intent"]["controllers"]=json!(sorted);
+        assert_eq!(normalized,ok(EngineMethod::NormalizeRequest,&json!({"version":"1.0","request":request})));
+        let mut planned=p.clone();planned["request"]=normalized["request"].clone();planned=bind(planned);
+        let plan=ok(EngineMethod::Plan,&planned);
+        assert_eq!(plan["plan"]["payload"]["requestHash"],normalized["requestHash"]);
+        // Canonicalization must not authorize a different controller set.
+        planned["request"]["intent"]["controllers"][0]=json!("01".repeat(20));
+        assert_eq!(call(EngineMethod::Plan,&planned)["ok"],false);
+    }
+}
+#[test]
 fn public_amm_create_rejects_cross_fields_malformed_authority_and_unbound_material(){
     let p=input(&fixture()["cases"][0]);
-    for(field,value)in [("controllers",json!([])),("controllers",json!(["ff".repeat(20),"00".repeat(20)])),("controllers",json!(["11".repeat(20),"11".repeat(20)])),("controllers",json!(["00"])),("lpPlan",json!(7)),("lpTimelock",json!("false")),("amount",json!("1")),("serviceFeeRate",json!(65535))]{
+    for(field,value)in [("controllers",json!([])),("controllers",json!((0..6).map(|n|format!("{n:040x}")).collect::<Vec<_>>())),("controllers",json!(["11".repeat(20),"11".repeat(20)])),("controllers",json!(["00"])),("lpPlan",json!(7)),("lpTimelock",json!("false")),("amount",json!("1")),("serviceFeeRate",json!(65535))]{
         let mut bad=p["request"].clone();bad["intent"][field]=value;assert_eq!(call(EngineMethod::NormalizeRequest,&json!({"version":"1.0","request":bad}))["ok"],false,"{field}");
     }
     for(field,value)in [("lpFeeRate",json!(-1)),("taxFeeRate",json!(0.5)),("protocolFeeRate",json!(10000)),("serviceProviderFeeRate",json!(9900)),("feeAddress",json!("not-an-address")),("unknown",json!(1))]{

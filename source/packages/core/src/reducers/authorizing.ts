@@ -378,7 +378,8 @@ export async function reduceAuthorizingResponse(
           operation.params as Readonly<Record<string, unknown>> & { readonly proposal: unknown },
         )
       : operation.params;
-    const normalized = (await invokeTransactionEngine(
+    let normalized;
+    try { normalized = (await invokeTransactionEngine(
       transactionEngine,
       "normalizeRequest",
       "normalizeRequestParams",
@@ -387,7 +388,14 @@ export async function reduceAuthorizingResponse(
     )) as {
       readonly request: unknown;
       readonly requestHash: string;
-    };
+    }; } catch (error) {
+      if (error !== null && typeof error === "object" &&
+          Reflect.get(error, "name") === "TbcEngineError" && Reflect.get(error, "code") === "INVALID_REQUEST") {
+        return completeError(checkpoint, -32602, "Transaction normalization rejected the invalid request",
+          checkpoint.payload.memory, { stage: "normalization", retryable: false });
+      }
+      throw error;
+    }
     if (hashCanonical(normalized.request) !== normalized.requestHash) {
       throw new TwsEngineError(
         "ENGINE_ARTIFACT_MISMATCH",

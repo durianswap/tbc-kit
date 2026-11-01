@@ -1,0 +1,444 @@
+TAP version 13
+# Subtest: typed material failures survive Core without approval or signing and without private diagnostics
+ok 1 - typed material failures survive Core without approval or signing and without private diagnostics
+  ---
+  duration_ms: 73.382708
+  type: 'test'
+  ...
+# Subtest: Pool, explicit zero-token and NFT slot reasons are safe typed Provider failures
+ok 2 - Pool, explicit zero-token and NFT slot reasons are safe typed Provider failures
+  ---
+  duration_ms: 34.404209
+  type: 'test'
+  ...
+# Subtest: Prepared proposal expiry rejects at entry without material or signer work
+ok 3 - Prepared proposal expiry rejects at entry without material or signer work
+  ---
+  duration_ms: 298.6055
+  type: 'test'
+  ...
+# Subtest: Prepared proposal caps formal approval and cannot expire during UI wait then sign
+ok 4 - Prepared proposal caps formal approval and cannot expire during UI wait then sign
+  ---
+  duration_ms: 58.142583
+  type: 'test'
+  ...
+# Subtest: Prepared shorter valid proposal retains the same one-approval transaction path
+ok 5 - Prepared shorter valid proposal retains the same one-approval transaction path
+  ---
+  duration_ms: 33.222584
+  type: 'test'
+  ...
+# Subtest: Prepared material that expires before formal approval never opens approval or signs
+ok 6 - Prepared material that expires before formal approval never opens approval or signs
+  ---
+  duration_ms: 6.814167
+  type: 'test'
+  ...
+# Subtest: prepared fixed transaction is re-planned, approved, signed, and finalized
+ok 7 - prepared fixed transaction is re-planned, approved, signed, and finalized
+  ---
+  duration_ms: 28.221041
+  type: 'test'
+  ...
+# Subtest: prepared fixed transaction accepts a later wallet observation of identical material
+ok 8 - prepared fixed transaction accepts a later wallet observation of identical material
+  ---
+  duration_ms: 16.253334
+  type: 'test'
+  ...
+# Subtest: prepared proposal hash tampering fails before approval, signing, or broadcast
+ok 9 - prepared proposal hash tampering fails before approval, signing, or broadcast
+  ---
+  duration_ms: 1.505041
+  type: 'test'
+  ...
+# Subtest: Prepared independent clocks retain wallet expiry and the same transaction path
+ok 10 - Prepared independent clocks retain wallet expiry and the same transaction path
+  ---
+  duration_ms: 35.303667
+  type: 'test'
+  ...
+# Subtest: prepared unsigned bytes tampering fails against the wallet-replanned transaction set
+ok 11 - prepared unsigned bytes tampering fails against the wallet-replanned transaction set
+  ---
+  duration_ms: 5.191708
+  type: 'test'
+  ...
+# Subtest: pending finalization reuses approval and returns through durable signing
+ok 12 - pending finalization reuses approval and returns through durable signing
+  ---
+  duration_ms: 14.350333
+  type: 'test'
+  ...
+# Subtest: pending finalization carries its continuation through pre-broadcast validation
+ok 13 - pending finalization carries its continuation through pre-broadcast validation
+  ---
+  duration_ms: 12.262625
+  type: 'test'
+  ...
+# Subtest: rejection and invalid pending artifacts cannot reach another signer or broadcast
+ok 14 - rejection and invalid pending artifacts cannot reach another signer or broadcast
+  ---
+  duration_ms: 14.137167
+  type: 'test'
+  ...
+# Subtest: fresh planning enters approval without an intermediate planned checkpoint
+ok 15 - fresh planning enters approval without an intermediate planned checkpoint
+  ---
+  duration_ms: 10.602917
+  type: 'test'
+  ...
+# checkpoints=14 ports=10 engineCalls=6
+# Subtest: stored plans remain resumable without replanning and fresh invalid plans never request approval
+ok 16 - stored plans remain resumable without replanning and fresh invalid plans never request approval
+  ---
+  duration_ms: 16.862042
+  type: 'test'
+  ...
+# Subtest: insufficient funding completes a sanitized business error before approval or signing
+ok 17 - insufficient funding completes a sanitized business error before approval or signing
+  ---
+  duration_ms: 3.486167
+  type: 'test'
+  ...
+# Subtest: canonical TBC transaction sign path preserves plan, approval, signer, and finalize order
+ok 18 - canonical TBC transaction sign path preserves plan, approval, signer, and finalize order
+  ---
+  duration_ms: 9.096667
+  type: 'test'
+  ...
+# Subtest: multi-task signing obtains a fresh clock before every signer and finalization
+ok 19 - multi-task signing obtains a fresh clock before every signer and finalization
+  ---
+  duration_ms: 9.005583
+  type: 'test'
+  ...
+# Subtest: replaying an exact signer response is deterministic and cannot advance its successor
+ok 20 - replaying an exact signer response is deterministic and cannot advance its successor
+  ---
+  duration_ms: 6.932
+  type: 'test'
+  ...
+# Subtest: canonical TBC transaction send path validates and broadcasts once with the business idempotency key
+ok 21 - canonical TBC transaction send path validates and broadcasts once with the business idempotency key
+  ---
+  duration_ms: 11.889667
+  type: 'test'
+  ...
+# Subtest: canonical TBC transaction reconciles one ambiguous broadcast without resubmitting
+ok 22 - canonical TBC transaction reconciles one ambiguous broadcast without resubmitting
+  ---
+  duration_ms: 13.784666
+  type: 'test'
+  ...
+# Subtest: multi-transaction broadcast obtains a fresh clock before every submission
+ok 23 - multi-transaction broadcast obtains a fresh clock before every submission
+  ---
+  duration_ms: 11.955375
+  type: 'test'
+  ...
+# Subtest: known reconciled source prefix continues only the unsubmitted dependent suffix
+ok 24 - known reconciled source prefix continues only the unsubmitted dependent suffix
+  ---
+  duration_ms: 10.741833
+  type: 'test'
+  ...
+# Subtest: an ambiguous source that reconciles as unknown remains fail-closed
+ok 25 - an ambiguous source that reconciles as unknown remains fail-closed
+  ---
+  duration_ms: 9.87575
+  type: 'test'
+  ...
+# Subtest: an ambiguous source that reconciles as rejected remains fail-closed
+ok 26 - an ambiguous source that reconciles as rejected remains fail-closed
+  ---
+  duration_ms: 12.055959
+  type: 'test'
+  ...
+# Subtest: canonical TBC transaction rejects engine shortcuts and mutated security artifacts
+ok 27 - canonical TBC transaction rejects engine shortcuts and mutated security artifacts
+  ---
+  duration_ms: 75.10325
+  type: 'test'
+  ...
+# Subtest: an approval that expires before signing becomes an auditable terminal failure
+ok 28 - an approval that expires before signing becomes an auditable terminal failure
+  ---
+  duration_ms: 6.423
+  type: 'test'
+  ...
+# Subtest: a sign-only operation cannot be forged into the broadcast reducer
+ok 29 - a sign-only operation cannot be forged into the broadcast reducer
+  ---
+  duration_ms: 11.184708
+  type: 'test'
+  ...
+# Subtest: workflow roles are per AMM transaction step, never inherited by other kinds
+ok 30 - workflow roles are per AMM transaction step, never inherited by other kinds
+  ---
+  duration_ms: 24.502916
+  type: 'test'
+  ...
+# Subtest: one lookup set preserves different controllers and deduplicates repeated or primary roles
+ok 31 - one lookup set preserves different controllers and deduplicates repeated or primary roles
+  ---
+  duration_ms: 0.726375
+  type: 'test'
+  ...
+# Subtest: missing, duplicate, cross-chain and cross-step key aliases cannot resolve
+ok 32 - missing, duplicate, cross-chain and cross-step key aliases cannot resolve
+  ---
+  duration_ms: 0.38625
+  type: 'test'
+  ...
+# Subtest: all four workflow methods resolve roles once without giving controllers message authority
+ok 33 - all four workflow methods resolve roles once without giving controllers message authority
+  ---
+  duration_ms: 78.159291
+  type: 'test'
+  ...
+# Subtest: missing controller grants or active session membership reject before account/material resolution
+ok 34 - missing controller grants or active session membership reject before account/material resolution
+  ---
+  duration_ms: 5.875375
+  type: 'test'
+  ...
+# Subtest: role workflow validates the raw account response before any material request
+ok 35 - role workflow validates the raw account response before any material request
+  ---
+  duration_ms: 1.581458
+  type: 'test'
+  ...
+# Subtest: workflow material cannot cross-bind steps, add accounts or replace their identities
+ok 36 - workflow material cannot cross-bind steps, add accounts or replace their identities
+  ---
+  duration_ms: 12.264
+  type: 'test'
+  ...
+# Subtest: a child Engine cannot borrow another step's controller or omit its review role
+ok 37 - a child Engine cannot borrow another step's controller or omit its review role
+  ---
+  duration_ms: 6.731459
+  type: 'test'
+  ...
+# Subtest: the aggregate approval cannot outlive the earliest role-scoped material
+ok 38 - the aggregate approval cannot outlive the earliest role-scoped material
+  ---
+  duration_ms: 10.895167
+  type: 'test'
+  ...
+# Subtest: different businesses under one account keep per-step material and reject cross-binding before approval
+ok 39 - different businesses under one account keep per-step material and reject cross-binding before approval
+  ---
+  duration_ms: 16.237541
+  type: 'test'
+  ...
+# Subtest: independent reviewed/crypto methods do not require workflow permission or construct a workflow plan
+ok 40 - independent reviewed/crypto methods do not require workflow permission or construct a workflow plan
+  ---
+  duration_ms: 42.1825
+  type: 'test'
+  ...
+# Subtest: oversized UTF-8 encryption is rejected before approval or private execution
+ok 41 - oversized UTF-8 encryption is rejected before approval or private execution
+  ---
+  duration_ms: 38.416333
+  type: 'test'
+  ...
+# Subtest: wallet-action approval evidence is projected once and rejects plan, account, context, preview and review tampering
+ok 42 - wallet-action approval evidence is projected once and rejects plan, account, context, preview and review tampering
+  ---
+  duration_ms: 25.996375
+  type: 'test'
+  ...
+# Subtest: standalone actions retain rejection, exact permission and reviewed-result checks
+ok 43 - standalone actions retain rejection, exact permission and reviewed-result checks
+  ---
+  duration_ms: 18.653
+  type: 'test'
+  ...
+# Subtest: standalone crypto and true workflow consume the same private execution result
+ok 44 - standalone crypto and true workflow consume the same private execution result
+  ---
+  duration_ms: 15.391458
+  type: 'test'
+  ...
+# Subtest: standalone private execution refuses navigation or approved-plan tampering
+ok 45 - standalone private execution refuses navigation or approved-plan tampering
+  ---
+  duration_ms: 9.461375
+  type: 'test'
+  ...
+# Subtest: workflow retains multiple finalize stages without rewriting earlier signing evidence
+ok 46 - workflow retains multiple finalize stages without rewriting earlier signing evidence
+  ---
+  duration_ms: 131.572
+  type: 'test'
+  ...
+# Subtest: workflow rejects a replayed continuation before another signature
+ok 47 - workflow rejects a replayed continuation before another signature
+  ---
+  duration_ms: 16.595458
+  type: 'test'
+  ...
+# Subtest: prepared workflow independently replans and signs its approved proposal
+ok 48 - prepared workflow independently replans and signs its approved proposal
+  ---
+  duration_ms: 18.214625
+  type: 'test'
+  ...
+# Subtest: Prepared workflow uses the earliest child proposal expiry
+ok 49 - Prepared workflow uses the earliest child proposal expiry
+  ---
+  duration_ms: 16.762209
+  type: 'test'
+  ...
+# Subtest: Prepared batch cannot hide an expired later proposal or expire while UI is open
+ok 50 - Prepared batch cannot hide an expired later proposal or expire while UI is open
+  ---
+  duration_ms: 22.496708
+  type: 'test'
+  ...
+# Subtest: prepared workflow rejects a caller-tampered proposal hash as Invalid Params
+ok 51 - prepared workflow rejects a caller-tampered proposal hash as Invalid Params
+  ---
+  duration_ms: 1.842916
+  type: 'test'
+  ...
+# Subtest: Prepared workflow independent clocks cannot extend wallet approval expiry
+ok 52 - Prepared workflow independent clocks cannot extend wallet approval expiry
+  ---
+  duration_ms: 51.60975
+  type: 'test'
+  ...
+# Subtest: send workflow reuses one approval and emits one ordered batch submit
+ok 53 - send workflow reuses one approval and emits one ordered batch submit
+  ---
+  duration_ms: 20.273375
+  type: 'test'
+  ...
+# Subtest: workflow signs and finalizes by topology, derives txids, and returns atomically
+ok 54 - workflow signs and finalizes by topology, derives txids, and returns atomically
+  ---
+  duration_ms: 13.757125
+  type: 'test'
+  ...
+# checkpoints=16 ports=12 engineCalls=8
+# Subtest: multiple transaction steps share one snapshot but bind distinct policies
+ok 55 - multiple transaction steps share one snapshot but bind distinct policies
+  ---
+  duration_ms: 18.801875
+  type: 'test'
+  ...
+# Subtest: workflow Chain Data carries the stable exact union of explicit native inputs
+ok 56 - workflow Chain Data carries the stable exact union of explicit native inputs
+  ---
+  duration_ms: 1.715416
+  type: 'test'
+  ...
+# Subtest: deterministic workflow planning rejection returns a Provider invalid-request error
+ok 57 - deterministic workflow planning rejection returns a Provider invalid-request error
+  ---
+  duration_ms: 3.434958
+  type: 'test'
+  ...
+# Subtest: workflow fails closed when transaction steps select the same input outpoint
+ok 58 - workflow fails closed when transaction steps select the same input outpoint
+  ---
+  duration_ms: 3.01125
+  type: 'test'
+  ...
+# Subtest: workflow resumes after an upstream bundle was finalized
+ok 59 - workflow resumes after an upstream bundle was finalized
+  ---
+  duration_ms: 16.174542
+  type: 'test'
+  ...
+# Subtest: workflow derives an approved contract artifact without adding a replacement
+ok 60 - workflow derives an approved contract artifact without adding a replacement
+  ---
+  duration_ms: 27.572875
+  type: 'test'
+  ...
+# Subtest: workflow failure after a transaction signature never exposes partial results
+ok 61 - workflow failure after a transaction signature never exposes partial results
+  ---
+  duration_ms: 7.868083
+  type: 'test'
+  ...
+# Subtest: workflow rejects a rehashed deferred source and target type before approval
+ok 62 - workflow rejects a rehashed deferred source and target type before approval
+  ---
+  duration_ms: 5.775875
+  type: 'test'
+  ...
+# Subtest: five explicit typed-data steps preserve topology without entropy
+ok 63 - five explicit typed-data steps preserve topology without entropy
+  ---
+  duration_ms: 23.917667
+  type: 'test'
+  ...
+# Subtest: standard message step shares one workflow approval and performs no chain read
+ok 64 - standard message step shares one workflow approval and performs no chain read
+  ---
+  duration_ms: 6.080042
+  type: 'test'
+  ...
+# Subtest: standard crypto steps use the wallet secret port, one approval, and zero chain reads
+ok 65 - standard crypto steps use the wallet secret port, one approval, and zero chain reads
+  ---
+  duration_ms: 5.059917
+  type: 'test'
+  ...
+# Subtest: reviewed transaction binds pre-approval review to one post-approval wallet execution
+ok 66 - reviewed transaction binds pre-approval review to one post-approval wallet execution
+  ---
+  duration_ms: 4.769959
+  type: 'test'
+  ...
+# Subtest: reviewed transaction rejects a wallet result rebound to another request
+ok 67 - reviewed transaction rejects a wallet result rebound to another request
+  ---
+  duration_ms: 3.742791
+  type: 'test'
+  ...
+# Subtest: reviewed raw transaction exposes detached signatures bound to its approved input matrix
+ok 68 - reviewed raw transaction exposes detached signatures bound to its approved input matrix
+  ---
+  duration_ms: 9.7975
+  type: 'test'
+  ...
+# Subtest: reviewed transaction IDs bind one later JSON message under the same approval
+ok 69 - reviewed transaction IDs bind one later JSON message under the same approval
+  ---
+  duration_ms: 16.661542
+  type: 'test'
+  ...
+# Subtest: private deferred task verification rederives trusted Legacy dependencies and fails closed without authority
+ok 70 - private deferred task verification rederives trusted Legacy dependencies and fails closed without authority
+  ---
+  duration_ms: 7.183625
+  type: 'test'
+  ...
+# Subtest: continue-independent records one child failure, skips dependents, and runs independent children
+ok 71 - continue-independent records one child failure, skips dependents, and runs independent children
+  ---
+  duration_ms: 9.289375
+  type: 'test'
+  ...
+# Subtest: workflow crypto requires its dedicated permission before approval or secret execution
+ok 72 - workflow crypto requires its dedicated permission before approval or secret execution
+  ---
+  duration_ms: 1.068625
+  type: 'test'
+  ...
+1..72
+# tests 72
+# suites 0
+# pass 72
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1098.074291

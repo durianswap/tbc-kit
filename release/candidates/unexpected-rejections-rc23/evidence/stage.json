@@ -1,0 +1,44 @@
+{
+  "status": "STAGED",
+  "stage": "/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/.verify/rc23-stage/package",
+  "baseline": [
+    {
+      "id": "kit",
+      "path": "artifacts/tbc-kit.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.22/tbc-kit.tgz",
+      "sha256": "10bb0cf19f8c0e25000fa286d587ae15ba623edd0826856111e64000439c00b3",
+      "bytes": 5544408,
+      "version": "0.1.0-rc.22",
+      "role": "JS/TS Kit with optional platform-native resources"
+    },
+    {
+      "id": "flutter",
+      "path": "artifacts/tbc-kit-flutter.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit-flutter.tgz",
+      "sha256": "f782b21ff2aa5d069669ae080615bde083e45006e5536a98b11233025d322b7f",
+      "bytes": 15595700,
+      "version": "0.1.0-rc.1",
+      "role": "Flutter SDK with Dart, native libraries, WebView bridge and examples"
+    },
+    {
+      "id": "sdk-ios",
+      "path": "artifacts/native/ios-sdk.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/ios-sdk.tgz",
+      "sha256": "514b0922ffefdcfc0a8be13969fbfa76361ad0a1d977a82bdc2b3a2d5a4fa281",
+      "bytes": 43686738,
+      "version": "0.1.0-rc.19.native.2",
+      "role": "Standalone ios calculation SDK paired with the JS Kit"
+    },
+    {
+      "id": "sdk-android",
+      "path": "artifacts/native/android-sdk.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/android-sdk.tgz",
+      "sha256": "4146851beb779b63c080057ec31c0a96ed2ca6a6a24c680e3eb4151a75b5f7b7",
+      "bytes": 36108577,
+      "version": "0.1.0-rc.19.native.2",
+      "role": "Standalone android calculation SDK paired with the JS Kit"
+    }
+  ],
+  "protectedFiles": 174,
+  "partnerDeliveryChanged": false
+}

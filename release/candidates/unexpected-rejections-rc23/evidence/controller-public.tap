@@ -1,0 +1,26 @@
+TAP version 13
+# Subtest: AMM controller permutations produce identical signed bytes and reads through Provider, including workflow
+not ok 1 - AMM controller permutations produce identical signed bytes and reads through Provider, including workflow
+  ---
+  duration_ms: 653.792792
+  type: 'test'
+  location: '/Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:174:1'
+  failureType: 'testCodeFailure'
+  error: 'Host operation did not produce a response: failed'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    executeProviderRequest (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/.host-port-business-errors-source.mjs:132425:17)
+    async Object.request (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:148:26)
+    async TestContext.<anonymous> (file:///Users/alex/Documents/Codex/2026-11-01/tbc-kit-zero-balance-ft/source/packages/kit/test/host-port-business-errors.test.mjs:181:22)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 989.14125

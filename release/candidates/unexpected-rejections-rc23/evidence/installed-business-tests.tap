@@ -1,0 +1,215 @@
+TAP version 13
+# Subtest: LOP 1/128/256 native alternatives keep identical Engine transactions, one approval and the same reads
+ok 1 - LOP 1/128/256 native alternatives keep identical Engine transactions, one approval and the same reads
+  ---
+  duration_ms: 336.688
+  type: 'test'
+  ...
+# Subtest: AMM controller permutations produce identical signed bytes and reads through Provider, including workflow
+ok 2 - AMM controller permutations produce identical signed bytes and reads through Provider, including workflow
+  ---
+  duration_ms: 936.974917
+  type: 'test'
+  ...
+# Subtest: invalid AMM semantics return parameter errors, never Host internal errors or approval
+ok 3 - invalid AMM semantics return parameter errors, never Host internal errors or approval
+  ---
+  duration_ms: 24.23425
+  type: 'test'
+  ...
+# Subtest: TBC20 recipient capacity includes token change, native change and optional payment
+ok 4 - TBC20 recipient capacity includes token change, native change and optional payment
+  ---
+  duration_ms: 211.704791
+  type: 'test'
+  ...
+# Subtest: plain LP lock is a typed unsupported operation before approval
+ok 5 - plain LP lock is a typed unsupported operation before approval
+  ---
+  duration_ms: 13.047
+  type: 'test'
+  ...
+# Subtest: plain LP unlock is a typed unsupported operation before approval
+ok 6 - plain LP unlock is a typed unsupported operation before approval
+  ---
+  duration_ms: 11.5665
+  type: 'test'
+  ...
+# Subtest: positive-only hot-path metrics
+ok 7 - positive-only hot-path metrics
+  ---
+  duration_ms: 740.764791
+  type: 'test'
+  ...
+# ZERO_HOT_PATH [{"kind":"transfer","milliseconds":46.722125000000005,"trace":["/api/tbc/ft/info/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/ft/utxo/combinescript/751e76e8199196d454941c45d1b3a323f1433bd600/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/txraw/txid/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/txraw/txid/b458c99aa138a3eff100518ba4862f5d48fbba0730ba13206664623372cc792c","/api/tbc/utxo/address/1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"],"txids":["fd6182ad11fd36dd32851697bd1e5d343ae1f3fb5c97b0354764e3bb3de52f35"],"approvals":1,"signatures":2},{"kind":"merge","milliseconds":57.19995800000015,"trace":["/api/tbc/ft/info/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/ft/utxo/combinescript/751e76e8199196d454941c45d1b3a323f1433bd600/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/txraw/txid/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/txraw/txid/b458c99aa138a3eff100518ba4862f5d48fbba0730ba13206664623372cc792c","/api/tbc/utxo/address/1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"],"txids":["c8f259da1a91ace157f8f7a6816edffc2577cb0a6049cc634199d9489638226b"],"approvals":1,"signatures":3},{"kind":"htlc","milliseconds":52.93837499999995,"trace":["/api/tbc/ft/info/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/ft/utxo/combinescript/751e76e8199196d454941c45d1b3a323f1433bd600/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/nodeinfo","/api/tbc/txraw/txid/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/txraw/txid/b458c99aa138a3eff100518ba4862f5d48fbba0730ba13206664623372cc792c","/api/tbc/utxo/address/1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"],"txids":["855f36ab52900b07dcbf24da0942e5c15c9809178a500dac9aae7e45038c458a"],"approvals":1,"signatures":2},{"kind":"order","milliseconds":53.765499999999975,"trace":["/api/tbc/ft/info/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/ft/utxo/combinescript/751e76e8199196d454941c45d1b3a323f1433bd600/contract/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/txraw/txid/48c08b50aacc7a593aef983c387324936f81bcaccb17215491b9405f04a8dc69","/api/tbc/txraw/txid/b458c99aa138a3eff100518ba4862f5d48fbba0730ba13206664623372cc792c","/api/tbc/utxo/address/1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"],"txids":["18932ce37b9df82a6c1796943c44434fe0f454e7ffec8c3585c6565ed5ad7f84"],"approvals":1,"signatures":2},{"kind":"addLiquidity","milliseconds":203.08608400000003,"trace":["/api/tbc/ft/info/contract/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/ft/utxo/combinescript/751e76e8199196d454941c45d1b3a323f1433bd600/contract/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/ft/utxo/combinescript/b6e23e4167ad5dab5444fdf3dd66e8c41b2f252701/contract/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/pool/poolinfo/poolid/6a6e5a171b3572c09385bfde4801013be3af5e0badb5f615ec830f62a640f952","/api/tbc/txraw/txid/27c258033f674eb33ce548722df0ecf8a23357ad05669cdac12970abd37d62a8","/api/tbc/txraw/txid/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/txraw/txid/6359cc2a7d9f75e3b7f1d5ec40d6d77ed79a1312497618fb54733877ca5ca1d2","/api/tbc/txraw/txid/7b93bfa5ba038979cb7c53046bd857b986fc7c58bf2ca4d6fdc52e9f6de57fe2","/api/tbc/utxo/address/1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"],"txids":["dcd4aed7fbf8c4f6aadd432434e4258c29d7624d85fe2f2601f38b5c7d22a3e0"],"approvals":1,"signatures":3},{"kind":"swap","milliseconds":195.4224589999999,"trace":["/api/tbc/ft/info/contract/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/ft/utxo/combinescript/751e76e8199196d454941c45d1b3a323f1433bd600/contract/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/ft/utxo/combinescript/b6e23e4167ad5dab5444fdf3dd66e8c41b2f252701/contract/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/pool/poolinfo/poolid/6a6e5a171b3572c09385bfde4801013be3af5e0badb5f615ec830f62a640f952","/api/tbc/txraw/txid/27c258033f674eb33ce548722df0ecf8a23357ad05669cdac12970abd37d62a8","/api/tbc/txraw/txid/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/txraw/txid/6359cc2a7d9f75e3b7f1d5ec40d6d77ed79a1312497618fb54733877ca5ca1d2","/api/tbc/txraw/txid/7b93bfa5ba038979cb7c53046bd857b986fc7c58bf2ca4d6fdc52e9f6de57fe2","/api/tbc/utxo/address/1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"],"txids":["d8afc1f21b418bff2ae034ac8a2b0dacf48827127ba144f2d80ed44e76973555"],"approvals":1,"signatures":3},{"kind":"lpTransfer","milliseconds":100.57004200000029,"trace":["/api/tbc/ft/info/contract/2b941be79bebfc7028dd811906b17e01b7629c65bf8756c80bf0dce1922a1769","/api/tbc/pool/lputxo/scriptpubkeyhash/f38bb89e55e4c37b13d858ec42b38a80dba665326ccddecec66bfdfb9622ae5f","/api/tbc/pool/poolinfo/poolid/6a6e5a171b3572c09385bfde4801013be3af5e0badb5f615ec830f62a640f952","/api/tbc/txraw/txid/27c258033f674eb33ce548722df0ecf8a23357ad05669cdac12970abd37d62a8","/api/tbc/txraw/txid/6a6e5a171b3572c09385bfde4801013be3af5e0badb5f615ec830f62a640f952","/api/tbc/txraw/txid/7b93bfa5ba038979cb7c53046bd857b986fc7c58bf2ca4d6fdc52e9f6de57fe2","/api/tbc/utxo/address/1BgGZ9tcN4rm9KBzDn7KprQz87SZ26SAMH"],"txids":["c37490a6df97a47117c0e3d5e549a0798de595a94f5d82a5db751429071910a0"],"approvals":1,"signatures":2}]
+# Subtest: zero holder rows: public transfer completes with identical transaction bytes, GETs and one approval
+ok 8 - zero holder rows: public transfer completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 100.484666
+  type: 'test'
+  ...
+# Subtest: explicit zero input: public transfer fails typed, before approval/signing, without replacement
+ok 9 - explicit zero input: public transfer fails typed, before approval/signing, without replacement
+  ---
+  duration_ms: 9.447209
+  type: 'test'
+  ...
+# Subtest: zero filtering does not bypass malformed index amount rejection: transfer
+ok 10 - zero filtering does not bypass malformed index amount rejection: transfer
+  ---
+  duration_ms: 8.131791
+  type: 'test'
+  ...
+# Subtest: zero holder rows: public merge completes with identical transaction bytes, GETs and one approval
+ok 11 - zero holder rows: public merge completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 118.344125
+  type: 'test'
+  ...
+# Subtest: explicit zero input: public merge fails typed, before approval/signing, without replacement
+ok 12 - explicit zero input: public merge fails typed, before approval/signing, without replacement
+  ---
+  duration_ms: 7.099708
+  type: 'test'
+  ...
+# Subtest: zero filtering does not bypass malformed index amount rejection: merge
+ok 13 - zero filtering does not bypass malformed index amount rejection: merge
+  ---
+  duration_ms: 7.680917
+  type: 'test'
+  ...
+# Subtest: zero holder rows: public htlc completes with identical transaction bytes, GETs and one approval
+ok 14 - zero holder rows: public htlc completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 113.237625
+  type: 'test'
+  ...
+# Subtest: explicit zero input: public htlc fails typed, before approval/signing, without replacement
+ok 15 - explicit zero input: public htlc fails typed, before approval/signing, without replacement
+  ---
+  duration_ms: 7.491792
+  type: 'test'
+  ...
+# Subtest: zero filtering does not bypass malformed index amount rejection: htlc
+ok 16 - zero filtering does not bypass malformed index amount rejection: htlc
+  ---
+  duration_ms: 7.24475
+  type: 'test'
+  ...
+# Subtest: zero holder rows: public order completes with identical transaction bytes, GETs and one approval
+ok 17 - zero holder rows: public order completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 108.116792
+  type: 'test'
+  ...
+# Subtest: explicit zero input: public order fails typed, before approval/signing, without replacement
+ok 18 - explicit zero input: public order fails typed, before approval/signing, without replacement
+  ---
+  duration_ms: 7.862875
+  type: 'test'
+  ...
+# Subtest: zero filtering does not bypass malformed index amount rejection: order
+ok 19 - zero filtering does not bypass malformed index amount rejection: order
+  ---
+  duration_ms: 6.679
+  type: 'test'
+  ...
+# Subtest: zero holder rows: public addLiquidity completes with identical transaction bytes, GETs and one approval
+ok 20 - zero holder rows: public addLiquidity completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 399.428084
+  type: 'test'
+  ...
+# Subtest: explicit zero input: public addLiquidity fails typed, before approval/signing, without replacement
+ok 21 - explicit zero input: public addLiquidity fails typed, before approval/signing, without replacement
+  ---
+  duration_ms: 12.928292
+  type: 'test'
+  ...
+# Subtest: zero filtering does not bypass malformed index amount rejection: addLiquidity
+ok 22 - zero filtering does not bypass malformed index amount rejection: addLiquidity
+  ---
+  duration_ms: 12.976083
+  type: 'test'
+  ...
+# Subtest: zero holder rows: public swap completes with identical transaction bytes, GETs and one approval
+ok 23 - zero holder rows: public swap completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 389.95125
+  type: 'test'
+  ...
+# Subtest: explicit zero input: public swap fails typed, before approval/signing, without replacement
+ok 24 - explicit zero input: public swap fails typed, before approval/signing, without replacement
+  ---
+  duration_ms: 13.452833
+  type: 'test'
+  ...
+# Subtest: zero filtering does not bypass malformed index amount rejection: swap
+ok 25 - zero filtering does not bypass malformed index amount rejection: swap
+  ---
+  duration_ms: 12.676833
+  type: 'test'
+  ...
+# Subtest: zero holder rows: public lpTransfer completes with identical transaction bytes, GETs and one approval
+ok 26 - zero holder rows: public lpTransfer completes with identical transaction bytes, GETs and one approval
+  ---
+  duration_ms: 201.371708
+  type: 'test'
+  ...
+# Subtest: explicit zero input: public lpTransfer fails typed, before approval/signing, without replacement
+ok 27 - explicit zero input: public lpTransfer fails typed, before approval/signing, without replacement
+  ---
+  duration_ms: 10.6295
+  type: 'test'
+  ...
+# Subtest: zero filtering does not bypass malformed index amount rejection: lpTransfer
+ok 28 - zero filtering does not bypass malformed index amount rejection: lpTransfer
+  ---
+  duration_ms: 9.856833
+  type: 'test'
+  ...
+# Subtest: Coin create 0/6 decimals completes the public client/Host/Engine staged path with one synthetic approval
+ok 29 - Coin create 0/6 decimals completes the public client/Host/Engine staged path with one synthetic approval
+  ---
+  duration_ms: 87.95275
+  type: 'test'
+  ...
+# Subtest: current AMM historical-only maintenance returns INVALID_PARAMS before approval or signer
+ok 30 - current AMM historical-only maintenance returns INVALID_PARAMS before approval or signer
+  ---
+  duration_ms: 33.737875
+  type: 'test'
+  ...
+# Subtest: small AMM sell preserves the actual fee rule but returns a precise typed reason
+ok 31 - small AMM sell preserves the actual fee rule but returns a precise typed reason
+  ---
+  duration_ms: 17.226917
+  type: 'test'
+  ...
+# Subtest: inactive pool remains a distinct conflict, not an internal failure
+ok 32 - inactive pool remains a distinct conflict, not an internal failure
+  ---
+  duration_ms: 8.639333
+  type: 'test'
+  ...
+# Subtest: ECDSA-only wallet reports a signing capability failure, does not publish the signed source
+ok 33 - ECDSA-only wallet reports a signing capability failure, does not publish the signed source
+  ---
+  duration_ms: 21.63
+  type: 'test'
+  ...
+# Subtest: controlled signer dispatches exact ECDSA/recoverable/BIP340 profiles without fallback
+ok 34 - controlled signer dispatches exact ECDSA/recoverable/BIP340 profiles without fallback
+  ---
+  duration_ms: 5.559709
+  type: 'test'
+  ...
+1..34
+# tests 34
+# suites 0
+# pass 34
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4379.916542

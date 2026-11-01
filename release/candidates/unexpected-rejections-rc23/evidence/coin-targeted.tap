@@ -1,0 +1,58 @@
+TAP version 13
+# Subtest: Coin management observes unused concurrent failures without suppressing required tip validation
+ok 1 - Coin management observes unused concurrent failures without suppressing required tip validation
+  ---
+  duration_ms: 2.469208
+  type: 'test'
+  ...
+# Subtest: Coin zero-lock hot path uses five SDK reads without a tip or issuer audit
+ok 2 - Coin zero-lock hot path uses five SDK reads without a tip or issuer audit
+  ---
+  duration_ms: 73.504792
+  type: 'test'
+  ...
+# Subtest: Coin legal zero index rows preserve material and GET count; explicit zero inputs are not ignored
+ok 3 - Coin legal zero index rows preserve material and GET count; explicit zero inputs are not ignored
+  ---
+  duration_ms: 86.303333
+  type: 'test'
+  ...
+# Subtest: Coin holder material selects six and twenty fragments without duplicate ancestry or tip reads
+ok 4 - Coin holder material selects six and twenty fragments without duplicate ancestry or tip reads
+  ---
+  duration_ms: 360.325916
+  type: 'test'
+  ...
+# Subtest: Coin locked-first backfills without duplicate raw and ignores index lock hints
+ok 5 - Coin locked-first backfills without duplicate raw and ignores index lock hints
+  ---
+  duration_ms: 11.465125
+  type: 'test'
+  ...
+# Subtest: Coin timestamp maturity uses same-tip MTP, equality is not mature
+ok 6 - Coin timestamp maturity uses same-tip MTP, equality is not mature
+  ---
+  duration_ms: 24.262375
+  type: 'test'
+  ...
+# Subtest: Coin height boundary and merge only include mature inputs
+ok 7 - Coin height boundary and merge only include mature inputs
+  ---
+  duration_ms: 13.766333
+  type: 'test'
+  ...
+# Subtest: node median accepts exact integer strings, rejects malformed present values
+ok 8 - node median accepts exact integer strings, rejects malformed present values
+  ---
+  duration_ms: 9.800958
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1011.913459

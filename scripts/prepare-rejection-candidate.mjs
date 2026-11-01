@@ -1,0 +1,22 @@
+// Fresh JS staging only. Native and source are sealed after targeted checks.
+import assert from 'node:assert/strict';
+import {readFile,writeFile,mkdir,cp,readdir,rm} from 'node:fs/promises';
+import {join,resolve} from 'node:path';
+import {execFileSync} from 'node:child_process';
+import {buildKitRuntime} from '../source/packages/kit/scripts/runtime-build.mjs';
+import {omitEmbeddedSources} from '../source/packages/kit/scripts/source-map-policy.mjs';
+import {sha256} from '../source/packages/kit/scripts/platform-resources.mjs';
+const repo=resolve(import.meta.dirname,'..'),root=join(repo,'source');
+const [outArg,stageArg,protectedArg]=process.argv.slice(2);assert(protectedArg,'NEW_CANDIDATE NEW_STAGE PROTECTED_MANIFEST');
+const out=resolve(outArg),scratch=resolve(stageArg),stage=join(scratch,'package');
+const current=JSON.parse(await readFile(join(repo,'release/current.json'))),protectedFiles=JSON.parse(await readFile(resolve(protectedArg)));
+for(const a of current.artifacts)assert.equal(sha256(await readFile(join(repo,a.path))),a.sha256,a.path);
+for(const [p,h]of Object.entries(protectedFiles))assert.equal(sha256(await readFile(p)),h,p);
+await mkdir(out);await mkdir(join(out,'evidence'));await mkdir(scratch);
+execFileSync('tar',['-xzf',join(repo,'artifacts/tbc-kit.tgz'),'-C',scratch]);
+for(const format of ['esm','cjs'])for(const entry of await readdir(join(stage,'dist',format),{withFileTypes:true}))if(entry.isFile())await rm(join(stage,'dist',format,entry.name));
+await buildKitRuntime({root,packageRoot:stage});await omitEmbeddedSources(join(stage,'dist'));
+const pkg=JSON.parse(await readFile(join(stage,'package.json')));pkg.version='0.1.0-rc.23';await writeFile(join(stage,'package.json'),JSON.stringify(pkg,null,2)+'\n');
+await cp(join(root,'packages/kit/examples'),join(stage,'examples'),{recursive:true});
+const evidence={status:'STAGED',stage,baseline:current.artifacts,protectedFiles:Object.keys(protectedFiles).length,partnerDeliveryChanged:false};
+await writeFile(join(out,'evidence/stage.json'),JSON.stringify(evidence,null,2)+'\n');console.log(JSON.stringify(evidence));

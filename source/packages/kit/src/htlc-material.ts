@@ -1,6 +1,7 @@
 import type { TbcOfficialApiClient, TbcApiTxoStatus } from "./official-api.js";
 import type { TestnetTip } from "./testnet-client.js";
 import { forEachTxoStatusBatch } from "./txo-status-batches.js";
+import { MaterialBusinessError } from "./material-business-error.js";
 
 type Point = Readonly<{ txid: string; vout: number }>;
 type Parent = Readonly<{ txid: string; rawTransaction: string; confirmations?: string;
@@ -55,7 +56,9 @@ export async function resolveHtlcMaterial(input: Readonly<{
       for (const row of response.txos) {
         if (!HASH.test(row.txid) || !UINT.test(row.index) || BigInt(row.index) > 0xffff_ffffn ||
             !UINT.test(row.value) || BigInt(row.value) < 1n || BigInt(row.value) > BigInt(Number.MAX_SAFE_INTEGER) ||
-            !remaining.delete(`${row.txid}:${row.index}`) || row.spent !== false) throw new Error("HTLC selected output unavailable or inconsistent");
+            !remaining.delete(`${row.txid}:${row.index}`)) throw new Error("HTLC selected output unavailable or inconsistent");
+        if (row.spent === true) throw new MaterialBusinessError("SELECTED_INPUT_SPENT");
+        if (row.spent !== false) throw new Error("HTLC selected output spent status invalid");
         rows.push(Object.freeze({ ...row }));
       }
     }, { category: "asset-index", concurrencyGroup: "htlc-index" });

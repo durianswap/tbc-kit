@@ -1,0 +1,119 @@
+TAP version 13
+# Subtest: NFT fee alternatives do not consume the mint-slot budget; exact inputs and candidate bounds remain strict
+ok 1 - NFT fee alternatives do not consume the mint-slot budget; exact inputs and candidate bounds remain strict
+  ---
+  duration_ms: 34.22225
+  type: 'test'
+  ...
+# Subtest: public resolver splits exact new-NFT missing slots at 25/26/100 without substituting slots
+ok 2 - public resolver splits exact new-NFT missing slots at 25/26/100 without substituting slots
+  ---
+  duration_ms: 15.234834
+  type: 'test'
+  ...
+# Subtest: indexed and partial-index paths reuse retained bytes and never requery known slots
+ok 3 - indexed and partial-index paths reuse retained bytes and never requery known slots
+  ---
+  duration_ms: 5.755
+  type: 'test'
+  ...
+# Subtest: historical NFT slot selection batches 26/101/4095 outputs and still chooses the first unspent slot
+ok 4 - historical NFT slot selection batches 26/101/4095 outputs and still chooses the first unspent slot
+  ---
+  duration_ms: 53.419167
+  type: 'test'
+  ...
+# Subtest: failures, missing rows and spent selected slots stop before a usable snapshot without retry
+ok 5 - failures, missing rows and spent selected slots stop before a usable snapshot without retry
+  ---
+  duration_ms: 14.873583
+  type: 'test'
+  ...
+# Subtest: a selected slot outside its collection is a typed conflict without substitute reads
+ok 6 - a selected slot outside its collection is a typed conflict without substitute reads
+  ---
+  duration_ms: 0.944583
+  type: 'test'
+  ...
+# Subtest: each chunk rejects cross-chunk identities, duplicates, wrong txid/value/script and noncanonical index
+ok 7 - each chunk rejects cross-chunk identities, duplicates, wrong txid/value/script and noncanonical index
+  ---
+  duration_ms: 11.948417
+  type: 'test'
+  ...
+# Subtest: positive confirmation policy still observes confirmation once, zero floor does not fetch it
+ok 8 - positive confirmation policy still observes confirmation once, zero floor does not fetch it
+  ---
+  duration_ms: 3.64675
+  type: 'test'
+  ...
+# Subtest: public resolver and official API normalization handle the 25-output HTTP contract together
+ok 9 - public resolver and official API normalization handle the 25-output HTTP contract together
+  ---
+  duration_ms: 18.737792
+  type: 'test'
+  ...
+# Subtest: 201-item public mint preparation shares one native/index/raw observation across subgroups and snapshots
+ok 10 - 201-item public mint preparation shares one native/index/raw observation across subgroups and snapshots
+  ---
+  duration_ms: 29.523875
+  type: 'test'
+  ...
+# Subtest: batched fallback and fully indexed path produce identical validated Engine plans
+ok 11 - batched fallback and fully indexed path produce identical validated Engine plans
+  ---
+  duration_ms: 50.314209
+  type: 'test'
+  ...
+# Subtest: reported attribute/media/recipient matrix and 1/2/100 mint plans reuse one material observation
+ok 12 - reported attribute/media/recipient matrix and 1/2/100 mint plans reuse one material observation
+  ---
+  duration_ms: 259.327542
+  type: 'test'
+  ...
+# NFT_MATRIX {"variants":54,"reads":{"index":1,"native":1,"raw":0,"decoded":0,"status":0},"signatures":0,"broadcasts":0}
+# Subtest: collection/mint/transfer/batch with 1 fee alternatives retains 4 media bytes
+ok 13 - collection/mint/transfer/batch with 1 fee alternatives retains 4 media bytes
+  ---
+  duration_ms: 82.276791
+  type: 'test'
+  ...
+# Subtest: collection/mint/transfer/batch with 256 fee alternatives retains 4 media bytes
+ok 14 - collection/mint/transfer/batch with 256 fee alternatives retains 4 media bytes
+  ---
+  duration_ms: 49.57875
+  type: 'test'
+  ...
+# Subtest: collection/mint/transfer/batch with 1 fee alternatives retains 70000 media bytes
+ok 15 - collection/mint/transfer/batch with 1 fee alternatives retains 70000 media bytes
+  ---
+  duration_ms: 223.760167
+  type: 'test'
+  ...
+# Subtest: collection/mint/transfer/batch with 256 fee alternatives retains 70000 media bytes
+ok 16 - collection/mint/transfer/batch with 256 fee alternatives retains 70000 media bytes
+  ---
+  duration_ms: 230.914875
+  type: 'test'
+  ...
+# Subtest: NFT material fails closed on mismatched collection slot and positive-floor missing confirmation
+ok 17 - NFT material fails closed on mismatched collection slot and positive-floor missing confirmation
+  ---
+  duration_ms: 0.998042
+  type: 'test'
+  ...
+# Subtest: collection mint uses one exact TXO fallback only while the script index is lagging
+ok 18 - collection mint uses one exact TXO fallback only while the script index is lagging
+  ---
+  duration_ms: 1.039
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 698.540417

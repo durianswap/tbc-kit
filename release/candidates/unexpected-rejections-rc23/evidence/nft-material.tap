@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: NFT fee alternatives do not consume the mint-slot budget; exact inputs and candidate bounds remain strict
+ok 1 - NFT fee alternatives do not consume the mint-slot budget; exact inputs and candidate bounds remain strict
+  ---
+  duration_ms: 37.779084
+  type: 'test'
+  ...
+# Subtest: public resolver splits exact new-NFT missing slots at 25/26/100 without substituting slots
+ok 2 - public resolver splits exact new-NFT missing slots at 25/26/100 without substituting slots
+  ---
+  duration_ms: 15.797167
+  type: 'test'
+  ...
+# Subtest: indexed and partial-index paths reuse retained bytes and never requery known slots
+ok 3 - indexed and partial-index paths reuse retained bytes and never requery known slots
+  ---
+  duration_ms: 6.685041
+  type: 'test'
+  ...
+# Subtest: historical NFT slot selection batches 26/101/4095 outputs and still chooses the first unspent slot
+ok 4 - historical NFT slot selection batches 26/101/4095 outputs and still chooses the first unspent slot
+  ---
+  duration_ms: 59.265917
+  type: 'test'
+  ...
+# Subtest: failures, missing rows and spent selected slots stop before a usable snapshot without retry
+ok 5 - failures, missing rows and spent selected slots stop before a usable snapshot without retry
+  ---
+  duration_ms: 14.741167
+  type: 'test'
+  ...
+# Subtest: each chunk rejects cross-chunk identities, duplicates, wrong txid/value/script and noncanonical index
+ok 6 - each chunk rejects cross-chunk identities, duplicates, wrong txid/value/script and noncanonical index
+  ---
+  duration_ms: 13.449333
+  type: 'test'
+  ...
+# Subtest: positive confirmation policy still observes confirmation once, zero floor does not fetch it
+ok 7 - positive confirmation policy still observes confirmation once, zero floor does not fetch it
+  ---
+  duration_ms: 3.780459
+  type: 'test'
+  ...
+# Subtest: public resolver and official API normalization handle the 25-output HTTP contract together
+ok 8 - public resolver and official API normalization handle the 25-output HTTP contract together
+  ---
+  duration_ms: 20.084292
+  type: 'test'
+  ...
+# Subtest: 201-item public mint preparation shares one native/index/raw observation across subgroups and snapshots
+ok 9 - 201-item public mint preparation shares one native/index/raw observation across subgroups and snapshots
+  ---
+  duration_ms: 36.972958
+  type: 'test'
+  ...
+# Subtest: batched fallback and fully indexed path produce identical validated Engine plans
+ok 10 - batched fallback and fully indexed path produce identical validated Engine plans
+  ---
+  duration_ms: 67.917708
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 455.649958

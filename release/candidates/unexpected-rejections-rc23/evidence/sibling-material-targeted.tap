@@ -1,0 +1,142 @@
+TAP version 13
+# Subtest: exact native HTLC code decode preserves script roles and unsigned lock bytes
+ok 1 - exact native HTLC code decode preserves script roles and unsigned lock bytes
+  ---
+  duration_ms: 0.853375
+  type: 'test'
+  ...
+# Subtest: claim and refund share selected sibling parent reads without native funding or ancestor queries
+ok 2 - claim and refund share selected sibling parent reads without native funding or ancestor queries
+  ---
+  duration_ms: 6.007125
+  type: 'test'
+  ...
+# Subtest: claim has no refund deadline; role must match the chosen branch
+ok 3 - claim has no refund deadline; role must match the chosen branch
+  ---
+  duration_ms: 0.757875
+  type: 'test'
+  ...
+# Subtest: refund requires safe locks, one time domain and strict MTP but height equality is mature
+ok 4 - refund requires safe locks, one time domain and strict MTP but height equality is mature
+  ---
+  duration_ms: 0.522
+  type: 'test'
+  ...
+# Subtest: only missing confirmation height above zero floor refreshes a unique decoded parent
+ok 5 - only missing confirmation height above zero floor refreshes a unique decoded parent
+  ---
+  duration_ms: 0.23375
+  type: 'test'
+  ...
+# Subtest: invalid, duplicate, spent, unexpected or mismatched selected deposits cannot enter material
+ok 6 - invalid, duplicate, spent, unexpected or mismatched selected deposits cannot enter material
+  ---
+  duration_ms: 0.518583
+  type: 'test'
+  ...
+# Subtest: selected points and account role are fixed before asynchronous reads
+ok 7 - selected points and account role are fixed before asynchronous reads
+  ---
+  duration_ms: 0.100583
+  type: 'test'
+  ...
+# Subtest: Core and Prepared project only selected deposit reads, never claim secrets
+ok 8 - Core and Prepared project only selected deposit reads, never claim secrets
+  ---
+  duration_ms: 0.527416
+  type: 'test'
+  ...
+# Subtest: Token HTLC requirements share Core/Prepared identity and never send a preimage to chain data
+ok 9 - Token HTLC requirements share Core/Prepared identity and never send a preimage to chain data
+  ---
+  duration_ms: 2.634791
+  type: 'test'
+  ...
+# Subtest: early approval hides claim secret but keeps complete request binding and disclosure warning
+ok 10 - early approval hides claim secret but keeps complete request binding and disclosure warning
+  ---
+  duration_ms: 0.852542
+  type: 'test'
+  ...
+# Subtest: HTLC helpers use standard methods, exact points and fee limits
+ok 11 - HTLC helpers use standard methods, exact points and fee limits
+  ---
+  duration_ms: 0.759875
+  type: 'test'
+  ...
+# Subtest: Token HTLC client preserves asset selectors without inventing native points
+ok 12 - Token HTLC client preserves asset selectors without inventing native points
+  ---
+  duration_ms: 0.288209
+  type: 'test'
+  ...
+# Subtest: Token HTLC material selects escrow plus Token and reuses unique ancestry without secret or funding reads
+ok 13 - Token HTLC material selects escrow plus Token and reuses unique ancestry without secret or funding reads
+  ---
+  duration_ms: 0.579542
+  type: 'test'
+  ...
+# Subtest: Token HTLC refreshes missing confirmations once and snapshots target before I/O
+ok 14 - Token HTLC refreshes missing confirmations once and snapshots target before I/O
+  ---
+  duration_ms: 0.133542
+  type: 'test'
+  ...
+# Subtest: Token HTLC rejects unavailable siblings, forged rows, wrong roles and immature refunds
+ok 15 - Token HTLC rejects unavailable siblings, forged rows, wrong roles and immature refunds
+  ---
+  duration_ms: 0.829
+  type: 'test'
+  ...
+# Subtest: native sell cancellation fetches exact order/status plus funding, never quote assets
+ok 16 - native sell cancellation fetches exact order/status plus funding, never quote assets
+  ---
+  duration_ms: 9.180167
+  type: 'test'
+  ...
+# Subtest: availability, amount, script, height and duplicates fail closed
+ok 17 - availability, amount, script, height and duplicates fail closed
+  ---
+  duration_ms: 1.027458
+  type: 'test'
+  ...
+# Subtest: unknown heights only cause a fresh read when confirmation policy needs it
+ok 18 - unknown heights only cause a fresh read when confirmation policy needs it
+  ---
+  duration_ms: 0.982583
+  type: 'test'
+  ...
+# Subtest: invalid LOP selectors fail before any network read
+ok 19 - invalid LOP selectors fail before any network read
+  ---
+  duration_ms: 0.247666
+  type: 'test'
+  ...
+# Subtest: cold confirmation target uses one decode; warm known height adds no query
+ok 20 - cold confirmation target uses one decode; warm known height adds no query
+  ---
+  duration_ms: 0.260541
+  type: 'test'
+  ...
+# Subtest: token cancellation budgets the funding role, not all 128 fee alternatives
+ok 21 - token cancellation budgets the funding role, not all 128 fee alternatives
+  ---
+  duration_ms: 0.750791
+  type: 'test'
+  ...
+# Subtest: unambiguous spent output has a safe reason; corrupt status remains a material failure
+ok 22 - unambiguous spent output has a safe reason; corrupt status remains a material failure
+  ---
+  duration_ms: 0.223083
+  type: 'test'
+  ...
+1..22
+# tests 22
+# suites 0
+# pass 22
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 252.303042

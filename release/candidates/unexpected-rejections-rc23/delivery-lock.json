@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "kitVersion": "0.1.0-rc.23",
+  "sdkVersion": "0.1.0-rc.23.native.2",
+  "protocolFingerprint": "8c2a5a935335463ecedef622011c187c645a9130df1b18610b0fba1262504ce9",
+  "sdkArtifactSetId": "0b5afe3c8f986c8e3835cd7488e68b3986c3be46fdef7ea518fa75dd5d4dc9b4",
+  "kit": {
+    "file": "tbc-kit.tgz",
+    "bytes": 5553552,
+    "unpackedBytes": 35709567,
+    "sha256": "14fa77b6af1248edb5fc89c3dd7104d525c0c07a1529dc3dc0f6d6527d62b88b"
+  },
+  "pairedNative": {
+    "ios": {
+      "file": "ios-sdk.tgz",
+      "bytes": 43685665,
+      "sha256": "877a715f9ab8d8e640136927c3b7d951c39db0ae3728a24d932eb62580d84e1e",
+      "version": "0.1.0-rc.23.native.2"
+    },
+    "android": {
+      "file": "android-sdk.tgz",
+      "bytes": 36111191,
+      "sha256": "9293208a3da7d57a4ee13f8fbb84838cc4ad3c4d32df750d47a0f9483c7db67c",
+      "version": "0.1.0-rc.23.native.2"
+    }
+  },
+  "nativeBuildInput": {
+    "file": "tbc-kit.tgz",
+    "bytes": 5895728,
+    "unpackedBytes": 37511506,
+    "sha256": "4f794d987dcd0eed21da5d2d9a2547def3d40f1a4937e51a2910ad425d1a4a95"
+  },
+  "resources": {
+    "macos-arm64": {
+      "archive": "tbc-kit-native-resources-macos-arm64.tgz",
+      "archiveSha256": "f087f1a68ad4474dbb40672f4fb82f033d0198353c032d60c7243fedf46b7e15",
+      "archiveBytes": 5726174,
+      "files": {
+        "artifacts/native/aarch64-apple-darwin/libtbc_engine_native.dylib": "33e4342185588b05c8c660f228cefde8156163d38b2bf36b4e5e6fc1ae68bfc4",
+        "artifacts/keyless-native/aarch64-apple-darwin/libtbc_keyless_native.dylib": "f4203d3643898fc49330d5178dc70dab0ab02df6cf8b2c97a44b9be01dba76e1",
+        "artifacts/keyless-native/aarch64-apple-darwin/module.modulemap": "c49a057d74e3d73dbf29bf0df22557cd94b4644dcdb2909546c4778870af08a9",
+        "artifacts/keyless-native/aarch64-apple-darwin/tbc_keyless.h": "fe6e4e9d09016deb7d23aff96b24a10e65772f7cdc930ee9266e754788a01b4c"
+      }
+    },
+    "android": {
+      "archive": "tbc-kit-native-resources-android.tgz",
+      "archiveSha256": "95fcfd7fe4dfd72a723cc7836b84b65cb1a56a40b15fc53dc892543382da0ddf",
+      "archiveBytes": 10456349,
+      "files": {
+        "artifacts/native/android/jniLibs/arm64-v8a/libtbc_engine_native.so": "71b5373fd598126141730480e4607ca73f1fcd1259dd2e7b5ef92653c0b76e44",
+        "artifacts/native/android/jniLibs/armeabi-v7a/libtbc_engine_native.so": "d47532d9bba23171a6f9ebcc21b6353a1e4c1cff996181f0042364f44e795d92",
+        "artifacts/native/android/jniLibs/x86_64/libtbc_engine_native.so": "8a7ff21679456522a0c67fe4035666beba145a2c42e8b1278542c46742fab90a"
+      }
+    },
+    "ios": {
+      "archive": "tbc-kit-native-resources-ios.tgz",
+      "archiveSha256": "359fb6227200966aa3dfc19256877eb40432035c1c50c4f51ebf8f8dcb4fbe0e",
+      "archiveBytes": 21671339,
+      "files": {
+        "artifacts/native/ios/TbcEngineNative.xcframework/Info.plist": "9a7a3843e141bf91da5590a98b1caf8f09d5ed69e42422039fc4112d654cf7da",
+        "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/Headers/module.modulemap": "b96481a446ba0a7f27e2a8ed084287e118aa39999b32ed4fee82d75d34c33556",
+        "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/Headers/tbc_engine.h": "d773d6a31b10fe5a5f7d780089aa89345b8d99df18e414ada58e4f716586c8bc",
+        "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64/libtbc_engine_native.a": "92c9d97a77c06bc69c95435876522052f71704a48ce8dc245cff7ed8ea839439",
+        "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/Headers/module.modulemap": "b96481a446ba0a7f27e2a8ed084287e118aa39999b32ed4fee82d75d34c33556",
+        "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/Headers/tbc_engine.h": "d773d6a31b10fe5a5f7d780089aa89345b8d99df18e414ada58e4f716586c8bc",
+        "artifacts/native/ios/TbcEngineNative.xcframework/ios-arm64-simulator/libtbc_engine_native.a": "cbd97d97ef625e57620a77a3192250ac262849c24b829539b1f6e96477e88fa3"
+      }
+    }
+  },
+  "baseline": {
+    "kit": {
+      "id": "kit",
+      "path": "artifacts/tbc-kit.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.22/tbc-kit.tgz",
+      "sha256": "10bb0cf19f8c0e25000fa286d587ae15ba623edd0826856111e64000439c00b3",
+      "bytes": 5544408,
+      "version": "0.1.0-rc.22",
+      "role": "JS/TS Kit with optional platform-native resources",
+      "file": "artifacts/tbc-kit.tgz"
+    },
+    "flutter": {
+      "id": "flutter",
+      "path": "artifacts/tbc-kit-flutter.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/tbc-kit-flutter.tgz",
+      "sha256": "f782b21ff2aa5d069669ae080615bde083e45006e5536a98b11233025d322b7f",
+      "bytes": 15595700,
+      "version": "0.1.0-rc.1",
+      "role": "Flutter SDK with Dart, native libraries, WebView bridge and examples",
+      "file": "artifacts/tbc-kit-flutter.tgz"
+    },
+    "sdk-ios": {
+      "id": "sdk-ios",
+      "path": "artifacts/native/ios-sdk.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/ios-sdk.tgz",
+      "sha256": "514b0922ffefdcfc0a8be13969fbfa76361ad0a1d977a82bdc2b3a2d5a4fa281",
+      "bytes": 43686738,
+      "version": "0.1.0-rc.19.native.2",
+      "role": "Standalone ios calculation SDK paired with the JS Kit",
+      "file": "artifacts/native/ios-sdk.tgz"
+    },
+    "sdk-android": {
+      "id": "sdk-android",
+      "path": "artifacts/native/android-sdk.tgz",
+      "url": "https://github.com/durianswap/tbc-kit/releases/download/v0.1.0-rc.20/android-sdk.tgz",
+      "sha256": "4146851beb779b63c080057ec31c0a96ed2ca6a6a24c680e3eb4151a75b5f7b7",
+      "bytes": 36108577,
+      "version": "0.1.0-rc.19.native.2",
+      "role": "Standalone android calculation SDK paired with the JS Kit",
+      "file": "artifacts/native/android-sdk.tgz"
+    }
+  },
+  "partnerDeliveryChanged": false,
+  "currentReleaseChanged": false
+}

@@ -15,6 +15,10 @@
 | `lop` | `create`, `cancel`, `match` |
 
 Available operations depend on the recognized contract and account roles.
+See [transaction capacity](docs/transaction-capacity.md) for receiver/change
+output budgets, AMM controller normalization, NFT input selection and typed
+rejections. A schema's receiver limit is not a promise that change and fee
+outputs will fit every selected input set.
 For example, `amm.mergeToken` and `tbc20Lp.burn` are historical maintenance
 operations, not alternatives to withdrawing liquidity from a current AMM.
 On a current AMM use `amm.removeLiquidity` to redeem LP for pool assets, or
